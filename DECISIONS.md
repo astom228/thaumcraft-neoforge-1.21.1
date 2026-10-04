@@ -34,3 +34,15 @@
       (data-driven) биомы без размещения в мире — чтобы эти проверки остались 1:1.
     - **Смена биома в рантайме** (`Utils.setBiomeAt`, `PacketBiomeChange`) в BETA17 нигде не вызывается — мёртвый код,
       не переносим.
+
+## Этап 1
+
+12. **Звук `runicshieldcharge`.** В оригинальном `sounds.json` событие записано с опечаткой `runicshieldecharge`, а код
+    регистрирует и проигрывает `thaumcraft:runicshieldcharge` — в оригинале этот звук не играет. `sounds.json` перенесён 1:1
+    (с опечаткой), поведение то же. Если захочется исправить — переименовать ключ в `sounds.json`.
+13. **Атлас блоков**: текстуры оригинала лежат в `textures/blocks` и `textures/items`, а атлас 1.21 по умолчанию берёт
+    `block/` и `item/`. Добавлены источники `directory` в `assets/minecraft/atlases/blocks.json` — файлы не переименовываются,
+    модели ссылаются на `thaumcraft:blocks/...` и `thaumcraft:items/...` как в оригинале.
+14. **Переводы** генерируются скриптом `tools/lang/convert-lang.js` (см. шапку скрипта). Руками `lang/*.json` не править —
+    правки вносить в `tools/lang/*.extra.json` или `id-map.json` и перезапускать скрипт. В `ru_ru.json` попадают только
+    переведённые строки; непереведённые показываются по-английски, их список — `build/lang-untranslated.txt`.
