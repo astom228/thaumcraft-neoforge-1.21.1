@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -22,6 +23,7 @@ import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
 import thaumcraft.Thaumcraft;
 import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.common.lib.TCTags;
+import thaumcraft.common.lib.crafting.RecipeTripleMeatTreat;
 
 import static thaumcraft.api.items.ItemsTC.*;
 
@@ -143,7 +145,8 @@ public class TCRecipeProvider extends RecipeProvider {
         tagToNuggets(out, "silvertonuggets", tag("ingots/silver"), nuggetSilver.get());
         tagToNuggets(out, "leadtonuggets", tag("ingots/lead"), nuggetLead.get());
 
-        // TODO (КТ 1): «triplemeattreat» — в оригинале RecipeTripleMeatTreat никогда не срабатывает (см. PROGRESS.md).
+        // Особый рецепт: сахар + 3 разных кусочка мяса (исправление ошибки оригинала, DEVIATIONS №10)
+        SpecialRecipeBuilder.special(RecipeTripleMeatTreat::new).save(out, id("triplemeattreat"));
     }
 
     private static String legacyDyeName(DyeColor dye) {

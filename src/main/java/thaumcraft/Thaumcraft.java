@@ -12,6 +12,7 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.lib.CreativeTabThaumcraft;
 import thaumcraft.common.lib.SoundsTC;
+import thaumcraft.common.lib.crafting.ConfigRecipes;
 
 @Mod(Thaumcraft.MODID)
 public class Thaumcraft {
@@ -27,6 +28,7 @@ public class Thaumcraft {
         ConfigItems.ITEMS.register(modEventBus);
         SoundsTC.SOUNDS.register(modEventBus);
         CreativeTabThaumcraft.TABS.register(modEventBus);
+        ConfigRecipes.SERIALIZERS.register(modEventBus);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, ModConfig.CLIENT_SPEC);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_SPEC);
     }
