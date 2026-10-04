@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredient": {
+    "item": "thaumcraft:iron_cluster"
+  },
+  "result": {
+    "count": 2,
+    "id": "minecraft:iron_ingot"
+  }
+}

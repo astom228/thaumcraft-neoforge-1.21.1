@@ -31,5 +31,6 @@ public class DataGenerators {
                 List.of(new LootTableProvider.SubProviderEntry(TCBlockLootTables::new, LootContextParamSets.BLOCK)), lookup));
         TCBlockTagsProvider blockTags = generator.addProvider(event.includeServer(), new TCBlockTagsProvider(output, lookup, helper));
         generator.addProvider(event.includeServer(), new TCItemTagsProvider(output, lookup, blockTags.contentsGetter(), helper));
+        generator.addProvider(event.includeServer(), new TCRecipeProvider(output, lookup));
     }
 }

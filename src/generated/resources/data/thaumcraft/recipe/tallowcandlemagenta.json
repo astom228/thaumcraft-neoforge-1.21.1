@@ -1,0 +1,64 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "thaumcraft:tallowcandles",
+  "ingredients": [
+    {
+      "tag": "c:dyes/magenta"
+    },
+    [
+      {
+        "item": "thaumcraft:white_candle"
+      },
+      {
+        "item": "thaumcraft:orange_candle"
+      },
+      {
+        "item": "thaumcraft:magenta_candle"
+      },
+      {
+        "item": "thaumcraft:light_blue_candle"
+      },
+      {
+        "item": "thaumcraft:yellow_candle"
+      },
+      {
+        "item": "thaumcraft:lime_candle"
+      },
+      {
+        "item": "thaumcraft:pink_candle"
+      },
+      {
+        "item": "thaumcraft:gray_candle"
+      },
+      {
+        "item": "thaumcraft:light_gray_candle"
+      },
+      {
+        "item": "thaumcraft:cyan_candle"
+      },
+      {
+        "item": "thaumcraft:purple_candle"
+      },
+      {
+        "item": "thaumcraft:blue_candle"
+      },
+      {
+        "item": "thaumcraft:brown_candle"
+      },
+      {
+        "item": "thaumcraft:green_candle"
+      },
+      {
+        "item": "thaumcraft:red_candle"
+      },
+      {
+        "item": "thaumcraft:black_candle"
+      }
+    ]
+  ],
+  "result": {
+    "count": 1,
+    "id": "thaumcraft:magenta_candle"
+  }
+}
