@@ -6,6 +6,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import thaumcraft.Thaumcraft;
 import thaumcraft.client.lib.network.ClientPacketHandlers;
+import thaumcraft.common.lib.network.misc.PacketAuraToClient;
 import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledge;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarp;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessage;
@@ -23,6 +24,8 @@ public class PacketHandler {
                 (msg, ctx) -> ClientPacketHandlers.handleSyncWarp(msg));
         registrar.playToClient(PacketSyncKnowledge.TYPE, PacketSyncKnowledge.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleSyncKnowledge(msg));
+        registrar.playToClient(PacketAuraToClient.TYPE, PacketAuraToClient.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleAura(msg));
         registrar.playToClient(PacketWarpMessage.TYPE, PacketWarpMessage.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleWarpMessage(msg));
     }

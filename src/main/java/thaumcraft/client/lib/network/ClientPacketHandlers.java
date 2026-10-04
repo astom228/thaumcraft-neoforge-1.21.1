@@ -5,13 +5,20 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
+import thaumcraft.client.lib.events.HudHandler;
 import thaumcraft.common.lib.SoundsTC;
+import thaumcraft.common.lib.network.misc.PacketAuraToClient;
+import thaumcraft.common.world.aura.AuraChunk;
 import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledge;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarp;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessage;
 
 /** Клиентская обработка пакетов (onMessage оригинала). Вызывается в главном потоке клиента. */
 public final class ClientPacketHandlers {
+    public static void handleAura(PacketAuraToClient msg) {
+        HudHandler.currentAura = new AuraChunk(null, msg.base(), msg.vis(), msg.flux());
+    }
+
     public static void handleSyncWarp(PacketSyncWarp msg) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
