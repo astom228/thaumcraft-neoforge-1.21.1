@@ -182,5 +182,6 @@
   "tc.addwarpsticky": "§5Вы получили Искажение!§0",
   "tc.removewarpsticky": "§5Вы избавились от Искажения!§0",
   "tc.addwarptemp": "§5Вы получили временное Искажение!§0",
-  "tc.removewarptemp": "§5Вы избавились от временного Искажения!§0"
+  "tc.removewarptemp": "§5Вы избавились от временного Искажения!§0",
+  "block.thaumcraft.porous_stone": "Пористый камень"
 }

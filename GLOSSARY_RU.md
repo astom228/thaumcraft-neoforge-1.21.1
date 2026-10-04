@@ -169,3 +169,4 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Arcane Grappler / Head / Spool | Магический крюкомёт / Наконечник / Катушка |
 | Tallow Candle | Сальная свеча |
 | Block of (metal) | Блок (таумиума, латуни, пустотного металла) |
+| Porous Stone | Пористый камень |

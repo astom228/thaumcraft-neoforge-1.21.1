@@ -1,0 +1,56 @@
+package thaumcraft.client.lib.events;
+
+import com.mojang.datafixers.util.Either;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import thaumcraft.Thaumcraft;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.common.config.ModConfig;
+import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+
+/** Подсказки предметов: аспекты (RenderEventHandler + HudHandler оригинала) и содержимое контейнеров эссенции (PlayerEvents). */
+@EventBusSubscriber(modid = Thaumcraft.MODID, value = Dist.CLIENT)
+public class TooltipEvents {
+
+    @SubscribeEvent
+    public static void registerFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+        event.register(AspectTooltip.class, AspectTooltip.Client::new);
+    }
+
+    /** Аспекты показываются в экранах с инвентарём при зажатом Shift (или наоборот, если включено showTags). */
+    @SubscribeEvent
+    public static void gatherComponents(RenderTooltipEvent.GatherComponents event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.screen instanceof AbstractContainerScreen<?> && Screen.hasShiftDown() != ModConfig.CONFIG_GRAPHICS.showTags.get()
+                && !mc.mouseHandler.isMouseGrabbed()) {
+            AspectList tags = ThaumcraftCraftingManager.getObjectTags(event.getItemStack());
+            if (tags != null && tags.size() > 0) {
+                event.getTooltipElements().add(Either.right(new AspectTooltip(tags)));
+            }
+        }
+    }
+
+    /** PlayerEvents.tooltipEvent: у предметов с аспектами внутри — список «Aer x1» (названия аспектов — латинские). */
+    @SubscribeEvent
+    public static void itemTooltip(ItemTooltipEvent event) {
+        if (event.getItemStack().getItem() instanceof IEssentiaContainerItem container) {
+            AspectList aspects = container.getAspects(event.getItemStack());
+            if (aspects != null && aspects.size() > 0) {
+                for (Aspect tag : aspects.getAspectsSortedByName()) {
+                    event.getToolTip().add(Component.literal(tag.getName() + " x" + aspects.getAmount(tag)));
+                }
+            }
+        }
+        // TODO этапы 11, 13: руническая защита, Искажение предмета, скидка Вис, заряд, инфузионные зачарования
+    }
+}
