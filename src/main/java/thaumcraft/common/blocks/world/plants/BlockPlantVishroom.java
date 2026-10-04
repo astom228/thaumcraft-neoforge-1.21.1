@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import thaumcraft.client.fx.FXDispatcher;
 
 /**
  * Висомор: свет 6 (0.4). Тип растения Cave — растёт на любой твёрдой верхней грани (плюс трава/земля/пашня).
@@ -45,7 +46,10 @@ public class BlockPlantVishroom extends BlockPlantTC {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
         if (rand.nextInt(3) == 0) {
-            // TODO этап 6: FXDispatcher.drawWispyMotes(x ± 0.4, y + 0.3, z ± 0.4, 0, 0, 0, 10, 0.5F, 0.3F, 0.8F, 0.001F)
+            float xr = pos.getX() + 0.5F + (rand.nextFloat() - rand.nextFloat()) * 0.4F;
+            float yr = pos.getY() + 0.3F;
+            float zr = pos.getZ() + 0.5F + (rand.nextFloat() - rand.nextFloat()) * 0.4F;
+            FXDispatcher.INSTANCE.drawWispyMotes(xr, yr, zr, 0.0, 0.0, 0.0, 10, 0.5F, 0.3F, 0.8F, 0.001F);
         }
     }
 }
