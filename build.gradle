@@ -27,7 +27,18 @@ sourceSets.main.resources {
 }
 
 repositories {
-    // Add here additional repositories if required by some of the dependencies below.
+    // Curios API
+    maven {
+        name = 'Illusive Soulworks'
+        url = 'https://maven.theillusivec4.top/'
+        content { includeGroup 'top.theillusivec4.curios' }
+    }
+    // TerraBlender
+    maven {
+        name = 'Forge'
+        url = 'https://maven.minecraftforge.net/'
+        content { includeGroup 'com.github.glitchfiend' }
+    }
 }
 
 base {
@@ -116,6 +127,13 @@ configurations {
 }
 
 dependencies {
+    // Curios API (замена Baubles): API для компиляции, полный мод для запуска
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+
+    // TerraBlender (биомы Thaumcraft в обычном мире)
+    implementation "com.github.glitchfiend:TerraBlender-neoforge:${terrablender_version}"
+
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
