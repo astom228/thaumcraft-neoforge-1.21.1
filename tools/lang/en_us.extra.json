@@ -67,5 +67,19 @@
   "thaumcraft.configuration.section.thaumcraft.client.toml": "Client Settings",
   "thaumcraft.configuration.section.thaumcraft.client.toml.title": "Thaumcraft Client Settings",
   "thaumcraft.configuration.section.thaumcraft.common.toml": "Common Settings",
-  "thaumcraft.configuration.section.thaumcraft.common.toml.title": "Thaumcraft Common Settings"
+  "thaumcraft.configuration.section.thaumcraft.common.toml.title": "Thaumcraft Common Settings",
+  "thaumcraft.command.invalid": "§cInvalid arguments",
+  "thaumcraft.command.usehelp": "§cUse /thaumcraft help to get help",
+  "thaumcraft.command.success": "§5Success!",
+  "thaumcraft.command.help.1": "§3You can also use /thaum or /tc instead of /thaumcraft.",
+  "thaumcraft.command.help.2": "§3Use this to give research to a player.",
+  "thaumcraft.command.help.3": "  /thaumcraft research <list|player> <list|all|reset|<research>>",
+  "thaumcraft.command.help.4": "§3Use this to give set a players warp level.",
+  "thaumcraft.command.help.5": "  /thaumcraft warp <player> <add|set> <amount> <PERM|TEMP>",
+  "thaumcraft.command.help.6": "  not specifying perm or temp will just add normal warp",
+  "thaumcraft.command.help.7": "§3Use this to reload json research data",
+  "thaumcraft.command.help.8": "  /thaumcraft reload",
+  "thaumcraft.command.warp.usage": "§cUse /thaumcraft warp <player> <add|set> <amount> <PERM|TEMP>",
+  "thaumcraft.command.warp.set": "§5%s set your warp to %s",
+  "thaumcraft.command.warp.add": "§5%s added %s warp to your total."
 }
