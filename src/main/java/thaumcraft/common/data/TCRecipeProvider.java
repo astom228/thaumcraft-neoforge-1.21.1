@@ -98,7 +98,10 @@ public class TCRecipeProvider extends RecipeProvider {
         stairs(out, "stairsarcane", BlocksTC.stoneArcane.get(), BlocksTC.stairsArcane.get());
         stairs(out, "stairsarcanebrick", BlocksTC.stoneArcaneBrick.get(), BlocksTC.stairsArcaneBrick.get());
         stairs(out, "stairsancient", BlocksTC.stoneAncient.get(), BlocksTC.stairsAncient.get());
-        // TODO этап 4: StoneArcane — 8 камня + кристалл эссенции → 9 магического камня
+        // StoneArcane: 8 камня (OreDictionary "stone" = minecraft:stone) + вис-кристалл (любой аспект) → 9
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlocksTC.stoneArcane.get(), 9)
+                .pattern("KKK").pattern("KCK").pattern("KKK").define('K', Items.STONE).define('C', crystalEssence.get())
+                .unlockedBy("has", has(crystalEssence.get())).save(out, id("stonearcane"));
         square(out, "brickarcane", BlocksTC.stoneArcane.get(), BlocksTC.stoneArcaneBrick.get(), 4);
         slab(out, "slabgreatwood", BlocksTC.plankGreatwood.get(), BlocksTC.slabGreatwood.get());
         slab(out, "slabsilverwood", BlocksTC.plankSilverwood.get(), BlocksTC.slabSilverwood.get());

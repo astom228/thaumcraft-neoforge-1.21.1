@@ -19,6 +19,7 @@ import thaumcraft.common.blocks.basic.BlockMetalTC;
 import thaumcraft.common.blocks.basic.BlockPlanksTC;
 import thaumcraft.common.blocks.basic.BlockSlabTC;
 import thaumcraft.common.blocks.basic.BlockStairsTC;
+import thaumcraft.common.blocks.basic.BlockStonePorous;
 import thaumcraft.common.blocks.basic.BlockStoneTC;
 import thaumcraft.common.blocks.basic.BlockTranslucent;
 import thaumcraft.common.blocks.misc.BlockFlesh;
@@ -56,7 +57,8 @@ public class BlocksTC {
     public static final DeferredBlock<Block> stoneAncientGlyphed = register("glyphed_stone", () -> new BlockStoneTC(stone(2.0F, 6.0F)));
     public static final DeferredBlock<Block> stoneAncientDoorway = register("ancient_barrier", () -> new BlockStoneTC(stone(-1.0F, 6.0F)));
     public static final DeferredBlock<Block> stoneEldritchTile = register("eldritch_stone", () -> new BlockStoneTC(stone(15.0F, 600.0F)));
-    // TODO этап 4: stonePorous (porous_stone) — дропает кристаллы эссенции.
+    // BlockStonePorous: setHardness(1.0), setResistance(5) → 1.0 / 3.0
+    public static final DeferredBlock<Block> stonePorous = register("porous_stone", () -> new BlockStonePorous(stone(1.0F, 3.0F)));
 
     public static final DeferredBlock<Block> stairsArcane = register("arcane_stone_stairs",
             () -> new BlockStairsTC(stoneArcane.get().defaultBlockState(), copy(stoneArcane), false));

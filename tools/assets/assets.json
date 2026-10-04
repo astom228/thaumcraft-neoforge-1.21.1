@@ -24,6 +24,9 @@
     "eldritch_stone": {
       "src": "stone_eldritch_tile"
     },
+    "porous_stone": {
+      "src": "stone_porous"
+    },
     "infusion_speed_stone": {
       "src": "matrix_speed"
     },
@@ -267,6 +270,7 @@
     "biothaumic_mind": "bs:mind#biothaumic",
     "vision_module": "bs:module#vision",
     "aggression_module": "bs:module#aggression",
+    "crystal_essence": "bs:crystal_essence#normal",
     "beef_chunk": "bs:chunk#beef",
     "chicken_chunk": "bs:chunk#chicken",
     "pork_chunk": "bs:chunk#pork",

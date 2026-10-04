@@ -25,7 +25,7 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(oreAmber.get(), oreCinnabar.get(), oreQuartz.get(),
                 stoneArcane.get(), stoneArcaneBrick.get(), stoneAncient.get(), stoneAncientTile.get(), stoneAncientRock.get(),
-                stoneAncientGlyphed.get(), stoneAncientDoorway.get(), stoneEldritchTile.get(),
+                stoneAncientGlyphed.get(), stoneAncientDoorway.get(), stoneEldritchTile.get(), stonePorous.get(),
                 stairsArcane.get(), stairsArcaneBrick.get(), stairsAncient.get(),
                 slabArcaneStone.get(), slabArcaneBrick.get(), slabAncient.get(), slabEldritch.get(),
                 metalBlockBrass.get(), metalBlockThaumium.get(), metalBlockVoid.get(), metalAlchemical.get(), metalAlchemicalAdvanced.get(),

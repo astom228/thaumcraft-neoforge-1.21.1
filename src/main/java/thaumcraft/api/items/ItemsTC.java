@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.consumables.ItemZombieBrain;
+import thaumcraft.common.items.resources.ItemCrystalEssence;
 
 /**
  * Предметы Thaumcraft (в оригинале — статические поля, заполняемые ConfigItems.initItems).
@@ -63,6 +64,7 @@ public class ItemsTC {
     // module: vision, aggression
     public static final DeferredItem<Item> moduleVision = simple("vision_module");
     public static final DeferredItem<Item> moduleAggression = simple("aggression_module");
+    public static final DeferredItem<Item> crystalEssence = ConfigItems.ITEMS.registerItem("crystal_essence", ItemCrystalEssence::new);
 
     // --- еда ---
     // ItemChunksEdible: ItemFood(1, 0.3F, false), время поедания 10 тиков

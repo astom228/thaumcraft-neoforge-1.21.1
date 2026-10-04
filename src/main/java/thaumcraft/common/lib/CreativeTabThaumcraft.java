@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import thaumcraft.Thaumcraft;
+import thaumcraft.api.items.ItemGenericEssentiaContainer;
 import thaumcraft.api.items.ItemsTC;
 import thaumcraft.common.config.ConfigItems;
 
@@ -17,6 +18,13 @@ public final class CreativeTabThaumcraft {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TABTC = TABS.register("thaumcraft", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.thaumcraft"))
             .icon(() -> new ItemStack(ItemsTC.goggles.get()))
-            .displayItems((params, output) -> ConfigItems.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
+            .displayItems((params, output) -> ConfigItems.ITEMS.getEntries().forEach(item -> {
+                // ItemGenericEssentiaContainer.getSubItems: по стеку на каждый аспект
+                if (item.get() instanceof ItemGenericEssentiaContainer container) {
+                    container.addCreativeVariants(output);
+                } else {
+                    output.accept(item.get());
+                }
+            }))
             .build());
 }

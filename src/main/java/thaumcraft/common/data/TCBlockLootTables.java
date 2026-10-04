@@ -63,6 +63,9 @@ public class TCBlockLootTables extends BlockLootSubProvider {
             add(slab, this::createSlabItemTable);
         }
 
+        // Пористый камень: дроп считается в BlockStonePorous.getDrops (как getDrops оригинала)
+        add(BlocksTC.stonePorous.get(), noDrop());
+
         // Остальные блоки этапа роняют сами себя
         for (DeferredHolder<Block, ? extends Block> holder : ConfigBlocks.BLOCKS.getEntries()) {
             Block block = holder.get();

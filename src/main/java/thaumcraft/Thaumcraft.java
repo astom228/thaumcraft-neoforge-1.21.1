@@ -14,6 +14,7 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.lib.CreativeTabThaumcraft;
 import thaumcraft.common.lib.SoundsTC;
+import thaumcraft.common.lib.TCDataComponents;
 import thaumcraft.common.lib.capabilities.ThaumcraftAttachments;
 import thaumcraft.common.lib.crafting.ConfigRecipes;
 
@@ -33,6 +34,7 @@ public class Thaumcraft {
         CreativeTabThaumcraft.TABS.register(modEventBus);
         ConfigRecipes.SERIALIZERS.register(modEventBus);
         ThaumcraftAttachments.ATTACHMENTS.register(modEventBus);
+        TCDataComponents.COMPONENTS.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, ModConfig.CLIENT_SPEC);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_SPEC);
