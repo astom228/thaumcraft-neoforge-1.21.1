@@ -1,0 +1,223 @@
+{
+  "blocks": {
+    "arcane_stone": {
+      "src": "stone_arcane"
+    },
+    "arcane_stone_bricks": {
+      "src": "stone_arcane_brick"
+    },
+    "ancient_stone": {
+      "src": "stone_ancient"
+    },
+    "ancient_stone_tile": {
+      "src": "stone_ancient_tile"
+    },
+    "ancient_rock": {
+      "src": "stone_ancient_rock"
+    },
+    "glyphed_stone": {
+      "src": "stone_ancient_glyphed"
+    },
+    "ancient_barrier": {
+      "src": "stone_ancient_doorway"
+    },
+    "eldritch_stone": {
+      "src": "stone_eldritch_tile"
+    },
+    "infusion_speed_stone": {
+      "src": "matrix_speed"
+    },
+    "infusion_cost_stone": {
+      "src": "matrix_cost"
+    },
+    "arcane_stone_stairs": {
+      "src": "stairs_arcane"
+    },
+    "arcane_brick_stairs": {
+      "src": "stairs_arcane_brick"
+    },
+    "ancient_stone_stairs": {
+      "src": "stairs_ancient"
+    },
+    "arcane_stone_slab": {
+      "src": "slab_arcane_stone",
+      "type": "slab",
+      "double": "slab_double_arcane_stone",
+      "ignore": [
+        "variant"
+      ]
+    },
+    "arcane_brick_slab": {
+      "src": "slab_arcane_brick",
+      "type": "slab",
+      "double": "slab_double_arcane_brick",
+      "ignore": [
+        "variant"
+      ]
+    },
+    "ancient_stone_slab": {
+      "src": "slab_ancient",
+      "type": "slab",
+      "double": "slab_double_ancient",
+      "ignore": [
+        "variant"
+      ]
+    },
+    "eldritch_stone_slab": {
+      "src": "slab_eldritch",
+      "type": "slab",
+      "double": "slab_double_eldritch",
+      "ignore": [
+        "variant"
+      ]
+    },
+    "thaumium_block": {
+      "src": "metal_thaumium"
+    },
+    "void_metal_block": {
+      "src": "metal_void"
+    },
+    "brass_block": {
+      "src": "metal_brass"
+    },
+    "alchemical_construct": {
+      "src": "metal_alchemical"
+    },
+    "advanced_alchemical_construct": {
+      "src": "metal_alchemical_advanced"
+    },
+    "amber_block": {
+      "src": "amber_block",
+      "renderType": "minecraft:translucent"
+    },
+    "amber_bricks": {
+      "src": "amber_brick",
+      "renderType": "minecraft:translucent"
+    },
+    "amber_ore": {
+      "src": "ore_amber"
+    },
+    "cinnabar_ore": {
+      "src": "ore_cinnabar"
+    },
+    "quartz_ore": {
+      "src": "ore_quartz"
+    },
+    "greatwood_log": {
+      "src": "log_greatwood"
+    },
+    "silverwood_log": {
+      "src": "log_silverwood"
+    },
+    "greatwood_leaves": {
+      "src": "leaves_greatwood",
+      "ignore": [
+        "check_decay",
+        "decayable"
+      ],
+      "renderType": "minecraft:cutout_mipped"
+    },
+    "silverwood_leaves": {
+      "src": "leaves_silverwood",
+      "ignore": [
+        "check_decay",
+        "decayable"
+      ],
+      "renderType": "minecraft:cutout_mipped"
+    },
+    "greatwood_sapling": {
+      "src": "sapling_greatwood",
+      "renderType": "minecraft:cutout"
+    },
+    "silverwood_sapling": {
+      "src": "sapling_silverwood",
+      "renderType": "minecraft:cutout"
+    },
+    "greatwood_planks": {
+      "src": "plank_greatwood"
+    },
+    "silverwood_planks": {
+      "src": "plank_silverwood"
+    },
+    "greatwood_stairs": {
+      "src": "stairs_greatwood"
+    },
+    "silverwood_stairs": {
+      "src": "stairs_silverwood"
+    },
+    "greatwood_slab": {
+      "src": "slab_greatwood",
+      "type": "slab",
+      "double": "slab_double_greatwood",
+      "ignore": [
+        "variant"
+      ]
+    },
+    "silverwood_slab": {
+      "src": "slab_silverwood",
+      "type": "slab",
+      "double": "slab_double_silverwood",
+      "ignore": [
+        "variant"
+      ]
+    },
+    "flesh_block": {
+      "src": "flesh_block"
+    }
+  },
+  "items": {
+    "amber": "model:amber",
+    "quicksilver": "model:quicksilver",
+    "thaumium_ingot": "bs:ingot#thaumium",
+    "void_metal_ingot": "bs:ingot#void",
+    "brass_ingot": "bs:ingot#brass",
+    "iron_nugget": "bs:nugget#iron",
+    "copper_nugget": "bs:nugget#copper",
+    "tin_nugget": "bs:nugget#tin",
+    "silver_nugget": "bs:nugget#silver",
+    "lead_nugget": "bs:nugget#lead",
+    "quicksilver_drop": "bs:nugget#quicksilver",
+    "thaumium_nugget": "bs:nugget#thaumium",
+    "void_metal_nugget": "bs:nugget#void",
+    "brass_nugget": "bs:nugget#brass",
+    "quartz_sliver": "bs:nugget#quartz",
+    "rare_earths": "bs:nugget#rareearth",
+    "iron_cluster": "bs:cluster#iron",
+    "gold_cluster": "bs:cluster#gold",
+    "copper_cluster": "bs:cluster#copper",
+    "tin_cluster": "bs:cluster#tin",
+    "silver_cluster": "bs:cluster#silver",
+    "lead_cluster": "bs:cluster#lead",
+    "cinnabar_cluster": "bs:cluster#cinnabar",
+    "quartz_cluster": "bs:cluster#quartz",
+    "enchanted_fabric": "model:fabric",
+    "vis_resonator": "model:vis_resonator",
+    "magic_tallow": "model:tallow",
+    "simple_arcane_mechanism": "model:mechanism_simple",
+    "complex_arcane_mechanism": "model:mechanism_complex",
+    "brass_plate": "bs:plate#brass",
+    "iron_plate": "bs:plate#iron",
+    "thaumium_plate": "bs:plate#thaumium",
+    "void_metal_plate": "bs:plate#void",
+    "essentia_filter": "model:filter",
+    "morphic_resonator": "model:morphic_resonator",
+    "mirrored_glass": "model:mirrored_glass",
+    "void_seed": "model:void_seed",
+    "clockwork_mind": "bs:mind#clockwork",
+    "biothaumic_mind": "bs:mind#biothaumic",
+    "vision_module": "bs:module#vision",
+    "aggression_module": "bs:module#aggression",
+    "beef_chunk": "bs:chunk#beef",
+    "chicken_chunk": "bs:chunk#chicken",
+    "pork_chunk": "bs:chunk#pork",
+    "fish_chunk": "bs:chunk#fish",
+    "rabbit_chunk": "bs:chunk#rabbit",
+    "mutton_chunk": "bs:chunk#mutton",
+    "triple_meat_treat": "model:triple_meat_treat",
+    "zombie_brain": "model:brain",
+    "jar_brace": "model:jar_brace",
+    "grappler_head": "model:grapple_gun_tip",
+    "grappler_spool": "model:grapple_gun_spool",
+    "goggles": "model:goggles"
+  }
+}

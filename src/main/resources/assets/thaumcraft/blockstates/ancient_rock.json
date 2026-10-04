@@ -1,0 +1,15 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "thaumcraft:block/ancient_rock"
+      },
+      {
+        "model": "thaumcraft:block/ancient_rock_1"
+      },
+      {
+        "model": "thaumcraft:block/ancient_rock_2"
+      }
+    ]
+  }
+}
