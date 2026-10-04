@@ -37,9 +37,7 @@
 
 ## Этап 1
 
-12. **Звук `runicshieldcharge`.** В оригинальном `sounds.json` событие записано с опечаткой `runicshieldecharge`, а код
-    регистрирует и проигрывает `thaumcraft:runicshieldcharge` — в оригинале этот звук не играет. `sounds.json` перенесён 1:1
-    (с опечаткой), поведение то же. Если захочется исправить — переименовать ключ в `sounds.json`.
+12. **Звук `runicshieldcharge`** — опечатка в `sounds.json` оригинала исправлена по решению пользователя (DEVIATIONS №7).
 13. **Атлас блоков**: текстуры оригинала лежат в `textures/blocks` и `textures/items`, а атлас 1.21 по умолчанию берёт
     `block/` и `item/`. Добавлены источники `directory` в `assets/minecraft/atlases/blocks.json` — файлы не переименовываются,
     модели ссылаются на `thaumcraft:blocks/...` и `thaumcraft:items/...` как в оригинале.
