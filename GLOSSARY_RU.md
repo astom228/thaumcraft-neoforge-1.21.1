@@ -148,3 +148,24 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Bath Salts / Sanitizing Soap | Очищающие соли для ванн / Очищающее мыло | принято |
 | Magic Tallow | Магический жир | принято |
 | Mnemonic Matrix | Мнемоническая матрица | принято |
+
+## 4. Термины, добавленные при переводе (этап 2)
+
+| en | ru |
+|---|---|
+| Arcane Stone Brick | Магические каменные кирпичи |
+| Ancient Rock / Ancient Barrier / Ancient Stone Tile | Древняя порода / Древний барьер / Древняя каменная плитка |
+| Alchemical Construct | Алхимическая конструкция |
+| Infusion Speed / Cost Stone | Камень скорости / экономии наполнения |
+| Arcane Mechanism (Simple / Complex) | Магический механизм (простой / сложный) |
+| Morphic Resonator | Морфический резонатор |
+| Mirrored Glass | Зеркальное стекло |
+| Void Seed | Семя пустоты |
+| Clockwork / Biothaumic Mind | Заводной / Биотаумический разум |
+| Vision / Aggression Module | Модуль зрения / агрессии |
+| Meat Nugget (chunk) | Кусочек (говядины, курицы…) |
+| Triple Meat Treat | Тройное мясное угощение |
+| Brass Lid Brace | Латунная скоба для крышки |
+| Arcane Grappler / Head / Spool | Магический крюкомёт / Наконечник / Катушка |
+| Tallow Candle | Сальная свеча |
+| Block of (metal) | Блок (таумиума, латуни, пустотного металла) |
