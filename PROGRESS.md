@@ -6,7 +6,12 @@
 - КТ 1 пройдена.
 
 - **Этап:** 3 «Сеть и данные игрока».
-- **Подшаг:** 3.0 (план этапа).
+- **Подшаг:** 3.3.
+
+### План этапа 3
+- [x] 3.1 Данные игрока: IPlayerKnowledge/IPlayerWarp → Data Attachments (NBT-формат оригинала, copyOnDeath), ThaumcraftCapabilities.
+- [x] 3.2 Сеть: PacketHandler (RegisterPayloadHandlersEvent), PacketSyncKnowledge, PacketSyncWarp, PacketWarpMessage; синхронизация при входе/возрождении/смене измерения.
+- [ ] 3.3 InternalMethodHandler.addWarpToPlayer (+ Искажение от мозга зомби), команда /thaumcraft (help, warp); переводы сообщений; «Этап 3 завершён».
 
 ### Этап 2 — завершён
 - [x] 2.1 Конвертер ресурсов `tools/assets/convert-assets.js` (+ `assets.json`, проверка `check-assets.js`).
@@ -38,7 +43,7 @@
 
 ## Осталось в текущем этапе
 
-- Составить план этапа 3.
+- 3.1–3.3 (см. план).
 
 ## Известные проблемы / TODO
 
