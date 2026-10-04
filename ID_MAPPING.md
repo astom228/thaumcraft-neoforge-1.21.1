@@ -99,7 +99,9 @@
 | seal | — | use | Control Seal: Use | `use_seal` |
 | seal | — | provider | Control Seal: Provide | `provide_seal` |
 | seal | — | stock | Control Seal: Stock | `stock_seal` |
-| creative_placer | 0–2 | obelisk / node / caster | (творческие) | `obelisk_placer` / `node_placer` / `caster_placer` |
+
+Не переносятся (в оригинале объявлены, но не регистрируются): `creative_placer` (obelisk/node/caster), `eldritch_eye`, `runed_tablet`;
+их ключи перевода (а также `thaumostatic_harness`, `girdle_hover`, `primal_charm`, `tile.eldritch.*`, `item.tainted.*`) не переносятся.
 
 Не варианты (состояние хранится в Data Components, ID один): `crystal_essence` (аспект), `primordial_pearl`
 (прочность mote/nodule/pearl), `verdant_charm` (тип), `caster_basic`, фокусы `focus_1..3` — уточняется на этапах 4, 12, 13.
