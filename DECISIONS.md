@@ -22,3 +22,15 @@
    Причина: ближе всего к оригиналу (900 строк кода, а не данных), и вычисление всё равно требует сервера.
 9. **Имена цветов**: баннеры, свечи и ниторы используют ванильные имена цветов 1.21 (`light_gray` вместо `silver`).
 10. **Тестовый мир сервера**: при запуске сервера в `run/` создаётся мир `run/world` — он в `.gitignore` (весь `run/`).
+
+## Биомы (2026-10-04, проверено по коду оригинала)
+
+11. **В обычный мир через TerraBlender добавляется только Magical Forest.** В оригинале (`Registrar.registerBiomes`)
+    через `BiomeManager.addBiome` добавлен лишь `MAGICAL_FOREST` — типы WARM и COOL, вес `biomeMagicalForestWeight = 5`,
+    включается `generateMagicForest` (`ModConfig.CONFIG_WORLD`).
+    - **Eerie** и **Outer Lands** (`ELDRITCH`, тип END) только регистрируются и нигде не генерируются; измерения
+      для Outer Lands в BETA17 нет. Они используются лишь в проверках: `EntityPech` (не спавнится в Magical Forest/Eerie),
+      `EntityTaintSeed`/`EntityTaintacle` (особое поведение в Outer Lands). Переносим их как зарегистрированные
+      (data-driven) биомы без размещения в мире — чтобы эти проверки остались 1:1.
+    - **Смена биома в рантайме** (`Utils.setBiomeAt`, `PacketBiomeChange`) в BETA17 нигде не вызывается — мёртвый код,
+      не переносим.

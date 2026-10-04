@@ -40,7 +40,7 @@
 14. **Порча (taint)** — блоки taint (soil, rock, crust, geyser, log, fibre, feature), распространение, семена порчи, флюкс → порча, бутылка порчи.
 15. **Существа** — ~43 сущности: pech, wisp, brainy zombie, fire bat, eldritch crab/guardian/warden/golem, cultists (knight/cleric/leader, порталы), taint-мобы, thaumic slime, mind spider, турели, снаряды, «чемпионы» (17 модификаторов `monster/mods`), боссы.
 16. **Големы** — `EntityThaumcraftGolem`, детали (материал/голова/руки/ноги/аддон), 15 AI-задач, печати (`seals`, 19 классов), задачи, логистика (`GuiLogistics`), сборщик големов, колокольчик, OBJ-модели.
-17. **Генерация мира** — `ThaumcraftWorldGenerator` (руды, растительность, «узлы»/кристаллы, нижний мир), деревья greatwood/silverwood, курганы (`WorldGenMound`), 3 биома и их распространение (`PacketBiomeChange`), лут.
+17. **Генерация мира** — `ThaumcraftWorldGenerator` (руды, растительность, «узлы»/кристаллы, нижний мир), деревья greatwood/silverwood, курганы (`WorldGenMound`), 3 биома (в обычном мире генерируется только Magical Forest), лут.
 18. **Рендер и частицы** — `FXDispatcher` (1416 стр.), 19 частиц, лучи/дуги, TESR (21), рендереры сущностей (40+), модели (`ModelBase`), свой OBJ-загрузчик, встроенная codechicken lib, ARB-шейдеры (ender, флюкс-разлом, portable hole), HUD (`HudHandler`), `RenderEventHandler` (868 стр.).
 19. **GUI** — 18 экранов, 21 контейнер, 14 слотов, `ProxyGUI`/`IGuiHandler`.
 20. **Сеть** — `PacketHandler` (SimpleNetworkWrapper), ~35 пакетов (fx, misc, playerdata).
@@ -160,8 +160,8 @@ GUI/контейнеры ── верстак, стол исследовани�
 **Сложно:** ~40 моделей `ModelBase` → `LayerDefinition` (механически, но много); AI `EntityAI*` → `Goal`; атрибуты сущностей через событие; спавны → biome modifiers (JSON); `DataParameter` → `EntityDataAccessor`; pech GUI.
 
 ### Этап 17. Генерация мира
-Руды, растения, деревья greatwood/silverwood, курганы, vis-кристаллы, лут-сундуки/урны, биомы и их распространение.
-**Сложно:** генерация в 1.21 data-driven (`ConfiguredFeature`/`PlacedFeature` + biome modifiers); собственные генераторы деревьев → `Feature`; биомы — JSON, а вставка в обычный мир без сторонних библиотек (TerraBlender) нетривиальна — согласовать; смена биома в рантайме требует правки `PalettedContainer` биомов и пересылки чанка; добавление в ванильный лут → Global Loot Modifiers.
+Руды, растения, деревья greatwood/silverwood, курганы, vis-кристаллы, лут-сундуки/урны, биом Magical Forest в обычном мире (TerraBlender); Eerie и Outer Lands — только регистрация (в оригинале не генерируются, см. DECISIONS.md п. 11).
+**Сложно:** генерация в 1.21 data-driven (`ConfiguredFeature`/`PlacedFeature` + biome modifiers); собственные генераторы деревьев → `Feature`; биомы — JSON, Magical Forest вставляется регионом TerraBlender (веса WARM/COOL из оригинала напрямую не переносятся — подобрать максимально близко); добавление в ванильный лут → Global Loot Modifiers.
 
 ### Этап 18. Големы
 Голем-сущность, детали, OBJ-модели, сборщик големов, печати и их зоны/рендер, задачи, логистика, колокольчик, турели.
