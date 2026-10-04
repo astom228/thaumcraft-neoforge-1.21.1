@@ -1,0 +1,21 @@
+{
+  "values": [
+    "thaumcraft:arcane_stone",
+    "thaumcraft:arcane_stone_bricks",
+    "thaumcraft:ancient_stone",
+    "thaumcraft:ancient_stone_tile",
+    "thaumcraft:ancient_rock",
+    "thaumcraft:glyphed_stone",
+    "thaumcraft:ancient_barrier",
+    "thaumcraft:eldritch_stone",
+    "thaumcraft:infusion_speed_stone",
+    "thaumcraft:infusion_cost_stone",
+    "thaumcraft:brass_block",
+    "thaumcraft:thaumium_block",
+    "thaumcraft:void_metal_block",
+    "thaumcraft:alchemical_construct",
+    "thaumcraft:advanced_alchemical_construct",
+    "thaumcraft:amber_block",
+    "thaumcraft:amber_bricks"
+  ]
+}

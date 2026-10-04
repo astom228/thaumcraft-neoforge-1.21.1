@@ -1,0 +1,29 @@
+{
+  "values": [
+    "thaumcraft:amber_ore",
+    "thaumcraft:cinnabar_ore",
+    "thaumcraft:quartz_ore",
+    "thaumcraft:arcane_stone",
+    "thaumcraft:arcane_stone_bricks",
+    "thaumcraft:ancient_stone",
+    "thaumcraft:ancient_stone_tile",
+    "thaumcraft:ancient_rock",
+    "thaumcraft:glyphed_stone",
+    "thaumcraft:ancient_barrier",
+    "thaumcraft:eldritch_stone",
+    "thaumcraft:arcane_stone_stairs",
+    "thaumcraft:arcane_brick_stairs",
+    "thaumcraft:ancient_stone_stairs",
+    "thaumcraft:arcane_stone_slab",
+    "thaumcraft:arcane_brick_slab",
+    "thaumcraft:ancient_stone_slab",
+    "thaumcraft:eldritch_stone_slab",
+    "thaumcraft:brass_block",
+    "thaumcraft:thaumium_block",
+    "thaumcraft:void_metal_block",
+    "thaumcraft:alchemical_construct",
+    "thaumcraft:advanced_alchemical_construct",
+    "thaumcraft:infusion_speed_stone",
+    "thaumcraft:infusion_cost_stone"
+  ]
+}
