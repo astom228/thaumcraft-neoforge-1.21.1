@@ -125,6 +125,18 @@
       ],
       "renderType": "minecraft:cutout_mipped"
     },
+    "shimmerleaf": {
+      "src": "shimmerleaf",
+      "renderType": "minecraft:cutout"
+    },
+    "cinderpearl": {
+      "src": "cinderpearl",
+      "renderType": "minecraft:cutout"
+    },
+    "vishroom": {
+      "src": "vishroom",
+      "renderType": "minecraft:cutout"
+    },
     "greatwood_sapling": {
       "src": "sapling_greatwood",
       "renderType": "minecraft:cutout"
@@ -163,6 +175,54 @@
     },
     "flesh_block": {
       "src": "flesh_block"
+    },
+    "white_candle": {
+      "src": "candle_white"
+    },
+    "orange_candle": {
+      "src": "candle_orange"
+    },
+    "magenta_candle": {
+      "src": "candle_magenta"
+    },
+    "light_blue_candle": {
+      "src": "candle_lightblue"
+    },
+    "yellow_candle": {
+      "src": "candle_yellow"
+    },
+    "lime_candle": {
+      "src": "candle_lime"
+    },
+    "pink_candle": {
+      "src": "candle_pink"
+    },
+    "gray_candle": {
+      "src": "candle_gray"
+    },
+    "light_gray_candle": {
+      "src": "candle_silver"
+    },
+    "cyan_candle": {
+      "src": "candle_cyan"
+    },
+    "purple_candle": {
+      "src": "candle_purple"
+    },
+    "blue_candle": {
+      "src": "candle_blue"
+    },
+    "brown_candle": {
+      "src": "candle_brown"
+    },
+    "green_candle": {
+      "src": "candle_green"
+    },
+    "red_candle": {
+      "src": "candle_red"
+    },
+    "black_candle": {
+      "src": "candle_black"
     }
   },
   "items": {

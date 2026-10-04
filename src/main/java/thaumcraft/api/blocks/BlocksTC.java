@@ -1,15 +1,20 @@
 package thaumcraft.api.blocks;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import thaumcraft.common.blocks.basic.BlockCandle;
 import thaumcraft.common.blocks.basic.BlockMetalTC;
 import thaumcraft.common.blocks.basic.BlockPlanksTC;
 import thaumcraft.common.blocks.basic.BlockSlabTC;
@@ -20,6 +25,9 @@ import thaumcraft.common.blocks.misc.BlockFlesh;
 import thaumcraft.common.blocks.world.ore.BlockOreTC;
 import thaumcraft.common.blocks.world.plants.BlockLeavesTC;
 import thaumcraft.common.blocks.world.plants.BlockLogsTC;
+import thaumcraft.common.blocks.world.plants.BlockPlantCinderpearl;
+import thaumcraft.common.blocks.world.plants.BlockPlantShimmerleaf;
+import thaumcraft.common.blocks.world.plants.BlockPlantVishroom;
 import thaumcraft.common.blocks.world.plants.BlockSaplingTC;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -74,7 +82,10 @@ public class BlocksTC {
             () -> new BlockLeavesTC(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.PLANT)));
     public static final DeferredBlock<Block> leafSilverwood = register("silverwood_leaves",
             () -> new BlockLeavesTC(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.COLOR_LIGHT_BLUE)));
-    // TODO этап 2.4: shimmerleaf, cinderpearl, vishroom
+    // Растения (BlockBush): прочность 0; свет setLightLevel(0.4/0.5/0.4) → 6/7/6
+    public static final DeferredBlock<Block> shimmerleaf = register("shimmerleaf", () -> new BlockPlantShimmerleaf(plant(6)));
+    public static final DeferredBlock<Block> cinderpearl = register("cinderpearl", () -> new BlockPlantCinderpearl(plant(7)));
+    public static final DeferredBlock<Block> vishroom = register("vishroom", () -> new BlockPlantVishroom(plant(6)));
     public static final DeferredBlock<Block> plankGreatwood = register("greatwood_planks", () -> new BlockPlanksTC(wood(2.0F, 2.0F)));
     public static final DeferredBlock<Block> plankSilverwood = register("silverwood_planks", () -> new BlockPlanksTC(wood(2.0F, 2.0F)));
     public static final DeferredBlock<Block> stairsGreatwood = register("greatwood_stairs",
@@ -101,6 +112,23 @@ public class BlocksTC {
 
     public static final DeferredBlock<Block> matrixSpeed = register("infusion_speed_stone", () -> new BlockStoneTC(stone(2.0F, 6.0F)));
     public static final DeferredBlock<Block> matrixCost = register("infusion_cost_stone", () -> new BlockStoneTC(stone(2.0F, 6.0F)));
+
+    // Свечи (BlockCandle): setHardness(0.1) → сопротивление 1.5, звук ткани, свет 0.9375 → 14
+    public static final Map<DyeColor, DeferredBlock<Block>> candles = new EnumMap<>(DyeColor.class);
+
+    static {
+        for (DyeColor dye : DyeColor.values()) {
+            candles.put(dye, register(dye.getSerializedName() + "_candle", () -> new BlockCandle(dye,
+                    BlockBehaviour.Properties.of().mapColor(dye.getMapColor()).strength(0.1F, 1.5F).sound(SoundType.WOOL)
+                            .lightLevel(state -> 14).noOcclusion().pushReaction(PushReaction.DESTROY))));
+        }
+    }
+    // TODO этап 6: nitor (16 цветов) — невидимый блок, вся графика — частицы TileNitor.
+
+    private static BlockBehaviour.Properties plant(int light) {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)
+                .lightLevel(state -> light).pushReaction(PushReaction.DESTROY);
+    }
 
     private static BlockBehaviour.Properties stone(float hardness, float resistance) {
         return BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM)
