@@ -226,6 +226,70 @@
     },
     "black_candle": {
       "src": "candle_black"
+    },
+    "white_nitor": {
+      "src": "nitor_white",
+      "itemModel": "model:nitor"
+    },
+    "orange_nitor": {
+      "src": "nitor_orange",
+      "itemModel": "model:nitor"
+    },
+    "magenta_nitor": {
+      "src": "nitor_magenta",
+      "itemModel": "model:nitor"
+    },
+    "light_blue_nitor": {
+      "src": "nitor_lightblue",
+      "itemModel": "model:nitor"
+    },
+    "yellow_nitor": {
+      "src": "nitor_yellow",
+      "itemModel": "model:nitor"
+    },
+    "lime_nitor": {
+      "src": "nitor_lime",
+      "itemModel": "model:nitor"
+    },
+    "pink_nitor": {
+      "src": "nitor_pink",
+      "itemModel": "model:nitor"
+    },
+    "gray_nitor": {
+      "src": "nitor_gray",
+      "itemModel": "model:nitor"
+    },
+    "light_gray_nitor": {
+      "src": "nitor_silver",
+      "itemModel": "model:nitor"
+    },
+    "cyan_nitor": {
+      "src": "nitor_cyan",
+      "itemModel": "model:nitor"
+    },
+    "purple_nitor": {
+      "src": "nitor_purple",
+      "itemModel": "model:nitor"
+    },
+    "blue_nitor": {
+      "src": "nitor_blue",
+      "itemModel": "model:nitor"
+    },
+    "brown_nitor": {
+      "src": "nitor_brown",
+      "itemModel": "model:nitor"
+    },
+    "green_nitor": {
+      "src": "nitor_green",
+      "itemModel": "model:nitor"
+    },
+    "red_nitor": {
+      "src": "nitor_red",
+      "itemModel": "model:nitor"
+    },
+    "black_nitor": {
+      "src": "nitor_black",
+      "itemModel": "model:nitor"
     }
   },
   "items": {

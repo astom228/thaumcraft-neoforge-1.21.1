@@ -79,6 +79,8 @@ public class TCItemTagsProvider extends ItemTagsProvider {
         tag(TCTags.Items.CLUSTERS_CINNABAR).add(clusterCinnabar.get());
         tag(TCTags.Items.CLUSTERS_QUARTZ).add(clusterQuartz.get());
 
+        tag(TCTags.Items.NITOR).add(thaumcraft.api.blocks.BlocksTC.nitor.values().stream().map(b -> b.get().asItem()).toArray(net.minecraft.world.item.Item[]::new));
+
         // ItemFood(..., isWolfFood = true): мясное угощение и мозг зомби
         tag(ItemTags.WOLF_FOOD).add(tripleMeatTreat.get(), brain.get());
     }

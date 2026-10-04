@@ -29,6 +29,7 @@ public class Thaumcraft {
         BlocksTC.init();
         ItemsTC.init();
         ConfigBlocks.BLOCKS.register(modEventBus);
+        ConfigBlocks.TILES.register(modEventBus);
         ConfigItems.ITEMS.register(modEventBus);
         SoundsTC.SOUNDS.register(modEventBus);
         CreativeTabThaumcraft.TABS.register(modEventBus);

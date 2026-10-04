@@ -14,6 +14,7 @@ import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.api.items.ItemGenericEssentiaContainer;
 import thaumcraft.api.items.ItemsTC;
 import thaumcraft.common.blocks.basic.BlockCandle;
+import thaumcraft.common.blocks.misc.BlockNitor;
 
 /** Порт ColorHandler оригинала: окраска блоков и предметов. Остальные обработчики добавляются по этапам. */
 @EventBusSubscriber(modid = Thaumcraft.MODID, value = Dist.CLIENT)
@@ -43,6 +44,11 @@ public class ColorHandler {
             AspectList al = ((ItemGenericEssentiaContainer) stack.getItem()).getAspects(stack);
             return al != null ? 0xFF000000 | al.getAspects()[0].getColor() : 0xFFFFFFFF;
         }, ItemsTC.crystalEssence.get());
+        // Ниторы: оба слоя модели предмета окрашиваются цветом красителя (itemBlockColourHandler оригинала)
+        for (DeferredBlock<Block> n : BlocksTC.nitor.values()) {
+            int color = ((BlockNitor) n.get()).dye.getMapColor().col;
+            event.register((stack, tintIndex) -> color, n.get());
+        }
         for (DeferredBlock<Block> candle : BlocksTC.candles.values()) {
             int color = ((BlockCandle) candle.get()).dye.getMapColor().col;
             event.register((stack, tintIndex) -> color, candle.get());

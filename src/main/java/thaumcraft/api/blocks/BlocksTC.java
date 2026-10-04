@@ -23,6 +23,7 @@ import thaumcraft.common.blocks.basic.BlockStonePorous;
 import thaumcraft.common.blocks.basic.BlockStoneTC;
 import thaumcraft.common.blocks.basic.BlockTranslucent;
 import thaumcraft.common.blocks.misc.BlockFlesh;
+import thaumcraft.common.blocks.misc.BlockNitor;
 import thaumcraft.common.blocks.world.ore.BlockOreTC;
 import thaumcraft.common.blocks.world.plants.BlockLeavesTC;
 import thaumcraft.common.blocks.world.plants.BlockLogsTC;
@@ -125,7 +126,18 @@ public class BlocksTC {
                             .lightLevel(state -> 14).noOcclusion().pushReaction(PushReaction.DESTROY))));
         }
     }
-    // TODO этап 6: nitor (16 цветов) — невидимый блок, вся графика — частицы TileNitor.
+    // TODO этап 14: баннеры (BlockBannerTC) — в оригинале регистрируются между свечами и ниторами.
+
+    // Ниторы (BlockNitor): setHardness(0.1) → сопротивление 1.5, звук ткани, свет 15, без коллизии
+    public static final Map<DyeColor, DeferredBlock<Block>> nitor = new EnumMap<>(DyeColor.class);
+
+    static {
+        for (DyeColor dye : DyeColor.values()) {
+            nitor.put(dye, register(dye.getSerializedName() + "_nitor", () -> new BlockNitor(dye,
+                    BlockBehaviour.Properties.of().mapColor(dye.getMapColor()).strength(0.1F, 1.5F).sound(SoundType.WOOL)
+                            .lightLevel(state -> 15).noCollission().noOcclusion().pushReaction(PushReaction.DESTROY))));
+        }
+    }
 
     private static BlockBehaviour.Properties plant(int light) {
         return BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)

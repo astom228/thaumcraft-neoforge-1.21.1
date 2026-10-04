@@ -59,6 +59,8 @@ public final class TCTags {
         public static final TagKey<Item> CLUSTERS_LEAD = c("clusters/lead");
         public static final TagKey<Item> CLUSTERS_CINNABAR = c("clusters/cinnabar");
         public static final TagKey<Item> CLUSTERS_QUARTZ = c("clusters/quartz");
+        /** OreDictionary "nitor" — все ниторы. */
+        public static final TagKey<Item> NITOR = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("thaumcraft", "nitor"));
 
         private static TagKey<Item> c(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));
