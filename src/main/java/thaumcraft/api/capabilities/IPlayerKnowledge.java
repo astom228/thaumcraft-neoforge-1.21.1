@@ -5,11 +5,11 @@ import javax.annotation.Nonnull;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import thaumcraft.api.research.ResearchCategory;
 
 /**
  * Знания игрока: исследования (стадии, флаги) и очки знаний (теория/наблюдение по категориям).
- * Порт IPlayerKnowledge оригинала. Категория пока задаётся строковым ключом (ResearchCategory.key);
- * перегрузки с ResearchCategory добавляются на этапе 7.
+ * Порт IPlayerKnowledge оригинала.
  */
 public interface IPlayerKnowledge extends INBTSerializable<CompoundTag> {
     void clear();
@@ -37,11 +37,11 @@ public interface IPlayerKnowledge extends INBTSerializable<CompoundTag> {
 
     boolean hasResearchFlag(@Nonnull String res, @Nonnull EnumResearchFlag flag);
 
-    boolean addKnowledge(@Nonnull EnumKnowledgeType type, String categoryKey, int amount);
+    boolean addKnowledge(@Nonnull EnumKnowledgeType type, ResearchCategory category, int amount);
 
-    int getKnowledge(@Nonnull EnumKnowledgeType type, String categoryKey);
+    int getKnowledge(@Nonnull EnumKnowledgeType type, ResearchCategory category);
 
-    int getKnowledgeRaw(@Nonnull EnumKnowledgeType type, String categoryKey);
+    int getKnowledgeRaw(@Nonnull EnumKnowledgeType type, ResearchCategory category);
 
     void sync(ServerPlayer player);
 

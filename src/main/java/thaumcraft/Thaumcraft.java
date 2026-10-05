@@ -5,12 +5,14 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.slf4j.Logger;
 import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.api.items.ItemsTC;
 import thaumcraft.common.config.ConfigAspects;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.config.ConfigResearch;
 import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.lib.CreativeTabThaumcraft;
 import thaumcraft.common.lib.SoundsTC;
@@ -37,6 +39,7 @@ public class Thaumcraft {
         ThaumcraftAttachments.ATTACHMENTS.register(modEventBus);
         TCDataComponents.COMPONENTS.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::loadComplete);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, ModConfig.CLIENT_SPEC);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_SPEC);
     }
@@ -44,5 +47,12 @@ public class Thaumcraft {
     private void commonSetup(FMLCommonSetupEvent event) {
         // ConfigAspects.registerEntityAspects (в оригинале — postInit); не зависит от данных мира
         event.enqueueWork(ConfigAspects::initEntities);
+        // init оригинала: категории и файлы исследований (дополнения регистрируют свои там же)
+        event.enqueueWork(ConfigResearch::init);
+    }
+
+    /** postInit оригинала: загрузка JSON исследований после того, как все моды зарегистрировали категории и файлы. */
+    private void loadComplete(FMLLoadCompleteEvent event) {
+        event.enqueueWork(ConfigResearch::postInit);
     }
 }

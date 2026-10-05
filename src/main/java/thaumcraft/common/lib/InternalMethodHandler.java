@@ -8,15 +8,38 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.IPlayerWarp;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.api.internal.IInternalMethodHandler;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessage;
+import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.world.aura.AuraHandler;
 
 /** Реализация внутренних методов API (порт InternalMethodHandler; методы добавляются по этапам). */
 public class InternalMethodHandler implements IInternalMethodHandler {
+    @Override
+    public boolean addKnowledge(Player player, IPlayerKnowledge.EnumKnowledgeType type, ResearchCategory field, int amount) {
+        return amount != 0 && !player.level().isClientSide && ResearchManager.addKnowledge(player, type, field, amount);
+    }
+
+    @Override
+    public boolean progressResearch(Player player, String researchkey) {
+        return researchkey != null && !player.level().isClientSide && ResearchManager.progressResearch(player, researchkey);
+    }
+
+    @Override
+    public boolean completeResearch(Player player, String researchkey) {
+        return researchkey != null && !player.level().isClientSide && ResearchManager.completeResearch(player, researchkey);
+    }
+
+    @Override
+    public boolean doesPlayerHaveRequisites(Player player, String researchkey) {
+        return ResearchManager.doesPlayerHaveRequisites(player, researchkey);
+    }
+
     @Override
     public void addWarpToPlayer(Player player, int amount, IPlayerWarp.EnumWarpType type) {
         if (amount != 0 && !player.level().isClientSide && player instanceof ServerPlayer sp) {
@@ -42,7 +65,7 @@ public class InternalMethodHandler implements IInternalMethodHandler {
             if (type != IPlayerWarp.EnumWarpType.TEMPORARY
                     && ThaumcraftCapabilities.knowsResearchStrict(player, "FIRSTSTEPS")
                     && !ThaumcraftCapabilities.knowsResearchStrict(player, "WARP")) {
-                // TODO этап 7: this.completeResearch(player, "WARP") — ResearchManager
+                this.completeResearch(player, "WARP");
                 player.displayClientMessage(Component.translatable("research.WARP.warn"), true);
             }
             pw.sync(sp);

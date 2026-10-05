@@ -1,12 +1,15 @@
 package thaumcraft.api.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -22,6 +25,10 @@ import thaumcraft.api.aspects.AspectList;
  * и клиента (в 1.12 рецепты и OreDictionary были статичны; в 1.21 теги и рецепты загружаются отдельно на каждой стороне).
  */
 public class CommonInternals {
+    /** Искажение за создание предмета (ThaumcraftApi.addWarpToItem); в оригинале ключ — предмет + metadata. */
+    public static final Map<Item, Integer> warpMap = new ConcurrentHashMap<>();
+    /** Файлы JSON исследований (ThaumcraftApi.registerResearchLocation); порядок регистрации сохраняется. */
+    public static final Map<String, ResourceLocation> jsonLocs = Collections.synchronizedMap(new LinkedHashMap<>());
     public static final ArrayList<ThaumcraftApi.EntityTags> scanEntities = new ArrayList<>();
 
     /** Ключ таблицы аспектов: предмет + компоненты (без DAMAGE). */

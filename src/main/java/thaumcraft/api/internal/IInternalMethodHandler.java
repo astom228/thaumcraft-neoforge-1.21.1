@@ -5,10 +5,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.IPlayerWarp;
+import thaumcraft.api.research.ResearchCategory;
 
 /** Внутренние методы, доступные через ThaumcraftApi.internalMethods (методы добавляются по этапам). */
 public interface IInternalMethodHandler {
+    boolean addKnowledge(Player player, IPlayerKnowledge.EnumKnowledgeType type, ResearchCategory field, int amount);
+
+    boolean progressResearch(Player player, String researchkey);
+
+    boolean completeResearch(Player player, String researchkey);
+
+    boolean doesPlayerHaveRequisites(Player player, String researchkey);
+
     void addWarpToPlayer(Player player, int amount, IPlayerWarp.EnumWarpType type);
 
     int getActualWarp(Player player);

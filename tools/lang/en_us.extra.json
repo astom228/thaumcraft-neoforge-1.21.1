@@ -81,5 +81,12 @@
   "thaumcraft.command.help.8": "  /thaumcraft reload",
   "thaumcraft.command.warp.usage": "§cUse /thaumcraft warp <player> <add|set> <amount> <PERM|TEMP>",
   "thaumcraft.command.warp.set": "§5%s set your warp to %s",
-  "thaumcraft.command.warp.add": "§5%s added %s warp to your total."
+  "thaumcraft.command.warp.add": "§5%s added %s warp to your total.",
+  "thaumcraft.command.research.usage": "§cUse /thaumcraft research <list|player> <list|all|reset|<research>>",
+  "thaumcraft.command.research.notexist": "§cResearch does not exist.",
+  "thaumcraft.command.research.gave": "§5%s gave you %s research and its requisites.",
+  "thaumcraft.command.research.listfor": "§5Research for %s",
+  "thaumcraft.command.research.list": "§5%s",
+  "thaumcraft.command.research.giveall": "§5%s has given you all research.",
+  "thaumcraft.command.research.reset": "§5%s has reset all your research."
 }

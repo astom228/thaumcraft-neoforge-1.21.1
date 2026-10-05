@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.ToIntFunction;
 import javax.annotation.Nonnull;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +14,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.network.PacketDistributor;
 import thaumcraft.api.capabilities.IPlayerKnowledge;
+import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.ResearchEntry;
 import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledge;
 
 /**
@@ -22,14 +24,6 @@ import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledge;
  * "research" — список {key, stage, flags}, "knowledge" — список {key, amount} (ключ "T_BASICS", "O_ALCHEMY"…).
  */
 public class PlayerKnowledge implements IPlayerKnowledge {
-    /**
-     * Число стадий исследования по ключу (ResearchCategories.getResearch(key).getStages().length), или -1, если такого нет.
-     * TODO этап 7: подключить к ResearchCategories. Пока исследований нет — статус «завершено», как в оригинале при entry == null.
-     */
-    public static ToIntFunction<String> researchStageCount = key -> -1;
-    /** TODO этап 7: ключи исследований с метой AUTOUNLOCK (addAutoUnlockResearch). */
-    public static java.util.function.Supplier<Iterable<String>> autoUnlockResearch = Collections::emptyList;
-
     private final HashSet<String> research = new HashSet<>();
     private final Map<String, Integer> stages = new HashMap<>();
     private final Map<String, HashSet<EnumResearchFlag>> flags = new HashMap<>();
@@ -48,8 +42,8 @@ public class PlayerKnowledge implements IPlayerKnowledge {
         if (!this.isResearchKnown(res)) {
             return EnumResearchStatus.UNKNOWN;
         }
-        int stageCount = researchStageCount.applyAsInt(res);
-        return stageCount >= 0 && this.getResearchStage(res) <= stageCount ? EnumResearchStatus.IN_PROGRESS : EnumResearchStatus.COMPLETE;
+        ResearchEntry entry = ResearchCategories.getResearch(res);
+        return entry != null && entry.getStages() != null && this.getResearchStage(res) <= entry.getStages().length ? EnumResearchStatus.IN_PROGRESS : EnumResearchStatus.COMPLETE;
     }
 
     @Override
@@ -133,14 +127,14 @@ public class PlayerKnowledge implements IPlayerKnowledge {
         return this.flags.get(res) != null && this.flags.get(res).contains(flag);
     }
 
-    private String getKey(EnumKnowledgeType type, String categoryKey) {
-        return type.getAbbreviation() + "_" + (categoryKey == null ? "" : categoryKey);
+    private String getKey(EnumKnowledgeType type, ResearchCategory category) {
+        return type.getAbbreviation() + "_" + (category == null ? "" : category.key);
     }
 
     @Override
-    public boolean addKnowledge(EnumKnowledgeType type, String categoryKey, int amount) {
-        String key = this.getKey(type, categoryKey);
-        int c = this.getKnowledgeRaw(type, categoryKey);
+    public boolean addKnowledge(EnumKnowledgeType type, ResearchCategory category, int amount) {
+        String key = this.getKey(type, category);
+        int c = this.getKnowledgeRaw(type, category);
         if (c + amount < 0) {
             return false;
         }
@@ -149,15 +143,15 @@ public class PlayerKnowledge implements IPlayerKnowledge {
     }
 
     @Override
-    public int getKnowledge(EnumKnowledgeType type, String categoryKey) {
-        String key = this.getKey(type, categoryKey);
+    public int getKnowledge(EnumKnowledgeType type, ResearchCategory category) {
+        String key = this.getKey(type, category);
         int c = this.knowledge.getOrDefault(key, 0);
         return (int) Math.floor((double) c / type.getProgression());
     }
 
     @Override
-    public int getKnowledgeRaw(EnumKnowledgeType type, String categoryKey) {
-        return this.knowledge.getOrDefault(this.getKey(type, categoryKey), 0);
+    public int getKnowledgeRaw(EnumKnowledgeType type, ResearchCategory category) {
+        return this.knowledge.getOrDefault(this.getKey(type, category), 0);
     }
 
     @Override
@@ -235,8 +229,16 @@ public class PlayerKnowledge implements IPlayerKnowledge {
             CompoundTag tag = knowledgeList.getCompound(i);
             this.knowledge.put(tag.getString("key"), tag.getInt("amount"));
         }
-        for (String key : autoUnlockResearch.get()) {
-            this.addResearch(key);
+        this.addAutoUnlockResearch();
+    }
+
+    private void addAutoUnlockResearch() {
+        for (ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+            for (ResearchEntry ri : cat.research.values()) {
+                if (ri.hasMeta(ResearchEntry.EnumResearchMeta.AUTOUNLOCK)) {
+                    this.addResearch(ri.getKey());
+                }
+            }
         }
     }
 }

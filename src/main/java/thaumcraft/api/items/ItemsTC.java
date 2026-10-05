@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.consumables.ItemZombieBrain;
+import thaumcraft.common.items.curios.ItemEnchantmentPlaceholder;
 import thaumcraft.common.items.resources.ItemCrystalEssence;
 
 /**
@@ -65,6 +66,7 @@ public class ItemsTC {
     public static final DeferredItem<Item> moduleVision = simple("vision_module");
     public static final DeferredItem<Item> moduleAggression = simple("aggression_module");
     public static final DeferredItem<Item> crystalEssence = ConfigItems.ITEMS.registerItem("crystal_essence", ItemCrystalEssence::new);
+    public static final DeferredItem<Item> enchantedPlaceholder = ConfigItems.ITEMS.registerItem("enchanted_placeholder", ItemEnchantmentPlaceholder::new);
 
     // --- еда ---
     // ItemChunksEdible: ItemFood(1, 0.3F, false), время поедания 10 тиков

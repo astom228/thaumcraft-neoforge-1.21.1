@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +19,30 @@ import thaumcraft.common.lib.InternalMethodHandler;
 public class ThaumcraftApi {
     /** В оригинале задаётся в CommonProxy.preInit. */
     public static IInternalMethodHandler internalMethods = new InternalMethodHandler();
+
+    // --- Исследования ------------------------------------------------------------------------------------------------
+
+    /**
+     * Файл JSON исследований для загрузки: assets/&lt;namespace&gt;/&lt;path&gt;(.json) из ресурсов мода.
+     * Регистрировать при FMLCommonSetupEvent (enqueueWork); загрузка — после завершения запуска всех модов.
+     */
+    public static void registerResearchLocation(ResourceLocation loc) {
+        CommonInternals.jsonLocs.putIfAbsent(loc.toString(), loc);
+    }
+
+    // --- Искажение -----------------------------------------------------------------------------------------------------
+
+    /** Искажение, которое получает игрок, создав предмет (по верстаку и другим способам, вызывающим событие крафта). */
+    public static void addWarpToItem(ItemStack craftresult, int amount) {
+        CommonInternals.warpMap.put(craftresult.getItem(), amount);
+    }
+
+    public static int getWarp(ItemStack in) {
+        if (in == null) {
+            return 0;
+        }
+        return CommonInternals.warpMap.getOrDefault(in.getItem(), 0);
+    }
 
     // --- Аспекты предметов -------------------------------------------------------------------------------------------
 
