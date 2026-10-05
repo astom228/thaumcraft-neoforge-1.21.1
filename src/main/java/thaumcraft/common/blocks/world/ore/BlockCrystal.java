@@ -75,6 +75,10 @@ public class BlockCrystal extends Block {
     /** drawAt оригинала: соседний блок — камень, и его грань в сторону кристалла твёрдая. */
     private static boolean drawAt(BlockGetter world, BlockPos pos, Direction side) {
         BlockPos np = pos.relative(side);
+        // Раздел 7: не загружать чанки — незагруженный сосед считается отсутствующим
+        if (world instanceof LevelReader lr && !lr.hasChunkAt(np)) {
+            return false;
+        }
         BlockState fbs = world.getBlockState(np);
         return isRock(fbs) && fbs.isFaceSturdy(world, np, side.getOpposite());
     }
@@ -165,7 +169,8 @@ public class BlockCrystal extends Block {
 
     private static boolean isBlockTouching(Level world, BlockPos pos, Block block) {
         for (Direction face : Direction.values()) {
-            if (world.getBlockState(pos.relative(face)).is(block)) {
+            BlockPos np = pos.relative(face);
+            if (world.hasChunkAt(np) && world.getBlockState(np).is(block)) {
                 return true;
             }
         }
@@ -234,7 +239,7 @@ public class BlockCrystal extends Block {
         int yy = pos.getY() + world.random.nextInt(3) - 1;
         int zz = pos.getZ() + world.random.nextInt(3) - 1;
         BlockPos t = new BlockPos(xx, yy, zz);
-        if (t.equals(pos)) {
+        if (t.equals(pos) || !world.hasChunkAt(t)) {
             return null;
         }
         BlockState bs = world.getBlockState(t);

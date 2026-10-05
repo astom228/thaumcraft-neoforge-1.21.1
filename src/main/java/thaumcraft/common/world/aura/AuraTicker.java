@@ -26,6 +26,8 @@ import thaumcraft.common.config.ModConfig;
 @EventBusSubscriber(modid = Thaumcraft.MODID)
 public class AuraTicker {
     private static final int CYCLE = 20;
+    /** Раздел 7: предел обработанных чанков за тик (при большем числе загруженных чанков цикл растягивается). */
+    private static final int MAX_PER_TICK = 512;
     /** Отладка: переменная окружения THAUMCRAFT_DEBUG_AURA — раз в 200 тиков сводка ауры в лог. */
     private static final boolean DEBUG = System.getenv("THAUMCRAFT_DEBUG_AURA") != null;
     private static final float[] phaseTable = {0.25F, 0.15F, 0.1F, 0.05F, 0.0F, 0.05F, 0.1F, 0.15F};
@@ -53,7 +55,7 @@ public class AuraTicker {
             return;
         }
         State st = STATES.computeIfAbsent(level.dimension(), k -> new State());
-        if (st.tick % CYCLE == 0) {
+        if (st.tick % CYCLE == 0 && st.index >= st.cycle.size()) {
             // начало цикла: фаза луны и снимок загруженных чанков
             int moon = level.getMoonPhase();
             st.phaseVis = phaseTable[moon];
@@ -62,7 +64,7 @@ public class AuraTicker {
             st.cycle = new ArrayList<>(auraWorld.auraChunks.values());
             st.index = 0;
         }
-        int perTick = (st.cycle.size() + CYCLE - 1) / CYCLE;
+        int perTick = Math.min(MAX_PER_TICK, (st.cycle.size() + CYCLE - 1) / CYCLE);
         for (int i = 0; i < perTick && st.index < st.cycle.size(); i++, st.index++) {
             processAuraChunk(level, auraWorld, st.cycle.get(st.index), st);
         }

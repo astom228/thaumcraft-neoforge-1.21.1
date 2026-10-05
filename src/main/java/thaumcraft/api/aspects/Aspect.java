@@ -138,7 +138,8 @@ public class Aspect {
         return this.getComponents() == null || this.getComponents().length != 2;
     }
 
-    public static ArrayList<Aspect> getPrimalAspects() {
+    /** synchronized: списки строятся лениво и общие для клиента и сервера (раздел 7 — без гонок). */
+    public static synchronized ArrayList<Aspect> getPrimalAspects() {
         if (primals.isEmpty()) {
             for (Aspect aspect : aspects.values()) {
                 if (aspect.isPrimal()) {
@@ -149,7 +150,7 @@ public class Aspect {
         return primals;
     }
 
-    public static ArrayList<Aspect> getCompoundAspects() {
+    public static synchronized ArrayList<Aspect> getCompoundAspects() {
         if (compounds.isEmpty()) {
             for (Aspect aspect : aspects.values()) {
                 if (!aspect.isPrimal()) {

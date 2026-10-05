@@ -1074,7 +1074,8 @@ public class ConfigAspects {
 
     private static PotionBrewing brewing;
 
-    private static PotionBrewing brewing() {
+    /** synchronized: таблица аспектов строится и на сервере, и на клиенте (в одиночной игре — в одном процессе). */
+    private static synchronized PotionBrewing brewing() {
         if (brewing == null) {
             brewing = PotionBrewing.bootstrap(FeatureFlags.DEFAULT_FLAGS);
         }
