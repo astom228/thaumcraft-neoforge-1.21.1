@@ -19,6 +19,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +38,7 @@ import thaumcraft.client.fx.particles.FXGeneric;
  * Движок частиц Thaumcraft (порт ParticleEngine). Свои списки частиц по слоям и измерениям, тик на клиентском тике,
  * отрисовка после ванильных частиц с явным состоянием (как onRenderWorldLast оригинала):
  * слой 0 — аддитивное смешивание, 1 — обычное, 2 — аддитивное без глубины, 3 — обычное без глубины.
- * Слои 4–5 (частицы поверх интерфейса) — TODO этап 7 (используются в книге исследований).
+ * Слои 4–5 — частицы поверх интерфейса (FXGenericGui), рисуются после кадра (renderGuiParticles).
  */
 @EventBusSubscriber(modid = Thaumcraft.MODID, value = Dist.CLIENT)
 public class ParticleEngine {
@@ -96,7 +97,7 @@ public class ParticleEngine {
             layer.clear();
         }
         particlesDelayed.clear();
-        thaumcraft.client.lib.events.HudHandler.currentAura = new thaumcraft.common.world.aura.AuraChunk(null, (short) 0, 0.0F, 0.0F);
+        thaumcraft.client.lib.events.HudHandler.clear();
     }
 
     @SubscribeEvent
@@ -203,5 +204,52 @@ public class ParticleEngine {
         mc.gameRenderer.lightTexture().turnOffLightLayer();
         modelView.popMatrix();
         RenderSystem.applyModelViewMatrix();
+    }
+
+    /**
+     * Слои 4–5 — частицы поверх интерфейса (renderTick оригинала): 4 — аддитивные, 5 — обычные.
+     * Вызывается из RenderEventHandler после отрисовки кадра, в ортопроекции UtilsFX.beginFrameOverlay.
+     */
+    public static void renderGuiParticles(float frame) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) {
+            return;
+        }
+        ResourceKey<Level> dim = mc.level.dimension();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.enableBlend();
+        RenderSystem.depthMask(false);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShaderTexture(0, particleTexture);
+        for (int layer = 5; layer >= 4; layer--) {
+            List<Particle> parts = particles[layer].get(dim);
+            if (parts == null || parts.isEmpty()) {
+                continue;
+            }
+            if (layer == 4) {
+                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+            } else {
+                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            }
+            BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+            for (Particle p : parts) {
+                try {
+                    if (p instanceof FXGeneric g) {
+                        g.renderParticle(buffer, null, frame);
+                    }
+                } catch (Throwable throwable) {
+                    CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering Particle");
+                    crashreport.addCategory("Particle being rendered").setDetail("Particle", p::toString);
+                    throw new ReportedException(crashreport);
+                }
+            }
+            MeshData mesh = buffer.build();
+            if (mesh != null) {
+                BufferUploader.drawWithShader(mesh);
+            }
+        }
+        RenderSystem.depthMask(true);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableBlend();
     }
 }

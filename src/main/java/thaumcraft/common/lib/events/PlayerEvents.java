@@ -17,6 +17,7 @@ import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.config.ConfigResearch;
 import thaumcraft.common.items.resources.ItemCrystalEssence;
+import thaumcraft.common.lib.capabilities.PlayerKnowledge;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
@@ -73,6 +74,9 @@ public class PlayerEvents {
     @SubscribeEvent
     public static void playerJoin(EntityJoinLevelEvent event) {
         if (!event.getLevel().isClientSide && event.getEntity() instanceof ServerPlayer player) {
+            if (ThaumcraftCapabilities.getKnowledge(player) instanceof PlayerKnowledge pk) {
+                pk.markFullSync();
+            }
             ThaumcraftCapabilities.getKnowledge(player).sync(player);
             ThaumcraftCapabilities.getWarp(player).sync(player);
         }

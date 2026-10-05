@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.network;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -7,7 +8,11 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import thaumcraft.Thaumcraft;
 import thaumcraft.client.lib.network.ClientPacketHandlers;
 import thaumcraft.common.lib.network.misc.PacketAuraToClient;
+import thaumcraft.common.lib.network.misc.PacketKnowledgeGain;
 import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledge;
+import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledgeDelta;
+import thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer;
+import thaumcraft.common.lib.network.playerdata.PacketSyncResearchFlagsToServer;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarp;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessage;
 
@@ -26,6 +31,14 @@ public class PacketHandler {
                 (msg, ctx) -> ClientPacketHandlers.handleSyncKnowledge(msg));
         registrar.playToClient(PacketAuraToClient.TYPE, PacketAuraToClient.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleAura(msg));
+        registrar.playToClient(PacketSyncKnowledgeDelta.TYPE, PacketSyncKnowledgeDelta.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleSyncKnowledgeDelta(msg));
+        registrar.playToClient(PacketKnowledgeGain.TYPE, PacketKnowledgeGain.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleKnowledgeGain(msg));
+        registrar.playToServer(PacketSyncProgressToServer.TYPE, PacketSyncProgressToServer.STREAM_CODEC,
+                (msg, ctx) -> PacketSyncProgressToServer.handle(msg, (ServerPlayer) ctx.player()));
+        registrar.playToServer(PacketSyncResearchFlagsToServer.TYPE, PacketSyncResearchFlagsToServer.STREAM_CODEC,
+                (msg, ctx) -> PacketSyncResearchFlagsToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToClient(PacketWarpMessage.TYPE, PacketWarpMessage.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleWarpMessage(msg));
     }

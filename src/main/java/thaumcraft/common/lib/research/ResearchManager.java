@@ -28,12 +28,14 @@ import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import thaumcraft.Thaumcraft;
 import thaumcraft.api.ThaumcraftApi;
@@ -51,6 +53,7 @@ import thaumcraft.api.research.ResearchEntry;
 import thaumcraft.api.research.ResearchStage;
 import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.lib.TCDataComponents;
+import thaumcraft.common.lib.network.misc.PacketKnowledgeGain;
 
 /**
  * Исследования: загрузка JSON, продвижение по стадиям, очки знаний. Порт ResearchManager оригинала.
@@ -74,7 +77,9 @@ public class ResearchManager {
         int kr = knowledge.getKnowledge(type, category) - kp;
         if (amount > 0) {
             for (int a = 0; a < kr; a++) {
-                // TODO 7.2: PacketKnowledgeGain((byte) type.ordinal(), category == null ? null : category.key) игроку
+                if (player instanceof ServerPlayer sp) {
+                    PacketDistributor.sendToPlayer(sp, new PacketKnowledgeGain((byte) type.ordinal(), category == null ? null : category.key));
+                }
             }
         }
         syncList.add(player.getUUID());

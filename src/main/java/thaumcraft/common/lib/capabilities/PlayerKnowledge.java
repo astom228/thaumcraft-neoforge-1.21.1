@@ -18,6 +18,7 @@ import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchEntry;
 import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledge;
+import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledgeDelta;
 
 /**
  * Реализация знаний игрока (в оригинале — PlayerKnowledge.DefaultImpl). Формат NBT — как в оригинале:
@@ -28,6 +29,10 @@ public class PlayerKnowledge implements IPlayerKnowledge {
     private final Map<String, Integer> stages = new HashMap<>();
     private final Map<String, HashSet<EnumResearchFlag>> flags = new HashMap<>();
     private final Map<String, Integer> knowledge = new HashMap<>();
+    /** Раздел 7: изменения с последней синхронизации (на сервере). Полная синхронизация — после clear/загрузки и при входе. */
+    private final Set<String> dirtyResearch = new HashSet<>();
+    private final Set<String> dirtyKnowledge = new HashSet<>();
+    private boolean fullSync = true;
 
     @Override
     public void clear() {
@@ -35,6 +40,9 @@ public class PlayerKnowledge implements IPlayerKnowledge {
         this.flags.clear();
         this.stages.clear();
         this.knowledge.clear();
+        this.dirtyResearch.clear();
+        this.dirtyKnowledge.clear();
+        this.fullSync = true;
     }
 
     @Override
@@ -76,6 +84,7 @@ public class PlayerKnowledge implements IPlayerKnowledge {
     public boolean setResearchStage(String res, int stage) {
         if (res != null && this.research.contains(res) && stage > 0) {
             this.stages.put(res, stage);
+            this.dirtyResearch.add(res);
             return true;
         }
         return false;
@@ -85,6 +94,7 @@ public class PlayerKnowledge implements IPlayerKnowledge {
     public boolean addResearch(@Nonnull String res) {
         if (!this.isResearchKnown(res)) {
             this.research.add(res);
+            this.dirtyResearch.add(res);
             return true;
         }
         return false;
@@ -94,6 +104,7 @@ public class PlayerKnowledge implements IPlayerKnowledge {
     public boolean removeResearch(@Nonnull String res) {
         if (this.isResearchKnown(res)) {
             this.research.remove(res);
+            this.dirtyResearch.add(res);
             return true;
         }
         return false;
@@ -108,7 +119,11 @@ public class PlayerKnowledge implements IPlayerKnowledge {
     @Override
     public boolean setResearchFlag(@Nonnull String res, @Nonnull EnumResearchFlag flag) {
         HashSet<EnumResearchFlag> list = this.flags.computeIfAbsent(res, k -> new HashSet<>());
-        return list.add(flag);
+        boolean b = list.add(flag);
+        if (b) {
+            this.dirtyResearch.add(res);
+        }
+        return b;
     }
 
     @Override
@@ -116,6 +131,9 @@ public class PlayerKnowledge implements IPlayerKnowledge {
         HashSet<EnumResearchFlag> list = this.flags.get(res);
         if (list != null) {
             boolean b = list.remove(flag);
+            if (b) {
+                this.dirtyResearch.add(res);
+            }
             // В оригинале здесь flags.remove(this.research) — удаление по неверному ключу, т.е. ничего не происходит
             return b;
         }
@@ -139,6 +157,7 @@ public class PlayerKnowledge implements IPlayerKnowledge {
             return false;
         }
         this.knowledge.put(key, c + amount);
+        this.dirtyKnowledge.add(key);
         return true;
     }
 
@@ -156,7 +175,81 @@ public class PlayerKnowledge implements IPlayerKnowledge {
 
     @Override
     public void sync(@Nonnull ServerPlayer player) {
-        PacketDistributor.sendToPlayer(player, PacketSyncKnowledge.create(player, this));
+        if (this.fullSync) {
+            PacketDistributor.sendToPlayer(player, PacketSyncKnowledge.create(player, this));
+        } else if (!this.dirtyResearch.isEmpty() || !this.dirtyKnowledge.isEmpty()) {
+            PacketDistributor.sendToPlayer(player, PacketSyncKnowledgeDelta.create(this));
+        }
+        this.dirtyResearch.clear();
+        this.dirtyKnowledge.clear();
+        this.fullSync = false;
+    }
+
+    /** Следующая синхронизация — полная (вход в мир, возрождение, смена измерения: клиент мог создать нового игрока). */
+    public void markFullSync() {
+        this.fullSync = true;
+    }
+
+    // --- дельты для PacketSyncKnowledgeDelta ---------------------------------------------------------------------------
+
+    public Set<String> getDirtyResearch() {
+        return this.dirtyResearch;
+    }
+
+    public Set<String> getDirtyKnowledge() {
+        return this.dirtyKnowledge;
+    }
+
+    /** Флаги исследования битовой маской (бит = ordinal). */
+    public int getFlagBits(String res) {
+        int bits = 0;
+        HashSet<EnumResearchFlag> list = this.flags.get(res);
+        if (list != null) {
+            for (EnumResearchFlag flag : list) {
+                bits |= 1 << flag.ordinal();
+            }
+        }
+        return bits;
+    }
+
+    public int getKnowledgeRawByKey(String key) {
+        return this.knowledge.getOrDefault(key, 0);
+    }
+
+    /** Клиент: применить изменение одного исследования (как запись в NBT полной синхронизации). */
+    public void applyResearchDelta(String res, boolean present, int stage, int flagBits) {
+        if (!present) {
+            this.research.remove(res);
+            this.stages.remove(res);
+            this.flags.remove(res);
+            return;
+        }
+        this.research.add(res);
+        if (stage > 0) {
+            this.stages.put(res, stage);
+        } else {
+            this.stages.remove(res);
+        }
+        HashSet<EnumResearchFlag> list = new HashSet<>();
+        for (EnumResearchFlag flag : EnumResearchFlag.values()) {
+            if ((flagBits & 1 << flag.ordinal()) != 0) {
+                list.add(flag);
+            }
+        }
+        if (list.isEmpty()) {
+            this.flags.remove(res);
+        } else {
+            this.flags.put(res, list);
+        }
+    }
+
+    /** Клиент: применить изменение очков знаний (ключ "T_BASICS" и т.п.). */
+    public void applyKnowledgeDelta(String key, int amount) {
+        if (amount > 0) {
+            this.knowledge.put(key, amount);
+        } else {
+            this.knowledge.remove(key);
+        }
     }
 
     @Override

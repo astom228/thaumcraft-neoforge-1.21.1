@@ -1,0 +1,122 @@
+package thaumcraft.common.lib.utils;
+
+import java.util.Map;
+import java.util.Optional;
+import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import thaumcraft.api.items.ItemsTC;
+import thaumcraft.common.lib.TCDataComponents;
+
+/**
+ * Работа с инвентарём игрока (порт InventoryUtils; методы добавляются по мере надобности).
+ * NBT стека 1.12 → компоненты, отличающиеся от стандартных для предмета (getComponentsPatch).
+ */
+public class InventoryUtils {
+    /**
+     * Есть ли у игрока в основном инвентаре нужное количество предмета. Компоненты сравниваются «мягко», как NBT в оригинале
+     * (если у образца компонентов нет — не сравниваются). Для «зачарованного заполнителя» достаточно одного предмета
+     * с зачарованиями не ниже требуемых.
+     */
+    public static boolean isPlayerCarryingAmount(Player player, ItemStack stack, boolean ore) {
+        if (stack == null || stack.isEmpty()) {
+            return false;
+        }
+        int count = stack.getCount();
+        NonNullList<ItemStack> inv = player.getInventory().items;
+        for (ItemStack is : inv) {
+            if (!stack.is(ItemsTC.enchantedPlaceholder.get())) {
+                if (areItemStacksEqualRelaxed(is, stack)) {
+                    count -= is.getCount();
+                    if (count <= 0) {
+                        return true;
+                    }
+                }
+            } else if (hasPlaceholderEnchantments(stack, is)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Забрать предмет из основного инвентаря (nocheck — без предварительной проверки количества). */
+    public static boolean consumePlayerItem(Player player, ItemStack item, boolean nocheck, boolean ore) {
+        if (!nocheck && !isPlayerCarryingAmount(player, item, ore)) {
+            return false;
+        }
+        int count = item.getCount();
+        NonNullList<ItemStack> inv = player.getInventory().items;
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack is = inv.get(i);
+            boolean match = item.is(ItemsTC.enchantedPlaceholder.get()) ? hasPlaceholderEnchantments(item, is)
+                    : ItemStack.isSameItem(is, item) && areItemStacksEqualRelaxed(is, item);
+            if (match) {
+                if (is.getCount() > count) {
+                    is.shrink(count);
+                    count = 0;
+                } else {
+                    count -= is.getCount();
+                    inv.set(i, ItemStack.EMPTY);
+                }
+                if (count <= 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * areItemStacksEqual(stack0, stack1, InvFilter(false, !stack1.hasTagCompound(), false, false).setRelaxedNBT()):
+     * тот же предмет; если у образца (stack1) есть компоненты — каждый изменённый компонент stack0 должен совпадать с образцом.
+     */
+    public static boolean areItemStacksEqualRelaxed(ItemStack stack0, ItemStack stack1) {
+        if (stack0.isEmpty() || stack1.isEmpty()) {
+            return stack0.isEmpty() && stack1.isEmpty();
+        }
+        if (stack0.getItem() != stack1.getItem()) {
+            return false;
+        }
+        if (stack1.getComponentsPatch().isEmpty()) {
+            return true;
+        }
+        if (stack0.getComponentsPatch().isEmpty()) {
+            return false;
+        }
+        for (Map.Entry<DataComponentType<?>, Optional<?>> e : stack0.getComponentsPatch().entrySet()) {
+            Optional<?> other = stack1.getComponentsPatch().get(e.getKey());
+            if (other == null || !other.equals(e.getValue())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Зачарования заполнителя (в оригинале — EnchantmentHelper по NBT "ench", т.е. без зачарованных книг). */
+    private static boolean hasPlaceholderEnchantments(ItemStack placeholder, ItemStack is) {
+        Map<ResourceKey<Enchantment>, Integer> en = placeholder.get(TCDataComponents.PLACEHOLDER_ENCHANTMENTS.get());
+        if (en == null || en.isEmpty()) {
+            return false;
+        }
+        ItemEnchantments have = is.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+        for (Map.Entry<ResourceKey<Enchantment>, Integer> e : en.entrySet()) {
+            int l = 0;
+            for (Holder<Enchantment> h : have.keySet()) {
+                if (h.is(e.getKey())) {
+                    l = have.getLevel(h);
+                    break;
+                }
+            }
+            if (l < e.getValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

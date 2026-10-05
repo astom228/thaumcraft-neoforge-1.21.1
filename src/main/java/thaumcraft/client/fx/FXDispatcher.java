@@ -4,7 +4,9 @@ import java.awt.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import thaumcraft.client.fx.particles.FXGeneric;
+import thaumcraft.client.fx.particles.FXGenericGui;
 import thaumcraft.common.lib.fx.IFXDispatcher;
 
 /** Создание эффектов (порт FXDispatcher; методы переносятся по мере надобности — тела и числа как в оригинале). */
@@ -13,6 +15,25 @@ public class FXDispatcher implements IFXDispatcher {
 
     public ClientLevel getWorld() {
         return Minecraft.getInstance().level;
+    }
+
+    /** Искра поверх интерфейса (слой 4). */
+    public void drawSimpleSparkleGui(RandomSource rand, double x, double y, double x2, double y2, float scale, float r, float g, float b,
+                                     int delay, float decay, float grav) {
+        boolean sp = rand.nextFloat() < 0.2;
+        FXGenericGui fb = new FXGenericGui(this.getWorld(), x, y, 0.0, x2, y2, 0.0);
+        fb.setMaxAge(32 + this.getWorld().random.nextInt(8));
+        fb.setRBGColorF(r, g, b);
+        fb.setAlphaF(0.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 0.0F);
+        fb.setParticles(sp ? 320 : 512, 16, 1);
+        fb.setLoop(true);
+        fb.setGravity(grav);
+        fb.setScale(scale, scale * 2.0F);
+        fb.setNoClip(false);
+        fb.setLayer(4);
+        fb.setSlowDown(decay);
+        fb.setRandomMovementScale(0.025F, 0.025F, 0.0F);
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, delay);
     }
 
     public void drawWispyMotesOnBlock(BlockPos pp, int age, float grav) {
