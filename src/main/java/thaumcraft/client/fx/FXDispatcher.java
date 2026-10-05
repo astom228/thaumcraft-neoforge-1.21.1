@@ -5,9 +5,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import thaumcraft.client.fx.particles.FXGeneric;
+import thaumcraft.common.lib.fx.IFXDispatcher;
 
 /** Создание эффектов (порт FXDispatcher; методы переносятся по мере надобности — тела и числа как в оригинале). */
-public class FXDispatcher {
+public class FXDispatcher implements IFXDispatcher {
     public static final FXDispatcher INSTANCE = new FXDispatcher();
 
     public ClientLevel getWorld() {
@@ -29,6 +30,7 @@ public class FXDispatcher {
                 0.25F + this.getWorld().random.nextFloat() * 0.75F, grav);
     }
 
+    @Override
     public void drawWispyMotes(double d, double e, double f, double vx, double vy, double vz, int age, float r, float g, float b, float grav) {
         FXGeneric fb = new FXGeneric(this.getWorld(), d, e, f, vx, vy, vz);
         fb.setMaxAge((int) (age + age / 2 * this.getWorld().random.nextFloat()));
@@ -44,6 +46,7 @@ public class FXDispatcher {
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
 
+    @Override
     public void drawNitorCore(double x, double y, double z, double x2, double y2, double z2) {
         FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, x2, y2, z2);
         fb.setMaxAge(10);
@@ -56,6 +59,7 @@ public class FXDispatcher {
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
 
+    @Override
     public void drawNitorFlames(double x, double y, double z, double x2, double y2, double z2, int color, int a) {
         FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, x2, y2, z2);
         fb.setMaxAge(10 + this.getWorld().random.nextInt(5));

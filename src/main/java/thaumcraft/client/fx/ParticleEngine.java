@@ -26,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4fStack;
@@ -86,6 +87,16 @@ public class ParticleEngine {
     private static int getParticleLimit() {
         ParticleStatus status = Minecraft.getInstance().options.particles().get();
         return status == ParticleStatus.MINIMAL ? 500 : status == ParticleStatus.DECREASED ? 1000 : 2000;
+    }
+
+    /** Раздел 7.2: при выходе из мира — очистить частицы и отложенные эффекты (в оригинале не очищались). */
+    @SubscribeEvent
+    public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        for (Map<ResourceKey<Level>, List<Particle>> layer : particles) {
+            layer.clear();
+        }
+        particlesDelayed.clear();
+        thaumcraft.client.lib.events.HudHandler.currentAura = new thaumcraft.common.world.aura.AuraChunk(null, (short) 0, 0.0F, 0.0F);
     }
 
     @SubscribeEvent

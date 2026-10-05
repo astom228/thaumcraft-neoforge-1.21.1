@@ -30,6 +30,10 @@ public class AspectRegistryEvents {
 
     @SubscribeEvent
     public static void onTagsUpdated(TagsUpdatedEvent event) {
+        if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) {
+            // Находки пористого камня зависят от тегов (слитки других модов) — пересчитать при следующей добыче
+            thaumcraft.common.blocks.basic.BlockStonePorous.resetDrops();
+        }
         if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD && pendingRecipes != null) {
             build(LogicalSide.SERVER, pendingRecipes, pendingRegistries);
         }

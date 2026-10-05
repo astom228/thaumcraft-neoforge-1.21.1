@@ -6,11 +6,14 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import thaumcraft.Thaumcraft;
+import thaumcraft.client.fx.FXDispatcher;
+import thaumcraft.common.lib.fx.IFXDispatcher;
 
 /** Клиентская точка входа (в оригинале — ClientProxy). */
 @Mod(value = Thaumcraft.MODID, dist = Dist.CLIENT)
 public class ThaumcraftClient {
     public ThaumcraftClient(ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        IFXDispatcher.set(FXDispatcher.INSTANCE);
     }
 }

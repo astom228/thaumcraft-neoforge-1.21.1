@@ -42,6 +42,8 @@ public class FXGeneric extends Particle {
     float angleYaw;
     float anglePitch;
     int gridSize = 64;
+    /** Рабочий вектор для вершин (рендер частиц — только в потоке клиента; раздел 7.2 — без выделений на вершину). */
+    private static final Vector3f SCRATCH = new Vector3f();
     /** particleScale / particleTextureIndexX/Y оригинала. */
     protected float particleScale;
     protected int particleTextureIndexX;
@@ -196,7 +198,7 @@ public class FXGeneric extends Particle {
 
     private void vertex(VertexConsumer wr, Quaternionf q, float cx, float cy, float cz, float lx, float ly, float u, float v,
                         float r, float g, float b, int light) {
-        Vector3f p = new Vector3f(lx, ly, 0.0F).rotate(q);
+        Vector3f p = SCRATCH.set(lx, ly, 0.0F).rotate(q);
         wr.addVertex(cx + p.x(), cy + p.y(), cz + p.z()).setUv(u, v).setColor(r, g, b, this.alpha).setLight(light);
     }
 
