@@ -14,6 +14,7 @@ import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.api.items.ItemGenericEssentiaContainer;
 import thaumcraft.api.items.ItemsTC;
 import thaumcraft.common.blocks.basic.BlockCandle;
+import thaumcraft.common.blocks.world.ore.BlockCrystal;
 import thaumcraft.common.blocks.misc.BlockNitor;
 
 /** Порт ColorHandler оригинала: окраска блоков и предметов. Остальные обработчики добавляются по этапам. */
@@ -28,6 +29,10 @@ public class ColorHandler {
             }
             return level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor();
         }, BlocksTC.leafGreatwood.get(), BlocksTC.leafSilverwood.get());
+        // crystalColourHandler: вис-кристаллы — цвет аспекта
+        for (DeferredBlock<Block> c : CRYSTALS()) {
+            event.register((state, level, pos, tintIndex) -> ((BlockCrystal) state.getBlock()).aspect.getColor(), c.get());
+        }
         // basicColourHandler: свечи окрашиваются цветом карты (MapColor) своего красителя
         for (DeferredBlock<Block> candle : BlocksTC.candles.values()) {
             event.register((state, level, pos, tintIndex) -> ((BlockCandle) state.getBlock()).dye.getMapColor().col, candle.get());
@@ -44,6 +49,11 @@ public class ColorHandler {
             AspectList al = ((ItemGenericEssentiaContainer) stack.getItem()).getAspects(stack);
             return al != null ? 0xFF000000 | al.getAspects()[0].getColor() : 0xFFFFFFFF;
         }, ItemsTC.crystalEssence.get());
+        // itemCrystalPlanterColourHandler: предмет кристалла — цвет аспекта
+        for (DeferredBlock<Block> c : CRYSTALS()) {
+            int color = ((BlockCrystal) c.get()).aspect.getColor();
+            event.register((stack, tintIndex) -> color, c.get());
+        }
         // Ниторы: оба слоя модели предмета окрашиваются цветом красителя (itemBlockColourHandler оригинала)
         for (DeferredBlock<Block> n : BlocksTC.nitor.values()) {
             int color = ((BlockNitor) n.get()).dye.getMapColor().col;
@@ -53,5 +63,10 @@ public class ColorHandler {
             int color = ((BlockCandle) candle.get()).dye.getMapColor().col;
             event.register((stack, tintIndex) -> color, candle.get());
         }
+    }
+
+    private static java.util.List<DeferredBlock<Block>> CRYSTALS() {
+        return java.util.List.of(BlocksTC.crystalAir, BlocksTC.crystalFire, BlocksTC.crystalWater, BlocksTC.crystalEarth,
+                BlocksTC.crystalOrder, BlocksTC.crystalEntropy, BlocksTC.crystalTaint);
     }
 }

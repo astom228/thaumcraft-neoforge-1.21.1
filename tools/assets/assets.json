@@ -346,6 +346,13 @@
     "jar_brace": "model:jar_brace",
     "grappler_head": "model:grapple_gun_tip",
     "grappler_spool": "model:grapple_gun_spool",
-    "goggles": "model:goggles"
+    "goggles": "model:goggles",
+    "aer_crystal": "model:crystal_aer",
+    "ignis_crystal": "model:crystal_ignis",
+    "aqua_crystal": "model:crystal_aqua",
+    "terra_crystal": "model:crystal_terra",
+    "ordo_crystal": "model:crystal_ordo",
+    "perditio_crystal": "model:crystal_perditio",
+    "vitium_crystal": "model:crystal_vitium"
   }
 }

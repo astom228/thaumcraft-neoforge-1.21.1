@@ -65,6 +65,11 @@ public class TCBlockLootTables extends BlockLootSubProvider {
 
         // Пористый камень: дроп считается в BlockStonePorous.getDrops (как getDrops оригинала)
         add(BlocksTC.stonePorous.get(), noDrop());
+        // Вис-кристаллы: дроп в BlockCrystal.getDrops (рост + 1 вис-кристаллов)
+        for (var c : new Block[]{BlocksTC.crystalAir.get(), BlocksTC.crystalFire.get(), BlocksTC.crystalWater.get(), BlocksTC.crystalEarth.get(),
+                BlocksTC.crystalOrder.get(), BlocksTC.crystalEntropy.get(), BlocksTC.crystalTaint.get()}) {
+            add(c, noDrop());
+        }
 
         // Остальные блоки этапа роняют сами себя
         for (DeferredHolder<Block, ? extends Block> holder : ConfigBlocks.BLOCKS.getEntries()) {

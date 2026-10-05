@@ -170,3 +170,4 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Tallow Candle | Сальная свеча |
 | Block of (metal) | Блок (таумиума, латуни, пустотного металла) |
 | Porous Stone | Пористый камень |
+| Flux Crystal | Кристалл выброса |

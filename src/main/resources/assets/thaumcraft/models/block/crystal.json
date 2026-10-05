@@ -1,0 +1,7 @@
+{
+  "loader": "thaumcraft:crystal",
+  "textures": {
+    "crystal": "thaumcraft:blocks/crystal",
+    "particle": "thaumcraft:blocks/crystal"
+  }
+}

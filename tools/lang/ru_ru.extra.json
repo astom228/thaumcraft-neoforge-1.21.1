@@ -184,5 +184,6 @@
   "tc.addwarptemp": "§5Вы получили временное Искажение!§0",
   "tc.removewarptemp": "§5Вы избавились от временного Искажения!§0",
   "block.thaumcraft.porous_stone": "Пористый камень",
-  "block.thaumcraft.light_blue_nitor": "Голубой нитор"
+  "block.thaumcraft.light_blue_nitor": "Голубой нитор",
+  "block.thaumcraft.vitium_crystal": "Кристалл выброса"
 }

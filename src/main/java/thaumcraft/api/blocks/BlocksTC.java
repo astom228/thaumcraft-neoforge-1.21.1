@@ -24,6 +24,8 @@ import thaumcraft.common.blocks.basic.BlockStoneTC;
 import thaumcraft.common.blocks.basic.BlockTranslucent;
 import thaumcraft.common.blocks.misc.BlockFlesh;
 import thaumcraft.common.blocks.misc.BlockNitor;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.blocks.world.ore.BlockCrystal;
 import thaumcraft.common.blocks.world.ore.BlockOreTC;
 import thaumcraft.common.blocks.world.plants.BlockLeavesTC;
 import thaumcraft.common.blocks.world.plants.BlockLogsTC;
@@ -48,6 +50,15 @@ public class BlocksTC {
             () -> new BlockOreTC(ConstantInt.of(0), stone(2.0F, 3.0F)));
     public static final DeferredBlock<Block> oreQuartz = register("quartz_ore",
             () -> new BlockOreTC(UniformInt.of(1, 4), stone(3.0F, 3.0F)));
+
+    // --- вис-кристаллы (BlockCrystal): Material.GLASS, setHardness(0.25) → сопротивление 0.25, свет 1 ---
+    public static final DeferredBlock<Block> crystalAir = register("aer_crystal", () -> new BlockCrystal(Aspect.AIR, crystal()));
+    public static final DeferredBlock<Block> crystalFire = register("ignis_crystal", () -> new BlockCrystal(Aspect.FIRE, crystal()));
+    public static final DeferredBlock<Block> crystalWater = register("aqua_crystal", () -> new BlockCrystal(Aspect.WATER, crystal()));
+    public static final DeferredBlock<Block> crystalEarth = register("terra_crystal", () -> new BlockCrystal(Aspect.EARTH, crystal()));
+    public static final DeferredBlock<Block> crystalOrder = register("ordo_crystal", () -> new BlockCrystal(Aspect.ORDER, crystal()));
+    public static final DeferredBlock<Block> crystalEntropy = register("perditio_crystal", () -> new BlockCrystal(Aspect.ENTROPY, crystal()));
+    public static final DeferredBlock<Block> crystalTaint = register("vitium_crystal", () -> new BlockCrystal(Aspect.FLUX, crystal()));
 
     // --- камни (BlockStoneTC: прочность 2.0, сопротивление → 6.0) ---
     public static final DeferredBlock<Block> stoneArcane = register("arcane_stone", () -> new BlockStoneTC(stone(2.0F, 6.0F)));
@@ -137,6 +148,11 @@ public class BlocksTC {
                     BlockBehaviour.Properties.of().mapColor(dye.getMapColor()).strength(0.1F, 1.5F).sound(SoundType.WOOL)
                             .lightLevel(state -> 15).noCollission().noOcclusion().pushReaction(PushReaction.DESTROY))));
         }
+    }
+
+    private static BlockBehaviour.Properties crystal() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.NONE).strength(0.25F, 0.25F).sound(SoundsTC.CRYSTAL).randomTicks()
+                .noCollission().noOcclusion().lightLevel(state -> 1);
     }
 
     private static BlockBehaviour.Properties plant(int light) {
