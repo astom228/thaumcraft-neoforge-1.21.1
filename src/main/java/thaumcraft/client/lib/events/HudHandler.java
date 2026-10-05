@@ -1,13 +1,21 @@
 package thaumcraft.client.lib.events;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import thaumcraft.common.items.tools.ItemThaumometer;
 import thaumcraft.Thaumcraft;
 import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.research.ResearchCategory;
@@ -21,6 +29,8 @@ import thaumcraft.common.world.aura.AuraChunk;
  * (таумометр — 7.3, кастер — этап 12, проверка рассудка — с ней). Только клиент.
  */
 public class HudHandler {
+    static final ResourceLocation HUD = rl("textures/gui/hud.png");
+    private static final DecimalFormat SECONDS_FORMATTER = new DecimalFormat("#######.#");
     public static final ResourceLocation BOOK = rl("textures/items/thaumonomicon.png");
     public static final ResourceLocation[] KNOW_TYPE = new ResourceLocation[] {
             rl("textures/research/knowledge_theory.png"), rl("textures/research/knowledge_observation.png")};
@@ -41,8 +51,98 @@ public class HudHandler {
         if (kgFade > 0.0F) {
             renderKnowledgeGains(mc, pose, renderTickTime, player, ww, hh);
         }
-        // TODO 7.3: таумометр; этап 12: кастер; проверка рассудка — с предметом
+        if (mc.mouseHandler.isMouseGrabbed() && !mc.options.hideGui) {
+            RenderSystem.setShaderTexture(0, HUD);
+            ItemStack handStack = player.getMainHandItem();
+            boolean rT = false;
+            for (int a = 0; a < 2; a++) {
+                if (!handStack.isEmpty()) {
+                    // TODO этап 12: кастер (ICaster); проверка рассудка — с предметом
+                    if (!rT && handStack.getItem() instanceof ItemThaumometer) {
+                        renderThaumometerHud(mc, pose, renderTickTime, player);
+                        rT = true;
+                    }
+                }
+                handStack = player.getOffhandItem();
+            }
+        }
         RenderSystem.disableBlend();
+    }
+
+    /** Шкалы Вис и Выброса в чанке (aura 525 = полная шкала), база — метка; с Shift — числа. */
+    static void renderThaumometerHud(Minecraft mc, PoseStack pose, float partialTicks, Player player) {
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        float base = Mth.clamp(currentAura.getBase() / 525.0F, 0.0F, 1.0F);
+        float vis = Mth.clamp(currentAura.getVis() / 525.0F, 0.0F, 1.0F);
+        float flux = Mth.clamp(currentAura.getFlux() / 525.0F, 0.0F, 1.0F);
+        float count = mc.getCameraEntity().tickCount + partialTicks;
+        float count2 = mc.getCameraEntity().tickCount / 3.0F + partialTicks;
+        if (flux + vis > 1.0F) {
+            float m = 1.0F / (flux + vis);
+            base *= m;
+            vis *= m;
+            flux *= m;
+        }
+        float start = 10.0F + (1.0F - vis) * 64.0F;
+        if (vis > 0.0F) {
+            pose.pushPose();
+            RenderSystem.setShaderColor(0.7F, 0.4F, 0.9F, 1.0F);
+            pose.translate(5.0, start, 0.0);
+            pose.scale(1.0F, vis, 1.0F);
+            UtilsFX.drawTexturedQuad(pose, 0.0F, 0.0F, 88.0F, 56.0F, 8.0F, 64.0F, -90.0F);
+            pose.popPose();
+            pose.pushPose();
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.5F);
+            pose.translate(5.0, start, 0.0);
+            UtilsFX.drawTexturedQuad(pose, 0.0F, 0.0F, 96.0F, 56.0F + count % 64.0F, 8.0F, vis * 64.0F, -90.0F);
+            RenderSystem.defaultBlendFunc();
+            pose.popPose();
+            if (player.isShiftKeyDown()) {
+                pose.pushPose();
+                pose.translate(16.0, start, 0.0);
+                pose.scale(0.5F, 0.5F, 0.5F);
+                drawStringWithShadow(mc, pose, SECONDS_FORMATTER.format(currentAura.getVis()), 15641343);
+                pose.popPose();
+                RenderSystem.setShaderTexture(0, HUD);
+            }
+        }
+        if (flux > 0.0F) {
+            start = 10.0F + (1.0F - flux - vis) * 64.0F;
+            pose.pushPose();
+            RenderSystem.setShaderColor(0.25F, 0.1F, 0.3F, 1.0F);
+            pose.translate(5.0, start, 0.0);
+            pose.scale(1.0F, flux, 1.0F);
+            UtilsFX.drawTexturedQuad(pose, 0.0F, 0.0F, 88.0F, 56.0F, 8.0F, 64.0F, -90.0F);
+            pose.popPose();
+            pose.pushPose();
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+            RenderSystem.setShaderColor(0.7F, 0.4F, 1.0F, 0.5F);
+            pose.translate(5.0, start, 0.0);
+            UtilsFX.drawTexturedQuad(pose, 0.0F, 0.0F, 104.0F, 120.0F - count2 % 64.0F, 8.0F, flux * 64.0F, -90.0F);
+            RenderSystem.defaultBlendFunc();
+            pose.popPose();
+            if (player.isShiftKeyDown()) {
+                pose.pushPose();
+                pose.translate(16.0, start - 4.0F, 0.0);
+                pose.scale(0.5F, 0.5F, 0.5F);
+                drawStringWithShadow(mc, pose, SECONDS_FORMATTER.format(currentAura.getFlux()), 11145659);
+                pose.popPose();
+                RenderSystem.setShaderTexture(0, HUD);
+            }
+        }
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        UtilsFX.drawTexturedQuad(pose, 1.0F, 1.0F, 72.0F, 48.0F, 16.0F, 80.0F, -90.0F);
+        start = 8.0F + (1.0F - base) * 64.0F;
+        UtilsFX.drawTexturedQuad(pose, 2.0F, start, 117.0F, 61.0F, 14.0F, 5.0F, -90.0F);
+    }
+
+    /** Gui.drawString 1.12 (с тенью) в текущей матрице. */
+    private static void drawStringWithShadow(Minecraft mc, PoseStack pose, String s, int color) {
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        MultiBufferSource.BufferSource buffers = mc.renderBuffers().bufferSource();
+        mc.font.drawInBatch(s, 0, 0, color, true, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
+        buffers.endBatch();
     }
 
     /** MathHelper.getInt(Random, min, max) 1.12: при min >= max случайное число не берётся. */

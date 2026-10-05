@@ -18,6 +18,15 @@ public interface IFXDispatcher {
     default void drawNitorFlames(double x, double y, double z, double x2, double y2, double z2, int color, int a) {
     }
 
+    default void blockRunes(double x, double y, double z, float r, float g, float b, int dur, float grav) {
+    }
+
+    default void scanHighlight(net.minecraft.core.BlockPos p) {
+    }
+
+    default void scanHighlight(net.minecraft.world.entity.Entity e) {
+    }
+
     /** Текущая реализация (на клиенте подставляется в ThaumcraftClient). */
     static IFXDispatcher get() {
         return Holder.instance;

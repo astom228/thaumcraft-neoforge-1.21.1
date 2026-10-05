@@ -90,6 +90,19 @@ public final class UtilsFX {
         BufferUploader.drawWithShader(b.buildOrThrow());
     }
 
+    /** Прямоугольник w×h с UV в пикселях текстуры 256×256 (drawTexturedQuad). Цвет — текущий цвет шейдера. */
+    public static void drawTexturedQuad(PoseStack pose, float x, float y, float u, float v, float w, float h, float z) {
+        float d = 0.00390625F;
+        Matrix4f m = pose.last().pose();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        b.addVertex(m, x, y + h, z).setUv(u * d, (v + h) * d);
+        b.addVertex(m, x + w, y + h, z).setUv((u + w) * d, (v + h) * d);
+        b.addVertex(m, x + w, y, z).setUv((u + w) * d, v * d);
+        b.addVertex(m, x, y, z).setUv(u * d, v * d);
+        BufferUploader.drawWithShader(b.buildOrThrow());
+    }
+
     /** Вся текстура в квадрате 16×16 (drawTexturedQuadFull). */
     public static void drawTexturedQuadFull(PoseStack pose, float x, float y, float z) {
         drawTexturedQuadF(pose, x, y, 0.0F, 0.0F, 16.0F, 16.0F, z);

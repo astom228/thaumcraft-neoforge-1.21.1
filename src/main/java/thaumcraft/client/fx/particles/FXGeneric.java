@@ -15,7 +15,7 @@ import org.joml.Vector3f;
  * ключи прозрачности и размера по времени жизни, переход цвета, ветер, вращение, «наклонённый» режим (setAngles).
  * Рисуется движком {@link thaumcraft.client.fx.ParticleEngine}, а не ванильным.
  */
-public class FXGeneric extends Particle {
+public class FXGeneric extends Particle implements IEngineParticle {
     boolean doneFrames = false;
     boolean flipped = false;
     double windX;

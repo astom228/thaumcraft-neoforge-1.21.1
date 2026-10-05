@@ -11,6 +11,7 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.consumables.ItemZombieBrain;
 import thaumcraft.common.items.curios.ItemEnchantmentPlaceholder;
 import thaumcraft.common.items.resources.ItemCrystalEssence;
+import thaumcraft.common.items.tools.ItemThaumometer;
 
 /**
  * Предметы Thaumcraft (в оригинале — статические поля, заполняемые ConfigItems.initItems).
@@ -67,6 +68,7 @@ public class ItemsTC {
     public static final DeferredItem<Item> moduleAggression = simple("aggression_module");
     public static final DeferredItem<Item> crystalEssence = ConfigItems.ITEMS.registerItem("crystal_essence", ItemCrystalEssence::new);
     public static final DeferredItem<Item> enchantedPlaceholder = ConfigItems.ITEMS.registerItem("enchanted_placeholder", ItemEnchantmentPlaceholder::new);
+    public static final DeferredItem<Item> thaumometer = ConfigItems.ITEMS.registerItem("thaumometer", ItemThaumometer::new);
 
     // --- еда ---
     // ItemChunksEdible: ItemFood(1, 0.3F, false), время поедания 10 тиков

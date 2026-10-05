@@ -2,11 +2,16 @@ package thaumcraft.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.items.ItemGenericEssentiaContainer;
@@ -38,5 +43,53 @@ public class ThaumcraftApiHelper {
 
     public static ItemStack makeCrystal(Aspect aspect) {
         return makeCrystal(aspect, 1);
+    }
+
+    /**
+     * Подходит ли предмет под образец рецепта (areItemStacksEqualForCrafting): in — ItemStack или тег предметов (вместо имени
+     * OreDictionary). Компоненты сравниваются, как NBT в оригинале: если у stack0 есть изменённые компоненты, каждый
+     * изменённый компонент образца должен быть у stack0 таким же; у stack0 без компонентов образец с компонентами подходит.
+     */
+    public static boolean areItemStacksEqualForCrafting(ItemStack stack0, Object in) {
+        if (stack0 == null || in == null) {
+            return stack0 == null && in == null;
+        }
+        if (in instanceof Object[]) {
+            return true;
+        }
+        if (in instanceof TagKey<?> tag) {
+            @SuppressWarnings("unchecked")
+            TagKey<Item> itemTag = (TagKey<Item>) tag;
+            return stack0.is(itemTag);
+        }
+        if (!(in instanceof ItemStack recipe)) {
+            return false;
+        }
+        boolean t1 = stack0.getComponentsPatch().isEmpty() || areItemStackTagsEqualForCrafting(stack0, recipe);
+        return t1 && !recipe.isEmpty() && recipe.getItem() == stack0.getItem();
+    }
+
+    public static boolean areItemStackTagsEqualForCrafting(ItemStack slotItem, ItemStack recipeItem) {
+        if (recipeItem == null || slotItem == null) {
+            return false;
+        }
+        if (!recipeItem.getComponentsPatch().isEmpty() && slotItem.getComponentsPatch().isEmpty()) {
+            return false;
+        }
+        for (var e : recipeItem.getComponentsPatch().entrySet()) {
+            var other = slotItem.getComponentsPatch().get(e.getKey());
+            if (other == null || !other.equals(e.getValue())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Инвентарь блока со стороны side (возможность IItemHandler) или null. Незагруженные чанки не трогаются. */
+    public static IItemHandler getItemHandlerAt(Level world, BlockPos pos, Direction side) {
+        if (!world.hasChunkAt(pos)) {
+            return null;
+        }
+        return world.getCapability(Capabilities.ItemHandler.BLOCK, pos, side);
     }
 }

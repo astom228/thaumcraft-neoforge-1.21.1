@@ -354,6 +354,7 @@
     "ordo_crystal": "model:crystal_ordo",
     "perditio_crystal": "model:crystal_perditio",
     "vitium_crystal": "model:crystal_vitium",
-    "enchanted_placeholder": "model:enchanted_placeholder"
+    "enchanted_placeholder": "model:enchanted_placeholder",
+    "thaumometer": "obj:thaumometer#normal"
   }
 }

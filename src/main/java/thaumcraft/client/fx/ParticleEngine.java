@@ -32,7 +32,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4fStack;
 import thaumcraft.Thaumcraft;
-import thaumcraft.client.fx.particles.FXGeneric;
+import thaumcraft.client.fx.particles.IEngineParticle;
 
 /**
  * Движок частиц Thaumcraft (порт ParticleEngine). Свои списки частиц по слоям и измерениям, тик на клиентском тике,
@@ -55,7 +55,7 @@ public class ParticleEngine {
     }
 
     private static int layerOf(Particle p) {
-        return p instanceof FXGeneric g ? g.getFXLayer() : 0;
+        return p instanceof IEngineParticle g ? g.getFXLayer() : 0;
     }
 
     public static void addEffect(Level world, Particle fx) {
@@ -182,7 +182,7 @@ public class ParticleEngine {
             BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
             for (Particle p : parts) {
                 try {
-                    if (p instanceof FXGeneric g) {
+                    if (p instanceof IEngineParticle g) {
                         g.renderParticle(buffer, camera, frame);
                     }
                 } catch (Throwable throwable) {
@@ -234,7 +234,7 @@ public class ParticleEngine {
             BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
             for (Particle p : parts) {
                 try {
-                    if (p instanceof FXGeneric g) {
+                    if (p instanceof IEngineParticle g) {
                         g.renderParticle(buffer, null, frame);
                     }
                 } catch (Throwable throwable) {

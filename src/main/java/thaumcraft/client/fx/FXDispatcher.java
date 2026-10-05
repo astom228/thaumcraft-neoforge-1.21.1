@@ -4,7 +4,13 @@ import java.awt.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import thaumcraft.client.fx.particles.FXBlockRunes;
 import thaumcraft.client.fx.particles.FXGeneric;
 import thaumcraft.client.fx.particles.FXGenericGui;
 import thaumcraft.common.lib.fx.IFXDispatcher;
@@ -15,6 +21,77 @@ public class FXDispatcher implements IFXDispatcher {
 
     public ClientLevel getWorld() {
         return Minecraft.getInstance().level;
+    }
+
+    @Override
+    public void blockRunes(double x, double y, double z, float r, float g, float b, int dur, float grav) {
+        FXBlockRunes fb = new FXBlockRunes(this.getWorld(), x + 0.5, y + 0.5, z + 0.5, r, g, b, dur);
+        fb.setGravity(grav);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    /** Подсветка ещё не изученного объекта таумометром. Для блока — его рамка выделения (у пустой формы — ничего). */
+    @Override
+    public void scanHighlight(BlockPos p) {
+        VoxelShape shape = this.getWorld().getBlockState(p).getShape(this.getWorld(), p);
+        if (shape.isEmpty()) {
+            return;
+        }
+        this.scanHighlight(shape.bounds().move(p));
+    }
+
+    @Override
+    public void scanHighlight(Entity e) {
+        this.scanHighlight(e.getBoundingBox());
+    }
+
+    public void scanHighlight(AABB bb) {
+        int num = Mth.ceil(bb.getSize() * 2.0);
+        double ax = (bb.minX + bb.maxX) / 2.0;
+        double ay = (bb.minY + bb.maxY) / 2.0;
+        double az = (bb.minZ + bb.maxZ) / 2.0;
+        RandomSource rand = this.getWorld().random;
+        for (Direction face : Direction.values()) {
+            double mx = 0.5 + face.getStepX() * 0.51;
+            double my = 0.5 + face.getStepY() * 0.51;
+            double mz = 0.5 + face.getStepZ() * 0.51;
+            for (int a = 0; a < num * 2; a++) {
+                double x = mx + rand.nextGaussian() * (bb.maxX - bb.minX);
+                double y = my + rand.nextGaussian() * (bb.maxY - bb.minY);
+                double z = mz + rand.nextGaussian() * (bb.maxZ - bb.minZ);
+                x = Mth.clamp(x, bb.minX - ax, bb.maxX - ax);
+                y = Mth.clamp(y, bb.minY - ay, bb.maxY - ay);
+                z = Mth.clamp(z, bb.minZ - az, bb.maxZ - az);
+                float r = Mth.randomBetweenInclusive(rand, 16, 32) / 255.0F;
+                float g = Mth.randomBetweenInclusive(rand, 132, 165) / 255.0F;
+                float b = Mth.randomBetweenInclusive(rand, 223, 239) / 255.0F;
+                this.drawSimpleSparkle(rand, ax + x, ay + y, az + z, 0.0, 0.0, 0.0, 0.4F + (float) rand.nextGaussian() * 0.1F, r, g, b,
+                        rand.nextInt(10), 1.0F, 0.0F, 4);
+            }
+        }
+    }
+
+    public void drawSimpleSparkle(RandomSource rand, double x, double y, double z, double x2, double y2, double z2, float scale, float r, float g,
+                                  float b, int delay, float decay, float grav, int baseAge) {
+        boolean sp = rand.nextFloat() < 0.2;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, x2, y2, z2);
+        int age = baseAge * 4 + this.getWorld().random.nextInt(baseAge);
+        fb.setMaxAge(age);
+        fb.setRBGColorF(r, g, b);
+        float[] alphas = new float[6 + rand.nextInt(age / 3)];
+        for (int a = 1; a < alphas.length - 1; a++) {
+            alphas[a] = rand.nextFloat();
+        }
+        fb.setAlphaF(alphas);
+        fb.setParticles(sp ? 320 : 512, 16, 1);
+        fb.setLoop(true);
+        fb.setGravity(grav);
+        fb.setScale(scale, scale * 2.0F);
+        fb.setLayer(0);
+        fb.setSlowDown(decay);
+        fb.setRandomMovementScale(5.0E-4F, 0.001F, 5.0E-4F);
+        fb.setWind(5.0E-4);
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, delay);
     }
 
     /** Искра поверх интерфейса (слой 4). */

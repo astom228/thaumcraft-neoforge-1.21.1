@@ -3,7 +3,8 @@
 // Список того, что конвертировать, — tools/assets/assets.json (пополняется по этапам):
 //   blocks: { "<новый id>": { "src": "<имя blockstate оригинала>", "props": {...}, "ignore": [...], "type": "slab|...", "item": false } }
 //   items:  { "<новый id>": "<источник>" }  источник: "bs:<blockstate>#<вариант>" (вариант предмета из blockstate)
-//                                                  или "model:<имя файла models/item>" (копия модели предмета).
+//                                                  или "model:<имя файла models/item>" (копия модели предмета),
+//                                                  или "obj:<blockstate>#<вариант>" (OBJ-модель -> neoforge:obj).
 // Содержимое моделей/текстур не меняется: меняются только формат и имена файлов.
 'use strict';
 const fs = require('fs');
@@ -171,7 +172,87 @@ function itemLayer(e) {
   return { parent: tool ? 'minecraft:item/handheld' : 'minecraft:item/generated', textures: e.textures };
 }
 
+// --- OBJ-модели предметов (forge_marker с "model": "*.obj") -> загрузчик neoforge:obj ---------------------------------
+// Преобразования forge (TRSR вокруг центра блока, сдвиг в блоках, список поворотов) -> display 1.21
+// (сдвиг в 1/16, углы Эйлера XYZ того же поворота, масштаб тройкой).
+const PERSPECTIVES = {
+  firstperson: 'firstperson_righthand', firstperson_lefthand: 'firstperson_lefthand',
+  thirdperson: 'thirdperson_righthand', thirdperson_lefthand: 'thirdperson_lefthand',
+  gui: 'gui', ground: 'ground', fixed: 'fixed', head: 'head',
+};
+function axisMatrix(axis, deg) {
+  const a = deg * Math.PI / 180, c = Math.cos(a), sn = Math.sin(a);
+  if (axis === 'x') return [[1, 0, 0], [0, c, -sn], [0, sn, c]];
+  if (axis === 'y') return [[c, 0, sn], [0, 1, 0], [-sn, 0, c]];
+  return [[c, -sn, 0], [sn, c, 0], [0, 0, 1]];
+}
+const mul = (A, B) => A.map((r, i) => B[0].map((_, j) => r.reduce((acc, _v, k) => acc + A[i][k] * B[k][j], 0)));
+const round = (v) => Math.round(v * 1e4) / 1e4 || 0;
+function eulerXYZ(rotList) {
+  let M = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+  for (const r of asList(rotList)) for (const [ax, deg] of Object.entries(r)) M = mul(M, axisMatrix(ax, deg));
+  const y = Math.asin(Math.max(-1, Math.min(1, M[0][2])));
+  let x, z;
+  if (Math.abs(M[0][2]) < 0.99999) { x = Math.atan2(-M[1][2], M[2][2]); z = Math.atan2(-M[0][1], M[0][0]); }
+  else { x = Math.atan2(M[2][1], M[1][1]); z = 0; }
+  return [x, y, z].map((v) => round(v * 180 / Math.PI));
+}
+function convertDisplay(transform) {
+  const display = {};
+  for (const [k, t] of Object.entries(transform || {})) {
+    const name = PERSPECTIVES[k];
+    if (!name) throw new Error('неизвестная перспектива ' + k);
+    const d = {};
+    if (t.rotation) d.rotation = eulerXYZ(t.rotation);
+    if (t.translation) d.translation = t.translation.map((v) => round(v * 16));
+    if (t.scale !== undefined) d.scale = Array.isArray(t.scale) ? t.scale : [t.scale, t.scale, t.scale];
+    display[name] = d;
+  }
+  return display;
+}
+// Копия OBJ (без изменений) и MTL: пути текстур заменяются ссылками "#материал" (в 1.21 обратная косая черта недопустима;
+// сами текстуры задаёт blockstate оригинала через "#материал").
+const copiedObj = new Set();
+function copyObj(objName) {
+  const dir = ['models/item', 'models/obj', 'models/block'].find((d) => fs.existsSync(path.join(SRC, d, objName)));
+  if (!dir) throw new Error('нет OBJ ' + objName);
+  const rel = `${dir}/${objName}`;
+  if (!copiedObj.has(rel)) {
+    copiedObj.add(rel);
+    const out = path.join(OUT, rel);
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.copyFileSync(path.join(SRC, rel), out);
+    const mtl = path.join(SRC, dir, objName.replace(/\.obj$/, '.mtl'));
+    if (fs.existsSync(mtl)) {
+      let m = fs.readFileSync(mtl, 'utf8'), mat = null;
+      m = m.split(/\r?\n/).map((line) => {
+        const nm = line.match(/^\s*newmtl\s+(\S+)/);
+        if (nm) mat = nm[1];
+        return line.replace(/^(\s*map_K[ad]\s+).*$/, (_, p) => p + '#' + mat);
+      }).join('\n');
+      fs.writeFileSync(out.replace(/\.obj$/, '.mtl'), m);
+    }
+  }
+  return 'thaumcraft:' + rel;
+}
+function writeObjItem(id, bsName, variant) {
+  const bs = readSrc(`blockstates/${bsName}.json`);
+  const d = bs.defaults || {};
+  const v = asList(bs.variants[variant])[0] || {};
+  const modelName = (v.model || d.model).replace(/^thaumcraft:/, '');
+  const textures = {};
+  for (const [k, t] of Object.entries(Object.assign({}, d.textures, v.textures))) textures[k.replace(/^#/, '')] = t;
+  if (!textures.particle) textures.particle = Object.values(textures)[0];
+  const custom = Object.assign({}, d.custom, v.custom);
+  const model = { loader: 'neoforge:obj', model: copyObj(modelName), flip_v: custom['flip-v'] === true, textures };
+  const display = convertDisplay(Object.assign({}, d.transform, v.transform));
+  if (Object.keys(display).length) model.display = display;
+  write(`models/item/${id}.json`, model);
+}
+
 function writeItem(id, src) {
+  const om = src.match(/^obj:([^#]+)#(.+)$/);
+  if (om) return writeObjItem(id, om[1], om[2]);
   if (src.startsWith('model:')) {
     const model = readSrc(`models/item/${src.slice(6)}.json`);
     if (model.parent) model.parent = model.parent.includes(':') ? model.parent : 'minecraft:' + model.parent;

@@ -1,8 +1,28 @@
 package thaumcraft.common.config;
 
 import java.util.Locale;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.ambient.Bat;
+import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.monster.Blaze;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.LlamaSpit;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +36,18 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
+import thaumcraft.api.blocks.BlocksTC;
+import thaumcraft.api.items.ItemsTC;
 import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ScanBlock;
+import thaumcraft.api.research.ScanEntity;
+import thaumcraft.api.research.ScanItem;
+import thaumcraft.api.research.ScanOreDictionary;
+import thaumcraft.api.research.ScanningManager;
+import thaumcraft.common.lib.TCTags;
+import thaumcraft.common.lib.research.ScanEnchantment;
+import thaumcraft.common.lib.research.ScanGeneric;
+import thaumcraft.common.lib.research.ScanPotion;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
@@ -34,6 +65,7 @@ public class ConfigResearch {
     /** init оригинала: при FMLCommonSetupEvent (enqueueWork). */
     public static void init() {
         initCategories();
+        initScannables();
         for (String cat : TCCategories) {
             ThaumcraftApi.registerResearchLocation(rl("research/" + cat.toLowerCase(Locale.ROOT)));
         }
@@ -74,6 +106,87 @@ public class ConfigResearch {
                 new AspectList().add(Aspect.ELDRITCH, 20).add(Aspect.DARKNESS, 10).add(Aspect.MAGIC, 5).add(Aspect.MIND, 5).add(Aspect.VOID, 5)
                         .add(Aspect.DEATH, 5).add(Aspect.UNDEAD, 5).add(Aspect.ENTROPY, 5),
                 rl("textures/research/cat_eldritch.png"), rl("textures/gui/gui_research_back_6.jpg"), BACK_OVER);
+    }
+
+    private static void initScannables() {
+        ScanningManager.addScannableThing(new ScanGeneric());
+        for (Holder<MobEffect> pot : BuiltInRegistries.MOB_EFFECT.holders().toList()) {
+            ScanningManager.addScannableThing(new ScanPotion(pot));
+        }
+        // TODO этап 16: существа Thaumcraft (!Wisp, !ThaumSlime, !Firebat, !Pech, !BrainyZombie, !EldritchCrab, !CrimsonCultist,
+        //  !EldritchGuardian, !TaintCrawler, !Taintacle, !TaintSeed, !TaintSwarm, !FluxRift, f_golem, !ORMOB, !ORBOSS, f_BAT/f_FLY для них)
+        ScanningManager.addScannableThing(new ScanEntity("f_SPIDER", Spider.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_BAT", Bat.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_FLY", Bat.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_FLY", Parrot.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_FLY", Ghast.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_FLY", Blaze.class, true));
+        ScanningManager.addScannableThing(new ScanBlock("!ORBLOCK1", BlocksTC.stoneAncient.get(), BlocksTC.stoneAncientTile.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!ORBLOCK2", BlocksTC.stoneEldritchTile.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!ORBLOCK3", BlocksTC.stoneAncientGlyphed.get()));
+        ScanningManager.addScannableThing(new ScanBlock("ORE", BlocksTC.oreAmber.get(), BlocksTC.oreCinnabar.get(), BlocksTC.crystalAir.get(),
+                BlocksTC.crystalFire.get(), BlocksTC.crystalWater.get(), BlocksTC.crystalEarth.get(), BlocksTC.crystalOrder.get(),
+                BlocksTC.crystalEntropy.get(), BlocksTC.crystalTaint.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!OREAMBER", BlocksTC.oreAmber.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!ORECINNABAR", BlocksTC.oreCinnabar.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!ORECRYSTAL", BlocksTC.crystalAir.get(), BlocksTC.crystalFire.get(),
+                BlocksTC.crystalWater.get(), BlocksTC.crystalEarth.get(), BlocksTC.crystalOrder.get(), BlocksTC.crystalEntropy.get(),
+                BlocksTC.crystalTaint.get()));
+        ScanningManager.addScannableThing(new ScanBlock("PLANTS", BlocksTC.logGreatwood.get(), BlocksTC.logSilverwood.get(),
+                BlocksTC.saplingGreatwood.get(), BlocksTC.saplingSilverwood.get(), BlocksTC.cinderpearl.get(), BlocksTC.shimmerleaf.get(),
+                BlocksTC.vishroom.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!PLANTWOOD", BlocksTC.logGreatwood.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!PLANTWOOD", BlocksTC.logSilverwood.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!PLANTWOOD", BlocksTC.saplingGreatwood.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!PLANTWOOD", BlocksTC.saplingSilverwood.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!PLANTCINDERPEARL", BlocksTC.cinderpearl.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!PLANTSHIMMERLEAF", BlocksTC.shimmerleaf.get()));
+        ScanningManager.addScannableThing(new ScanBlock("!PLANTVISHROOM", BlocksTC.vishroom.get()));
+        // TODO: PRIMPEARL — вместе с изначальной жемчужиной
+        ScanningManager.addScannableThing(new ScanItem("!DRAGONBREATH", new ItemStack(Items.DRAGON_BREATH)));
+        ScanningManager.addScannableThing(new ScanItem("!TOTEMUNDYING", new ItemStack(Items.TOTEM_OF_UNDYING)));
+        ScanningManager.addScannableThing(new ScanBlock("f_TELEPORT", Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME));
+        ScanningManager.addScannableThing(new ScanItem("f_TELEPORT", new ItemStack(Items.ENDER_PEARL)));
+        ScanningManager.addScannableThing(new ScanEntity("f_TELEPORT", EnderMan.class, true));
+        ScanningManager.addScannableThing(new ScanItem("f_BRAIN", new ItemStack(ItemsTC.brain.get())));
+        ScanningManager.addScannableThing(new ScanBlock("f_DISPENSER", Blocks.DISPENSER));
+        ScanningManager.addScannableThing(new ScanItem("f_DISPENSER", new ItemStack(Blocks.DISPENSER)));
+        ScanningManager.addScannableThing(new ScanItem("f_MATCLAY", new ItemStack(Items.CLAY_BALL)));
+        ScanningManager.addScannableThing(new ScanBlock("f_MATCLAY", Blocks.TERRACOTTA, Blocks.WHITE_TERRACOTTA, Blocks.ORANGE_TERRACOTTA,
+                Blocks.MAGENTA_TERRACOTTA, Blocks.LIGHT_BLUE_TERRACOTTA, Blocks.YELLOW_TERRACOTTA, Blocks.LIME_TERRACOTTA, Blocks.PINK_TERRACOTTA,
+                Blocks.GRAY_TERRACOTTA, Blocks.LIGHT_GRAY_TERRACOTTA, Blocks.CYAN_TERRACOTTA, Blocks.PURPLE_TERRACOTTA, Blocks.BLUE_TERRACOTTA,
+                Blocks.BROWN_TERRACOTTA, Blocks.GREEN_TERRACOTTA, Blocks.RED_TERRACOTTA, Blocks.BLACK_TERRACOTTA));
+        // ScanMaterial("f_MATCLAY", Material.CLAY): материалов в 1.21 нет; из ванильных блоков материал CLAY был у блока глины
+        ScanningManager.addScannableThing(new ScanBlock("f_MATCLAY", Blocks.CLAY));
+        ScanningManager.addScannableThing(new ScanOreDictionary("f_MATIRON", Tags.Items.ORES_IRON, Tags.Items.INGOTS_IRON,
+                Tags.Items.STORAGE_BLOCKS_IRON, TCTags.Items.PLATES_IRON));
+        ScanningManager.addScannableThing(new ScanOreDictionary("f_MATBRASS", TCTags.Items.INGOTS_BRASS, TCTags.Items.STORAGE_BLOCKS_BRASS,
+                TCTags.Items.PLATES_BRASS));
+        ScanningManager.addScannableThing(new ScanOreDictionary("f_MATTHAUMIUM", TCTags.Items.INGOTS_THAUMIUM,
+                TCTags.Items.STORAGE_BLOCKS_THAUMIUM, TCTags.Items.PLATES_THAUMIUM));
+        ScanningManager.addScannableThing(new ScanOreDictionary("f_MATVOID", TCTags.Items.INGOTS_VOID, TCTags.Items.STORAGE_BLOCKS_VOID,
+                TCTags.Items.PLATES_VOID));
+        ScanningManager.addScannableThing(new ScanEntity("f_arrow", AbstractArrow.class, true));
+        ScanningManager.addScannableThing(new ScanItem("f_arrow", new ItemStack(Items.ARROW)));
+        ScanningManager.addScannableThing(new ScanEntity("f_fireball", AbstractHurtingProjectile.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_spit", LlamaSpit.class, true));
+        // TODO 7.6: ScanSky (небесные заметки)
+    }
+
+    private static final Set<ResourceKey<Enchantment>> ENCHANTMENT_SCANS = ConcurrentHashMap.newKeySet();
+
+    /**
+     * Сканеры зачарований (в оригинале — для каждого зачарования из реестра при запуске). В 1.21 зачарования — реестр мира:
+     * сканеры добавляются при запуске сервера и при входе клиента; один ключ повторно не добавляется.
+     */
+    public static void registerEnchantmentScans(RegistryAccess access) {
+        access.registry(Registries.ENCHANTMENT).ifPresent(reg -> {
+            for (ResourceKey<Enchantment> key : reg.registryKeySet()) {
+                if (ENCHANTMENT_SCANS.add(key)) {
+                    ScanningManager.addScannableThing(new ScanEnchantment(key));
+                }
+            }
+        });
     }
 
     /**

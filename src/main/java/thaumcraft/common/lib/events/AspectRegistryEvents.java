@@ -30,6 +30,8 @@ public class AspectRegistryEvents {
 
     @SubscribeEvent
     public static void onTagsUpdated(TagsUpdatedEvent event) {
+        // Сканеры зачарований: реестр зачарований доступен только вместе с данными мира (обе стороны)
+        thaumcraft.common.config.ConfigResearch.registerEnchantmentScans(event.getRegistryAccess());
         if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) {
             // Находки пористого камня зависят от тегов (слитки других модов) — пересчитать при следующей добыче
             thaumcraft.common.blocks.basic.BlockStonePorous.resetDrops();
