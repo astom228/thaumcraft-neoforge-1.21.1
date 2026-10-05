@@ -3,14 +3,14 @@
 # затем останавливает сервер. Gradle не передаёт stdin серверу, поэтому процесс завершается принудительно.
 # Использование: scripts/check-server.sh [таймаут_в_секундах]   (по умолчанию 600)
 # CHECK_SERVER_LINGER=N — после "Done" подержать сервер N секунд (для отладочных сводок в логе).
-# Код выхода: 0 — сервер запустился, 1 — ошибка/таймаут. Полный лог: run/logs/latest.log
+# Код выхода: 0 — сервер запустился, 1 — ошибка/таймаут. Полный лог: run-server/logs/latest.log
 set -u
 cd "$(dirname "$0")/.."
 TIMEOUT="${1:-600}"
 OUT="build/check-server.out"
-mkdir -p run build
-[ -f run/eula.txt ] || echo "eula=true" > run/eula.txt
-[ -f run/server.properties ] || echo "online-mode=false" > run/server.properties
+mkdir -p run-server build
+[ -f run-server/eula.txt ] || echo "eula=true" > run-server/eula.txt
+[ -f run-server/server.properties ] || echo "online-mode=false" > run-server/server.properties
 : > "$OUT"
 
 ./gradlew runServer --console=plain > "$OUT" 2>&1 &

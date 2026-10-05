@@ -65,12 +65,24 @@ neoForge {
     runs {
         client {
             client()
+            // Ник первого клиента (КТ-СЕТЬ: сервер + два клиента)
+            programArguments.addAll "--username", "Player1"
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
+        // Второй клиент для проверки сети: отдельная папка (на Windows два процесса в одной папке конфликтуют из-за логов)
+        client2 {
+            client()
+            gameDirectory = project.file("run-client2")
+            programArguments.addAll "--username", "Player2"
+            systemProperty "neoforge.enabledGameTestNamespaces", project.mod_id
+        }
+
         server {
             server()
+            // Отдельная папка, чтобы сервер и клиент можно было запускать одновременно
+            gameDirectory = project.file("run-server")
             programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
