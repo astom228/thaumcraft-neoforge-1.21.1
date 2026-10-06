@@ -16,7 +16,7 @@ public class ThaumcraftCapabilities {
 
     /**
      * Знает ли игрок исследования. Поддерживает "a&&b" и "a||b".
-     * Как в оригинале, "||" передаётся в String.split как регулярное выражение (делит строку посимвольно) — поведение сохранено 1:1.
+     * В оригинале "||" передавался в String.split как регулярное выражение (делил строку посимвольно) — исправлено (DEVIATIONS.md).
      */
     public static boolean knowsResearch(@Nonnull Player player, @Nonnull String... research) {
         for (String r : research) {
@@ -25,7 +25,7 @@ public class ThaumcraftCapabilities {
                     return false;
                 }
             } else if (r.contains("||")) {
-                for (String str : r.split("||")) {
+                for (String str : r.split("\\|\\|")) {
                     if (knowsResearch(player, str)) {
                         return true;
                     }
@@ -45,7 +45,7 @@ public class ThaumcraftCapabilities {
                     return false;
                 }
             } else if (r.contains("||")) {
-                for (String str : r.split("||")) {
+                for (String str : r.split("\\|\\|")) {
                     if (knowsResearchStrict(player, str)) {
                         return true;
                     }

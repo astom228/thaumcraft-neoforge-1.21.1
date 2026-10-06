@@ -1048,8 +1048,10 @@ public class GuiResearchPage extends Screen {
                     if (sr.length > 1) {
                         addtext.add(ChatFormatting.BLUE + "" + ChatFormatting.ITALIC + I18n.get("recipe.clickthrough"));
                         this.reference.add(new Object[] {mx, my, ResourceLocation.parse(sr[0]), sr[1]});
+                    } else if (sr[0].equals("UNKNOWN")) {
+                        // в оригинале не выводилось: ключ без ";" не доходил до проверки (DEVIATIONS.md)
+                        addtext.add(ChatFormatting.DARK_RED + "" + ChatFormatting.ITALIC + I18n.get("recipe.unknown"));
                     }
-                    // "UNKNOWN" (рецепт ещё не изучен) хранится без ";" — как в оригинале, надпись recipe.unknown не выводится
                 }
             }
             this.tipText = addtext;
