@@ -1,22 +1,67 @@
 package thaumcraft.client.gui;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 /**
- * Рецепты, на которые ссылаются страницы исследований (в оригинале — каталог CommonInternals.getCatalogRecipe /
- * getCatalogRecipeFake, затем CraftingManager). Пока — только рецепты RecipeManager клиента; каталог Thaumcraft
- * (магический верстак, тигель, инфузия, «поддельные» рецепты для показа) добавляется на этапах 8, 9, 11.
+ * Рецепты, на которые ссылаются страницы исследований. Порядок поиска как в оригинале: каталог Thaumcraft
+ * (CommonInternals.getCatalogRecipe / getCatalogRecipeFake — магический верстак, тигель, инфузия, «поддельные» рецепты
+ * для показа; добавляются на этапах 8, 9, 11), затем рецепт по ID, затем группа рецептов (ConfigRecipes.recipeGroups:
+ * рецепты с одинаковым полем group, кроме minecraft:*). Только клиент: рецепты берутся из RecipeManager клиента.
  */
 public final class ResearchRecipes {
-    /** Результат рецепта или null, если такого рецепта нет. */
-    public static ItemStack getRecipeOutput(ResourceLocation id) {
+    private static RecipeManager groupsFor;
+    private static Map<String, List<ResourceLocation>> groups = new LinkedHashMap<>();
+
+    /** RecipeHolder, список ID (группа) или null. */
+    public static Object resolve(ResourceLocation id) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) {
             return null;
         }
-        return mc.level.getRecipeManager().byKey(id).map(h -> h.value().getResultItem(mc.level.registryAccess())).orElse(null);
+        RecipeManager rm = mc.level.getRecipeManager();
+        // TODO этапы 8, 9, 11: каталог рецептов Thaumcraft и «поддельные» рецепты
+        RecipeHolder<?> holder = rm.byKey(id).orElse(null);
+        if (holder != null) {
+            return holder;
+        }
+        return groups(rm).get(id.toString());
+    }
+
+    /** Группы пересобираются при смене RecipeManager (вход в мир, /reload). */
+    private static synchronized Map<String, List<ResourceLocation>> groups(RecipeManager rm) {
+        if (groupsFor != rm) {
+            Map<String, List<ResourceLocation>> g = new LinkedHashMap<>();
+            for (RecipeHolder<?> h : rm.getRecipes()) {
+                String group = h.value().getGroup();
+                if (!group.trim().isEmpty() && !group.startsWith("minecraft")) {
+                    g.computeIfAbsent(group, k -> new ArrayList<>()).add(h.id());
+                }
+            }
+            groups = g;
+            groupsFor = rm;
+        }
+        return groups;
+    }
+
+    /** Результат рецепта (для поиска в книге) или null. Для группы — результат первого рецепта. */
+    public static ItemStack getRecipeOutput(ResourceLocation id) {
+        Object r = resolve(id);
+        if (r instanceof List<?> list && !list.isEmpty() && list.get(0) instanceof ResourceLocation first) {
+            r = resolve(first);
+        }
+        if (r instanceof RecipeHolder<?> h) {
+            Minecraft mc = Minecraft.getInstance();
+            return h.value().getResultItem(mc.level.registryAccess());
+        }
+        return null;
     }
 
     private ResearchRecipes() {

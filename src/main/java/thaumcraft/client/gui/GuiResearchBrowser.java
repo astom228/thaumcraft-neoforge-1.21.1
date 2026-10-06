@@ -732,7 +732,7 @@ public class GuiResearchBrowser extends Screen {
     }
 
     private void openPage(ResearchEntry entry, ResourceLocation recipe) {
-        // TODO 7.5: this.minecraft.setScreen(new GuiResearchPage(entry, recipe, this.guiMapX, this.guiMapY));
+        this.minecraft.setScreen(new GuiResearchPage(entry, recipe, this.guiMapX, this.guiMapY));
     }
 
     private void selectCategory(String key) {

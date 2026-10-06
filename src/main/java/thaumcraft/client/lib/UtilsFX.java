@@ -13,12 +13,14 @@ import com.mojang.blaze3d.vertex.VertexSorting;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
@@ -139,6 +141,56 @@ public final class UtilsFX {
         b.addVertex(m, -h, -h, 0.0F).setUv(f1, f4).setColor(red, green, blue, opacity);
         BufferUploader.drawWithShader(b.buildOrThrow());
         RenderSystem.defaultBlendFunc();
+    }
+
+    // --- текст с кодами § ----------------------------------------------------------------------------------------------
+
+    /** Текст со стилями → строка с кодами § (для переноса строк книги и подсказок, как строки 1.12). */
+    public static String toLegacy(FormattedText text) {
+        StringBuilder sb = new StringBuilder();
+        text.visit((style, s) -> {
+            if (!style.isEmpty()) {
+                sb.append("§r");
+                if (style.getColor() != null) {
+                    ChatFormatting cf = ChatFormatting.getByName(style.getColor().serialize());
+                    if (cf != null) {
+                        sb.append(cf);
+                    }
+                }
+                if (style.isObfuscated()) {
+                    sb.append(ChatFormatting.OBFUSCATED);
+                }
+                if (style.isBold()) {
+                    sb.append(ChatFormatting.BOLD);
+                }
+                if (style.isStrikethrough()) {
+                    sb.append(ChatFormatting.STRIKETHROUGH);
+                }
+                if (style.isUnderlined()) {
+                    sb.append(ChatFormatting.UNDERLINE);
+                }
+                if (style.isItalic()) {
+                    sb.append(ChatFormatting.ITALIC);
+                }
+            } else if (!sb.isEmpty()) {
+                sb.append("§r");
+            }
+            sb.append(s);
+            return java.util.Optional.empty();
+        }, Style.EMPTY);
+        return sb.toString();
+    }
+
+    /**
+     * FontRenderer.listFormattedStringToWidth 1.12: перенос по словам и по \n, стиль переносится на следующую строку;
+     * пробел в месте переноса не попадает в начало новой строки.
+     */
+    public static List<String> listFormattedStringToWidth(Font font, String s, int width) {
+        List<String> out = new ArrayList<>();
+        for (FormattedText ft : font.getSplitter().splitLines(s, width, Style.EMPTY)) {
+            out.add(toLegacy(ft).replaceFirst("^((?:§.)*)\\s+", "$1"));
+        }
+        return out;
     }
 
     // --- подсказки книги ------------------------------------------------------------------------------------------------
