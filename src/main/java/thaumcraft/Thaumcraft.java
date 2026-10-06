@@ -17,6 +17,7 @@ import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.lib.CreativeTabThaumcraft;
 import thaumcraft.common.lib.SoundsTC;
 import thaumcraft.common.lib.TCDataComponents;
+import thaumcraft.common.lib.TCMenus;
 import thaumcraft.common.lib.capabilities.ThaumcraftAttachments;
 import thaumcraft.common.lib.crafting.ConfigRecipes;
 
@@ -38,6 +39,7 @@ public class Thaumcraft {
         ConfigRecipes.SERIALIZERS.register(modEventBus);
         ThaumcraftAttachments.ATTACHMENTS.register(modEventBus);
         TCDataComponents.COMPONENTS.register(modEventBus);
+        TCMenus.MENUS.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::loadComplete);
         modEventBus.addListener(ConfigBlocks::registerCapabilities);

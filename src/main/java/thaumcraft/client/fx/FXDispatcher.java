@@ -94,6 +94,23 @@ public class FXDispatcher implements IFXDispatcher {
         ParticleEngine.addEffectWithDelay(this.getWorld(), fb, delay);
     }
 
+    /** Искры над столом исследований во время теории (BlockResearchTable.randomDisplayTick). */
+    @Override
+    public void researchTableSparkle(BlockPos pos, RandomSource rand) {
+        double xx = rand.nextGaussian() / 2.0;
+        double zz = rand.nextGaussian() / 2.0;
+        double yy = 1.5 + rand.nextFloat();
+        int a = 40 + rand.nextInt(20);
+        FXGeneric fb = new FXGeneric(this.getWorld(), pos.getX() + 0.5 + xx, pos.getY() + yy, pos.getZ() + 0.5 + zz, -xx / a, -(yy - 0.85) / a, -zz / a);
+        fb.setMaxAge(a);
+        fb.setRBGColorF(0.5F + rand.nextFloat() * 0.5F, 0.5F + rand.nextFloat() * 0.5F, 0.5F + rand.nextFloat() * 0.5F);
+        fb.setAlphaF(0.0F, 0.25F, 0.5F, 0.75F, 0.0F);
+        fb.setParticles(384 + rand.nextInt(16), 1, 1);
+        fb.setScale(0.8F + rand.nextFloat() * 0.3F, 0.3F);
+        fb.setLayer(0);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
     /** Искра поверх интерфейса (слой 4). */
     public void drawSimpleSparkleGui(RandomSource rand, double x, double y, double x2, double y2, float scale, float r, float g, float b,
                                      int delay, float decay, float grav) {

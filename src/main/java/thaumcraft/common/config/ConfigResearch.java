@@ -49,6 +49,8 @@ import thaumcraft.common.lib.research.ScanEnchantment;
 import thaumcraft.common.lib.research.ScanGeneric;
 import thaumcraft.common.lib.research.ScanPotion;
 import thaumcraft.common.lib.research.ScanSky;
+import thaumcraft.common.lib.research.theorycraft.*;
+import thaumcraft.api.research.theorycraft.*;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
@@ -67,6 +69,7 @@ public class ConfigResearch {
     public static void init() {
         initCategories();
         initScannables();
+        initTheorycraft();
         for (String cat : TCCategories) {
             ThaumcraftApi.registerResearchLocation(rl("research/" + cat.toLowerCase(Locale.ROOT)));
         }
@@ -172,6 +175,50 @@ public class ConfigResearch {
         ScanningManager.addScannableThing(new ScanEntity("f_fireball", AbstractHurtingProjectile.class, true));
         ScanningManager.addScannableThing(new ScanEntity("f_spit", LlamaSpit.class, true));
         ScanningManager.addScannableThing(new ScanSky());
+    }
+
+    private static void initTheorycraft() {
+        TheorycraftManager.registerAid(new AidBookshelf());
+        // TODO: AidBrainInAJar (банка с мозгом), AidPortalCrimson (этап 16), AidBasicAlchemy/Artifice/Auromancy/Golemancy/Eldritch —
+        //  вместе с тиглем, матрицей наполнения, фокусировочным верстаком, сборщиком големов и алтарём
+        TheorycraftManager.registerAid(new AidGlyphedStone());
+        TheorycraftManager.registerAid(new AidPortal.AidPortalEnd());
+        TheorycraftManager.registerAid(new AidPortal.AidPortalNether());
+        TheorycraftManager.registerAid(new AidEnchantmentTable());
+        TheorycraftManager.registerAid(new AidBeacon());
+        TheorycraftManager.registerCard(CardStudy.class);
+        TheorycraftManager.registerCard(CardAnalyze.class);
+        TheorycraftManager.registerCard(CardBalance.class);
+        TheorycraftManager.registerCard(CardNotation.class);
+        TheorycraftManager.registerCard(CardPonder.class);
+        TheorycraftManager.registerCard(CardRethink.class);
+        TheorycraftManager.registerCard(CardReject.class);
+        TheorycraftManager.registerCard(CardExperimentation.class);
+        TheorycraftManager.registerCard(CardCurio.class);
+        TheorycraftManager.registerCard(CardInspired.class);
+        TheorycraftManager.registerCard(CardEnchantment.class);
+        TheorycraftManager.registerCard(CardBeacon.class);
+        TheorycraftManager.registerCard(CardCelestial.class);
+        TheorycraftManager.registerCard(CardConcentrate.class);
+        TheorycraftManager.registerCard(CardReactions.class);
+        TheorycraftManager.registerCard(CardSynthesis.class);
+        TheorycraftManager.registerCard(CardCalibrate.class);
+        TheorycraftManager.registerCard(CardMindOverMatter.class);
+        TheorycraftManager.registerCard(CardTinker.class);
+        TheorycraftManager.registerCard(CardMeasure.class);
+        TheorycraftManager.registerCard(CardChannel.class);
+        TheorycraftManager.registerCard(CardInfuse.class);
+        TheorycraftManager.registerCard(CardFocus.class);
+        TheorycraftManager.registerCard(CardAwareness.class);
+        TheorycraftManager.registerCard(CardSpellbinding.class);
+        TheorycraftManager.registerCard(CardSculpting.class);
+        TheorycraftManager.registerCard(CardScripting.class);
+        TheorycraftManager.registerCard(CardSynergy.class);
+        TheorycraftManager.registerCard(CardDarkWhispers.class);
+        TheorycraftManager.registerCard(CardGlyphs.class);
+        TheorycraftManager.registerCard(CardPortal.class);
+        TheorycraftManager.registerCard(CardRevelation.class);
+        TheorycraftManager.registerCard(CardRealization.class);
     }
 
     private static final Set<ResourceKey<Enchantment>> ENCHANTMENT_SCANS = ConcurrentHashMap.newKeySet();

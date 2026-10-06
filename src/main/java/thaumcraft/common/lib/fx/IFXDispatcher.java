@@ -21,6 +21,9 @@ public interface IFXDispatcher {
     default void blockRunes(double x, double y, double z, float r, float g, float b, int dur, float grav) {
     }
 
+    default void researchTableSparkle(net.minecraft.core.BlockPos pos, net.minecraft.util.RandomSource rand) {
+    }
+
     default void scanHighlight(net.minecraft.core.BlockPos p) {
     }
 

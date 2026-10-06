@@ -9,6 +9,7 @@ import thaumcraft.Thaumcraft;
 import thaumcraft.client.lib.network.ClientPacketHandlers;
 import thaumcraft.common.lib.network.misc.PacketAuraToClient;
 import thaumcraft.common.lib.network.misc.PacketKnowledgeGain;
+import thaumcraft.common.lib.network.misc.PacketStartTheoryToServer;
 import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledge;
 import thaumcraft.common.lib.network.playerdata.PacketSyncKnowledgeDelta;
 import thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer;
@@ -39,6 +40,8 @@ public class PacketHandler {
                 (msg, ctx) -> PacketSyncProgressToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToServer(PacketSyncResearchFlagsToServer.TYPE, PacketSyncResearchFlagsToServer.STREAM_CODEC,
                 (msg, ctx) -> PacketSyncResearchFlagsToServer.handle(msg, (ServerPlayer) ctx.player()));
+        registrar.playToServer(PacketStartTheoryToServer.TYPE, PacketStartTheoryToServer.STREAM_CODEC,
+                (msg, ctx) -> PacketStartTheoryToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToClient(PacketWarpMessage.TYPE, PacketWarpMessage.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleWarpMessage(msg));
     }

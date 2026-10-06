@@ -37,6 +37,13 @@ public class ItemCurio extends Item {
         this.type = type;
     }
 
+    /** Вариант оригинала: arcane, preserved, ancient, eldritch, knowledge, twisted, rites. */
+    public static final String[] VARIANTS = {"arcane", "preserved", "ancient", "eldritch", "knowledge", "twisted", "rites"};
+
+    public String getVariant() {
+        return VARIANTS[this.type];
+    }
+
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("item.curio.text"));
