@@ -171,3 +171,20 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Block of (metal) | Блок (таумиума, латуни, пустотного металла) |
 | Porous Stone | Пористый камень |
 | Flux Crystal | Кристалл выброса |
+
+### Добавлено на этапе 7
+| en | ru | |
+|---|---|---|
+| Crimson Cult / Crimson Rites | Багровый культ / Багровые обряды | |
+| Flux Rift / Flux Condenser | Разлом Выброса / Конденсатор Выброса | |
+| Flux essentia | эссенция Выброса | |
+| Causality Collapser | Разрушитель причинности | |
+| Essentia Resonator | Резонатор эссенции | |
+| Arcane / Preserved / Ancient / Eldritch / Illuminating / Twisted Curiosity | Магический / Сохранившийся / Древний / Потусторонний / Просвещающий / Искажённый реликт | |
+| Cheater's Thaumonomicon | Таумономикон-шпаргалка | |
+| Focus Medium / Effect / Modifier | Носитель / Эффект / Модификатор фокуса | |
+| Bolt, Cloud, Arcane Mine, Plan, Projectile, Spellbat | Разряд, Облако, Магическая мина, План, Снаряд, Чародейская мышь | |
+| Break, Curse, Exchange, Heal, Rift, Scatter, Split | Разрушение, Проклятие, Обмен, Исцеление, Разлом, Рассеивание, Разделение | |
+| Material Studies | Изучение материалов | |
+| Hedge Alchemy | Простая алхимия | |
+| Scrap Theory | Отбросить теорию | |
