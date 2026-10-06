@@ -16,6 +16,7 @@ import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.config.ConfigResearch;
+import thaumcraft.common.items.curios.ItemThaumonomicon;
 import thaumcraft.common.items.resources.ItemCrystalEssence;
 import thaumcraft.common.lib.capabilities.PlayerKnowledge;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -49,7 +50,10 @@ public class PlayerEvents {
                 knowledge.sync(player);
                 player.sendSystemMessage(Component.translatable("got.crystals").withStyle(ChatFormatting.DARK_PURPLE));
             }
-            // TODO 7.4: ItemThaumonomicon → "!gotthaumonomicon"
+            if (stack.getItem() instanceof ItemThaumonomicon && !knowledge.isResearchKnown("!gotthaumonomicon")) {
+                knowledge.addResearch("!gotthaumonomicon");
+                knowledge.sync(player);
+            }
         }
     }
 

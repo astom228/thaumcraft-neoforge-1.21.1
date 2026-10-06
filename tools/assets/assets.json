@@ -355,6 +355,8 @@
     "perditio_crystal": "model:crystal_perditio",
     "vitium_crystal": "model:crystal_vitium",
     "enchanted_placeholder": "model:enchanted_placeholder",
-    "thaumometer": "obj:thaumometer#normal"
+    "thaumometer": "obj:thaumometer#normal",
+    "thaumonomicon": "bs:thaumonomicon#normal",
+    "cheaters_thaumonomicon": "bs:thaumonomicon#cheat"
   }
 }

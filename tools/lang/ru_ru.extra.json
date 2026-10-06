@@ -192,5 +192,9 @@
   "tc.removewarptemp": "§5Вы избавились от временного Искажения!§0",
   "block.thaumcraft.porous_stone": "Пористый камень",
   "block.thaumcraft.light_blue_nitor": "Голубой нитор",
-  "block.thaumcraft.vitium_crystal": "Кристалл выброса"
+  "block.thaumcraft.vitium_crystal": "Кристалл выброса",
+  "tc.research.popup": "Начато исследование: %s",
+  "item.thaumcraft.cheaters_thaumonomicon.desc": "Только для творческого режима",
+  "tc.search": "Поиск",
+  "tc.search.more": "...найдено слишком много. Уточните запрос"
 }

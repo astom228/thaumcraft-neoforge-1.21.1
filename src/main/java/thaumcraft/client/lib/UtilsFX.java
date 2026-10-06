@@ -11,10 +11,15 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexSorting;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
 import org.lwjgl.opengl.GL11;
@@ -134,6 +139,113 @@ public final class UtilsFX {
         b.addVertex(m, -h, -h, 0.0F).setUv(f1, f4).setColor(red, green, blue, opacity);
         BufferUploader.drawWithShader(b.buildOrThrow());
         RenderSystem.defaultBlendFunc();
+    }
+
+    // --- подсказки книги ------------------------------------------------------------------------------------------------
+
+    /**
+     * Подсказка оригинала (drawCustomTooltip): строки с префиксом "@@" — мелким шрифтом (масштаб 0,5), ширина до 240
+     * (у правого края окна — уже или с переворотом налево); subTipColor != -99 — первая строка этим цветом, прочие серым.
+     * Коды форматирования § в строках действуют, перенос строк их сохраняет.
+     */
+    public static void drawCustomTooltip(GuiGraphics g, Font fr, List<String> textList, int x, int y, int subTipColor, boolean ignoremouse) {
+        if (textList.isEmpty()) {
+            return;
+        }
+        Minecraft mc = Minecraft.getInstance();
+        Window win = mc.getWindow();
+        int sf = (int) win.getGuiScale();
+        int max = 240;
+        int mx = (int) mc.mouseHandler.xpos();
+        boolean flip = false;
+        if (!ignoremouse && (max + 24) * sf + mx > win.getWidth()) {
+            max = (win.getWidth() - mx) / sf - 24;
+            if (max < 120) {
+                max = 240;
+                flip = true;
+            }
+        }
+        boolean b = false;
+        for (String textLine : textList) {
+            if (fr.width(textLine) > max) {
+                b = true;
+                break;
+            }
+        }
+        List<FormattedCharSequence> lines = new ArrayList<>();
+        List<Boolean> small = new ArrayList<>();
+        for (String textLine : textList) {
+            boolean s = textLine.startsWith("@@");
+            String t = textLine.replace("@@", "");
+            if (subTipColor != -99) {
+                t = (lines.isEmpty() ? "§" + Integer.toHexString(subTipColor) : "§7") + t;
+            }
+            if (b) {
+                for (FormattedCharSequence seq : fr.split(FormattedText.of(t), s ? max * 2 : max)) {
+                    lines.add(seq);
+                    small.add(s);
+                }
+            } else {
+                lines.add(Language.getInstance().getVisualOrder(FormattedText.of(t)));
+                small.add(s);
+            }
+        }
+        int widestLineWidth = 0;
+        int totalHeight = -2;
+        for (int i = 0; i < lines.size(); i++) {
+            int lineWidth = fr.width(lines.get(i));
+            if (small.get(i)) {
+                lineWidth /= 2;
+            }
+            widestLineWidth = Math.max(widestLineWidth, lineWidth);
+            totalHeight += small.get(i) ? 7 : 10;
+        }
+        int sX = x + 12;
+        int sY = y - 12;
+        if (lines.size() > 1) {
+            totalHeight += 2;
+        }
+        if (sY + totalHeight > win.getGuiScaledHeight()) {
+            sY = win.getGuiScaledHeight() - totalHeight - 5;
+        }
+        if (flip) {
+            sX -= widestLineWidth + 24;
+        }
+        g.pose().pushPose();
+        g.pose().translate(0.0F, 0.0F, 300.0F);
+        int var10 = -267386864;
+        g.fillGradient(sX - 3, sY - 4, sX + widestLineWidth + 3, sY - 3, var10, var10);
+        g.fillGradient(sX - 3, sY + totalHeight + 3, sX + widestLineWidth + 3, sY + totalHeight + 4, var10, var10);
+        g.fillGradient(sX - 3, sY - 3, sX + widestLineWidth + 3, sY + totalHeight + 3, var10, var10);
+        g.fillGradient(sX - 4, sY - 3, sX - 3, sY + totalHeight + 3, var10, var10);
+        g.fillGradient(sX + widestLineWidth + 3, sY - 3, sX + widestLineWidth + 4, sY + totalHeight + 3, var10, var10);
+        int var11 = 1347420415;
+        int var12 = (var11 & 16711422) >> 1 | var11 & 0xFF000000;
+        g.fillGradient(sX - 3, sY - 3 + 1, sX - 3 + 1, sY + totalHeight + 3 - 1, var11, var12);
+        g.fillGradient(sX + widestLineWidth + 2, sY - 3 + 1, sX + widestLineWidth + 3, sY + totalHeight + 3 - 1, var11, var12);
+        g.fillGradient(sX - 3, sY - 3, sX + widestLineWidth + 3, sY - 3 + 1, var11, var11);
+        g.fillGradient(sX - 3, sY + totalHeight + 2, sX + widestLineWidth + 3, sY + totalHeight + 3, var12, var12);
+        for (int i = 0; i < lines.size(); i++) {
+            g.pose().pushPose();
+            g.pose().translate(sX, sY, 1.0F);
+            boolean shift = small.get(i);
+            if (shift) {
+                sY += 7;
+                g.pose().scale(0.5F, 0.5F, 1.0F);
+            } else {
+                sY += 10;
+            }
+            g.drawString(fr, lines.get(i), 0, shift ? 3 : 0, -1, true);
+            g.pose().popPose();
+            if (i == 0) {
+                sY += 2;
+            }
+        }
+        g.pose().popPose();
+    }
+
+    public static void drawCustomTooltip(GuiGraphics g, Font fr, List<String> textList, int x, int y, int subTipColor) {
+        drawCustomTooltip(g, fr, textList, x, y, subTipColor, false);
     }
 
     // --- отрисовка поверх кадра (RenderTickEvent оригинала) -------------------------------------------------------------

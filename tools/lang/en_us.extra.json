@@ -88,5 +88,7 @@
   "thaumcraft.command.research.listfor": "§5Research for %s",
   "thaumcraft.command.research.list": "§5%s",
   "thaumcraft.command.research.giveall": "§5%s has given you all research.",
-  "thaumcraft.command.research.reset": "§5%s has reset all your research."
+  "thaumcraft.command.research.reset": "§5%s has reset all your research.",
+  "tc.research.popup": "Research started: %s",
+  "item.thaumcraft.cheaters_thaumonomicon.desc": "Creative only"
 }

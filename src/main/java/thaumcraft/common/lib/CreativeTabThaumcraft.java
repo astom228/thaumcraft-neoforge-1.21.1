@@ -10,6 +10,8 @@ import thaumcraft.Thaumcraft;
 import thaumcraft.api.items.ItemGenericEssentiaContainer;
 import thaumcraft.api.items.ItemsTC;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.config.ModConfig;
+import thaumcraft.common.items.curios.ItemThaumonomicon;
 
 /** Вкладка «Thaumcraft» в творческом режиме. Иконка — очки откровения, как в оригинале. */
 public final class CreativeTabThaumcraft {
@@ -20,7 +22,12 @@ public final class CreativeTabThaumcraft {
             .icon(() -> new ItemStack(ItemsTC.goggles.get()))
             .displayItems((params, output) -> ConfigItems.ITEMS.getEntries().forEach(item -> {
                 // ItemGenericEssentiaContainer.getSubItems: по стеку на каждый аспект
-                if (item.get() instanceof ItemGenericEssentiaContainer container) {
+                if (item.get() instanceof ItemThaumonomicon book && book.isCheat()) {
+                    // ItemThaumonomicon.getSubItems: «шпаргалка» — только если разрешена в конфиге
+                    if (ModConfig.CONFIG_MISC.allowCheatSheet.get()) {
+                        output.accept(item.get());
+                    }
+                } else if (item.get() instanceof ItemGenericEssentiaContainer container) {
                     container.addCreativeVariants(output);
                 } else {
                     output.accept(item.get());

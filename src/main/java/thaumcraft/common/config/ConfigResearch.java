@@ -81,31 +81,31 @@ public class ConfigResearch {
         ResearchCategories.registerCategory("BASICS", null,
                 new AspectList().add(Aspect.PLANT, 5).add(Aspect.ORDER, 5).add(Aspect.ENTROPY, 5).add(Aspect.AIR, 5).add(Aspect.FIRE, 5)
                         .add(Aspect.EARTH, 3).add(Aspect.WATER, 5),
-                rl("textures/items/thaumonomicon_cheat.png"), rl("textures/gui/gui_research_back_1.jpg"), BACK_OVER);
+                rl("textures/items/thaumonomicon_cheat.png"), rl("textures/gui/gui_research_back_1.png"), BACK_OVER);
         ResearchCategories.registerCategory("AUROMANCY", "UNLOCKAUROMANCY",
                 new AspectList().add(Aspect.AURA, 20).add(Aspect.MAGIC, 20).add(Aspect.FLUX, 15).add(Aspect.CRYSTAL, 5).add(Aspect.COLD, 5)
                         .add(Aspect.AIR, 5),
-                rl("textures/research/cat_auromancy.png"), rl("textures/gui/gui_research_back_2.jpg"), BACK_OVER);
+                rl("textures/research/cat_auromancy.png"), rl("textures/gui/gui_research_back_2.png"), BACK_OVER);
         ResearchCategories.registerCategory("ALCHEMY", "UNLOCKALCHEMY",
                 new AspectList().add(Aspect.ALCHEMY, 30).add(Aspect.FLUX, 10).add(Aspect.MAGIC, 10).add(Aspect.LIFE, 5).add(Aspect.AVERSION, 5)
                         .add(Aspect.DESIRE, 5).add(Aspect.WATER, 5),
-                rl("textures/research/cat_alchemy.png"), rl("textures/gui/gui_research_back_3.jpg"), BACK_OVER);
+                rl("textures/research/cat_alchemy.png"), rl("textures/gui/gui_research_back_3.png"), BACK_OVER);
         ResearchCategories.registerCategory("ARTIFICE", "UNLOCKARTIFICE",
                 new AspectList().add(Aspect.MECHANISM, 10).add(Aspect.CRAFT, 10).add(Aspect.METAL, 10).add(Aspect.TOOL, 10).add(Aspect.ENERGY, 10)
                         .add(Aspect.LIGHT, 5).add(Aspect.FLIGHT, 5).add(Aspect.TRAP, 5).add(Aspect.FIRE, 5),
-                rl("textures/research/cat_artifice.png"), rl("textures/gui/gui_research_back_4.jpg"), BACK_OVER);
+                rl("textures/research/cat_artifice.png"), rl("textures/gui/gui_research_back_4.png"), BACK_OVER);
         ResearchCategories.registerCategory("INFUSION", "UNLOCKINFUSION",
                 new AspectList().add(Aspect.MAGIC, 30).add(Aspect.PROTECT, 10).add(Aspect.TOOL, 10).add(Aspect.FLUX, 5).add(Aspect.CRAFT, 5)
                         .add(Aspect.SOUL, 5).add(Aspect.EARTH, 3),
-                rl("textures/research/cat_infusion.png"), rl("textures/gui/gui_research_back_7.jpg"), BACK_OVER);
+                rl("textures/research/cat_infusion.png"), rl("textures/gui/gui_research_back_7.png"), BACK_OVER);
         ResearchCategories.registerCategory("GOLEMANCY", "UNLOCKGOLEMANCY",
                 new AspectList().add(Aspect.MAN, 20).add(Aspect.MOTION, 10).add(Aspect.MIND, 10).add(Aspect.MECHANISM, 10).add(Aspect.EXCHANGE, 5)
                         .add(Aspect.SENSES, 5).add(Aspect.BEAST, 5).add(Aspect.ORDER, 5),
-                rl("textures/research/cat_golemancy.png"), rl("textures/gui/gui_research_back_5.jpg"), BACK_OVER);
+                rl("textures/research/cat_golemancy.png"), rl("textures/gui/gui_research_back_5.png"), BACK_OVER);
         ResearchCategories.registerCategory("ELDRITCH", "UNLOCKELDRITCH",
                 new AspectList().add(Aspect.ELDRITCH, 20).add(Aspect.DARKNESS, 10).add(Aspect.MAGIC, 5).add(Aspect.MIND, 5).add(Aspect.VOID, 5)
                         .add(Aspect.DEATH, 5).add(Aspect.UNDEAD, 5).add(Aspect.ENTROPY, 5),
-                rl("textures/research/cat_eldritch.png"), rl("textures/gui/gui_research_back_6.jpg"), BACK_OVER);
+                rl("textures/research/cat_eldritch.png"), rl("textures/gui/gui_research_back_6.png"), BACK_OVER);
     }
 
     private static void initScannables() {
