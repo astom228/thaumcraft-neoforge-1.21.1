@@ -163,8 +163,31 @@ function convertBlock(id, spec) {
     let parent;
     if (inv && (inv.model || inv.textures)) parent = toVariant(id, inv, models).model;
     else parent = asList(Object.values(variants)[0])[0].model;
-    write(`models/item/${id}.json`, { parent });
+    const item = { parent };
+    // forge:default-block — стандартные преобразования блока (как у minecraft:block/block); нужны, если у модели нет родителя
+    const invRaw = bs.variants.inventory ? asList(bs.variants.inventory)[0] : null;
+    const tr = (invRaw && invRaw.transform) || defaults.transform;
+    if (tr === 'forge:default-block' && !hasParent(parent)) item.display = DEFAULT_BLOCK_DISPLAY;
+    write(`models/item/${id}.json`, item);
   }
+}
+
+const DEFAULT_BLOCK_DISPLAY = {
+  gui: { rotation: [30, 225, 0], translation: [0, 0, 0], scale: [0.625, 0.625, 0.625] },
+  ground: { rotation: [0, 0, 0], translation: [0, 3, 0], scale: [0.25, 0.25, 0.25] },
+  fixed: { rotation: [0, 0, 0], translation: [0, 0, 0], scale: [0.5, 0.5, 0.5] },
+  thirdperson_righthand: { rotation: [75, 45, 0], translation: [0, 2.5, 0], scale: [0.375, 0.375, 0.375] },
+  firstperson_righthand: { rotation: [0, 45, 0], translation: [0, 0, 0], scale: [0.4, 0.4, 0.4] },
+  firstperson_lefthand: { rotation: [0, 225, 0], translation: [0, 0, 0], scale: [0.4, 0.4, 0.4] },
+};
+// Есть ли у модели thaumcraft:block/... цепочка родителей (тогда преобразования наследуются)
+function hasParent(ref) {
+  const m = ref.match(/^thaumcraft:block\/(.+)$/);
+  if (!m) return true;
+  const p = path.join(OUT, 'models/block', m[1] + '.json');
+  if (!fs.existsSync(p)) return true;
+  const model = JSON.parse(fs.readFileSync(p, 'utf8'));
+  return model.parent ? hasParent(model.parent) : false;
 }
 
 function itemLayer(e) {

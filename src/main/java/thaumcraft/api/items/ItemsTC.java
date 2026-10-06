@@ -1,6 +1,8 @@
 package thaumcraft.api.items;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -9,9 +11,12 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.consumables.ItemZombieBrain;
+import thaumcraft.common.items.curios.ItemCelestialNotes;
+import thaumcraft.common.items.curios.ItemCurio;
 import thaumcraft.common.items.curios.ItemEnchantmentPlaceholder;
 import thaumcraft.common.items.curios.ItemThaumonomicon;
 import thaumcraft.common.items.resources.ItemCrystalEssence;
+import thaumcraft.common.items.tools.ItemScribingTools;
 import thaumcraft.common.items.tools.ItemThaumometer;
 
 /**
@@ -72,6 +77,23 @@ public class ItemsTC {
     public static final DeferredItem<Item> thaumometer = ConfigItems.ITEMS.registerItem("thaumometer", ItemThaumometer::new);
     public static final DeferredItem<Item> thaumonomicon = ConfigItems.ITEMS.registerItem("thaumonomicon", p -> new ItemThaumonomicon(false, p));
     public static final DeferredItem<Item> thaumonomiconCheat = ConfigItems.ITEMS.registerItem("cheaters_thaumonomicon", p -> new ItemThaumonomicon(true, p));
+    public static final DeferredItem<Item> scribingTools = ConfigItems.ITEMS.registerItem("scribing_tools", ItemScribingTools::new);
+    // curio: arcane, preserved, ancient, eldritch, knowledge, twisted, rites (meta 0..6)
+    public static final DeferredItem<Item> curioArcane = curio("arcane_curio", 0);
+    public static final DeferredItem<Item> curioPreserved = curio("preserved_curio", 1);
+    public static final DeferredItem<Item> curioAncient = curio("ancient_curio", 2);
+    public static final DeferredItem<Item> curioEldritch = curio("eldritch_curio", 3);
+    public static final DeferredItem<Item> curioKnowledge = curio("illuminating_curio", 4);
+    public static final DeferredItem<Item> curioTwisted = curio("twisted_curio", 5);
+    public static final DeferredItem<Item> curioRites = curio("crimson_rites", 6);
+    /** Небесные заметки по варианту (sun, stars_1..4, moon_1..8). */
+    public static final Map<String, DeferredItem<Item>> celestialNotes = new LinkedHashMap<>();
+
+    static {
+        for (String v : ItemCelestialNotes.VARIANTS) {
+            celestialNotes.put(v, ConfigItems.ITEMS.registerItem("celestial_notes_" + v, p -> new ItemCelestialNotes(v, p)));
+        }
+    }
 
     // --- еда ---
     // ItemChunksEdible: ItemFood(1, 0.3F, false), время поедания 10 тиков
@@ -96,6 +118,10 @@ public class ItemsTC {
 
     // TODO этап 13: заменить на ItemGoggles (броня + очки откровения). Пока нужен как иконка вкладки.
     public static final DeferredItem<Item> goggles = ConfigItems.ITEMS.registerSimpleItem("goggles", new Item.Properties().stacksTo(1));
+
+    private static DeferredItem<Item> curio(String name, int type) {
+        return ConfigItems.ITEMS.registerItem(name, p -> new ItemCurio(type, p));
+    }
 
     private static DeferredItem<Item> simple(String name) {
         return ConfigItems.ITEMS.registerSimpleItem(name);

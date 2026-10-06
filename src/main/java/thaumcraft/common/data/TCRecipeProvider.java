@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -36,6 +37,7 @@ public class TCRecipeProvider extends RecipeProvider {
     private static final String THAUMIUM = "thaumcraft:thaumium_stuff";
     private static final String VOID = "thaumcraft:void_stuff";
     private static final String CANDLES = "thaumcraft:tallowcandles";
+    private static final String INKWELL = "thaumcraft:inkwell";
 
     public TCRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
@@ -109,6 +111,22 @@ public class TCRecipeProvider extends RecipeProvider {
         slab(out, "slabarcanebrick", BlocksTC.stoneArcaneBrick.get(), BlocksTC.slabArcaneBrick.get());
         slab(out, "slabancient", BlocksTC.stoneAncient.get(), BlocksTC.slabAncient.get());
         slab(out, "slabeldritch", BlocksTC.stoneEldritchTile.get(), BlocksTC.slabEldritch.get());
+
+        // --- столы и письменные принадлежности ---
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlocksTC.tableWood.get())
+                .pattern("SSS").pattern("W W").define('S', ItemTags.WOODEN_SLABS).define('W', ItemTags.PLANKS)
+                .unlockedBy("has", has(ItemTags.PLANKS)).save(out, id("tablewood"));
+        // Blocks.STONE_SLAB (meta 0) 1.12 = гладкая каменная плита 1.21; "stone" = minecraft:stone
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlocksTC.tableStone.get())
+                .pattern("SSS").pattern("W W").define('S', Items.SMOOTH_STONE_SLAB).define('W', Items.STONE)
+                .unlockedBy("has", has(Items.STONE)).save(out, id("tablestone"));
+        // TODO: scribingtoolscraft1 (фиал + перо + чёрный краситель) — вместе с фиалом
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, scribingTools.get()).group(INKWELL)
+                .requires(Items.GLASS_BOTTLE).requires(Items.FEATHER).requires(Tags.Items.DYES_BLACK)
+                .unlockedBy("has", has(Items.FEATHER)).save(out, id("scribingtoolscraft2"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, scribingTools.get()).group(INKWELL)
+                .requires(scribingTools.get()).requires(Tags.Items.DYES_BLACK)
+                .unlockedBy("has", has(scribingTools.get())).save(out, id("scribingtoolsrefill"));
 
         // --- свечи ---
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlocksTC.candles.get(DyeColor.WHITE).get(), 3).group(CANDLES)

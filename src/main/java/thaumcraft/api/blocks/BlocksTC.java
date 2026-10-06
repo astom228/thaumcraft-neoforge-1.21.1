@@ -15,6 +15,8 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import thaumcraft.common.blocks.basic.BlockCandle;
+import thaumcraft.common.blocks.basic.BlockTable;
+import thaumcraft.common.blocks.crafting.BlockResearchTable;
 import thaumcraft.common.blocks.basic.BlockMetalTC;
 import thaumcraft.common.blocks.basic.BlockPlanksTC;
 import thaumcraft.common.blocks.basic.BlockSlabTC;
@@ -186,6 +188,15 @@ public class BlocksTC {
     private static BlockBehaviour.Properties copy(DeferredBlock<Block> block) {
         return BlockBehaviour.Properties.ofFullCopy(block.get());
     }
+
+    // Столы (BlockTable): дерево — прочность 2.0, сопротивление → 2.0; камень — 2.5 / 2.5; выпадают без инструмента
+    public static final DeferredBlock<Block> tableWood = register("wooden_table", () -> new BlockTable(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 2.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+    public static final DeferredBlock<Block> tableStone = register("stone_table", () -> new BlockTable(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.5F, 2.5F).sound(SoundType.STONE).noOcclusion()));
+    // Стол исследований (BlockTCTile: прочность 2.0, setResistance(20) → 12)
+    public static final DeferredBlock<Block> researchTable = register("research_table", () -> new BlockResearchTable(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion()));
 
     /** Регистрирует блок и его предмет (в оригинале — ConfigBlocks.registerBlock). */
     private static DeferredBlock<Block> register(String name, Supplier<? extends Block> block) {

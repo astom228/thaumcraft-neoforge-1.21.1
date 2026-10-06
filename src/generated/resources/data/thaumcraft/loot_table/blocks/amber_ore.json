@@ -29,27 +29,47 @@
               "name": "thaumcraft:amber_ore"
             },
             {
-              "type": "minecraft:item",
-              "functions": [
+              "type": "minecraft:alternatives",
+              "children": [
                 {
-                  "add": false,
-                  "count": {
-                    "type": "minecraft:uniform",
-                    "max": 2.0,
-                    "min": 1.0
-                  },
-                  "function": "minecraft:set_count"
+                  "type": "minecraft:item",
+                  "conditions": [
+                    {
+                      "chance": 0.066,
+                      "condition": "minecraft:random_chance"
+                    }
+                  ],
+                  "functions": [
+                    {
+                      "function": "minecraft:explosion_decay"
+                    }
+                  ],
+                  "name": "thaumcraft:preserved_curio"
                 },
                 {
-                  "enchantment": "minecraft:fortune",
-                  "formula": "minecraft:ore_drops",
-                  "function": "minecraft:apply_bonus"
-                },
-                {
-                  "function": "minecraft:explosion_decay"
+                  "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "add": false,
+                      "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2.0,
+                        "min": 1.0
+                      },
+                      "function": "minecraft:set_count"
+                    },
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    },
+                    {
+                      "function": "minecraft:explosion_decay"
+                    }
+                  ],
+                  "name": "thaumcraft:amber"
                 }
-              ],
-              "name": "thaumcraft:amber"
+              ]
             }
           ]
         }

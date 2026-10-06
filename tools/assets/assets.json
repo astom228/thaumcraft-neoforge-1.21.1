@@ -290,6 +290,15 @@
     "black_nitor": {
       "src": "nitor_black",
       "itemModel": "model:nitor"
+    },
+    "wooden_table": {
+      "src": "table_wood"
+    },
+    "stone_table": {
+      "src": "table_stone"
+    },
+    "research_table": {
+      "src": "research_table"
     }
   },
   "items": {
@@ -357,6 +366,27 @@
     "enchanted_placeholder": "model:enchanted_placeholder",
     "thaumometer": "obj:thaumometer#normal",
     "thaumonomicon": "bs:thaumonomicon#normal",
-    "cheaters_thaumonomicon": "bs:thaumonomicon#cheat"
+    "cheaters_thaumonomicon": "bs:thaumonomicon#cheat",
+    "scribing_tools": "model:scribing_tools",
+    "arcane_curio": "bs:curio#arcane",
+    "preserved_curio": "bs:curio#preserved",
+    "ancient_curio": "bs:curio#ancient",
+    "eldritch_curio": "bs:curio#eldritch",
+    "illuminating_curio": "bs:curio#knowledge",
+    "twisted_curio": "bs:curio#twisted",
+    "crimson_rites": "bs:curio#rites",
+    "celestial_notes_sun": "bs:celestial_notes#sun",
+    "celestial_notes_stars_1": "bs:celestial_notes#stars_1",
+    "celestial_notes_stars_2": "bs:celestial_notes#stars_2",
+    "celestial_notes_stars_3": "bs:celestial_notes#stars_3",
+    "celestial_notes_stars_4": "bs:celestial_notes#stars_4",
+    "celestial_notes_moon_1": "bs:celestial_notes#moon_1",
+    "celestial_notes_moon_2": "bs:celestial_notes#moon_2",
+    "celestial_notes_moon_3": "bs:celestial_notes#moon_3",
+    "celestial_notes_moon_4": "bs:celestial_notes#moon_4",
+    "celestial_notes_moon_5": "bs:celestial_notes#moon_5",
+    "celestial_notes_moon_6": "bs:celestial_notes#moon_6",
+    "celestial_notes_moon_7": "bs:celestial_notes#moon_7",
+    "celestial_notes_moon_8": "bs:celestial_notes#moon_8"
   }
 }

@@ -40,6 +40,7 @@ public class Thaumcraft {
         TCDataComponents.COMPONENTS.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::loadComplete);
+        modEventBus.addListener(ConfigBlocks::registerCapabilities);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, ModConfig.CLIENT_SPEC);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_SPEC);
     }

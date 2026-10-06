@@ -48,6 +48,7 @@ import thaumcraft.common.lib.TCTags;
 import thaumcraft.common.lib.research.ScanEnchantment;
 import thaumcraft.common.lib.research.ScanGeneric;
 import thaumcraft.common.lib.research.ScanPotion;
+import thaumcraft.common.lib.research.ScanSky;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
@@ -170,7 +171,7 @@ public class ConfigResearch {
         ScanningManager.addScannableThing(new ScanItem("f_arrow", new ItemStack(Items.ARROW)));
         ScanningManager.addScannableThing(new ScanEntity("f_fireball", AbstractHurtingProjectile.class, true));
         ScanningManager.addScannableThing(new ScanEntity("f_spit", LlamaSpit.class, true));
-        // TODO 7.6: ScanSky (небесные заметки)
+        ScanningManager.addScannableThing(new ScanSky());
     }
 
     private static final Set<ResourceKey<Enchantment>> ENCHANTMENT_SCANS = ConcurrentHashMap.newKeySet();
