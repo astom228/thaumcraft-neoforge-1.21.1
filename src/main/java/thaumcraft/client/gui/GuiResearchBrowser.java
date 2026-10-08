@@ -57,6 +57,13 @@ public class GuiResearchBrowser extends Screen {
     private static int guiBoundsTop;
     private static int guiBoundsRight;
     private static int guiBoundsBottom;
+    /** Крайние колонки/ряды видимых исследований раздела и центр карты (в координатах карты при текущем зуме). */
+    private static int mapMinCol;
+    private static int mapMaxCol;
+    private static int mapMinRow;
+    private static int mapMaxRow;
+    private static int guiCenterX;
+    private static int guiCenterY;
     protected int mouseX = 0;
     protected int mouseY = 0;
     protected float screenZoom = 1.0F;
@@ -109,11 +116,11 @@ public class GuiResearchBrowser extends Screen {
     @Override
     protected void init() {
         this.updateResearch();
-        if (lastX == -9999.0 || this.guiMapX > guiBoundsRight || this.guiMapX < guiBoundsLeft) {
-            this.guiMapX = this.tempMapX = (guiBoundsLeft + guiBoundsRight) / 2;
+        if (lastX == -9999.0 || this.guiMapX >= guiBoundsRight || this.guiMapX < guiBoundsLeft) {
+            this.guiMapX = this.tempMapX = guiCenterX;
         }
-        if (lastY == -9999.0 || this.guiMapY > guiBoundsBottom || this.guiMapY < guiBoundsTop) {
-            this.guiMapY = this.tempMapY = (guiBoundsBottom + guiBoundsTop) / 2;
+        if (lastY == -9999.0 || this.guiMapY >= guiBoundsBottom || this.guiMapY < guiBoundsTop) {
+            this.guiMapY = this.tempMapY = guiCenterY;
         }
         // без этого первый кадр интерполировался от начального -9999 к краю границ
         this.curMouseX = this.guiMapX;
@@ -195,27 +202,60 @@ public class GuiResearchBrowser extends Screen {
         catScrollMax = count - limit;
         if (selectedCategory != null && !selectedCategory.isEmpty() && ResearchCategories.getResearchCategory(selectedCategory) != null) {
             this.research.addAll(ResearchCategories.getResearchCategory(selectedCategory).research.values());
-            guiBoundsLeft = 99999;
-            guiBoundsTop = 99999;
-            guiBoundsRight = -99999;
-            guiBoundsBottom = -99999;
+            mapMinCol = Integer.MAX_VALUE;
+            mapMaxCol = Integer.MIN_VALUE;
+            mapMinRow = Integer.MAX_VALUE;
+            mapMaxRow = Integer.MIN_VALUE;
             for (ResearchEntry res : this.research) {
                 if (res != null && this.isVisible(res)) {
-                    if (res.getDisplayColumn() * 24 - this.screenX + 48 < guiBoundsLeft) {
-                        guiBoundsLeft = res.getDisplayColumn() * 24 - this.screenX + 48;
-                    }
-                    if (res.getDisplayColumn() * 24 - 24 > guiBoundsRight) {
-                        guiBoundsRight = res.getDisplayColumn() * 24 - 24;
-                    }
-                    if (res.getDisplayRow() * 24 - this.screenY + 48 < guiBoundsTop) {
-                        guiBoundsTop = res.getDisplayRow() * 24 - this.screenY + 48;
-                    }
-                    if (res.getDisplayRow() * 24 - 24 > guiBoundsBottom) {
-                        guiBoundsBottom = res.getDisplayRow() * 24 - 24;
-                    }
+                    mapMinCol = Math.min(mapMinCol, res.getDisplayColumn());
+                    mapMaxCol = Math.max(mapMaxCol, res.getDisplayColumn());
+                    mapMinRow = Math.min(mapMinRow, res.getDisplayRow());
+                    mapMaxRow = Math.max(mapMaxRow, res.getDisplayRow());
                 }
             }
+            if (mapMinCol > mapMaxCol) {
+                mapMinCol = mapMaxCol = mapMinRow = mapMaxRow = 0;
+            }
+            this.recalcBounds();
         }
+    }
+
+    /**
+     * Границы прокрутки карты (крайнее исследование не уходит дальше края поля) и центр — в координатах карты с учётом зума.
+     * Карта рисуется со смещением startX и масштабом 1/zoom, поле в этих координатах — от startX·zoom шириной screenX·zoom;
+     * значок исследования занимает 32 точки от (колонка·24 − 8). В оригинале зум не учитывался, а если раздел меньше поля,
+     * левая граница оказывалась правее правой и карта прижималась к левому верхнему углу; теперь такой раздел
+     * ставится по центру поля (DEVIATIONS.md).
+     */
+    private void recalcBounds() {
+        double z = this.screenZoom;
+        double fw = this.screenX * z;
+        double fh = this.screenY * z;
+        double ox = this.startX * (z - 1.0);
+        double oy = this.startY * (z - 1.0);
+        guiBoundsLeft = Mth.floor(mapMinCol * 24 - fw + 48 - ox);
+        guiBoundsRight = Mth.floor(mapMaxCol * 24 - 24 - ox);
+        guiBoundsTop = Mth.floor(mapMinRow * 24 - fh + 48 - oy);
+        guiBoundsBottom = Mth.floor(mapMaxRow * 24 - 24 - oy);
+        int cx = Mth.floor((mapMinCol + mapMaxCol) * 12 + 8 - fw / 2.0 - ox);
+        int cy = Mth.floor((mapMinRow + mapMaxRow) * 12 + 8 - fh / 2.0 - oy);
+        if (guiBoundsLeft >= guiBoundsRight) {
+            guiBoundsLeft = cx;
+            guiBoundsRight = cx + 1;
+        }
+        if (guiBoundsTop >= guiBoundsBottom) {
+            guiBoundsTop = cy;
+            guiBoundsBottom = cy + 1;
+        }
+        guiCenterX = Mth.clamp(cx, guiBoundsLeft, guiBoundsRight - 1);
+        guiCenterY = Mth.clamp(cy, guiBoundsTop, guiBoundsBottom - 1);
+    }
+
+    /** Держать положение карты в границах (после смены зума). */
+    private void clampMapToBounds() {
+        this.guiMapX = this.tempMapX = this.curMouseX = Mth.clamp(this.guiMapX, guiBoundsLeft, guiBoundsRight - 1);
+        this.guiMapY = this.tempMapY = this.curMouseY = Mth.clamp(this.guiMapY, guiBoundsTop, guiBoundsBottom - 1);
     }
 
     private boolean isVisible(ResearchEntry res) {
@@ -325,6 +365,8 @@ public class GuiResearchBrowser extends Screen {
                 this.screenZoom -= 0.25F;
             }
             this.screenZoom = Mth.clamp(this.screenZoom, 1.0F, 2.0F);
+            this.recalcBounds();
+            this.clampMapToBounds();
         }
         return true;
     }
@@ -348,17 +390,17 @@ public class GuiResearchBrowser extends Screen {
                     this.mouseX = mx;
                     this.mouseY = my;
                 }
-                if (this.tempMapX < (double) guiBoundsLeft * this.screenZoom) {
-                    this.tempMapX = (double) guiBoundsLeft * this.screenZoom;
+                if (this.tempMapX < (double) guiBoundsLeft) {
+                    this.tempMapX = (double) guiBoundsLeft;
                 }
-                if (this.tempMapY < (double) guiBoundsTop * this.screenZoom) {
-                    this.tempMapY = (double) guiBoundsTop * this.screenZoom;
+                if (this.tempMapY < (double) guiBoundsTop) {
+                    this.tempMapY = (double) guiBoundsTop;
                 }
-                if (this.tempMapX >= (double) guiBoundsRight * this.screenZoom) {
-                    this.tempMapX = guiBoundsRight * this.screenZoom - 1.0F;
+                if (this.tempMapX >= (double) guiBoundsRight) {
+                    this.tempMapX = guiBoundsRight - 1.0;
                 }
-                if (this.tempMapY >= (double) guiBoundsBottom * this.screenZoom) {
-                    this.tempMapY = guiBoundsBottom * this.screenZoom - 1.0F;
+                if (this.tempMapY >= (double) guiBoundsBottom) {
+                    this.tempMapY = guiBoundsBottom - 1.0;
                 }
             }
         }
@@ -368,17 +410,17 @@ public class GuiResearchBrowser extends Screen {
         float pt = this.minecraft.getTimer().getGameTimeDeltaPartialTick(true);
         int locX = Mth.floor(this.curMouseX + (this.guiMapX - this.curMouseX) * pt);
         int locY = Mth.floor(this.curMouseY + (this.guiMapY - this.curMouseY) * pt);
-        if (locX < guiBoundsLeft * this.screenZoom) {
-            locX = (int) (guiBoundsLeft * this.screenZoom);
+        if (locX < guiBoundsLeft) {
+            locX = guiBoundsLeft;
         }
-        if (locY < guiBoundsTop * this.screenZoom) {
-            locY = (int) (guiBoundsTop * this.screenZoom);
+        if (locY < guiBoundsTop) {
+            locY = guiBoundsTop;
         }
-        if (locX >= guiBoundsRight * this.screenZoom) {
-            locX = (int) (guiBoundsRight * this.screenZoom - 1.0F);
+        if (locX >= guiBoundsRight) {
+            locX = guiBoundsRight - 1;
         }
-        if (locY >= guiBoundsBottom * this.screenZoom) {
-            locY = (int) (guiBoundsBottom * this.screenZoom - 1.0F);
+        if (locY >= guiBoundsBottom) {
+            locY = guiBoundsBottom - 1;
         }
         if (!searching) {
             // карта рисуется только внутри поля под рамкой; значки-предметы выводятся из буфера до рамки и вкладок
@@ -751,8 +793,8 @@ public class GuiResearchBrowser extends Screen {
         this.searchField.setFocused(false);
         selectedCategory = key;
         this.updateResearch();
-        this.guiMapX = this.tempMapX = this.curMouseX = (guiBoundsLeft + guiBoundsRight) / 2;
-        this.guiMapY = this.tempMapY = this.curMouseY = (guiBoundsBottom + guiBoundsTop) / 2;
+        this.guiMapX = this.tempMapX = this.curMouseX = guiCenterX;
+        this.guiMapY = this.tempMapY = this.curMouseY = guiCenterY;
     }
 
     private void startSearch() {
