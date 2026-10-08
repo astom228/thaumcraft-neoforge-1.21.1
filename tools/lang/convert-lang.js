@@ -76,8 +76,19 @@ const ru = new Map();
 for (const [k, v] of ruAll) if (en.has(k) && cyr.test(v)) ru.set(k, v);
 for (const [k, v] of Object.entries(ruExtra)) ru.set(k, v);
 
-// Проверки
 let errors = 0;
+
+// Страницы книги «Странные сны» в оригинале — JSON-строки ("…\n\n…"): 1.12 разбирал страницу книги как JSON-текст,
+// поэтому кавычки не показывались, а \n становились переносами. В 1.21 страница — готовый компонент, разбираем здесь.
+for (const m of [en, ru]) {
+  for (const [k, v] of m) {
+    if (/^book\.start\.\d+$/.test(k) && v.trim().startsWith('"')) {
+      try { m.set(k, JSON.parse(v.trim())); } catch (e) { console.error(`  ✗ ${k}: не JSON-строка`); errors++; }
+    }
+  }
+}
+
+// Проверки
 for (const k of ru.keys()) if (!en.has(k)) { console.error(`  ✗ ключ ru без en: ${k}`); errors++; }
 for (const k of Object.keys(enExtra)) if (!ru.has(k)) { console.error(`  ✗ новая строка без перевода на русский: ${k}`); errors++; }
 
