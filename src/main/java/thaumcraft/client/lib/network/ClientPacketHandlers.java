@@ -89,16 +89,23 @@ public final class ClientPacketHandlers {
     }
 
     /**
-     * Как в оригинале (processMessage): для постоянного Искажения (type 0) текст формируется, но не показывается —
-     * играет только шёпот; для обычного (1) — текст на панели действий и шёпот; для временного (2) — только текст.
+     * processMessage оригинала: постоянное (type 0) и обычное (1) — текст на панели действий и шёпот при получении;
+     * для обычного (1) — текст на панели действий и шёпот; для временного (2) — только текст.
      */
     public static void handleWarpMessage(PacketWarpMessage msg) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null || msg.amount() == 0) {
             return;
         }
-        if (msg.warpType() == 0 && msg.amount() > 0) {
-            player.playSound(SoundsTC.whispers.get(), 0.5F, 1.0F);
+        if (msg.warpType() == 0) {
+            // в оригинале текст для постоянного Искажения формировался, но не выводился (DEVIATIONS.md)
+            String key = "tc.addwarp";
+            if (msg.amount() < 0) {
+                key = "tc.removewarp";
+            } else {
+                player.playSound(SoundsTC.whispers.get(), 0.5F, 1.0F);
+            }
+            player.displayClientMessage(Component.translatable(key), true);
         } else if (msg.warpType() == 1) {
             String key = "tc.addwarpsticky";
             if (msg.amount() < 0) {

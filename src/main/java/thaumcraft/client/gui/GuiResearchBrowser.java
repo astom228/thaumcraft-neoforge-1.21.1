@@ -115,6 +115,9 @@ public class GuiResearchBrowser extends Screen {
         if (lastY == -9999.0 || this.guiMapY > guiBoundsBottom || this.guiMapY < guiBoundsTop) {
             this.guiMapY = this.tempMapY = (guiBoundsBottom + guiBoundsTop) / 2;
         }
+        // без этого первый кадр интерполировался от начального -9999 к краю границ
+        this.curMouseX = this.guiMapX;
+        this.curMouseY = this.guiMapY;
     }
 
     public void updateResearch() {
@@ -361,8 +364,10 @@ public class GuiResearchBrowser extends Screen {
         }
         this.renderTransparentBackground(g);
         this.t = System.nanoTime() / 50000000L;
-        int locX = Mth.floor(this.curMouseX + (this.guiMapX - this.curMouseX) * par3);
-        int locY = Mth.floor(this.curMouseY + (this.guiMapY - this.curMouseY) * par3);
+        // доля тика, как partialTicks в 1.12 (экраны 1.21 получают в render прошедшие тики за кадр)
+        float pt = this.minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+        int locX = Mth.floor(this.curMouseX + (this.guiMapX - this.curMouseX) * pt);
+        int locY = Mth.floor(this.curMouseY + (this.guiMapY - this.curMouseY) * pt);
         if (locX < guiBoundsLeft * this.screenZoom) {
             locX = (int) (guiBoundsLeft * this.screenZoom);
         }
@@ -376,10 +381,14 @@ public class GuiResearchBrowser extends Screen {
             locY = (int) (guiBoundsBottom * this.screenZoom - 1.0F);
         }
         if (!searching) {
+            // карта рисуется только внутри поля под рамкой; значки-предметы выводятся из буфера до рамки и вкладок
+            g.enableScissor(this.startX - 2, this.startY - 2, this.startX + this.screenX + 2, this.startY + this.screenY + 2);
             g.pose().pushPose();
             g.pose().scale(1.0F / this.screenZoom, 1.0F / this.screenZoom, 1.0F);
             this.genResearchBackgroundZoomable(g, mx, my, locX, locY);
             g.pose().popPose();
+            g.flush();
+            g.disableScissor();
         } else {
             this.searchField.render(g, mx, my, par3);
             int q = 0;
@@ -742,8 +751,8 @@ public class GuiResearchBrowser extends Screen {
         this.searchField.setFocused(false);
         selectedCategory = key;
         this.updateResearch();
-        this.guiMapX = this.tempMapX = (guiBoundsLeft + guiBoundsRight) / 2;
-        this.guiMapY = this.tempMapY = (guiBoundsBottom + guiBoundsTop) / 2;
+        this.guiMapX = this.tempMapX = this.curMouseX = (guiBoundsLeft + guiBoundsRight) / 2;
+        this.guiMapY = this.tempMapY = this.curMouseY = (guiBoundsBottom + guiBoundsTop) / 2;
     }
 
     private void startSearch() {

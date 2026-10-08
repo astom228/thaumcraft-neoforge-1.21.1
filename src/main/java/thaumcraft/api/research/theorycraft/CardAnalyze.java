@@ -13,7 +13,7 @@ import thaumcraft.api.research.ResearchCategory;
 
 /**
  * «Анализ»: тратит очко наблюдения категории, даёт 25–50 в ней и 5 в «Основах».
- * Как в оригинале, initialize проверяет наблюдение по ещё не выбранной категории (null), поэтому карточка не выпадает.
+ * В оригинале initialize проверял наблюдение по ещё не выбранной категории (null) и карточка не выпадала — исправлено (DEVIATIONS.md).
  */
 public class CardAnalyze extends TheorycraftCard {
     String cat = null;
@@ -42,7 +42,7 @@ public class CardAnalyze extends TheorycraftCard {
         ArrayList<String> cats = new ArrayList<>();
         for (ResearchCategory rc : ResearchCategories.researchCategories.values()) {
             if (!rc.key.equals("BASICS") && ThaumcraftCapabilities.getKnowledge(player)
-                    .getKnowledge(IPlayerKnowledge.EnumKnowledgeType.OBSERVATION, ResearchCategories.researchCategories.get(this.cat)) > 0) {
+                    .getKnowledge(IPlayerKnowledge.EnumKnowledgeType.OBSERVATION, rc) > 0) {
                 cats.add(rc.key);
             }
         }
