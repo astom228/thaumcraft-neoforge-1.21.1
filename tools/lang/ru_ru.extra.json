@@ -399,5 +399,11 @@
   "research.m_runner.text": "Много бегать.",
   "research.m_swimmer.text": "Много плавать.",
   "research.m_walker.text": "Много ходить.",
-  "research.voidstuff.text": "Странный металл"
+  "research.voidstuff.text": "Странный металл",
+  "tc.workbench.available": "доступно: %s",
+  "tc.workbench.vis": "%s Вис",
+  "tc.workbench.discount": "(скидка %s%%)",
+  "block.thaumcraft.arcane_workbench_charger": "Зарядник верстака",
+  "tc.discount": "скидка",
+  "tc.visdiscount": "Скидка Вис"
 }

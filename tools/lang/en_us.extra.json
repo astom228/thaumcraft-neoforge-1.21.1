@@ -90,5 +90,8 @@
   "thaumcraft.command.research.giveall": "§5%s has given you all research.",
   "thaumcraft.command.research.reset": "§5%s has reset all your research.",
   "tc.research.popup": "Research started: %s",
-  "item.thaumcraft.cheaters_thaumonomicon.desc": "Creative only"
+  "item.thaumcraft.cheaters_thaumonomicon.desc": "Creative only",
+  "tc.workbench.available": "%s available",
+  "tc.workbench.vis": "%s vis",
+  "tc.workbench.discount": "(%s%% discount)"
 }

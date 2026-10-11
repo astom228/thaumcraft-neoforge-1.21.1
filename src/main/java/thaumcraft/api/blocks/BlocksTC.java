@@ -16,6 +16,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import thaumcraft.common.blocks.basic.BlockCandle;
 import thaumcraft.common.blocks.basic.BlockTable;
+import thaumcraft.common.blocks.crafting.BlockArcaneWorkbench;
+import thaumcraft.common.blocks.crafting.BlockArcaneWorkbenchCharger;
 import thaumcraft.common.blocks.crafting.BlockResearchTable;
 import thaumcraft.common.blocks.basic.BlockMetalTC;
 import thaumcraft.common.blocks.basic.BlockPlanksTC;
@@ -197,6 +199,12 @@ public class BlocksTC {
     // Стол исследований (BlockTCTile: прочность 2.0, setResistance(20) → 12)
     public static final DeferredBlock<Block> researchTable = register("research_table", () -> new BlockResearchTable(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion()));
+    // Магический верстак (BlockTCDevice → BlockTCTile: прочность 2.0, сопротивление 20 → 12; Material.WOOD)
+    public static final DeferredBlock<Block> arcaneWorkbench = register("arcane_workbench", () -> new BlockArcaneWorkbench(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+    // Зарядник верстака (BlockTC: прочность 1.25, setResistance(10) → 6; Material.WOOD)
+    public static final DeferredBlock<Block> arcaneWorkbenchCharger = register("arcane_workbench_charger", () -> new BlockArcaneWorkbenchCharger(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.25F, 6.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
 
     /** Регистрирует блок и его предмет (в оригинале — ConfigBlocks.registerBlock). */
     private static DeferredBlock<Block> register(String name, Supplier<? extends Block> block) {

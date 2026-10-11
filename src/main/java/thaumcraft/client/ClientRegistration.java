@@ -10,6 +10,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent;
 import thaumcraft.common.lib.crafting.ConfigRecipes;
+import thaumcraft.client.gui.GuiArcaneWorkbench;
 import thaumcraft.client.gui.GuiResearchTable;
 import thaumcraft.common.lib.TCMenus;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -32,6 +33,7 @@ public class ClientRegistration {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(TCMenus.RESEARCH_TABLE.get(), GuiResearchTable::new);
+        event.register(TCMenus.ARCANE_WORKBENCH.get(), GuiArcaneWorkbench::new);
     }
 
     /** Магические рецепты не входят в ванильную книгу рецептов; без категории клиент пишет предупреждение на каждый рецепт. */

@@ -69,6 +69,24 @@ function merge(...parts) {
 
 // Запись варианта -> запись blockstate 1.21 (+ генерация модели при наличии текстур)
 function toVariant(id, entry, models, renderType) {
+  // OBJ-модель блока (forge OBJ loader 1.12, flip-v по умолчанию выкл.) -> загрузчик neoforge:obj
+  if ((entry.model || '').endsWith('.obj')) {
+    const key = JSON.stringify(['obj', entry.model, entry.textures]);
+    if (!models.has(key)) {
+      const name = models.size === 0 ? id : `${id}_${models.size}`;
+      models.set(key, `thaumcraft:block/${name}`);
+      const textures = {};
+      for (const [k, t] of Object.entries(entry.textures || {})) textures[k.replace(/^#/, '')] = t;
+      if (!textures.particle) textures.particle = Object.values(textures)[0];
+      const model = { loader: 'neoforge:obj', model: copyObj(entry.model.replace(/^thaumcraft:/, '')), flip_v: false, textures };
+      if (renderType) model.render_type = renderType;
+      write(`models/block/${name}.json`, model);
+    }
+    const v = { model: models.get(key) };
+    if (entry.x) v.x = entry.x;
+    if (entry.y) v.y = entry.y;
+    return v;
+  }
   let ref = modelRef(entry.model);
   if (entry.textures && Object.keys(entry.textures).length) {
     const key = JSON.stringify([ref, entry.textures]);

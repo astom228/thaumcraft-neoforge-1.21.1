@@ -299,6 +299,12 @@
     },
     "research_table": {
       "src": "research_table"
+    },
+    "arcane_workbench": {
+      "src": "arcane_workbench"
+    },
+    "arcane_workbench_charger": {
+      "src": "arcane_workbench_charger"
     }
   },
   "items": {

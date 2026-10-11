@@ -188,3 +188,11 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Material Studies | Изучение материалов | |
 | Hedge Alchemy | Простая алхимия | |
 | Scrap Theory | Отбросить теорию | |
+
+### Добавлено на этапе 8
+
+| English | Русский | Примечание |
+|---|---|---|
+| Workbench Charger | Зарядник верстака | |
+| discount / Vis discount | скидка / Скидка Вис | |
+| N available (aura vis) | доступно: N | надпись в магическом верстаке |
