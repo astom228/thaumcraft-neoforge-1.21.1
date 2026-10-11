@@ -21,12 +21,14 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import thaumcraft.api.ThaumcraftApi;
@@ -34,13 +36,38 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.api.crafting.ArcaneCraftingInput;
+import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.internal.CommonInternals;
 
 /**
  * Аспекты предметов: поиск в таблице, бонусы и генерация из рецептов (порт части ThaumcraftCraftingManager).
- * Поиск рецептов тигля/инфузии/магического верстака добавляется на этапах 8, 9, 11.
+ * Поиск рецептов магического верстака; тигля и инфузии — на этапах 9, 11.
  */
 public class ThaumcraftCraftingManager {
+
+    /**
+     * Первый магический рецепт, подходящий к содержимому верстака. Исследование рецепта, как в оригинале, не проверяется.
+     */
+    public static IArcaneRecipe findMatchingArcaneRecipe(ArcaneCraftingInput matrix, Player player) {
+        return player.level().getRecipeManager().getRecipeFor(ConfigRecipes.ARCANE_CRAFTING.get(), matrix, player.level())
+                .map(RecipeHolder::value).orElse(null);
+    }
+
+    public static ItemStack findMatchingArcaneRecipeResult(ArcaneCraftingInput awb, Player player) {
+        IArcaneRecipe var13 = findMatchingArcaneRecipe(awb, player);
+        return var13 == null ? null : var13.assemble(awb, player.level().registryAccess());
+    }
+
+    public static AspectList findMatchingArcaneRecipeCrystals(ArcaneCraftingInput awb, Player player) {
+        IArcaneRecipe var13 = findMatchingArcaneRecipe(awb, player);
+        return var13 == null ? null : var13.getCrystals();
+    }
+
+    public static int findMatchingArcaneRecipeVis(ArcaneCraftingInput awb, Player player) {
+        IArcaneRecipe var13 = findMatchingArcaneRecipe(awb, player);
+        return var13 == null ? 0 : var13.getVis();
+    }
 
     public static AspectList getObjectTags(ItemStack itemstack) {
         return getObjectTags(itemstack, null);
@@ -285,15 +312,24 @@ public class ThaumcraftCraftingManager {
         }
         AspectList ret = null;
         int value = Integer.MAX_VALUE;
+        // в 1.12 магические рецепты лежали в общем реестре рецептов верстака
+        List<Recipe<?>> all = new ArrayList<>();
         for (RecipeHolder<CraftingRecipe> holder : recipes.getAllRecipesFor(RecipeType.CRAFTING)) {
-            CraftingRecipe recipe = holder.value();
+            all.add(holder.value());
+        }
+        for (RecipeHolder<IArcaneRecipe> holder : recipes.getAllRecipesFor(ConfigRecipes.ARCANE_CRAFTING.get())) {
+            all.add(holder.value());
+        }
+        for (Recipe<?> recipe : all) {
             ItemStack out = recipe.getResultItem(registries);
             if (out.isEmpty() || out.getItem() != stack.getItem()) {
                 continue;
             }
             try {
                 AspectList ph = getAspectsFromIngredients(recipe.getIngredients(), out, recipe, history);
-                // TODO этап 8: IArcaneRecipe — + MAGIC sqrt(1 + vis/2) / количество
+                if (recipe instanceof IArcaneRecipe ar && ar.getVis() > 0) {
+                    ph.add(Aspect.MAGIC, (int) (Math.sqrt(1 + ar.getVis() / 2) / out.getCount()));
+                }
                 for (Aspect as : ph.copy().getAspects()) {
                     if (ph.getAmount(as) <= 0) {
                         ph.remove(as);
@@ -314,7 +350,7 @@ public class ThaumcraftCraftingManager {
      * Сумма аспектов ингредиентов (первый подходящий предмет каждого) минус остатки рецепта (вёдра и т.п.), × 0.75 / количество.
      * В оригинале при recipe == null (инфузия) остатки не вычислялись и цикл по ним падал с NPE — поведение сохранено.
      */
-    static AspectList getAspectsFromIngredients(List<Ingredient> ingredients, ItemStack recipeOut, CraftingRecipe recipe, ArrayList<String> history) {
+    static AspectList getAspectsFromIngredients(List<Ingredient> ingredients, ItemStack recipeOut, Recipe<?> recipe, ArrayList<String> history) {
         AspectList out = new AspectList();
         AspectList mid = new AspectList();
         NonNullList<ItemStack> exlist = null;
@@ -331,7 +367,11 @@ public class ThaumcraftCraftingManager {
                 }
                 index++;
             }
-            exlist = recipe.getRemainingItems(CraftingInput.of(3, 3, items));
+            if (recipe instanceof IArcaneRecipe ar) {
+                exlist = ar.getRemainingItems(ArcaneCraftingInput.of(items));
+            } else if (recipe instanceof CraftingRecipe cr) {
+                exlist = cr.getRemainingItems(CraftingInput.of(3, 3, items));
+            }
         }
         for (Ingredient is : ingredients) {
             ItemStack[] matching = is.getItems();

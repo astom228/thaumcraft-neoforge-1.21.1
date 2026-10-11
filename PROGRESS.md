@@ -8,7 +8,7 @@
 - **КТ-СЕТЬ** перенесена на после этапа 12 (вместе с КТ 6) — общий чек-лист, включая сетевые пункты КТ 3 (ниже).
 
 ### Этап 8 — в работе
-- [ ] 8.1 API рецептов: IArcaneRecipe, IArcaneWorkbench, ShapedArcaneRecipe/ShapelessArcaneRecipe — свой RecipeType + сериализаторы
+- [x] 8.1 API рецептов: IArcaneRecipe, IArcaneWorkbench, ShapedArcaneRecipe/ShapelessArcaneRecipe — свой RecipeType + сериализаторы
       (JSON: research, vis, crystals), ввод на 15 слотов (9 сетка + 6 кристаллов), ThaumcraftCraftingManager.findMatchingArcaneRecipe,
       скидка Вис (IVisDiscountGear: Curios + броня; часть от эффектов истощения — на этапе 15).
 - [ ] 8.2 Магический верстак и зарядник: блоки, модели, BE (инвентарь 15 слотов, Вис ауры / 3×3 чанка с зарядником, трата Вис),
@@ -99,7 +99,7 @@
 
 ## Осталось в текущем этапе
 
-- 8.1–8.5 (план выше), начинаю с 8.1.
+- 8.2 Магический верстак и зарядник.
 
 ## Известные проблемы / TODO
 

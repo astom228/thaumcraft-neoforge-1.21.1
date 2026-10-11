@@ -37,6 +37,7 @@ public class Thaumcraft {
         SoundsTC.SOUNDS.register(modEventBus);
         CreativeTabThaumcraft.TABS.register(modEventBus);
         ConfigRecipes.SERIALIZERS.register(modEventBus);
+        ConfigRecipes.TYPES.register(modEventBus);
         ThaumcraftAttachments.ATTACHMENTS.register(modEventBus);
         TCDataComponents.COMPONENTS.register(modEventBus);
         TCMenus.MENUS.register(modEventBus);
