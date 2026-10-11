@@ -64,6 +64,9 @@ public class GuiResearchBrowser extends Screen {
     private static int mapMaxRow;
     private static int guiCenterX;
     private static int guiCenterY;
+    /** Раздел целиком помещается в поле по ширине / высоте (при текущем зуме). */
+    private static boolean mapFitsX;
+    private static boolean mapFitsY;
     protected int mouseX = 0;
     protected int mouseY = 0;
     protected float screenZoom = 1.0F;
@@ -112,19 +115,14 @@ public class GuiResearchBrowser extends Screen {
         this.player = Minecraft.getInstance().player;
     }
 
-    /** initGui + setWorldAndResolution оригинала: перестроить вкладки и при необходимости отцентрировать карту. */
+    /**
+     * initGui + setWorldAndResolution оригинала (вызывается и при смене размера окна / масштаба интерфейса):
+     * перестроить вкладки и поставить карту на место.
+     */
     @Override
     protected void init() {
         this.updateResearch();
-        if (lastX == -9999.0 || this.guiMapX >= guiBoundsRight || this.guiMapX < guiBoundsLeft) {
-            this.guiMapX = this.tempMapX = guiCenterX;
-        }
-        if (lastY == -9999.0 || this.guiMapY >= guiBoundsBottom || this.guiMapY < guiBoundsTop) {
-            this.guiMapY = this.tempMapY = guiCenterY;
-        }
-        // без этого первый кадр интерполировался от начального -9999 к краю границ
-        this.curMouseX = this.guiMapX;
-        this.curMouseY = this.guiMapY;
+        this.placeMap(lastX == -9999.0, lastY == -9999.0);
     }
 
     public void updateResearch() {
@@ -224,9 +222,7 @@ public class GuiResearchBrowser extends Screen {
     /**
      * Границы прокрутки карты (крайнее исследование не уходит дальше края поля) и центр — в координатах карты с учётом зума.
      * Карта рисуется со смещением startX и масштабом 1/zoom, поле в этих координатах — от startX·zoom шириной screenX·zoom;
-     * значок исследования занимает 32 точки от (колонка·24 − 8). В оригинале зум не учитывался, а если раздел меньше поля,
-     * левая граница оказывалась правее правой и карта прижималась к левому верхнему углу; теперь такой раздел
-     * ставится по центру поля (DEVIATIONS.md).
+     * значок исследования занимает 32 точки от (колонка·24 − 8). В оригинале зум в границах не учитывался (DEVIATIONS.md).
      */
     private void recalcBounds() {
         double z = this.screenZoom;
@@ -240,22 +236,24 @@ public class GuiResearchBrowser extends Screen {
         guiBoundsBottom = Mth.floor(mapMaxRow * 24 - 24 - oy);
         int cx = Mth.floor((mapMinCol + mapMaxCol) * 12 + 8 - fw / 2.0 - ox);
         int cy = Mth.floor((mapMinRow + mapMaxRow) * 12 + 8 - fh / 2.0 - oy);
-        if (guiBoundsLeft >= guiBoundsRight) {
-            guiBoundsLeft = cx;
-            guiBoundsRight = cx + 1;
-        }
-        if (guiBoundsTop >= guiBoundsBottom) {
-            guiBoundsTop = cy;
-            guiBoundsBottom = cy + 1;
-        }
+        guiBoundsRight = Math.max(guiBoundsRight, guiBoundsLeft + 1);
+        guiBoundsBottom = Math.max(guiBoundsBottom, guiBoundsTop + 1);
         guiCenterX = Mth.clamp(cx, guiBoundsLeft, guiBoundsRight - 1);
         guiCenterY = Mth.clamp(cy, guiBoundsTop, guiBoundsBottom - 1);
+        mapFitsX = (mapMaxCol - mapMinCol) * 24 + 32 <= fw;
+        mapFitsY = (mapMaxRow - mapMinRow) * 24 + 32 <= fh;
     }
 
-    /** Держать положение карты в границах (после смены зума). */
-    private void clampMapToBounds() {
-        this.guiMapX = this.tempMapX = this.curMouseX = Mth.clamp(this.guiMapX, guiBoundsLeft, guiBoundsRight - 1);
-        this.guiMapY = this.tempMapY = this.curMouseY = Mth.clamp(this.guiMapY, guiBoundsTop, guiBoundsBottom - 1);
+    /**
+     * Положение карты при открытии, смене размера окна/масштаба и зума. В оригинале восстанавливалась сохранённая позиция,
+     * если она попадала в границы, — а у небольшого раздела границы охватывают всё поле, и раздел оказывался где угодно
+     * (DEVIATIONS.md). Теперь по каждой оси: раздел помещается в поле — по центру; нет — сохранённая позиция в границах.
+     */
+    private void placeMap(boolean centerX, boolean centerY) {
+        this.guiMapX = this.tempMapX = this.curMouseX = centerX || mapFitsX ? guiCenterX
+                : Mth.clamp(this.guiMapX, guiBoundsLeft, guiBoundsRight - 1);
+        this.guiMapY = this.tempMapY = this.curMouseY = centerY || mapFitsY ? guiCenterY
+                : Mth.clamp(this.guiMapY, guiBoundsTop, guiBoundsBottom - 1);
     }
 
     private boolean isVisible(ResearchEntry res) {
@@ -366,7 +364,7 @@ public class GuiResearchBrowser extends Screen {
             }
             this.screenZoom = Mth.clamp(this.screenZoom, 1.0F, 2.0F);
             this.recalcBounds();
-            this.clampMapToBounds();
+            this.placeMap(false, false);
         }
         return true;
     }
