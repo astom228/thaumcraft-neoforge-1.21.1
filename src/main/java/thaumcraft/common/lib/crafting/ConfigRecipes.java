@@ -1,7 +1,14 @@
 package thaumcraft.common.lib.crafting;
 
 import net.minecraft.core.registries.Registries;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -11,6 +18,9 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import thaumcraft.Thaumcraft;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.IDustTrigger;
@@ -50,5 +60,17 @@ public class ConfigRecipes {
         IDustTrigger.registerDustTrigger(new DustTriggerOre("FIRSTSTEPS@1", Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES,
                 new ItemStack(BlocksTC.arcaneWorkbench.get())));
         // TODO этап 9: DustTriggerSimple("UNLOCKALCHEMY@1", Blocks.CAULDRON, тигель); многоблочные — этапы 9, 11, 14, 18
+    }
+
+    /** Из initializeNormalRecipes оригинала: «поддельный» рецепт соли мира для книги (кристаллы — любые, сменяются). */
+    public static void initializeFakeRecipes() {
+        List<ItemStack> crystals = new ArrayList<>();
+        for (Aspect a : Aspect.aspects.values()) {
+            crystals.add(ThaumcraftApiHelper.makeCrystal(a));
+        }
+        Ingredient anyCrystal = Ingredient.of(crystals.stream());
+        ThaumcraftApi.addFakeCraftingRecipe(ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "salismundusfake"),
+                new ShapelessRecipe("", CraftingBookCategory.MISC, new ItemStack(ItemsTC.salisMundus.get()), NonNullList.of(Ingredient.EMPTY,
+                        Ingredient.of(Items.FLINT), Ingredient.of(Items.BOWL), Ingredient.of(Items.REDSTONE), anyCrystal, anyCrystal, anyCrystal)));
     }
 }

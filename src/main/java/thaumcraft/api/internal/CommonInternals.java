@@ -30,6 +30,12 @@ public class CommonInternals {
     /** Файлы JSON исследований (ThaumcraftApi.registerResearchLocation); порядок регистрации сохраняется. */
     public static final Map<String, ResourceLocation> jsonLocs = Collections.synchronizedMap(new LinkedHashMap<>());
     public static final ArrayList<ThaumcraftApi.EntityTags> scanEntities = new ArrayList<>();
+    /** Рецепты только для показа в книге (ThaumcraftApi.addFakeCraftingRecipe); заполняется при загрузке. */
+    public static final Map<ResourceLocation, Object> craftingRecipeCatalogFake = new ConcurrentHashMap<>();
+
+    public static Object getCatalogRecipeFake(ResourceLocation key) {
+        return craftingRecipeCatalogFake.get(key);
+    }
 
     /** Ключ таблицы аспектов: предмет + компоненты (без DAMAGE). */
     public record ItemKey(Item item, DataComponentPatch components) {

@@ -37,8 +37,12 @@ import org.lwjgl.glfw.GLFW;
 import thaumcraft.Thaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
+import thaumcraft.api.crafting.IArcaneRecipe;
+import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.api.crafting.ShapelessArcaneRecipe;
 import thaumcraft.api.research.ResearchAddendum;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
@@ -625,10 +629,17 @@ public class GuiResearchPage extends Screen {
         }
         List<Object> list = recipeLists2.computeIfAbsent(rkey, k -> new ArrayList<>());
         List<Object> outputs = recipeOutputs2.computeIfAbsent(rkey, k -> new ArrayList<>());
-        // TODO этапы 8, 9, 11: BluePrint, CrucibleRecipe, InfusionRecipe, IArcaneRecipe, RecipeMisc (с проверкой исследования)
-        if (recipe instanceof RecipeHolder<?> holder) {
-            list.add(holder.value());
-            outputs.add(holder.value().getResultItem(this.minecraft.level.registryAccess()));
+        // TODO этапы 9, 11: BluePrint, CrucibleRecipe, InfusionRecipe, RecipeMisc (с проверкой исследования)
+        Recipe<?> r = recipe instanceof RecipeHolder<?> holder ? holder.value() : recipe instanceof Recipe<?> rr ? rr : null;
+        if (r instanceof IArcaneRecipe re) {
+            ItemStack is = re.getResultItem(this.minecraft.level.registryAccess());
+            if (!is.isEmpty() && ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, re.getResearch())) {
+                list.add(re);
+                outputs.add(is);
+            }
+        } else if (r != null) {
+            list.add(r);
+            outputs.add(r.getResultItem(this.minecraft.level.registryAccess()));
         }
     }
 
@@ -649,8 +660,10 @@ public class GuiResearchPage extends Screen {
                 this.recipePage = this.recipePageMax;
             }
             Object recipe = list.get(this.recipePage % list.size());
-            // TODO этапы 8, 9, 11: магический верстак, тигель, инфузия, многоблочные конструкции
-            if (recipe instanceof Recipe<?> r) {
+            // TODO этапы 9, 11: тигель, инфузия, многоблочные конструкции
+            if (recipe instanceof IArcaneRecipe ar) {
+                this.drawArcaneCraftingPage(g, x + 128, y + 128, mx, my, ar);
+            } else if (recipe instanceof Recipe<?> r) {
                 this.drawCraftingPage(g, x + 128, y + 128, mx, my, r);
             }
             if (this.hasRecipePages) {
@@ -765,6 +778,67 @@ public class GuiResearchPage extends Screen {
         }
         int idx = (int) ((counter + System.currentTimeMillis() / 1000L) % q.length);
         return q[idx];
+    }
+
+    /** Страница рецепта магического верстака: сетка, стоимость в Вис (с подсказкой) и нужные кристаллы. */
+    private void drawArcaneCraftingPage(GuiGraphics g, int x, int y, int mx, int my, IArcaneRecipe recipe) {
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        g.pose().pushPose();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        g.pose().translate(x, y, 0.0F);
+        g.pose().scale(2.0F, 2.0F, 1.0F);
+        g.blit(tex2, -26, -26, 112, 15, 52, 52);
+        g.blit(tex2, -8, -46, 20, 3, 16, 16);
+        g.pose().popPose();
+        g.pose().pushPose();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.4F);
+        g.pose().translate(x, y, 0.0F);
+        g.pose().scale(2.0F, 2.0F, 1.0F);
+        g.blit(tex2, -6, 40, 68, 76, 12, 12);
+        g.pose().popPose();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        String text = "" + recipe.getVis();
+        int offset = this.font.width(text);
+        g.drawString(this.font, text, x - offset / 2, y + 90, 5263440, false);
+        this.drawPopupAt(x - offset / 2 - 15, y + 75, 30, 30, mx, my, "wandtable.text1");
+        this.drawStackAt(g, recipe.getResultItem(this.minecraft.level.registryAccess()), x - 8, y - 84, mx, my, false);
+        AspectList crystals = recipe.getCrystals();
+        if (crystals != null) {
+            int a = 0;
+            int sz = crystals.size();
+            for (Aspect aspect : crystals.getAspects()) {
+                this.drawStackAt(g, ThaumcraftApiHelper.makeCrystal(aspect, crystals.getAmount(aspect)), x + 4 - sz * 10 + a * 20, y + 59, mx, my, true);
+                a++;
+            }
+        }
+        if (recipe instanceof ShapedArcaneRecipe shaped) {
+            text = I18n.get("recipe.type.arcane");
+            offset = this.font.width(text);
+            g.drawString(this.font, text, x - offset / 2, y - 104, 5263440, false);
+            int rw = shaped.getWidth();
+            int rh = shaped.getHeight();
+            List<Ingredient> items = shaped.getIngredients();
+            for (int i = 0; i < rw && i < 3; i++) {
+                for (int j = 0; j < rh && j < 3; j++) {
+                    Ingredient ing = items.get(i + j * rw);
+                    if (ing != null) {
+                        this.drawStackAt(g, cycleItemStack(ing, i + j * rw), x - 40 + i * 32, y - 40 + j * 32, mx, my, true);
+                    }
+                }
+            }
+        }
+        if (recipe instanceof ShapelessArcaneRecipe) {
+            text = I18n.get("recipe.type.arcane.shapeless");
+            offset = this.font.width(text);
+            g.drawString(this.font, text, x - offset / 2, y - 104, 5263440, false);
+            List<Ingredient> items = recipe.getIngredients();
+            for (int i = 0; i < items.size() && i < 9; i++) {
+                if (items.get(i) != null) {
+                    this.drawStackAt(g, cycleItemStack(items.get(i), i), x - 40 + i % 3 * 32, y - 40 + i / 3 * 32, mx, my, true);
+                }
+            }
+        }
     }
 
     private void drawCraftingPage(GuiGraphics g, int x, int y, int mx, int my, Recipe<?> recipe) {
@@ -1342,9 +1416,10 @@ public class GuiResearchPage extends Screen {
                 gi++;
             }
         }
-        // TODO этапы 8, 9, 11: CrucibleRecipe, InfusionRecipe, IArcaneRecipe (-99, если исследование рецепта не изучено), RecipeMisc
-        if (recipe instanceof RecipeHolder<?> h && ItemStack.isSameItem(h.value().getResultItem(this.minecraft.level.registryAccess()), stack)) {
-            return start;
+        // TODO этапы 9, 11: CrucibleRecipe, InfusionRecipe, RecipeMisc
+        Recipe<?> r = recipe instanceof RecipeHolder<?> h ? h.value() : recipe instanceof Recipe<?> rr ? rr : null;
+        if (r != null && ItemStack.isSameItem(r.getResultItem(this.minecraft.level.registryAccess()), stack)) {
+            return r instanceof IArcaneRecipe ar && !ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, ar.getResearch()) ? -99 : start;
         }
         return -1;
     }

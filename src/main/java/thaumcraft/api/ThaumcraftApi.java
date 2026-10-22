@@ -30,6 +30,16 @@ public class ThaumcraftApi {
         CommonInternals.jsonLocs.putIfAbsent(loc.toString(), loc);
     }
 
+    // --- Рецепты -------------------------------------------------------------------------------------------------------
+
+    /**
+     * Рецепт только для показа на страницах Таумономикона (в игре не работает): например, соль мира с «любыми» кристаллами.
+     * Регистрировать при FMLCommonSetupEvent.
+     */
+    public static void addFakeCraftingRecipe(ResourceLocation registry, Object recipe) {
+        CommonInternals.craftingRecipeCatalogFake.put(registry, recipe);
+    }
+
     // --- Искажение -----------------------------------------------------------------------------------------------------
 
     /** Искажение, которое получает игрок, создав предмет (по верстаку и другим способам, вызывающим событие крафта). */

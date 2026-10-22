@@ -7,8 +7,10 @@ import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import thaumcraft.api.internal.CommonInternals;
 
 /**
  * Рецепты, на которые ссылаются страницы исследований. Порядок поиска как в оригинале: каталог Thaumcraft
@@ -20,14 +22,18 @@ public final class ResearchRecipes {
     private static RecipeManager groupsFor;
     private static Map<String, List<ResourceLocation>> groups = new LinkedHashMap<>();
 
-    /** RecipeHolder, список ID (группа) или null. */
+    /** RecipeHolder, «поддельный» рецепт (Recipe), список ID (группа) или null. */
     public static Object resolve(ResourceLocation id) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) {
             return null;
         }
         RecipeManager rm = mc.level.getRecipeManager();
-        // TODO этапы 8, 9, 11: каталог рецептов Thaumcraft и «поддельные» рецепты
+        // TODO этапы 9, 11: каталог рецептов Thaumcraft (тигель, наполнение) — CommonInternals.getCatalogRecipe
+        Object fake = CommonInternals.getCatalogRecipeFake(id);
+        if (fake != null) {
+            return fake;
+        }
         RecipeHolder<?> holder = rm.byKey(id).orElse(null);
         if (holder != null) {
             return holder;
@@ -58,8 +64,11 @@ public final class ResearchRecipes {
             r = resolve(first);
         }
         if (r instanceof RecipeHolder<?> h) {
+            r = h.value();
+        }
+        if (r instanceof Recipe<?> rec) {
             Minecraft mc = Minecraft.getInstance();
-            return h.value().getResultItem(mc.level.registryAccess());
+            return rec.getResultItem(mc.level.registryAccess());
         }
         return null;
     }
