@@ -17,6 +17,7 @@ import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.util.thread.EffectiveSide;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.IThaumcraftRecipe;
 
 /**
  * Внутренние таблицы API (порт CommonInternals).
@@ -30,6 +31,16 @@ public class CommonInternals {
     /** Файлы JSON исследований (ThaumcraftApi.registerResearchLocation); порядок регистрации сохраняется. */
     public static final Map<String, ResourceLocation> jsonLocs = Collections.synchronizedMap(new LinkedHashMap<>());
     public static final ArrayList<ThaumcraftApi.EntityTags> scanEntities = new ArrayList<>();
+    /**
+     * Каталог рецептов Thaumcraft (тигель, наполнение, многоблочные схемы); заполняется при загрузке кодом на обеих сторонах.
+     * В оригинале HashMap — в порте порядок регистрации сохраняется (выбор среди равных рецептов не зависит от хешей).
+     */
+    public static final Map<ResourceLocation, IThaumcraftRecipe> craftingRecipeCatalog = Collections.synchronizedMap(new LinkedHashMap<>());
+
+    public static IThaumcraftRecipe getCatalogRecipe(ResourceLocation key) {
+        return craftingRecipeCatalog.get(key);
+    }
+
     /** Рецепты только для показа в книге (ThaumcraftApi.addFakeCraftingRecipe); заполняется при загрузке. */
     public static final Map<ResourceLocation, Object> craftingRecipeCatalogFake = new ConcurrentHashMap<>();
 

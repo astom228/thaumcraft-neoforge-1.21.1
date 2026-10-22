@@ -9,8 +9,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import net.neoforged.neoforge.items.IItemHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -91,5 +94,26 @@ public class ThaumcraftApiHelper {
             return null;
         }
         return world.getCapability(Capabilities.ItemHandler.BLOCK, pos, side);
+    }
+
+    /**
+     * Ингредиент из описания рецепта оригинала: ItemStack с компонентами — совпадение по этим компонентам (IngredientNBTTC),
+     * ItemStack / Item / Block — предмет, TagKey<Item> — тег (вместо имени OreDictionary), Ingredient — как есть.
+     */
+    @SuppressWarnings("unchecked")
+    public static Ingredient getIngredient(Object obj) {
+        if (obj instanceof Ingredient ing) {
+            return ing;
+        }
+        if (obj instanceof ItemStack stack) {
+            return stack.getComponentsPatch().isEmpty() ? Ingredient.of(stack) : DataComponentIngredient.of(false, stack);
+        }
+        if (obj instanceof ItemLike item) {
+            return Ingredient.of(item);
+        }
+        if (obj instanceof TagKey<?> tag) {
+            return Ingredient.of((TagKey<Item>) tag);
+        }
+        return null;
     }
 }

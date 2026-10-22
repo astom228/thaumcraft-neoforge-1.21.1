@@ -239,3 +239,7 @@
     **На каждом этапе, добавляющем предметы, скрипт запускается снова.** OreDictionary → по п. 27 (категории → теги c:,
     blockGlass / paneGlass → стекло и все крашеные варианты, stone / cobblestone / workbench → те же предметы). Баннеры: 16 рецептов
     bannerwhite…bannerblack (имена цветов 1.12: lightblue, silver), группа thaumcraft:banners. Группа по умолчанию ("") не пишется.
+82. **Рецепты тигля (этап 9.1)** — как в оригинале, каталог в коде (ThaumcraftApi.addCrucibleRecipe → CommonInternals.craftingRecipeCatalog),
+    а не рецепты датапака: так их регистрируют аддоны (Thaumic Tinkerer). Каталог — LinkedHashMap (в оригинале HashMap): выбор среди
+    равных рецептов не зависит от хешей. Катализатор: ItemStack с компонентами → DataComponentIngredient (как IngredientNBTTC),
+    OreDictionary → TagKey. Отпечаток hash строится из описания катализатора (теги при загрузке ещё не привязаны), одинаково на обеих сторонах.

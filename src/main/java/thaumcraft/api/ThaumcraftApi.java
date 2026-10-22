@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -11,6 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectHelper;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.IThaumcraftRecipe;
 import thaumcraft.api.internal.CommonInternals;
 import thaumcraft.api.internal.IInternalMethodHandler;
 import thaumcraft.common.lib.InternalMethodHandler;
@@ -38,6 +41,42 @@ public class ThaumcraftApi {
      */
     public static void addFakeCraftingRecipe(ResourceLocation registry, Object recipe) {
         CommonInternals.craftingRecipeCatalogFake.put(registry, recipe);
+    }
+
+    public static Map<ResourceLocation, IThaumcraftRecipe> getCraftingRecipes() {
+        return CommonInternals.craftingRecipeCatalog;
+    }
+
+    public static Map<ResourceLocation, Object> getCraftingRecipesFake() {
+        return CommonInternals.craftingRecipeCatalogFake;
+    }
+
+    /** Рецепт тигля. Регистрировать при FMLCommonSetupEvent (на обеих сторонах). */
+    public static void addCrucibleRecipe(ResourceLocation registry, CrucibleRecipe recipe) {
+        getCraftingRecipes().put(registry, recipe);
+    }
+
+    /** Первый рецепт тигля с таким результатом (предмет без учёта компонентов — isItemEqual оригинала). */
+    public static CrucibleRecipe getCrucibleRecipe(ItemStack stack) {
+        synchronized (CommonInternals.craftingRecipeCatalog) {
+            for (Object r : getCraftingRecipes().values()) {
+                if (r instanceof CrucibleRecipe cr && ItemStack.isSameItem(cr.getRecipeOutput(), stack)) {
+                    return cr;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static CrucibleRecipe getCrucibleRecipeFromHash(int hash) {
+        synchronized (CommonInternals.craftingRecipeCatalog) {
+            for (Object recipe : getCraftingRecipes().values()) {
+                if (recipe instanceof CrucibleRecipe cr && cr.hash == hash) {
+                    return cr;
+                }
+            }
+        }
+        return null;
     }
 
     // --- Искажение -----------------------------------------------------------------------------------------------------

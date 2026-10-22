@@ -29,7 +29,10 @@ public final class ResearchRecipes {
             return null;
         }
         RecipeManager rm = mc.level.getRecipeManager();
-        // TODO этапы 9, 11: каталог рецептов Thaumcraft (тигель, наполнение) — CommonInternals.getCatalogRecipe
+        Object catalog = CommonInternals.getCatalogRecipe(id);
+        if (catalog != null) {
+            return catalog;
+        }
         Object fake = CommonInternals.getCatalogRecipeFake(id);
         if (fake != null) {
             return fake;

@@ -38,14 +38,39 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.api.crafting.ArcaneCraftingInput;
+import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.internal.CommonInternals;
 
 /**
  * Аспекты предметов: поиск в таблице, бонусы и генерация из рецептов (порт части ThaumcraftCraftingManager).
- * Поиск рецептов магического верстака; тигля и инфузии — на этапах 9, 11.
+ * Поиск рецептов магического верстака и тигля; инфузии — на этапе 11.
  */
 public class ThaumcraftCraftingManager {
+
+    /**
+     * Рецепт тигля для брошенного предмета: из подходящих (исследование известно, катализатор и аспекты есть) — с наибольшим
+     * количеством аспектов (при равенстве — первый по порядку регистрации).
+     */
+    public static CrucibleRecipe findMatchingCrucibleRecipe(Player player, AspectList aspects, ItemStack lastDrop) {
+        int highest = 0;
+        CrucibleRecipe out = null;
+        synchronized (CommonInternals.craftingRecipeCatalog) {
+            for (Object re : ThaumcraftApi.getCraftingRecipes().values()) {
+                if (re instanceof CrucibleRecipe recipe) {
+                    ItemStack temp = lastDrop.copyWithCount(1);
+                    if (player != null && ThaumcraftCapabilities.knowsResearchStrict(player, recipe.getResearch()) && recipe.matches(aspects, temp)) {
+                        int result = recipe.getAspects().visSize();
+                        if (result > highest) {
+                            highest = result;
+                            out = recipe;
+                        }
+                    }
+                }
+            }
+        }
+        return out;
+    }
 
     /**
      * Первый магический рецепт, подходящий к содержимому верстака, исследование которого игрок знает.
@@ -314,8 +339,43 @@ public class ThaumcraftCraftingManager {
         return null;
     }
 
+    private static AspectList generateTagsFromCrucibleRecipes(ItemStack stack, ArrayList<String> history) {
+        CrucibleRecipe cr = ThaumcraftApi.getCrucibleRecipe(stack);
+        if (cr == null) {
+            return null;
+        }
+        AspectList ot = cr.getAspects().copy();
+        int ss = cr.getRecipeOutput().getCount();
+        ItemStack[] cats = cr.getCatalyst().getItems();
+        ItemStack cat = cats.length > 0 ? cats[0] : ItemStack.EMPTY;
+        if (cat.isEmpty()) {
+            return null;
+        }
+        AspectList ot2 = getObjectTags(cat, history);
+        AspectList out = new AspectList();
+        if (ot2 != null && ot2.size() > 0) {
+            for (Aspect tt : ot2.getAspects()) {
+                out.add(tt, ot2.getAmount(tt));
+            }
+        }
+        for (Aspect tt : ot.getAspects()) {
+            int amt = (int) (Math.sqrt(ot.getAmount(tt)) / ss);
+            out.add(tt, amt);
+        }
+        for (Aspect as : out.getAspects()) {
+            if (out.getAmount(as) <= 0) {
+                out.remove(as);
+            }
+        }
+        return out;
+    }
+
     private static AspectList generateTagsFromRecipes(ItemStack stack, ArrayList<String> history) {
-        // TODO этап 9: generateTagsFromCrucibleRecipes; этап 11: generateTagsFromInfusionRecipes
+        AspectList ret = generateTagsFromCrucibleRecipes(stack, history);
+        if (ret != null) {
+            return ret;
+        }
+        // TODO этап 11: generateTagsFromInfusionRecipes
         return generateTagsFromCraftingRecipes(stack, history);
     }
 
