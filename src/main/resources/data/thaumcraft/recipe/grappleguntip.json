@@ -1,0 +1,27 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "GRAPPLEGUN",
+  "vis": 25,
+  "crystals": {
+    "terra": 1
+  },
+  "key": {
+    "B": {
+      "tag": "c:plates/brass"
+    },
+    "R": {
+      "item": "thaumcraft:quartz_sliver"
+    },
+    "H": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "pattern": [
+    "BRB",
+    "RHR",
+    "BRB"
+  ],
+  "result": {
+    "id": "thaumcraft:grappler_head"
+  }
+}

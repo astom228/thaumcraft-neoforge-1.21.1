@@ -234,3 +234,9 @@
     (в 1.12 — IBlockState или Material). Предмет-не-блок (Таумономикон) появляется парящим EntitySpecialItem.
     Многоблочные триггеры (DustTriggerMultiblock, Part, Matrix) — на этапе 9 вместе с первой структурой (Тауматориум);
     котёл → тигель — на этапе 9. Удача при подборе в addSwapper — на этапе 12 (фокус обмена).
+81. **Магические рецепты оригинала (этап 8.4)** конвертируются скриптом `tools/recipes/convert-arcane.js` из
+    ConfigRecipes.initializeArcaneRecipes в `data/thaumcraft/recipe/<id в нижнем регистре>.json` (как ссылаются исследования).
+    Пишутся только рецепты, все предметы которых уже есть в порте; остальные — `tools/recipes/arcane-pending.txt`.
+    **На каждом этапе, добавляющем предметы, скрипт запускается снова.** OreDictionary → по п. 27 (категории → теги c:,
+    blockGlass / paneGlass → стекло и все крашеные варианты, stone / cobblestone / workbench → те же предметы). Баннеры: 16 рецептов
+    bannerwhite…bannerblack (имена цветов 1.12: lightblue, silver), группа thaumcraft:banners. Группа по умолчанию ("") не пишется.

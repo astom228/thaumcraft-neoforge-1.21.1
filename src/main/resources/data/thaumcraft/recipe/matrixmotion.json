@@ -1,0 +1,28 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "INFUSIONBOOST",
+  "vis": 500,
+  "crystals": {
+    "aer": 1,
+    "ordo": 1
+  },
+  "key": {
+    "S": {
+      "item": "thaumcraft:arcane_stone"
+    },
+    "N": {
+      "tag": "thaumcraft:nitor"
+    },
+    "G": {
+      "item": "minecraft:diamond_block"
+    }
+  },
+  "pattern": [
+    "SNS",
+    "NGN",
+    "SNS"
+  ],
+  "result": {
+    "id": "thaumcraft:infusion_speed_stone"
+  }
+}

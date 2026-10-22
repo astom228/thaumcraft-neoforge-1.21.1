@@ -1,0 +1,78 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "BASEALCHEMY",
+  "vis": 50,
+  "crystals": {
+    "aer": 1,
+    "ignis": 1
+  },
+  "key": {
+    "G": [
+      {
+        "item": "minecraft:glass_pane"
+      },
+      {
+        "item": "minecraft:white_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:orange_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:magenta_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:light_blue_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:yellow_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:lime_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:pink_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:gray_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:light_gray_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:cyan_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:purple_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:blue_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:brown_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:green_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:red_stained_glass_pane"
+      },
+      {
+        "item": "minecraft:black_stained_glass_pane"
+      }
+    ],
+    "B": {
+      "tag": "c:plates/brass"
+    },
+    "S": {
+      "item": "thaumcraft:quartz_sliver"
+    }
+  },
+  "pattern": [
+    " G ",
+    "BSB",
+    " G "
+  ],
+  "result": {
+    "id": "thaumcraft:morphic_resonator"
+  }
+}
