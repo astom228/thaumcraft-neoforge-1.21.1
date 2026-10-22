@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -40,6 +41,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
+import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
@@ -629,7 +631,15 @@ public class GuiResearchPage extends Screen {
         }
         List<Object> list = recipeLists2.computeIfAbsent(rkey, k -> new ArrayList<>());
         List<Object> outputs = recipeOutputs2.computeIfAbsent(rkey, k -> new ArrayList<>());
-        // TODO этапы 9, 11: BluePrint, CrucibleRecipe, InfusionRecipe, RecipeMisc (с проверкой исследования)
+        // TODO этапы 10, 11: BluePrint, InfusionRecipe, RecipeMisc (с проверкой исследования)
+        if (recipe instanceof CrucibleRecipe re) {
+            ItemStack is = cycleItemStack(re.getCatalyst(), 0);
+            if (!is.isEmpty() && ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, re.getResearch())) {
+                list.add(re);
+                outputs.add(re.getRecipeOutput());
+            }
+            return;
+        }
         Recipe<?> r = recipe instanceof RecipeHolder<?> holder ? holder.value() : recipe instanceof Recipe<?> rr ? rr : null;
         if (r instanceof IArcaneRecipe re) {
             ItemStack is = re.getResultItem(this.minecraft.level.registryAccess());
@@ -660,8 +670,10 @@ public class GuiResearchPage extends Screen {
                 this.recipePage = this.recipePageMax;
             }
             Object recipe = list.get(this.recipePage % list.size());
-            // TODO этапы 9, 11: тигель, инфузия, многоблочные конструкции
-            if (recipe instanceof IArcaneRecipe ar) {
+            // TODO этапы 10, 11: инфузия, многоблочные конструкции
+            if (recipe instanceof CrucibleRecipe cr) {
+                this.drawCruciblePage(g, x + 128, y + 128, mx, my, cr);
+            } else if (recipe instanceof IArcaneRecipe ar) {
                 this.drawArcaneCraftingPage(g, x + 128, y + 128, mx, my, ar);
             } else if (recipe instanceof Recipe<?> r) {
                 this.drawCraftingPage(g, x + 128, y + 128, mx, my, r);
@@ -778,6 +790,58 @@ public class GuiResearchPage extends Screen {
         }
         int idx = (int) ((counter + System.currentTimeMillis() / 1000L) % q.length);
         return q[idx];
+    }
+
+    /** Страница рецепта тигля: тигель, катализатор слева, аспекты в тигле (с подсказками), результат сверху. */
+    private void drawCruciblePage(GuiGraphics g, int x, int y, int mx, int my, CrucibleRecipe rc) {
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        if (rc == null) {
+            return;
+        }
+        String text = I18n.get("recipe.type.crucible");
+        int offset = this.font.width(text);
+        g.drawString(this.font, text, x - offset / 2, y - 104, 5263440, false);
+        g.pose().pushPose();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        g.pose().translate(x, y, 0.0F);
+        g.pose().scale(2.0F, 2.0F, 1.0F);
+        g.blit(tex2, -28, -29, 0, 3, 56, 17);
+        g.pose().translate(0.0F, 32.0F, 0.0F);
+        g.blit(tex2, -28, -44, 0, 20, 56, 48);
+        g.pose().translate(0.0F, -8.0F, 0.0F);
+        g.blit(tex2, -25, -50, 100, 84, 11, 13);
+        g.pose().popPose();
+        int total = 0;
+        int rows = (rc.getAspects().size() - 1) / 3;
+        int shift = (3 - rc.getAspects().size() % 3) * 10;
+        int sx = x - 28;
+        int sy = y + 8 - 10 * rows;
+        for (Aspect tag : rc.getAspects().getAspectsSortedByName()) {
+            int m = 0;
+            if (total / 3 >= rows && (rows > 1 || rc.getAspects().size() < 3)) {
+                m = 1;
+            }
+            int vx = sx + total % 3 * 20 + shift * m;
+            int vy = sy + total / 3 * 20;
+            UtilsFX.drawTag(g, vx, vy, tag, rc.getAspects().getAmount(tag), 0);
+            total++;
+        }
+        this.drawStackAt(g, rc.getRecipeOutput(), x - 8, y - 50, mx, my, false);
+        this.drawStackAt(g, cycleItemStack(rc.getCatalyst(), 0), x - 64, y - 56, mx, my, true);
+        total = 0;
+        for (Aspect tag : rc.getAspects().getAspectsSortedByName()) {
+            int m = 0;
+            if (total / 3 >= rows && (rows > 1 || rc.getAspects().size() < 3)) {
+                m = 1;
+            }
+            int vx = sx + total % 3 * 20 + shift * m;
+            int vy = sy + total / 3 * 20;
+            if (mx >= vx && my >= vy && mx < vx + 16 && my < vy + 16) {
+                this.tipText = Arrays.asList(tag.getName(), tag.getLocalizedDescription().getString());
+            }
+            total++;
+        }
     }
 
     /** Страница рецепта магического верстака: сетка, стоимость в Вис (с подсказкой) и нужные кристаллы. */
@@ -1416,7 +1480,10 @@ public class GuiResearchPage extends Screen {
                 gi++;
             }
         }
-        // TODO этапы 9, 11: CrucibleRecipe, InfusionRecipe, RecipeMisc
+        // TODO этапы 10, 11: InfusionRecipe, RecipeMisc
+        if (recipe instanceof CrucibleRecipe cr && ItemStack.isSameItem(cr.getRecipeOutput(), stack)) {
+            return !ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, cr.getResearch()) ? -99 : start;
+        }
         Recipe<?> r = recipe instanceof RecipeHolder<?> h ? h.value() : recipe instanceof Recipe<?> rr ? rr : null;
         if (r != null && ItemStack.isSameItem(r.getResultItem(this.minecraft.level.registryAccess()), stack)) {
             return r instanceof IArcaneRecipe ar && !ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, ar.getResearch()) ? -99 : start;

@@ -28,6 +28,13 @@ import thaumcraft.api.crafting.IDustTrigger;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
 import thaumcraft.api.items.ItemsTC;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.common.lib.TCTags;
 
 /** Типы и сериализаторы рецептов (особые рецепты оригинала, магический верстак; тигель и наполнение — на этапах 9, 11). */
 public class ConfigRecipes {
@@ -75,5 +82,60 @@ public class ConfigRecipes {
         ThaumcraftApi.addFakeCraftingRecipe(ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "salismundusfake"),
                 new ShapelessRecipe("", CraftingBookCategory.MISC, new ItemStack(ItemsTC.salisMundus.get()), NonNullList.of(Ingredient.EMPTY,
                         Ingredient.of(Items.FLINT), Ingredient.of(Items.BOWL), Ingredient.of(Items.REDSTONE), anyCrystal, anyCrystal, anyCrystal)));
+    }
+
+    /**
+     * initializeAlchemyRecipes оригинала: рецепты тигля (каталог, на обеих сторонах). Перенесены те, чьи предметы уже есть;
+     * остальные — с этапами своих предметов (TODO ниже). Окраска нитора — обычные рецепты (TCRecipeProvider).
+     * OreDictionary → теги (DECISIONS.md п. 27).
+     */
+    public static void initializeAlchemyRecipes() {
+        ResourceLocation visCrystalGroup = ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "viscrystalgroup");
+        for (Aspect aspect : Aspect.aspects.values()) {
+            ThaumcraftApi.addCrucibleRecipe(id("vis_crystal_" + aspect.getTag()),
+                    new CrucibleRecipe("BASEALCHEMY", ThaumcraftApiHelper.makeCrystal(aspect), TCTags.Items.NUGGETS_QUARTZ, new AspectList().add(aspect, 2))
+                            .setGroup(visCrystalGroup));
+        }
+        ThaumcraftApi.addCrucibleRecipe(id("nitor"), new CrucibleRecipe("UNLOCKALCHEMY@3", new ItemStack(BlocksTC.nitor.get(DyeColor.YELLOW).get()),
+                Tags.Items.DUSTS_GLOWSTONE, new AspectList().merge(Aspect.ENERGY, 10).merge(Aspect.FIRE, 10).merge(Aspect.LIGHT, 10)));
+        // TODO alumentum (ItemsTC.alumentum, катализатор — уголь и древесный уголь): ENERGY 10, FIRE 10, ENTROPY 5 — со своим предметом
+        ThaumcraftApi.addCrucibleRecipe(id("brassingot"), new CrucibleRecipe("METALLURGY@1", new ItemStack(ItemsTC.ingotBrass.get()),
+                Tags.Items.INGOTS_IRON, new AspectList().merge(Aspect.TOOL, 5)));
+        ThaumcraftApi.addCrucibleRecipe(id("thaumiumingot"), new CrucibleRecipe("METALLURGY@2", new ItemStack(ItemsTC.ingotThaumium.get()),
+                Tags.Items.INGOTS_IRON, new AspectList().merge(Aspect.MAGIC, 5).merge(Aspect.EARTH, 5)));
+        ThaumcraftApi.addCrucibleRecipe(id("voidingot"), new CrucibleRecipe("METALLURGY@4", new ItemStack(ItemsTC.ingotVoid.get()),
+                new ItemStack(ItemsTC.voidSeed.get()), new AspectList().merge(Aspect.METAL, 10).merge(Aspect.FLUX, 5)));
+        ThaumcraftApi.addCrucibleRecipe(id("voidseed"), new CrucibleRecipe("METALLURGY@4", new ItemStack(ItemsTC.voidSeed.get()),
+                new ItemStack(Items.WHEAT_SEEDS), new AspectList().merge(Aspect.DARKNESS, 5).merge(Aspect.VOID, 5).merge(Aspect.ELDRITCH, 5).merge(Aspect.MAGIC, 5)));
+        ThaumcraftApi.addCrucibleRecipe(id("hedge_tallow"), new CrucibleRecipe("HEDGEALCHEMY@1", new ItemStack(ItemsTC.tallow.get()),
+                new ItemStack(Items.ROTTEN_FLESH), new AspectList().merge(Aspect.FIRE, 1)));
+        ThaumcraftApi.addCrucibleRecipe(id("hedge_leather"), new CrucibleRecipe("HEDGEALCHEMY@1", new ItemStack(Items.LEATHER),
+                new ItemStack(Items.ROTTEN_FLESH), new AspectList().merge(Aspect.AIR, 3).merge(Aspect.BEAST, 3)));
+        // TODO этап 12: focus_1 (ItemsTC.focus1 из кристалла порядка): CRYSTAL 20, MAGIC 10, AURA 5
+        purification("iron", ItemsTC.clusterIron.get(), Tags.Items.ORES_IRON);
+        purification("gold", ItemsTC.clusterGold.get(), Tags.Items.ORES_GOLD);
+        purification("cinnabar", ItemsTC.clusterCinnabar.get(), TCTags.Items.ORES_CINNABAR);
+        purification("copper", ItemsTC.clusterCopper.get(), Tags.Items.ORES_COPPER);
+        purification("tin", ItemsTC.clusterTin.get(), oreTag("tin"));
+        purification("silver", ItemsTC.clusterSilver.get(), oreTag("silver"));
+        purification("lead", ItemsTC.clusterLead.get(), oreTag("lead"));
+        // TODO LiquidDeath (ведро жидкой смерти из ведра): DEATH 100, ALCHEMY 20, ENTROPY 50 — с жидкостью (этап 15)
+        // TODO этап 15: BottleTaint (из фиала Выброса): FLUX 30, WATER 30; SaneSoap (из блока плоти): MIND 75, ELDRITCH 50, ORDER 75, LIFE 50
+        // TODO этап 14: BathSalts (из соли мира): MIND 40, AIR 40, ORDER 40, LIFE 40
+        // TODO этап 18: печати големов (SealCollect…SealUse) — 12 рецептов
+        // TODO этап 10: EverfullUrn (из цветочного горшка): WATER 30, CRAFT 10, EARTH 10
+    }
+
+    private static void purification(String metal, ItemLike cluster, TagKey<Item> ore) {
+        ThaumcraftApi.addCrucibleRecipe(id("metal_purification_" + metal), new CrucibleRecipe("METALPURIFICATION", new ItemStack(cluster), ore,
+                new AspectList().merge(Aspect.METAL, 5).merge(Aspect.ORDER, 5)));
+    }
+
+    private static TagKey<Item> oreTag(String metal) {
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "ores/" + metal));
+    }
+
+    private static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, path);
     }
 }

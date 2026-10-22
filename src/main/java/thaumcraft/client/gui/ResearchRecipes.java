@@ -10,6 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.IThaumcraftRecipe;
 import thaumcraft.api.internal.CommonInternals;
 
 /**
@@ -54,6 +56,15 @@ public final class ResearchRecipes {
                     g.computeIfAbsent(group, k -> new ArrayList<>()).add(h.id());
                 }
             }
+            // compileGroups оригинала: затем группы рецептов каталога (тигель, наполнение); у «поддельных» группа не заполнялась
+            synchronized (CommonInternals.craftingRecipeCatalog) {
+                for (Map.Entry<ResourceLocation, IThaumcraftRecipe> e : CommonInternals.craftingRecipeCatalog.entrySet()) {
+                    String group = e.getValue().getGroup();
+                    if (group != null && !group.trim().isEmpty()) {
+                        g.computeIfAbsent(group, k -> new ArrayList<>()).add(e.getKey());
+                    }
+                }
+            }
             groups = g;
             groupsFor = rm;
         }
@@ -68,6 +79,9 @@ public final class ResearchRecipes {
         }
         if (r instanceof RecipeHolder<?> h) {
             r = h.value();
+        }
+        if (r instanceof CrucibleRecipe cr) {
+            return cr.getRecipeOutput();
         }
         if (r instanceof Recipe<?> rec) {
             Minecraft mc = Minecraft.getInstance();

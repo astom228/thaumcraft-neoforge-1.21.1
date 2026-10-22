@@ -179,11 +179,12 @@ public class ConfigResearch {
 
     private static void initTheorycraft() {
         TheorycraftManager.registerAid(new AidBookshelf());
-        // TODO: AidBrainInAJar (банка с мозгом), AidPortalCrimson (этап 16), AidBasicAlchemy/Artifice/Auromancy/Golemancy/Eldritch —
-        //  вместе с тиглем, матрицей наполнения, фокусировочным верстаком, сборщиком големов и алтарём
+        // TODO: AidBrainInAJar (банка с мозгом, этап 10), AidPortalCrimson (этап 16), AidBasicArtifice/Auromancy/Golemancy/Eldritch —
+        //  вместе с матрицей наполнения, фокусным манипулятором, сборщиком големов и алтарём
         TheorycraftManager.registerAid(new AidGlyphedStone());
         TheorycraftManager.registerAid(new AidPortal.AidPortalEnd());
         TheorycraftManager.registerAid(new AidPortal.AidPortalNether());
+        TheorycraftManager.registerAid(new AidBasicAlchemy());
         TheorycraftManager.registerAid(new AidEnchantmentTable());
         TheorycraftManager.registerAid(new AidBeacon());
         TheorycraftManager.registerCard(CardStudy.class);

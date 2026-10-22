@@ -141,6 +141,13 @@ public class TCRecipeProvider extends RecipeProvider {
                     .unlockedBy("has", has(tallow.get())).save(out, id("tallowcandle" + legacyDyeName(dye)));
         }
 
+        // --- окраска нитора (initializeAlchemyRecipes оригинала): краситель + любой нитор ---
+        for (DyeColor dye : DyeColor.values()) {
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlocksTC.nitor.get(dye).get()).group("thaumcraft:nitorgroup")
+                    .requires(dye.getTag()).requires(TCTags.Items.NITOR)
+                    .unlockedBy("has", has(TCTags.Items.NITOR)).save(out, id("nitordye" + legacyDyeName(dye)));
+        }
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, jarBrace.get(), 2)
                 .pattern("NSN").pattern("S S").pattern("NSN").define('N', TCTags.Items.NUGGETS_BRASS).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has", has(TCTags.Items.NUGGETS_BRASS)).save(out, id("brassbrace"));

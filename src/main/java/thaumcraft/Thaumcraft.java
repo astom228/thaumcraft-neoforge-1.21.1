@@ -58,6 +58,7 @@ public class Thaumcraft {
         // ConfigRecipes.initializeCompoundRecipes (в оригинале — init)
         event.enqueueWork(ConfigRecipes::initializeCompoundRecipes);
         event.enqueueWork(ConfigRecipes::initializeFakeRecipes);
+        event.enqueueWork(ConfigRecipes::initializeAlchemyRecipes);
     }
 
     /** postInit оригинала: загрузка JSON исследований после того, как все моды зарегистрировали категории и файлы. */
