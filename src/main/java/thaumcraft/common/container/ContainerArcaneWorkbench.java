@@ -26,7 +26,6 @@ import thaumcraft.common.container.slot.SlotCraftingArcaneWorkbench;
 import thaumcraft.common.container.slot.SlotCrystal;
 import thaumcraft.common.items.casters.CasterManager;
 import thaumcraft.common.lib.TCMenus;
-import thaumcraft.common.lib.crafting.ConfigRecipes;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.tiles.crafting.TileArcaneWorkbench;
 
@@ -115,7 +114,7 @@ public class ContainerArcaneWorkbench extends AbstractContainerMenu {
             return;
         }
         ArcaneCraftingInput input = this.tileEntity.getCraftingInput();
-        Optional<RecipeHolder<IArcaneRecipe>> found = level.getRecipeManager().getRecipeFor(ConfigRecipes.ARCANE_CRAFTING.get(), input, level);
+        Optional<RecipeHolder<IArcaneRecipe>> found = Optional.ofNullable(ThaumcraftCraftingManager.findMatchingArcaneRecipeHolder(input, this.ip.player));
         boolean hasVis = true;
         boolean hasCrystals = true;
         if (found.isPresent()) {

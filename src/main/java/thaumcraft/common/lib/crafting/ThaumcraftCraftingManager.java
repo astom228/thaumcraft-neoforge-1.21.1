@@ -36,6 +36,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.api.crafting.ArcaneCraftingInput;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.internal.CommonInternals;
@@ -47,11 +48,26 @@ import thaumcraft.api.internal.CommonInternals;
 public class ThaumcraftCraftingManager {
 
     /**
-     * Первый магический рецепт, подходящий к содержимому верстака. Исследование рецепта, как в оригинале, не проверяется.
+     * Первый магический рецепт, подходящий к содержимому верстака, исследование которого игрок знает.
+     * В оригинале исследование не проверялось нигде (только книгой) — проверка добавлена (DEVIATIONS.md).
      */
     public static IArcaneRecipe findMatchingArcaneRecipe(ArcaneCraftingInput matrix, Player player) {
-        return player.level().getRecipeManager().getRecipeFor(ConfigRecipes.ARCANE_CRAFTING.get(), matrix, player.level())
-                .map(RecipeHolder::value).orElse(null);
+        RecipeHolder<IArcaneRecipe> h = findMatchingArcaneRecipeHolder(matrix, player);
+        return h == null ? null : h.value();
+    }
+
+    public static RecipeHolder<IArcaneRecipe> findMatchingArcaneRecipeHolder(ArcaneCraftingInput matrix, Player player) {
+        if (matrix.isEmpty()) {
+            return null;
+        }
+        for (RecipeHolder<IArcaneRecipe> h : player.level().getRecipeManager().getAllRecipesFor(ConfigRecipes.ARCANE_CRAFTING.get())) {
+            String research = h.value().getResearch();
+            if ((research == null || research.isEmpty() || ThaumcraftCapabilities.knowsResearchStrict(player, research))
+                    && h.value().matches(matrix, player.level())) {
+                return h;
+            }
+        }
+        return null;
     }
 
     public static ItemStack findMatchingArcaneRecipeResult(ArcaneCraftingInput awb, Player player) {
