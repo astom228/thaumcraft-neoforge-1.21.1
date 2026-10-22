@@ -30,6 +30,19 @@ public interface IFXDispatcher {
     default void scanHighlight(net.minecraft.world.entity.Entity e) {
     }
 
+    default void drawSimpleSparkle(net.minecraft.util.RandomSource rand, double x, double y, double z, double x2, double y2, double z2, float scale,
+                                   float r, float g, float b, int delay, float decay, float grav, int baseAge) {
+    }
+
+    default void drawBlockSparkles(net.minecraft.core.BlockPos p, net.minecraft.world.phys.Vec3 start) {
+    }
+
+    default void drawBamf(double x, double y, double z, int color, boolean sound, boolean flair, net.minecraft.core.Direction side) {
+    }
+
+    default void drawBamf(double x, double y, double z, boolean sound, boolean flair, net.minecraft.core.Direction side) {
+    }
+
     /** Текущая реализация (на клиенте подставляется в ThaumcraftClient). */
     static IFXDispatcher get() {
         return Holder.instance;

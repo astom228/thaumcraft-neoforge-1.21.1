@@ -24,6 +24,7 @@ import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
 import thaumcraft.Thaumcraft;
 import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.common.lib.TCTags;
+import thaumcraft.common.lib.crafting.RecipeMagicDust;
 import thaumcraft.common.lib.crafting.RecipeTripleMeatTreat;
 
 import static thaumcraft.api.items.ItemsTC.*;
@@ -168,6 +169,7 @@ public class TCRecipeProvider extends RecipeProvider {
 
         // Особый рецепт: сахар + 3 разных кусочка мяса (исправление ошибки оригинала, DEVIATIONS №10)
         SpecialRecipeBuilder.special(RecipeTripleMeatTreat::new).save(out, id("triplemeattreat"));
+        SpecialRecipeBuilder.special(RecipeMagicDust::new).save(out, id("salismundus"));
     }
 
     private static String legacyDyeName(DyeColor dye) {

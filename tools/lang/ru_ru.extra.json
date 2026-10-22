@@ -405,5 +405,7 @@
   "tc.workbench.discount": "(скидка %s%%)",
   "block.thaumcraft.arcane_workbench_charger": "Зарядник верстака",
   "tc.discount": "скидка",
-  "tc.visdiscount": "Скидка Вис"
+  "tc.visdiscount": "Скидка Вис",
+  "entity.thaumcraft.special_item": "Магический предмет",
+  "item.thaumcraft.salis_mundus": "Салис Мундус"
 }

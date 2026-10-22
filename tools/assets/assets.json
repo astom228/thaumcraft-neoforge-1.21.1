@@ -309,6 +309,7 @@
   },
   "items": {
     "amber": "model:amber",
+    "salis_mundus": "model:salis_mundus",
     "quicksilver": "model:quicksilver",
     "thaumium_ingot": "bs:ingot#thaumium",
     "void_metal_ingot": "bs:ingot#void",

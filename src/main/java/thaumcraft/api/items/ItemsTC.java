@@ -16,6 +16,7 @@ import thaumcraft.common.items.curios.ItemCurio;
 import thaumcraft.common.items.curios.ItemEnchantmentPlaceholder;
 import thaumcraft.common.items.curios.ItemThaumonomicon;
 import thaumcraft.common.items.resources.ItemCrystalEssence;
+import thaumcraft.common.items.resources.ItemMagicDust;
 import thaumcraft.common.items.tools.ItemScribingTools;
 import thaumcraft.common.items.tools.ItemThaumometer;
 
@@ -72,6 +73,7 @@ public class ItemsTC {
     // module: vision, aggression
     public static final DeferredItem<Item> moduleVision = simple("vision_module");
     public static final DeferredItem<Item> moduleAggression = simple("aggression_module");
+    public static final DeferredItem<Item> salisMundus = ConfigItems.ITEMS.registerItem("salis_mundus", ItemMagicDust::new);
     public static final DeferredItem<Item> crystalEssence = ConfigItems.ITEMS.registerItem("crystal_essence", ItemCrystalEssence::new);
     public static final DeferredItem<Item> enchantedPlaceholder = ConfigItems.ITEMS.registerItem("enchanted_placeholder", ItemEnchantmentPlaceholder::new);
     public static final DeferredItem<Item> thaumometer = ConfigItems.ITEMS.registerItem("thaumometer", ItemThaumometer::new);

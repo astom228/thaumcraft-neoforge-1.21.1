@@ -1,6 +1,8 @@
 package thaumcraft.common.lib.utils;
 
 import java.util.List;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -46,5 +48,20 @@ public class EntityUtils {
             }
         }
         return pointedEntity;
+    }
+
+    /** Точка у руки сущности (откуда летят искры соли мира и т.п.). */
+    public static Vec3 posToHand(Entity e, InteractionHand hand) {
+        double px = e.getX();
+        double py = e.getBoundingBox().minY + e.getBbHeight() / 2.0F + 0.25;
+        double pz = e.getZ();
+        float m = hand == InteractionHand.MAIN_HAND ? 0.0F : 180.0F;
+        px += -Mth.cos((e.getYRot() + m) / 180.0F * 3.141593F) * 0.3F;
+        pz += -Mth.sin((e.getYRot() + m) / 180.0F * 3.141593F) * 0.3F;
+        Vec3 vec3d = e.getViewVector(1.0F);
+        px += vec3d.x * 0.3;
+        py += vec3d.y * 0.3;
+        pz += vec3d.z * 0.3;
+        return new Vec3(px, py, pz);
     }
 }

@@ -93,5 +93,6 @@
   "item.thaumcraft.cheaters_thaumonomicon.desc": "Creative only",
   "tc.workbench.available": "%s available",
   "tc.workbench.vis": "%s vis",
-  "tc.workbench.discount": "(%s%% discount)"
+  "tc.workbench.discount": "(%s%% discount)",
+  "entity.thaumcraft.special_item": "Magic Item"
 }

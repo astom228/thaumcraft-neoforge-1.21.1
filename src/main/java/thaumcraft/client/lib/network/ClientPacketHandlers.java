@@ -13,6 +13,8 @@ import thaumcraft.client.gui.ResearchToast;
 import thaumcraft.client.lib.events.HudHandler;
 import thaumcraft.common.lib.SoundsTC;
 import thaumcraft.common.lib.capabilities.PlayerKnowledge;
+import thaumcraft.common.lib.fx.IFXDispatcher;
+import thaumcraft.common.lib.network.fx.PacketFXBlockBamf;
 import thaumcraft.common.lib.network.misc.PacketKnowledgeGain;
 import thaumcraft.common.lib.network.misc.PacketAuraToClient;
 import thaumcraft.common.world.aura.AuraChunk;
@@ -77,6 +79,17 @@ public final class ClientPacketHandlers {
     }
 
     /** PacketKnowledgeGain: эффект на HUD и звук. */
+    public static void handleBlockBamf(PacketFXBlockBamf msg) {
+        if (Minecraft.getInstance().level == null) {
+            return;
+        }
+        if (msg.color() != -9999) {
+            IFXDispatcher.get().drawBamf(msg.x(), msg.y(), msg.z(), msg.color(), msg.sound(), msg.flair(), msg.side());
+        } else {
+            IFXDispatcher.get().drawBamf(msg.x(), msg.y(), msg.z(), msg.sound(), msg.flair(), msg.side());
+        }
+    }
+
     public static void handleKnowledgeGain(PacketKnowledgeGain msg) {
         LocalPlayer p = Minecraft.getInstance().player;
         if (p == null || msg.knowledgeType() < 0 || msg.knowledgeType() >= IPlayerKnowledge.EnumKnowledgeType.values().length) {

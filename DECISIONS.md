@@ -228,3 +228,9 @@
     максимум с зарядником 9×500). Зарядник ставится только на верстак (фокусный манипулятор — этап 12); без опоры выпадает.
     Изображение результата при нехватке Вис рисуется без затемнения: в 1.12 renderItemAndEffectIntoGUI сбрасывал цвет GL.
     Надписи экрана — ключи tc.workbench.available / vis / discount (в оригинале — английский текст в коде).
+80. **Соль мира (этап 8.3)**: IDustTrigger + DustTriggerSimple / DustTriggerOre (OreDictionary «bookshelf» / «workbench» → теги
+    c:bookshelves / c:player_workstations/crafting_tables). Превращение — через ServerEvents.addRunnableServer (50 тиков) и
+    addSwapper; очереди серверные, по измерениям, очищаются при остановке сервера. Источник в addSwapper — Predicate<BlockState>
+    (в 1.12 — IBlockState или Material). Предмет-не-блок (Таумономикон) появляется парящим EntitySpecialItem.
+    Многоблочные триггеры (DustTriggerMultiblock, Part, Matrix) — на этапе 9 вместе с первой структурой (Тауматориум);
+    котёл → тигель — на этапе 9. Удача при подборе в addSwapper — на этапе 12 (фокус обмена).

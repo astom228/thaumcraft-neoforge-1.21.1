@@ -196,3 +196,4 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Workbench Charger | Зарядник верстака | |
 | discount / Vis discount | скидка / Скидка Вис | |
 | N available (aura vis) | доступно: N | надпись в магическом верстаке |
+| Magic Item (парящий предмет) | Магический предмет | |

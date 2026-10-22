@@ -5,14 +5,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thaumcraft.client.fx.particles.FXBlockRunes;
 import thaumcraft.client.fx.particles.FXGeneric;
 import thaumcraft.client.fx.particles.FXGenericGui;
+import thaumcraft.common.lib.SoundsTC;
 import thaumcraft.common.lib.fx.IFXDispatcher;
 
 /** Создание эффектов (порт FXDispatcher; методы переносятся по мере надобности — тела и числа как в оригинале). */
@@ -187,5 +191,143 @@ public class FXDispatcher implements IFXDispatcher {
         fb.setScale(3.0F + this.getWorld().random.nextFloat(), 0.05F);
         fb.setRandomMovementScale(0.0025F, 0.0F, 0.0025F);
         ParticleEngine.addEffectWithDelay(this.getWorld(), fb, a);
+    }
+
+    /** Искры по открытым граням блока, с задержкой по расстоянию от точки start (соль мира). */
+    @Override
+    public void drawBlockSparkles(BlockPos p, Vec3 start) {
+        ClientLevel w = this.getWorld();
+        VoxelShape shape = w.getBlockState(p).getShape(w, p);
+        // в 1.12 — getBoundingBox (локальная рамка; у пустого блока — полный куб); результат grow(0.1) не использовался
+        AABB bs = shape.isEmpty() ? new AABB(0, 0, 0, 1, 1, 1) : shape.bounds();
+        int num = (int) (bs.getSize() * 20.0);
+        for (Direction face : Direction.values()) {
+            BlockPos np = p.relative(face);
+            BlockState state = w.getBlockState(np);
+            if (!state.isSolidRender(w, np) && !state.isFaceSturdy(w, np, face.getOpposite())) {
+                boolean rx = face.getStepX() == 0;
+                boolean ry = face.getStepY() == 0;
+                boolean rz = face.getStepZ() == 0;
+                double mx = 0.5 + face.getStepX() * 0.51;
+                double my = 0.5 + face.getStepY() * 0.51;
+                double mz = 0.5 + face.getStepZ() * 0.51;
+                for (int a = 0; a < num * 2; a++) {
+                    double x = mx;
+                    double y = my;
+                    double z = mz;
+                    if (rx) {
+                        x += w.random.nextGaussian() * 0.6;
+                    }
+                    if (ry) {
+                        y += w.random.nextGaussian() * 0.6;
+                    }
+                    if (rz) {
+                        z += w.random.nextGaussian() * 0.6;
+                    }
+                    x = Mth.clamp(x, bs.minX, bs.maxX);
+                    y = Mth.clamp(y, bs.minY, bs.maxY);
+                    z = Mth.clamp(z, bs.minZ, bs.maxZ);
+                    float r = Mth.randomBetweenInclusive(w.random, 255, 255) / 255.0F;
+                    float g = Mth.randomBetweenInclusive(w.random, 189, 255) / 255.0F;
+                    float b = Mth.randomBetweenInclusive(w.random, 64, 255) / 255.0F;
+                    Vec3 v1 = new Vec3(p.getX() + x, p.getY() + y, p.getZ() + z);
+                    double delay = w.random.nextInt(5) + v1.distanceTo(start) * 16.0;
+                    this.drawSimpleSparkle(w.random, p.getX() + x, p.getY() + y, p.getZ() + z, 0.0, 0.0025, 0.0,
+                            0.4F + (float) w.random.nextGaussian() * 0.1F, r, g, b, (int) delay, 1.0F, 0.01F, 16);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void drawBamf(double x, double y, double z, int color, boolean sound, boolean flair, Direction side) {
+        Color c = new Color(color);
+        this.drawBamf(x, y, z, c.getRed() / 255.0F, c.getGreen() / 255.0F, c.getBlue() / 255.0F, sound, flair, side);
+    }
+
+    @Override
+    public void drawBamf(double x, double y, double z, boolean sound, boolean flair, Direction side) {
+        this.drawBamf(x, y, z, 0.5F, 0.1F, 0.6F, sound, flair, side);
+    }
+
+    /** Облачко дыма (превращение блока солью мира и т.п.). */
+    public void drawBamf(double x, double y, double z, float r, float g, float b, boolean sound, boolean flair, Direction side) {
+        ClientLevel w = this.getWorld();
+        if (sound) {
+            w.playLocalSound(x, y, z, SoundsTC.poof.get(), SoundSource.BLOCKS, 0.4F, 1.0F + (float) w.random.nextGaussian() * 0.05F, false);
+        }
+        for (int a = 0; a < 6 + w.random.nextInt(3) + 2; a++) {
+            double vx = (0.05F + w.random.nextFloat() * 0.05F) * (w.random.nextBoolean() ? -1 : 1);
+            double vy = (0.05F + w.random.nextFloat() * 0.05F) * (w.random.nextBoolean() ? -1 : 1);
+            double vz = (0.05F + w.random.nextFloat() * 0.05F) * (w.random.nextBoolean() ? -1 : 1);
+            if (side != null) {
+                vx += side.getStepX() * 0.1F;
+                vy += side.getStepY() * 0.1F;
+                vz += side.getStepZ() * 0.1F;
+            }
+            FXGeneric fb2 = new FXGeneric(w, x + vx * 2.0, y + vy * 2.0, z + vz * 2.0, vx / 2.0, vy / 2.0, vz / 2.0);
+            fb2.setMaxAge(20 + w.random.nextInt(15));
+            fb2.setRBGColorF(Mth.clamp(r * (1.0F + (float) w.random.nextGaussian() * 0.1F), 0.0F, 1.0F),
+                    Mth.clamp(g * (1.0F + (float) w.random.nextGaussian() * 0.1F), 0.0F, 1.0F),
+                    Mth.clamp(b * (1.0F + (float) w.random.nextGaussian() * 0.1F), 0.0F, 1.0F));
+            fb2.setAlphaF(1.0F, 0.1F);
+            fb2.setGridSize(16);
+            fb2.setParticles(123, 5, 1);
+            fb2.setScale(3.0F, 4.0F + w.random.nextFloat() * 3.0F);
+            fb2.setLayer(1);
+            fb2.setSlowDown(0.7);
+            fb2.setRotationSpeed(w.random.nextFloat(), w.random.nextBoolean() ? -1.0F : 1.0F);
+            ParticleEngine.addEffect(w, fb2);
+        }
+        if (flair) {
+            for (int a = 0; a < 2 + w.random.nextInt(3); a++) {
+                double vx = (0.025F + w.random.nextFloat() * 0.025F) * (w.random.nextBoolean() ? -1 : 1);
+                double vy = (0.025F + w.random.nextFloat() * 0.025F) * (w.random.nextBoolean() ? -1 : 1);
+                double vz = (0.025F + w.random.nextFloat() * 0.025F) * (w.random.nextBoolean() ? -1 : 1);
+                this.drawWispyMotes(x + vx * 2.0, y + vy * 2.0, z + vz * 2.0, vx, vy, vz, 15 + w.random.nextInt(10), -0.01F);
+            }
+            FXGeneric fb = new FXGeneric(w, x, y, z, 0.0, 0.0, 0.0);
+            fb.setMaxAge(10 + w.random.nextInt(5));
+            fb.setRBGColorF(1.0F, 0.9F, 1.0F);
+            fb.setAlphaF(1.0F, 0.0F);
+            fb.setGridSize(16);
+            fb.setParticles(77, 1, 1);
+            fb.setScale(10.0F + w.random.nextFloat() * 2.0F, 0.0F);
+            fb.setLayer(0);
+            fb.setRotationSpeed(w.random.nextFloat(), (float) w.random.nextGaussian());
+            ParticleEngine.addEffect(w, fb);
+        }
+        for (int a = 0; a < (flair ? 2 : 0) + w.random.nextInt(3); a++) {
+            this.drawCurlyWisp(x, y, z, 0.0, 0.0, 0.0, 1.0F, (0.9F + w.random.nextFloat() * 0.1F + r) / 2.0F, (0.1F + g) / 2.0F,
+                    (0.5F + w.random.nextFloat() * 0.1F + b) / 2.0F, 0.75F, side, a, 0, 0);
+        }
+    }
+
+    public void drawCurlyWisp(double x, double y, double z, double vx, double vy, double vz, float scale, float r, float g, float b, float a,
+                              Direction side, int seed, int layer, int delay) {
+        ClientLevel w = this.getWorld();
+        if (w != null) {
+            vx += (0.0025F + w.random.nextFloat() * 0.005F) * (w.random.nextBoolean() ? -1 : 1);
+            vy += (0.0025F + w.random.nextFloat() * 0.005F) * (w.random.nextBoolean() ? -1 : 1);
+            vz += (0.0025F + w.random.nextFloat() * 0.005F) * (w.random.nextBoolean() ? -1 : 1);
+            if (side != null) {
+                vx += side.getStepX() * 0.025F;
+                vy += side.getStepY() * 0.025F;
+                vz += side.getStepZ() * 0.025F;
+            }
+            FXGeneric fb2 = new FXGeneric(w, x + vx * 5.0, y + vy * 5.0, z + vz * 5.0, vx, vy, vz);
+            if (seed > 0 && w.random.nextBoolean()) {
+                fb2.setAngles(90.0F * (float) w.random.nextGaussian(), 90.0F * (float) w.random.nextGaussian());
+            }
+            fb2.setMaxAge(25 + w.random.nextInt(20 + 20 * seed));
+            fb2.setRBGColorF(r, g, b, 0.1F, 0.0F, 0.1F);
+            fb2.setAlphaF(a, 0.0F);
+            fb2.setGridSize(16);
+            fb2.setParticles(60 + w.random.nextInt(4), 1, 1);
+            fb2.setScale(5.0F * scale, (10.0F + w.random.nextFloat() * 4.0F) * scale);
+            fb2.setLayer(layer);
+            fb2.setRotationSpeed(w.random.nextFloat(), w.random.nextBoolean() ? -2.0F - w.random.nextFloat() * 2.0F : 2.0F + w.random.nextFloat() * 2.0F);
+            ParticleEngine.addEffectWithDelay(w, fb2, delay);
+        }
     }
 }

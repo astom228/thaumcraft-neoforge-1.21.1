@@ -119,4 +119,19 @@ public class InventoryUtils {
         }
         return true;
     }
+
+    /** Номер слота основного инвентаря с точно таким же предметом (без учёта количества) или −1. */
+    public static int getPlayerSlotFor(Player player, ItemStack stack) {
+        for (int i = 0; i < player.getInventory().items.size(); i++) {
+            if (!player.getInventory().items.get(i).isEmpty() && stackEqualExact(stack, player.getInventory().items.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /** Тот же предмет с теми же компонентами (в 1.12 — предмет, metadata и NBT). */
+    public static boolean stackEqualExact(ItemStack stack1, ItemStack stack2) {
+        return ItemStack.isSameItemSameComponents(stack1, stack2);
+    }
 }

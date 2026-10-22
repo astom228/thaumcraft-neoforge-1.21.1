@@ -4,16 +4,19 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import java.io.IOException;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent;
+import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.lib.crafting.ConfigRecipes;
 import thaumcraft.client.gui.GuiArcaneWorkbench;
 import thaumcraft.client.gui.GuiResearchTable;
 import thaumcraft.common.lib.TCMenus;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import thaumcraft.Thaumcraft;
@@ -40,6 +43,11 @@ public class ClientRegistration {
     @SubscribeEvent
     public static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
         event.registerRecipeCategoryFinder(ConfigRecipes.ARCANE_CRAFTING.get(), recipe -> RecipeBookCategories.UNKNOWN);
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(ConfigEntities.SPECIAL_ITEM.get(), ItemEntityRenderer::new);
     }
 
     @SubscribeEvent

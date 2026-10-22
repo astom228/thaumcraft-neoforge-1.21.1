@@ -381,6 +381,7 @@
   "entity.TurretAdvanced.name": "Advanced Automated Crossbow",
   "entity.TurretBasic.name": "Automated Crossbow",
   "entity.Wisp.name": "Wisp",
+  "entity.thaumcraft.special_item": "Magic Item",
   "fail.crimsonrites": "This book contains nothing but crazed ravings.",
   "false.start": "This feels like it should work, but something is missing...",
   "fluid.flux_goo": "Flux Goo",

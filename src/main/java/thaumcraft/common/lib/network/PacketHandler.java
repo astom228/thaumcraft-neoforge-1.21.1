@@ -7,6 +7,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import thaumcraft.Thaumcraft;
 import thaumcraft.client.lib.network.ClientPacketHandlers;
+import thaumcraft.common.lib.network.fx.PacketFXBlockBamf;
 import thaumcraft.common.lib.network.misc.PacketAuraToClient;
 import thaumcraft.common.lib.network.misc.PacketKnowledgeGain;
 import thaumcraft.common.lib.network.misc.PacketStartTheoryToServer;
@@ -42,6 +43,8 @@ public class PacketHandler {
                 (msg, ctx) -> PacketSyncResearchFlagsToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToServer(PacketStartTheoryToServer.TYPE, PacketStartTheoryToServer.STREAM_CODEC,
                 (msg, ctx) -> PacketStartTheoryToServer.handle(msg, (ServerPlayer) ctx.player()));
+        registrar.playToClient(PacketFXBlockBamf.TYPE, PacketFXBlockBamf.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleBlockBamf(msg));
         registrar.playToClient(PacketWarpMessage.TYPE, PacketWarpMessage.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleWarpMessage(msg));
     }

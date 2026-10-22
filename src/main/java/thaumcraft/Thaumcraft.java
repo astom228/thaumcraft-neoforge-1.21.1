@@ -11,6 +11,7 @@ import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.api.items.ItemsTC;
 import thaumcraft.common.config.ConfigAspects;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.config.ConfigResearch;
 import thaumcraft.common.config.ModConfig;
@@ -34,6 +35,7 @@ public class Thaumcraft {
         ConfigBlocks.BLOCKS.register(modEventBus);
         ConfigBlocks.TILES.register(modEventBus);
         ConfigItems.ITEMS.register(modEventBus);
+        ConfigEntities.ENTITIES.register(modEventBus);
         SoundsTC.SOUNDS.register(modEventBus);
         CreativeTabThaumcraft.TABS.register(modEventBus);
         ConfigRecipes.SERIALIZERS.register(modEventBus);
@@ -53,6 +55,8 @@ public class Thaumcraft {
         event.enqueueWork(ConfigAspects::initEntities);
         // init оригинала: категории и файлы исследований (дополнения регистрируют свои там же)
         event.enqueueWork(ConfigResearch::init);
+        // ConfigRecipes.initializeCompoundRecipes (в оригинале — init)
+        event.enqueueWork(ConfigRecipes::initializeCompoundRecipes);
     }
 
     /** postInit оригинала: загрузка JSON исследований после того, как все моды зарегистрировали категории и файлы. */
