@@ -10,6 +10,7 @@ import thaumcraft.Thaumcraft;
 import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.common.tiles.misc.TileNitor;
 import thaumcraft.common.tiles.crafting.TileArcaneWorkbench;
+import thaumcraft.common.tiles.crafting.TileCrucible;
 import thaumcraft.common.tiles.crafting.TileResearchTable;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -26,11 +27,14 @@ public class ConfigBlocks {
     @SuppressWarnings("DataFlowIssue")
     public static final Supplier<BlockEntityType<TileResearchTable>> RESEARCH_TABLE_TILE = TILES.register("research_table",
             () -> BlockEntityType.Builder.of(TileResearchTable::new, BlocksTC.researchTable.get()).build(null));
+    public static final Supplier<BlockEntityType<TileCrucible>> CRUCIBLE_TILE = TILES.register("crucible",
+            () -> BlockEntityType.Builder.of(TileCrucible::new, BlocksTC.crucible.get()).build(null));
     public static final Supplier<BlockEntityType<TileArcaneWorkbench>> ARCANE_WORKBENCH_TILE = TILES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(TileArcaneWorkbench::new, BlocksTC.arcaneWorkbench.get()).build(null));
 
     /** Раздел 7: инвентари блоков — возможность IItemHandler. */
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RESEARCH_TABLE_TILE.get(), (tile, side) -> tile.getItemHandler());
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, CRUCIBLE_TILE.get(), (tile, side) -> tile.tank);
     }
 }

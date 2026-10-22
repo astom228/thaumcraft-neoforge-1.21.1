@@ -305,6 +305,9 @@
     },
     "arcane_workbench_charger": {
       "src": "arcane_workbench_charger"
+    },
+    "crucible": {
+      "src": "crucible"
     }
   },
   "items": {

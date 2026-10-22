@@ -330,4 +330,72 @@ public class FXDispatcher implements IFXDispatcher {
             ParticleEngine.addEffectWithDelay(w, fb2, delay);
         }
     }
+
+    @Override
+    public void crucibleBubble(float x, float y, float z, float cr, float cg, float cb) {
+        ClientLevel w = this.getWorld();
+        FXGeneric fb = new FXGeneric(w, x, y, z, 0.0, 0.0, 0.0);
+        fb.setMaxAge(15 + w.random.nextInt(10));
+        fb.setScale(w.random.nextFloat() * 0.3F + 0.3F);
+        fb.setRBGColorF(cr, cg, cb);
+        fb.setRandomMovementScale(0.002F, 0.002F, 0.002F);
+        fb.setGravity(-0.001F);
+        fb.setParticle(64);
+        fb.setFinalFrames(65, 66, 66);
+        ParticleEngine.addEffect(w, fb);
+    }
+
+    /** Брызги при растворении (j — сила подъёма); в оригинале получал TileCrucible — здесь его высота жидкости и аспекты. */
+    @Override
+    public void crucibleBoil(BlockPos pos, float fluidHeight, thaumcraft.api.aspects.AspectList aspects, int j) {
+        ClientLevel w = this.getWorld();
+        for (int a = 0; a < 2; a++) {
+            FXGeneric fb = new FXGeneric(w, pos.getX() + 0.2F + w.random.nextFloat() * 0.6F, pos.getY() + 0.1F + fluidHeight,
+                    pos.getZ() + 0.2F + w.random.nextFloat() * 0.6F, 0.0, 0.002, 0.0);
+            fb.setMaxAge((int) (7.0 + 8.0 / (Math.random() * 0.8 + 0.2)));
+            fb.setScale(w.random.nextFloat() * 0.3F + 0.2F);
+            if (aspects.size() == 0) {
+                fb.setRBGColorF(1.0F, 1.0F, 1.0F);
+            } else {
+                Color color = new Color(aspects.getAspects()[w.random.nextInt(aspects.getAspects().length)].getColor());
+                fb.setRBGColorF(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F);
+            }
+            fb.setRandomMovementScale(0.001F, 0.001F, 0.001F);
+            fb.setGravity(-0.025F * j);
+            fb.setParticle(64);
+            fb.setFinalFrames(65, 66);
+            ParticleEngine.addEffect(w, fb);
+        }
+    }
+
+    @Override
+    public void crucibleFroth(float x, float y, float z) {
+        ClientLevel w = this.getWorld();
+        FXGeneric fb = new FXGeneric(w, x, y, z, 0.0, 0.0, 0.0);
+        fb.setMaxAge(4 + w.random.nextInt(3));
+        fb.setScale(w.random.nextFloat() * 0.2F + 0.2F);
+        fb.setRBGColorF(0.5F, 0.5F, 0.7F);
+        fb.setRandomMovementScale(0.001F, 0.001F, 0.001F);
+        fb.setGravity(0.1F);
+        fb.setParticle(64);
+        fb.setFinalFrames(65, 66);
+        ParticleEngine.addEffect(w, fb);
+    }
+
+    @Override
+    public void crucibleFrothDown(float x, float y, float z) {
+        ClientLevel w = this.getWorld();
+        FXGeneric fb = new FXGeneric(w, x, y, z, 0.0, 0.0, 0.0);
+        fb.setMaxAge(12 + w.random.nextInt(12));
+        fb.setScale(w.random.nextFloat() * 0.2F + 0.4F);
+        fb.setRBGColorF(0.25F, 0.0F, 0.75F);
+        fb.setAlphaF(0.8F);
+        fb.setRandomMovementScale(0.001F, 0.001F, 0.001F);
+        fb.setGravity(0.05F);
+        fb.setNoClip(false);
+        fb.setParticle(73);
+        fb.setFinalFrames(65, 66);
+        fb.setLayer(1);
+        ParticleEngine.addEffect(w, fb);
+    }
 }

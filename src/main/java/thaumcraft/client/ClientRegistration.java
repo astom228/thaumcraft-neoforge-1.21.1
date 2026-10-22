@@ -10,6 +10,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent;
+import thaumcraft.client.renderers.tile.TileCrucibleRenderer;
+import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.lib.crafting.ConfigRecipes;
 import thaumcraft.client.gui.GuiArcaneWorkbench;
@@ -48,6 +50,7 @@ public class ClientRegistration {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ConfigEntities.SPECIAL_ITEM.get(), ItemEntityRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.CRUCIBLE_TILE.get(), TileCrucibleRenderer::new);
     }
 
     @SubscribeEvent

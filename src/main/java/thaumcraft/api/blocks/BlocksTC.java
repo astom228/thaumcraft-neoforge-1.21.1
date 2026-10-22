@@ -18,6 +18,7 @@ import thaumcraft.common.blocks.basic.BlockCandle;
 import thaumcraft.common.blocks.basic.BlockTable;
 import thaumcraft.common.blocks.crafting.BlockArcaneWorkbench;
 import thaumcraft.common.blocks.crafting.BlockArcaneWorkbenchCharger;
+import thaumcraft.common.blocks.crafting.BlockCrucible;
 import thaumcraft.common.blocks.crafting.BlockResearchTable;
 import thaumcraft.common.blocks.basic.BlockMetalTC;
 import thaumcraft.common.blocks.basic.BlockPlanksTC;
@@ -205,6 +206,10 @@ public class BlocksTC {
     // Зарядник верстака (BlockTC: прочность 1.25, setResistance(10) → 6; Material.WOOD)
     public static final DeferredBlock<Block> arcaneWorkbenchCharger = register("arcane_workbench_charger", () -> new BlockArcaneWorkbenchCharger(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.25F, 6.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+
+    // Тигель (BlockTCTile: прочность 2.0, сопротивление 20 → 12; Material.IRON — нужна кирка)
+    public static final DeferredBlock<Block> crucible = register("crucible", () -> new BlockCrucible(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
 
     /** Регистрирует блок и его предмет (в оригинале — ConfigBlocks.registerBlock). */
     private static DeferredBlock<Block> register(String name, Supplier<? extends Block> block) {

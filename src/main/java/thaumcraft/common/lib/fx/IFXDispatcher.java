@@ -43,6 +43,18 @@ public interface IFXDispatcher {
     default void drawBamf(double x, double y, double z, boolean sound, boolean flair, net.minecraft.core.Direction side) {
     }
 
+    default void crucibleBubble(float x, float y, float z, float cr, float cg, float cb) {
+    }
+
+    default void crucibleBoil(net.minecraft.core.BlockPos pos, float fluidHeight, thaumcraft.api.aspects.AspectList aspects, int j) {
+    }
+
+    default void crucibleFroth(float x, float y, float z) {
+    }
+
+    default void crucibleFrothDown(float x, float y, float z) {
+    }
+
     /** Текущая реализация (на клиенте подставляется в ThaumcraftClient). */
     static IFXDispatcher get() {
         return Holder.instance;
