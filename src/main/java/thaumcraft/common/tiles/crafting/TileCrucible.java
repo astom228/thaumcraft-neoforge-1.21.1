@@ -251,9 +251,10 @@ public class TileCrucible extends TileThaumcraft implements IAspectContainer {
             if (this.level.random.nextBoolean()) {
                 AuraHelper.polluteAura(this.level, this.getBlockPos(), 1.0F, true);
             }
+            // в оригинале синхронизация шла каждые 5 с и без изменений (раздел 7: только при изменении)
+            this.setChanged();
+            this.syncTile(false);
         }
-        this.setChanged();
-        this.syncTile(false);
     }
 
     public void spillRemnants() {
