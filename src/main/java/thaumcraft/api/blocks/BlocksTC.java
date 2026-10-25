@@ -19,6 +19,13 @@ import thaumcraft.common.blocks.basic.BlockTable;
 import thaumcraft.common.blocks.crafting.BlockArcaneWorkbench;
 import thaumcraft.common.blocks.devices.BlockWaterJug;
 import thaumcraft.common.blocks.essentia.BlockJar;
+import thaumcraft.common.blocks.essentia.BlockTube;
+import thaumcraft.common.tiles.essentia.TileTube;
+import thaumcraft.common.tiles.essentia.TileTubeBuffer;
+import thaumcraft.common.tiles.essentia.TileTubeFilter;
+import thaumcraft.common.tiles.essentia.TileTubeOneway;
+import thaumcraft.common.tiles.essentia.TileTubeRestrict;
+import thaumcraft.common.tiles.essentia.TileTubeValve;
 import thaumcraft.common.blocks.essentia.BlockJarBrainItem;
 import thaumcraft.common.blocks.essentia.BlockJarItem;
 import thaumcraft.common.tiles.essentia.TileJarBrain;
@@ -229,6 +236,22 @@ public class BlocksTC {
     // Неиссякаемая урна (BlockTCDevice: прочность 2.0, сопротивление 20 → 12, Material.ROCK; добывается без инструмента)
     public static final DeferredBlock<Block> everfullUrn = register("everfull_urn", () -> new BlockWaterJug(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion()));
+
+    // Трубки (BlockTube: Material.IRON, прочность 0.5, setResistance(5) → 3, звук металла; добываются без инструмента)
+    public static final DeferredBlock<Block> tube = register("essentia_tube", () -> new BlockTube(TileTube::new, ConfigBlocks.TUBE_TILE, tube()));
+    public static final DeferredBlock<Block> tubeValve = register("essentia_valve", () -> new BlockTube(TileTubeValve::new, ConfigBlocks.TUBE_VALVE_TILE, tube()));
+    public static final DeferredBlock<Block> tubeRestrict = register("restricted_essentia_tube",
+            () -> new BlockTube(TileTubeRestrict::new, ConfigBlocks.TUBE_RESTRICT_TILE, tube()));
+    public static final DeferredBlock<Block> tubeOneway = register("directional_essentia_tube",
+            () -> new BlockTube(TileTubeOneway::new, ConfigBlocks.TUBE_ONEWAY_TILE, tube()));
+    public static final DeferredBlock<Block> tubeFilter = register("filtered_essentia_tube",
+            () -> new BlockTube(TileTubeFilter::new, ConfigBlocks.TUBE_FILTER_TILE, tube()));
+    public static final DeferredBlock<Block> tubeBuffer = register("essentia_buffer", () -> new BlockTube(TileTubeBuffer::new, ConfigBlocks.TUBE_BUFFER_TILE, tube()));
+
+    private static BlockBehaviour.Properties tube() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 3.0F).sound(SoundType.METAL).noOcclusion()
+                .isRedstoneConductor((s, l, p) -> false).isSuffocating((s, l, p) -> false).isViewBlocking((s, l, p) -> false);
+    }
 
     private static BlockBehaviour.Properties jar() {
         return BlockBehaviour.Properties.of().mapColor(MapColor.NONE).strength(0.3F, 12.0F).sound(SoundsTC.JAR).noOcclusion()

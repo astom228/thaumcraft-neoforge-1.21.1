@@ -114,8 +114,21 @@ function toVariant(id, entry, models, renderType) {
 const variantOut = (list) => (list.length === 1 ? list[0] : list);
 const asList = (x) => (Array.isArray(x) ? x : [x]);
 
+// Мультипарт (трубки): условия when переносятся как есть, модели — по ссылке (копируются); предмет — из spec.itemModel
+function convertMultipart(id, spec, bs) {
+  const multipart = bs.multipart.map((part) => {
+    const apply = asList(part.apply).map((e) => toVariant(id, e, new Map(), spec.renderType));
+    const out = { apply: variantOut(apply) };
+    if (part.when) out.when = part.when;
+    return out;
+  });
+  write(`blockstates/${id}.json`, { multipart });
+  if (spec.itemModel) writeItem(id, spec.itemModel);
+}
+
 function convertBlock(id, spec) {
   const bs = readSrc(`blockstates/${spec.src}.json`);
+  if (bs.multipart) return convertMultipart(id, spec, bs);
   const ignore = new Set(spec.ignore || []);
   const propMap = spec.props || {};
   const models = new Map();

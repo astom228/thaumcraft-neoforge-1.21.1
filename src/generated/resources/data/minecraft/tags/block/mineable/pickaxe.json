@@ -28,6 +28,12 @@
     "thaumcraft:infusion_cost_stone",
     "thaumcraft:stone_table",
     "thaumcraft:crucible",
-    "thaumcraft:everfull_urn"
+    "thaumcraft:everfull_urn",
+    "thaumcraft:essentia_tube",
+    "thaumcraft:essentia_valve",
+    "thaumcraft:restricted_essentia_tube",
+    "thaumcraft:directional_essentia_tube",
+    "thaumcraft:filtered_essentia_tube",
+    "thaumcraft:essentia_buffer"
   ]
 }

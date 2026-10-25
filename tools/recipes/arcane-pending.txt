@@ -9,13 +9,6 @@ robelegs: нет ItemsTC.clothLegs
 robeboots: нет ItemsTC.clothBoots
 sealblank: нет ItemsTC.seals
 arcanespa: нет BlocksTC.spa
-tube: нет essentia_tube (BlocksTC.tube meta 0)
-resonator: нет ItemsTC.resonator
-tubevalve: нет BlocksTC.tubeValve
-tubefilter: нет BlocksTC.tubeFilter
-tuberestrict: нет BlocksTC.tubeRestrict
-tubeoneway: нет BlocksTC.tubeOneway
-tubebuffer: нет BlocksTC.tubeBuffer
 bannerwhite: нет BlocksTC.banners
 bannerorange: нет BlocksTC.banners
 bannermagenta: нет BlocksTC.banners
@@ -50,7 +43,6 @@ alembic: нет BlocksTC.alembic
 essentiasmelter: нет BlocksTC.smelterBasic
 essentiasmelterthaumium: нет BlocksTC.smelterThaumium
 essentiasmeltervoid: нет BlocksTC.smelterVoid
-alchemicalconstruct: нет BlocksTC.tubeValve
 advalchemyconstruct: нет ItemsTC.primordialPearl
 potionsprayer: нет BlocksTC.potionSprayer
 smelteraux: нет BlocksTC.smelterAux

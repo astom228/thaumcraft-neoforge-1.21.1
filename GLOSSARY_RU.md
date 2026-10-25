@@ -197,3 +197,6 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | discount / Vis discount | скидка / Скидка Вис | |
 | N available (aura vis) | доступно: N | надпись в магическом верстаке |
 | Magic Item (парящий предмет) | Магический предмет | |
+| Restricted / Directional / Filtered Essentia Tube | Ограничительная / Направленная / Фильтрующая трубка эссенции | |
+| Suction (essentia) | Всасывание | |
+| Essentia Resonator | Резонатор эссенции | |

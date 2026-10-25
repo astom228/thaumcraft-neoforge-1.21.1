@@ -66,4 +66,9 @@ public class TileThaumcraft extends BlockEntity {
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
         this.readSyncNBT(pkt.getTag(), registries);
     }
+
+    /** Есть ли у блока сигнал красного камня. */
+    public boolean gettingPower() {
+        return this.level != null && this.level.hasNeighborSignal(this.worldPosition);
+    }
 }

@@ -1,0 +1,16 @@
+{
+  "type": "thaumcraft:arcane_shapeless",
+  "research": "TUBES",
+  "vis": 10,
+  "crystals": {
+    "aqua": 1
+  },
+  "ingredients": [
+    {
+      "item": "thaumcraft:essentia_tube"
+    }
+  ],
+  "result": {
+    "id": "thaumcraft:directional_essentia_tube"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "thaumcraft:block/tube_side",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "north": true
+      }
+    },
+    {
+      "apply": {
+        "model": "thaumcraft:block/tube_side",
+        "x": 90
+      },
+      "when": {
+        "south": true
+      }
+    },
+    {
+      "apply": {
+        "model": "thaumcraft:block/tube_side",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "east": true
+      }
+    },
+    {
+      "apply": {
+        "model": "thaumcraft:block/tube_side",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "west": true
+      }
+    },
+    {
+      "apply": {
+        "model": "thaumcraft:block/tube_side",
+        "x": 180
+      },
+      "when": {
+        "up": true
+      }
+    },
+    {
+      "apply": {
+        "model": "thaumcraft:block/tube_side"
+      },
+      "when": {
+        "down": true
+      }
+    },
+    {
+      "apply": {
+        "model": "thaumcraft:block/tube_filter_core"
+      }
+    }
+  ]
+}

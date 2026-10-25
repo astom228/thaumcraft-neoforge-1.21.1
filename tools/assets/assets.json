@@ -312,6 +312,30 @@
     "everfull_urn": {
       "src": "everfull_urn"
     },
+    "essentia_tube": {
+      "src": "tube",
+      "itemModel": "model:tube"
+    },
+    "essentia_valve": {
+      "src": "tube_valve",
+      "itemModel": "model:tube_valve"
+    },
+    "restricted_essentia_tube": {
+      "src": "tube_restrict",
+      "itemModel": "model:tube_restrict"
+    },
+    "directional_essentia_tube": {
+      "src": "tube_oneway",
+      "itemModel": "model:tube_oneway"
+    },
+    "filtered_essentia_tube": {
+      "src": "tube_filter",
+      "itemModel": "model:tube_filter"
+    },
+    "essentia_buffer": {
+      "src": "tube_buffer",
+      "itemModel": "model:tube_buffer"
+    },
     "warded_jar": {
       "src": "jar_normal",
       "renderType": "minecraft:translucent"
@@ -332,6 +356,7 @@
     "essentia_phial": "bs:phial#filled",
     "label": "bs:label#blank",
     "marked_label": "bs:label#filled",
+    "essentia_resonator": "model:resonator",
     "quicksilver": "model:quicksilver",
     "thaumium_ingot": "bs:ingot#thaumium",
     "void_metal_ingot": "bs:ingot#void",

@@ -64,6 +64,9 @@ public interface IFXDispatcher {
     default void waterTrailFx(net.minecraft.core.BlockPos p1, net.minecraft.core.BlockPos p2, int count, int color, float scale) {
     }
 
+    default void drawVentParticles(double x, double y, double z, double x2, double y2, double z2, int color) {
+    }
+
     /** Текущая реализация (на клиенте подставляется в ThaumcraftClient). */
     static IFXDispatcher get() {
         return Holder.instance;

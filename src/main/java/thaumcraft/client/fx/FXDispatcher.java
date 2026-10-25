@@ -460,4 +460,18 @@ public class FXDispatcher implements IFXDispatcher {
                 p1.getY() + 0.66, p1.getZ() + 0.5, p2.getX() + 0.5, p2.getY() + 0.5, p2.getZ() + 0.5, count, color, scale, 0, 0.2);
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
+
+    @Override
+    public void drawVentParticles(double x, double y, double z, double x2, double y2, double z2, int color) {
+        thaumcraft.client.fx.particles.FXVent fb = new thaumcraft.client.fx.particles.FXVent(this.getWorld(), x, y, z, x2, y2, z2, color);
+        fb.setAlphaF(0.4F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    public void drawVentParticles(double x, double y, double z, double x2, double y2, double z2, int color, float scale) {
+        thaumcraft.client.fx.particles.FXVent fb = new thaumcraft.client.fx.particles.FXVent(this.getWorld(), x, y, z, x2, y2, z2, color);
+        fb.setAlphaF(0.4F);
+        fb.setScale(scale);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
 }

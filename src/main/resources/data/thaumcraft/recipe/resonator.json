@@ -1,0 +1,24 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "TUBES",
+  "vis": 50,
+  "key": {
+    "I": {
+      "tag": "c:plates/iron"
+    },
+    "N": {
+      "item": "minecraft:quartz"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "I I",
+    "INI",
+    " S "
+  ],
+  "result": {
+    "id": "thaumcraft:essentia_resonator"
+  }
+}

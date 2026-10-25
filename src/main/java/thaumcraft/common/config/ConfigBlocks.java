@@ -12,6 +12,12 @@ import thaumcraft.common.tiles.misc.TileNitor;
 import thaumcraft.common.tiles.crafting.TileArcaneWorkbench;
 import thaumcraft.common.tiles.devices.TileWaterJug;
 import thaumcraft.common.tiles.essentia.TileJarBrain;
+import thaumcraft.common.tiles.essentia.TileTube;
+import thaumcraft.common.tiles.essentia.TileTubeValve;
+import thaumcraft.common.tiles.essentia.TileTubeRestrict;
+import thaumcraft.common.tiles.essentia.TileTubeOneway;
+import thaumcraft.common.tiles.essentia.TileTubeFilter;
+import thaumcraft.common.tiles.essentia.TileTubeBuffer;
 import thaumcraft.common.tiles.essentia.TileJarFillable;
 import thaumcraft.common.tiles.essentia.TileJarFillableVoid;
 import thaumcraft.common.tiles.crafting.TileCrucible;
@@ -41,6 +47,18 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(TileJarBrain::new, BlocksTC.jarBrain.get()).build(null));
     public static final Supplier<BlockEntityType<TileWaterJug>> EVERFULL_URN_TILE = TILES.register("everfull_urn",
             () -> BlockEntityType.Builder.of(TileWaterJug::new, BlocksTC.everfullUrn.get()).build(null));
+    public static final Supplier<BlockEntityType<TileTube>> TUBE_TILE = TILES.register("essentia_tube",
+            () -> BlockEntityType.Builder.of(TileTube::new, BlocksTC.tube.get()).build(null));
+    public static final Supplier<BlockEntityType<TileTubeValve>> TUBE_VALVE_TILE = TILES.register("essentia_valve",
+            () -> BlockEntityType.Builder.of(TileTubeValve::new, BlocksTC.tubeValve.get()).build(null));
+    public static final Supplier<BlockEntityType<TileTubeRestrict>> TUBE_RESTRICT_TILE = TILES.register("restricted_essentia_tube",
+            () -> BlockEntityType.Builder.of(TileTubeRestrict::new, BlocksTC.tubeRestrict.get()).build(null));
+    public static final Supplier<BlockEntityType<TileTubeOneway>> TUBE_ONEWAY_TILE = TILES.register("directional_essentia_tube",
+            () -> BlockEntityType.Builder.of(TileTubeOneway::new, BlocksTC.tubeOneway.get()).build(null));
+    public static final Supplier<BlockEntityType<TileTubeFilter>> TUBE_FILTER_TILE = TILES.register("filtered_essentia_tube",
+            () -> BlockEntityType.Builder.of(TileTubeFilter::new, BlocksTC.tubeFilter.get()).build(null));
+    public static final Supplier<BlockEntityType<TileTubeBuffer>> TUBE_BUFFER_TILE = TILES.register("essentia_buffer",
+            () -> BlockEntityType.Builder.of(TileTubeBuffer::new, BlocksTC.tubeBuffer.get()).build(null));
     public static final Supplier<BlockEntityType<TileArcaneWorkbench>> ARCANE_WORKBENCH_TILE = TILES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(TileArcaneWorkbench::new, BlocksTC.arcaneWorkbench.get()).build(null));
 

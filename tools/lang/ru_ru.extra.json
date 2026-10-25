@@ -426,5 +426,15 @@
   "block.thaumcraft.warded_jar": "Защищённая банка",
   "block.thaumcraft.void_jar": "Пустотная банка",
   "block.thaumcraft.brain_jar": "Мозг в банке",
-  "block.thaumcraft.everfull_urn": "Неиссякаемая урна"
+  "block.thaumcraft.everfull_urn": "Неиссякаемая урна",
+  "block.thaumcraft.essentia_tube": "Трубка эссенции",
+  "block.thaumcraft.essentia_valve": "Клапан эссенции",
+  "block.thaumcraft.restricted_essentia_tube": "Ограничительная трубка эссенции",
+  "block.thaumcraft.directional_essentia_tube": "Направленная трубка эссенции",
+  "block.thaumcraft.filtered_essentia_tube": "Фильтрующая трубка эссенции",
+  "block.thaumcraft.essentia_buffer": "Буфер эссенции",
+  "item.thaumcraft.essentia_resonator": "Резонатор эссенции",
+  "tc.resonator1": "§9Содержит %1$s ед. эссенции %2$s§0",
+  "tc.resonator2": "§5Всасывание %1$s %2$s §0 ",
+  "tc.resonator3": "без типа"
 }
