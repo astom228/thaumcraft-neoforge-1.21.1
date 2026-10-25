@@ -74,6 +74,14 @@ public class TCBlockLootTables extends BlockLootSubProvider {
             add(c, noDrop());
         }
 
+        // Зеркала: связанное выпадает со связью (dropMirror оригинала)
+        for (Block m : new Block[]{BlocksTC.mirror.get(), BlocksTC.mirrorEssentia.get()}) {
+            add(m, b -> LootTable.lootTable().withPool(applyExplosionCondition(b, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+                    .add(LootItem.lootTableItem(b).apply(net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction
+                            .copyComponents(net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction.Source.BLOCK_ENTITY)
+                            .include(thaumcraft.common.lib.TCDataComponents.MIRROR_LINK.get()))))));
+        }
+
         // Остальные блоки этапа роняют сами себя
         for (DeferredHolder<Block, ? extends Block> holder : ConfigBlocks.BLOCKS.getEntries()) {
             Block block = holder.get();

@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
+import thaumcraft.common.tiles.devices.TileMirrorEssentia;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,10 +47,9 @@ public class EssentiaHandler {
         return GlobalPos.of(tile.getLevel().dimension(), tile.getBlockPos());
     }
 
-    /** Зеркало эссенции (этап 10.5) — ignoreMirror оригинала. */
+    /** Зеркало эссенции — ignoreMirror оригинала. */
     private static boolean isMirror(BlockEntity te) {
-        // TODO этап 10.5: te instanceof TileMirrorEssentia
-        return false;
+        return te instanceof TileMirrorEssentia;
     }
 
     private static void sendFx(Level world, BlockPos at, BlockPos from, BlockPos to, Aspect aspect, int ext) {
@@ -218,6 +218,7 @@ public class EssentiaHandler {
             sourcesDelay.remove(tileLoc);
         }
         BlockPos origin = tileLoc.pos();
+        BlockEntity sourceTile = world.isLoaded(origin) ? world.getBlockEntity(origin) : null;
         List<BlockPos> sourceList = new ArrayList<>();
         int start = 0;
         if (direction == null) {
@@ -245,8 +246,10 @@ public class EssentiaHandler {
                             zz += bb;
                         }
                         BlockPos p = new BlockPos(xx, yy, zz);
-                        // TODO этап 10.5: зеркало эссенции не берёт эссенцию из связанного с ним зеркала
-                        if (sourceAt(world, p) != null) {
+                        // зеркало эссенции не берёт эссенцию из связанного с ним зеркала
+                        IAspectSource found = sourceAt(world, p);
+                        if (found != null && (!(sourceTile instanceof TileMirrorEssentia) || !(found instanceof TileMirrorEssentia me)
+                                || !me.linkPos.equals(origin) || me.linkDim != world.dimension())) {
                             sourceList.add(p);
                         }
                     }

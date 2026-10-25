@@ -42,6 +42,7 @@ public class ClientRegistration {
         event.register(TCMenus.RESEARCH_TABLE.get(), GuiResearchTable::new);
         event.register(TCMenus.ARCANE_WORKBENCH.get(), GuiArcaneWorkbench::new);
         event.register(TCMenus.SMELTER.get(), thaumcraft.client.gui.GuiSmelter::new);
+        event.register(TCMenus.HAND_MIRROR.get(), thaumcraft.client.gui.GuiHandMirror::new);
     }
 
     /** Магические рецепты не входят в ванильную книгу рецептов; без категории клиент пишет предупреждение на каждый рецепт. */
@@ -62,6 +63,20 @@ public class ClientRegistration {
         event.registerBlockEntityRenderer(ConfigBlocks.TUBE_BUFFER_TILE.get(), TileTubeRenderers.Buffer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.ALEMBIC_TILE.get(), thaumcraft.client.renderers.tile.TileAlembicRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.CENTRIFUGE_TILE.get(), thaumcraft.client.renderers.tile.TileCentrifugeRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.MIRROR_TILE.get(), thaumcraft.client.renderers.tile.TileMirrorRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.MIRROR_ESSENTIA_TILE.get(), thaumcraft.client.renderers.tile.TileMirrorRenderer::new);
+    }
+
+    /** Предмет-зеркало со связью — модель «открытого» зеркала (metadata 1 оригинала). */
+    @SubscribeEvent
+    public static void clientSetup(net.neoforged.fml.event.lifecycle.FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            net.minecraft.resources.ResourceLocation linked = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "linked");
+            for (var block : new net.minecraft.world.level.block.Block[]{thaumcraft.api.blocks.BlocksTC.mirror.get(), thaumcraft.api.blocks.BlocksTC.mirrorEssentia.get()}) {
+                net.minecraft.client.renderer.item.ItemProperties.register(block.asItem(), linked,
+                        (stack, level, entity, seed) -> stack.has(thaumcraft.common.lib.TCDataComponents.MIRROR_LINK.get()) ? 1.0F : 0.0F);
+            }
+        });
     }
 
     @SubscribeEvent

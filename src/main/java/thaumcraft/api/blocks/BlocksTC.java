@@ -20,6 +20,10 @@ import thaumcraft.common.blocks.crafting.BlockArcaneWorkbench;
 import thaumcraft.common.blocks.devices.BlockWaterJug;
 import thaumcraft.common.blocks.essentia.BlockJar;
 import thaumcraft.common.blocks.essentia.BlockTube;
+import thaumcraft.common.blocks.devices.BlockMirror;
+import thaumcraft.common.blocks.devices.BlockMirrorItem;
+import thaumcraft.common.tiles.devices.TileMirror;
+import thaumcraft.common.tiles.devices.TileMirrorEssentia;
 import thaumcraft.common.blocks.essentia.BlockEssentiaTransport;
 import thaumcraft.common.tiles.essentia.TileEssentiaInput;
 import thaumcraft.common.tiles.essentia.TileEssentiaOutput;
@@ -278,6 +282,17 @@ public class BlocksTC {
             () -> new BlockEssentiaTransport(TileEssentiaInput::new, ConfigBlocks.ESSENTIA_INPUT_TILE, transport()));
     public static final DeferredBlock<Block> essentiaTransportOutput = register("essentia_output",
             () -> new BlockEssentiaTransport(TileEssentiaOutput::new, ConfigBlocks.ESSENTIA_OUTPUT_TILE, transport()));
+
+    // Зеркала (BlockMirror: Material.IRON, прочность 0.1, звук банки; добываются без инструмента)
+    public static final DeferredBlock<Block> mirror = registerWithItem("magic_mirror",
+            () -> new BlockMirror(TileMirror::new, ConfigBlocks.MIRROR_TILE, mirror()), BlockMirrorItem::new);
+    public static final DeferredBlock<Block> mirrorEssentia = registerWithItem("essentia_mirror",
+            () -> new BlockMirror(TileMirrorEssentia::new, ConfigBlocks.MIRROR_ESSENTIA_TILE, mirror()), BlockMirrorItem::new);
+
+    private static BlockBehaviour.Properties mirror() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.1F, 6.0F).sound(SoundsTC.JAR).noOcclusion()
+                .isRedstoneConductor((s, l, p) -> false).isSuffocating((s, l, p) -> false).isViewBlocking((s, l, p) -> false);
+    }
 
     private static BlockBehaviour.Properties transport() {
         return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL).noOcclusion();

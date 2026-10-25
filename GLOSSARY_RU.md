@@ -164,6 +164,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Arcane Mechanism (Simple / Complex) | Магический механизм (простой / сложный) |
 | Morphic Resonator | Морфический резонатор |
 | Mirrored Glass | Зеркальное стекло |
+| Magic Mirror / Essentia Mirror / Hand Mirror | Магическое зеркало / Зеркало эссенции / Магическое ручное зеркало | принято |
 | Void Seed | Семя пустоты |
 | Clockwork / Biothaumic Mind | Заводной / Биотаумический разум |
 | Vision / Aggression Module | Модуль зрения / агрессии |

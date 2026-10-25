@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -37,4 +38,8 @@ public class TCDataComponents {
     /** Опыт мозга в банке (в оригинале — NBT "xp" у предмета). */
     public static final Supplier<DataComponentType<Integer>> BRAIN_XP = COMPONENTS.registerComponentType("brain_xp",
             b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    /** Связь зеркала или ручного зеркала (в оригинале — NBT linkX/linkY/linkZ/linkDim; предмет-зеркало со связью — metadata 1). */
+    public static final Supplier<DataComponentType<GlobalPos>> MIRROR_LINK = COMPONENTS.registerComponentType("mirror_link",
+            b -> b.persistent(GlobalPos.CODEC).networkSynchronized(GlobalPos.STREAM_CODEC));
 }

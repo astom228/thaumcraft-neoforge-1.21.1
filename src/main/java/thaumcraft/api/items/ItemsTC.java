@@ -17,6 +17,7 @@ import thaumcraft.common.items.curios.ItemEnchantmentPlaceholder;
 import thaumcraft.common.items.curios.ItemThaumonomicon;
 import thaumcraft.common.items.consumables.ItemLabel;
 import thaumcraft.common.items.tools.ItemResonator;
+import thaumcraft.common.items.tools.ItemHandMirror;
 import thaumcraft.common.items.consumables.ItemPhial;
 import thaumcraft.common.items.resources.ItemCrystalEssence;
 import thaumcraft.common.items.resources.ItemMagicDust;
@@ -81,6 +82,7 @@ public class ItemsTC {
     public static final DeferredItem<Item> phialFilled = ConfigItems.ITEMS.registerItem("essentia_phial", p -> new ItemPhial(true, p));
     public static final DeferredItem<Item> label = ConfigItems.ITEMS.registerItem("label", p -> new ItemLabel(false, p));
     public static final DeferredItem<Item> labelFilled = ConfigItems.ITEMS.registerItem("marked_label", p -> new ItemLabel(true, p));
+    public static final DeferredItem<Item> handMirror = ConfigItems.ITEMS.registerItem("hand_mirror", ItemHandMirror::new);
     public static final DeferredItem<Item> resonator = ConfigItems.ITEMS.registerItem("essentia_resonator", ItemResonator::new);
     public static final DeferredItem<Item> salisMundus = ConfigItems.ITEMS.registerItem("salis_mundus", ItemMagicDust::new);
     public static final DeferredItem<Item> crystalEssence = ConfigItems.ITEMS.registerItem("crystal_essence", ItemCrystalEssence::new);

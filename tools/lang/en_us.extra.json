@@ -94,5 +94,8 @@
   "tc.workbench.available": "%s available",
   "tc.workbench.vis": "%s vis",
   "tc.workbench.discount": "(%s%% discount)",
-  "entity.thaumcraft.special_item": "Magic Item"
+  "entity.thaumcraft.special_item": "Magic Item",
+  "tc.mirror.already_linked": "§5§oThat mirror is already linked to a valid destination.",
+  "tc.mirror.linked_to": "Linked to %s,%s,%s in %s",
+  "tc.mirror.in_dimension": "in %s"
 }

@@ -445,5 +445,14 @@
   "block.thaumcraft.alembic": "Магический алембик",
   "block.thaumcraft.centrifuge": "Центрифуга эссенции",
   "block.thaumcraft.essentia_input": "Наполняющий переливатель эссенции",
-  "block.thaumcraft.essentia_output": "Опустошающий переливатель эссенции"
+  "block.thaumcraft.essentia_output": "Опустошающий переливатель эссенции",
+  "tc.mirror.already_linked": "§5§oЭто зеркало уже связано с действующим зеркалом.",
+  "tc.mirror.linked_to": "Связано с %s,%s,%s в %s",
+  "tc.mirror.in_dimension": "в %s",
+  "block.thaumcraft.magic_mirror": "Магическое зеркало",
+  "block.thaumcraft.essentia_mirror": "Зеркало эссенции",
+  "item.thaumcraft.hand_mirror": "Магическое ручное зеркало",
+  "tc.handmirrorlinkedto": "Связано с",
+  "tc.handmirrorlinked": "Связь установлена.",
+  "tc.handmirrorerror": "Зеркало назначения пропало или сдвинуто. Связь разорвана."
 }

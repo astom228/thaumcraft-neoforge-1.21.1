@@ -1,7 +1,8 @@
 // Конвертация blockstates/моделей оригинала (1.12, в т.ч. forge_marker) в формат 1.21.
 //   node tools/assets/convert-assets.js
 // Список того, что конвертировать, — tools/assets/assets.json (пополняется по этапам):
-//   blocks: { "<новый id>": { "src": "<имя blockstate оригинала>", "props": {...}, "ignore": [...], "type": "slab|...", "item": false } }
+//   blocks: { "<новый id>": { "src": "<имя blockstate оригинала>", "props": {...}, "ignore": [...], "type": "slab|...", "item": false,
+//             "itemModel": "<источник>", "overrides": [{ "predicate": {...}, "model": "..." }] } }
 //   items:  { "<новый id>": "<источник>" }  источник: "bs:<blockstate>#<вариант>" (вариант предмета из blockstate)
 //                                                  или "model:<имя файла models/item>" (копия модели предмета),
 //                                                  или "obj:<blockstate>#<вариант>" (OBJ-модель -> neoforge:obj).
@@ -187,7 +188,7 @@ function convertBlock(id, spec) {
 
   if (spec.item === false) return;
   // Модель предмета
-  if (spec.itemModel) return writeItem(id, spec.itemModel);
+  if (spec.itemModel) { writeItem(id, spec.itemModel); return addOverrides(id, spec); }
   if (inventory && (inventory.model === 'forge:item-layer' || (inventory.model || '').startsWith('item/'))) {
     write(`models/item/${id}.json`, itemLayer(inventory));
   } else {
@@ -303,6 +304,15 @@ function writeObjItem(id, bsName, variant) {
   const display = convertDisplay(Object.assign({}, d.transform, v.transform));
   if (Object.keys(display).length) model.display = display;
   write(`models/item/${id}.json`, model);
+}
+
+// Переключение модели предмета по свойству (spec.overrides: [{ predicate, model }]) — замена metadata-вариантов предмета
+function addOverrides(id, spec) {
+  if (!spec.overrides) return;
+  const p = path.join(OUT, `models/item/${id}.json`);
+  const model = JSON.parse(fs.readFileSync(p, "utf8"));
+  model.overrides = spec.overrides;
+  fs.writeFileSync(p, JSON.stringify(model, null, 2) + '\n');
 }
 
 function writeItem(id, src) {

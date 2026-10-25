@@ -12,6 +12,8 @@ import thaumcraft.common.tiles.misc.TileNitor;
 import thaumcraft.common.tiles.crafting.TileArcaneWorkbench;
 import thaumcraft.common.tiles.devices.TileWaterJug;
 import thaumcraft.common.tiles.essentia.TileJarBrain;
+import thaumcraft.common.tiles.devices.TileMirror;
+import thaumcraft.common.tiles.devices.TileMirrorEssentia;
 import thaumcraft.common.tiles.essentia.TileEssentiaInput;
 import thaumcraft.common.tiles.essentia.TileEssentiaOutput;
 import thaumcraft.common.tiles.essentia.TileAlembic;
@@ -75,6 +77,10 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(TileEssentiaInput::new, BlocksTC.essentiaTransportInput.get()).build(null));
     public static final Supplier<BlockEntityType<TileEssentiaOutput>> ESSENTIA_OUTPUT_TILE = TILES.register("essentia_output",
             () -> BlockEntityType.Builder.of(TileEssentiaOutput::new, BlocksTC.essentiaTransportOutput.get()).build(null));
+    public static final Supplier<BlockEntityType<TileMirror>> MIRROR_TILE = TILES.register("magic_mirror",
+            () -> BlockEntityType.Builder.of(TileMirror::new, BlocksTC.mirror.get()).build(null));
+    public static final Supplier<BlockEntityType<TileMirrorEssentia>> MIRROR_ESSENTIA_TILE = TILES.register("essentia_mirror",
+            () -> BlockEntityType.Builder.of(TileMirrorEssentia::new, BlocksTC.mirrorEssentia.get()).build(null));
     public static final Supplier<BlockEntityType<TileArcaneWorkbench>> ARCANE_WORKBENCH_TILE = TILES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(TileArcaneWorkbench::new, BlocksTC.arcaneWorkbench.get()).build(null));
 
@@ -82,6 +88,7 @@ public class ConfigBlocks {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RESEARCH_TABLE_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SMELTER_TILE.get(), TileSmelter::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MIRROR_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, CRUCIBLE_TILE.get(), (tile, side) -> tile.tank);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, EVERFULL_URN_TILE.get(), TileWaterJug::capability);
     }

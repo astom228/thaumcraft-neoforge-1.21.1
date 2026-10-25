@@ -174,6 +174,68 @@ public final class UtilsFX {
         vc.addVertex(m, x, y, 0.0F).setColor(r, g, b, a).setUv(0.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
     }
 
+    /**
+     * renderItemIn2D / renderTextureIn3D в мире: спрайт атласа блоков на квадрате 0..1 толщиной thickness (вглубь по -Z)
+     * с боковыми полосками по пикселям, как в оригинале (имена параметров renderTextureIn3D сохранены).
+     */
+    public static void renderItemIn2DWorld(PoseStack pose, VertexConsumer vc, net.minecraft.client.renderer.texture.TextureAtlasSprite icon, float thickness,
+                                           int light) {
+        renderTextureIn3D(pose, vc, icon.getU1(), icon.getV0(), icon.getU0(), icon.getV1(), 16, 16, thickness, light);
+    }
+
+    private static void v3(PoseStack pose, VertexConsumer vc, float x, float y, float z, float u, float v, float nx, float ny, float nz, int light) {
+        vc.addVertex(pose.last().pose(), x, y, z).setColor(1.0F, 1.0F, 1.0F, 1.0F).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light)
+                .setNormal(pose.last(), nx, ny, nz);
+    }
+
+    public static void renderTextureIn3D(PoseStack pose, VertexConsumer vc, float maxu, float maxv, float minu, float minv, int width, int height,
+                                         float thickness, int light) {
+        v3(pose, vc, 0, 0, 0, maxu, minv, 0, 0, 1, light);
+        v3(pose, vc, 1, 0, 0, minu, minv, 0, 0, 1, light);
+        v3(pose, vc, 1, 1, 0, minu, maxv, 0, 0, 1, light);
+        v3(pose, vc, 0, 1, 0, maxu, maxv, 0, 0, 1, light);
+        v3(pose, vc, 0, 1, -thickness, maxu, maxv, 0, 0, -1, light);
+        v3(pose, vc, 1, 1, -thickness, minu, maxv, 0, 0, -1, light);
+        v3(pose, vc, 1, 0, -thickness, minu, minv, 0, 0, -1, light);
+        v3(pose, vc, 0, 0, -thickness, maxu, minv, 0, 0, -1, light);
+        float f5 = 0.5F * (maxu - minu) / width;
+        float f6 = 0.5F * (minv - maxv) / height;
+        for (int k = 0; k < width; k++) {
+            float f7 = (float) k / width;
+            float f8 = maxu + (minu - maxu) * f7 - f5;
+            v3(pose, vc, f7, 0, -thickness, f8, minv, -1, 0, 0, light);
+            v3(pose, vc, f7, 0, 0, f8, minv, -1, 0, 0, light);
+            v3(pose, vc, f7, 1, 0, f8, maxv, -1, 0, 0, light);
+            v3(pose, vc, f7, 1, -thickness, f8, maxv, -1, 0, 0, light);
+        }
+        for (int k = 0; k < width; k++) {
+            float f7 = (float) k / width;
+            float f8 = maxu + (minu - maxu) * f7 - f5;
+            float f9 = f7 + 1.0F / width;
+            v3(pose, vc, f9, 1, -thickness, f8, maxv, 1, 0, 0, light);
+            v3(pose, vc, f9, 1, 0, f8, maxv, 1, 0, 0, light);
+            v3(pose, vc, f9, 0, 0, f8, minv, 1, 0, 0, light);
+            v3(pose, vc, f9, 0, -thickness, f8, minv, 1, 0, 0, light);
+        }
+        for (int k = 0; k < height; k++) {
+            float f7 = (float) k / height;
+            float f8 = minv + (maxv - minv) * f7 - f6;
+            float f9 = f7 + 1.0F / height;
+            v3(pose, vc, 0, f9, 0, maxu, f8, 0, 1, 0, light);
+            v3(pose, vc, 1, f9, 0, minu, f8, 0, 1, 0, light);
+            v3(pose, vc, 1, f9, -thickness, minu, f8, 0, 1, 0, light);
+            v3(pose, vc, 0, f9, -thickness, maxu, f8, 0, 1, 0, light);
+        }
+        for (int k = 0; k < height; k++) {
+            float f7 = (float) k / height;
+            float f8 = minv + (maxv - minv) * f7 - f6;
+            v3(pose, vc, 1, f7, 0, minu, f8, 0, -1, 0, light);
+            v3(pose, vc, 0, f7, 0, maxu, f8, 0, -1, 0, light);
+            v3(pose, vc, 0, f7, -thickness, maxu, f8, 0, -1, 0, light);
+            v3(pose, vc, 1, f7, -thickness, minu, f8, 0, -1, 0, light);
+        }
+    }
+
     // --- текст с кодами § ----------------------------------------------------------------------------------------------
 
     /** Текст со стилями → строка с кодами § (для переноса строк книги и подсказок, как строки 1.12). */

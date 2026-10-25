@@ -380,6 +380,30 @@
     "essentia_output": {
       "src": "essentia_output",
       "renderType": "minecraft:cutout"
+    },
+    "magic_mirror": {
+      "src": "mirror",
+      "itemModel": "model:mirror",
+      "overrides": [
+        {
+          "predicate": {
+            "thaumcraft:linked": 1
+          },
+          "model": "thaumcraft:item/magic_mirror_linked"
+        }
+      ]
+    },
+    "essentia_mirror": {
+      "src": "mirror_essentia",
+      "itemModel": "model:mirror_essentia",
+      "overrides": [
+        {
+          "predicate": {
+            "thaumcraft:linked": 1
+          },
+          "model": "thaumcraft:item/essentia_mirror_linked"
+        }
+      ]
     }
   },
   "items": {
@@ -474,6 +498,9 @@
     "celestial_notes_moon_5": "bs:celestial_notes#moon_5",
     "celestial_notes_moon_6": "bs:celestial_notes#moon_6",
     "celestial_notes_moon_7": "bs:celestial_notes#moon_7",
-    "celestial_notes_moon_8": "bs:celestial_notes#moon_8"
+    "celestial_notes_moon_8": "bs:celestial_notes#moon_8",
+    "magic_mirror_linked": "model:mirror_on",
+    "essentia_mirror_linked": "model:mirror_essentia_on",
+    "hand_mirror": "model:hand_mirror"
   }
 }
