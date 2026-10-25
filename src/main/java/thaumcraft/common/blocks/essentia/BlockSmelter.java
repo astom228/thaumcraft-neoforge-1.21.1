@@ -32,7 +32,7 @@ import thaumcraft.common.container.ContainerSmelter;
 import thaumcraft.common.tiles.essentia.TileSmelter;
 
 /**
- * Плавильня эссенции (порт BlockSmelter): обычная, таумиевая и пустотная. Смотрит на игрока, горящая светится (13);
+ * Плавильня эссенции (порт BlockSmelter): обычная, таумиумная и пустотная. Смотрит на игрока, горящая светится (13);
  * при разрушении вся эссенция внутри уходит в Выброс.
  */
 public class BlockSmelter extends BaseEntityBlock {
