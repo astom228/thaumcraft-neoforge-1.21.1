@@ -14,6 +14,7 @@ import thaumcraft.api.aspects.AspectHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.IThaumcraftRecipe;
+import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.Part;
 import thaumcraft.api.internal.CommonInternals;
 import thaumcraft.api.internal.IInternalMethodHandler;
@@ -55,6 +56,23 @@ public class ThaumcraftApi {
     /** Рецепт тигля. Регистрировать при FMLCommonSetupEvent (на обеих сторонах). */
     public static void addCrucibleRecipe(ResourceLocation registry, CrucibleRecipe recipe) {
         getCraftingRecipes().put(registry, recipe);
+    }
+
+    /** Рецепт наполнения. Регистрировать при FMLCommonSetupEvent (на обеих сторонах). */
+    public static void addInfusionCraftingRecipe(ResourceLocation registry, InfusionRecipe recipe) {
+        getCraftingRecipes().put(registry, recipe);
+    }
+
+    /** Первый рецепт наполнения с таким результатом-предметом (isItemEqual оригинала — без учёта компонентов). */
+    public static InfusionRecipe getInfusionRecipe(ItemStack res) {
+        synchronized (CommonInternals.craftingRecipeCatalog) {
+            for (Object r : getCraftingRecipes().values()) {
+                if (r instanceof InfusionRecipe ir && ir.getRecipeOutput() instanceof ItemStack out && ItemStack.isSameItem(out, res)) {
+                    return ir;
+                }
+            }
+        }
+        return null;
     }
 
     /** Схема многоблочной конструкции для книги (страница «Конструкция»). Регистрировать при FMLCommonSetupEvent. */

@@ -39,6 +39,7 @@ import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.api.crafting.ArcaneCraftingInput;
 import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.internal.CommonInternals;
 
@@ -47,6 +48,18 @@ import thaumcraft.api.internal.CommonInternals;
  * Поиск рецептов магического верстака и тигля; инфузии — на этапе 11.
  */
 public class ThaumcraftCraftingManager {
+
+    /** Первый рецепт наполнения, подходящий под центральный предмет и компоненты (с проверкой исследования игрока). */
+    public static InfusionRecipe findMatchingInfusionRecipe(List<ItemStack> items, ItemStack input, Player player) {
+        synchronized (CommonInternals.craftingRecipeCatalog) {
+            for (Object recipe : ThaumcraftApi.getCraftingRecipes().values()) {
+                if (recipe instanceof InfusionRecipe ir && ir.matches(items, input, player.level(), player)) {
+                    return ir;
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Рецепт тигля для брошенного предмета: из подходящих (исследование известно, катализатор и аспекты есть) — с наибольшим

@@ -43,6 +43,7 @@ import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.Part;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
@@ -644,7 +645,15 @@ public class GuiResearchPage extends Screen {
         }
         List<Object> list = recipeLists2.computeIfAbsent(rkey, k -> new ArrayList<>());
         List<Object> outputs = recipeOutputs2.computeIfAbsent(rkey, k -> new ArrayList<>());
-        // TODO этап 11: InfusionRecipe, RecipeMisc (с проверкой исследования)
+        // TODO этап 13: RecipeMisc; этап 11.6: InfusionEnchantmentRecipe, InfusionRunicAugmentRecipe
+        if (recipe instanceof InfusionRecipe re) {
+            ItemStack is = infusionDisplay(re);
+            if (!is.isEmpty() && ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, re.getResearch())) {
+                list.add(re);
+                outputs.add(is);
+            }
+            return;
+        }
         if (recipe instanceof ThaumcraftApi.BluePrint r) {
             if (ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, r.getResearch())) {
                 list.add(r);
@@ -694,8 +703,9 @@ public class GuiResearchPage extends Screen {
                 this.recipePage = this.recipePageMax;
             }
             Object recipe = list.get(this.recipePage % list.size());
-            // TODO этап 11: инфузия
-            if (recipe instanceof ThaumcraftApi.BluePrint bp) {
+            if (recipe instanceof InfusionRecipe ir) {
+                this.drawInfusionPage(g, x + 128, y + 128, mx, my, ir);
+            } else if (recipe instanceof ThaumcraftApi.BluePrint bp) {
                 this.drawCompoundCraftingPage(g, x + 128, y + 128, mx, my, bp);
                 this.renderingCompound = true;
             } else if (recipe instanceof CrucibleRecipe cr) {
@@ -849,6 +859,97 @@ public class GuiResearchPage extends Screen {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.mouseInside(x + 80, y + 100, 8, 8, mx, my) ? 1.0F : 0.75F);
         g.blit(tex1, x + 80, y + 100, cycleMultiblockLines ? 168 : 160, 224, 8, 8);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    /** Что показывать результатом рецепта наполнения: предмет или центральный предмет с записанным компонентом. */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static ItemStack infusionDisplay(InfusionRecipe re) {
+        if (re.getRecipeOutput() instanceof ItemStack out) {
+            return out;
+        }
+        ItemStack is = cycleItemStack(re.getRecipeInput(), 0).copy();
+        if (!is.isEmpty() && re.getRecipeOutput() instanceof Object[] obj && obj.length == 2
+                && obj[0] instanceof net.minecraft.core.component.DataComponentType type) {
+            is.set(type, obj[1]);
+        }
+        return is;
+    }
+
+    /** Страница рецепта наполнения: результат сверху, центральный предмет, компоненты по кругу, эссенция и нестабильность. */
+    private void drawInfusionPage(GuiGraphics g, int x, int y, int mx, int my, InfusionRecipe ri) {
+        if (ri == null) {
+            return;
+        }
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        List<Ingredient> components = ri.getComponents();
+        AspectList aspects = ri.getAspects();
+        // TODO этап 11.6: InfusionRunicAugmentRecipe / InfusionEnchantmentRecipe — свои компоненты, аспекты и результат
+        String text = I18n.get("recipe.type.infusion");
+        int offset = this.font.width(text);
+        g.drawString(this.font, text, x - offset / 2, y - 104, 5263440, false);
+        g.pose().pushPose();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        g.pose().translate(x, y + 20, 0.0F);
+        g.pose().scale(2.0F, 2.0F, 1.0F);
+        g.blit(tex2, -28, -56, 0, 3, 56, 17);
+        g.pose().translate(0.0F, 19.0F, 0.0F);
+        g.blit(tex2, -28, -55, 200, 77, 60, 44);
+        g.pose().popPose();
+        int total = 0;
+        int rows = (aspects.size() - 1) / 5;
+        int shift = (5 - aspects.size() % 5) * 10;
+        int sx = x - 48;
+        int sy = y + 50 - 10 * rows;
+        for (Aspect tag : aspects.getAspectsSortedByName()) {
+            int m = 0;
+            if (total / 5 >= rows && (rows > 1 || aspects.size() < 5)) {
+                m = 1;
+            }
+            UtilsFX.drawTag(g, sx + total % 5 * 20 + shift * m, sy + total / 5 * 20, tag, aspects.getAmount(tag), 0);
+            total++;
+        }
+        this.drawStackAt(g, infusionDisplay(ri), x - 8, y - 85, mx, my, false);
+        ItemStack rinp = cycleItemStack(ri.getRecipeInput(), 0).copy();
+        this.drawStackAt(g, rinp, x - 8, y - 16, mx, my, true);
+        g.pose().pushPose();
+        g.pose().translate(0.0F, 0.0F, 100.0F);
+        int le = components.size();
+        List<int[]> coords = new ArrayList<>();
+        float pieSlice = le == 0 ? 0 : 360 / le;
+        float currentRot = -90.0F;
+        for (int a = 0; a < le; a++) {
+            int xx = (int) (Mth.cos(currentRot / 180.0F * (float) Math.PI) * 40.0F) - 8;
+            int yy = (int) (Mth.sin(currentRot / 180.0F * (float) Math.PI) * 40.0F) - 8;
+            currentRot += pieSlice;
+            coords.add(new int[] {xx, yy});
+        }
+        List<ItemStack> cmps = new ArrayList<>();
+        total = 0;
+        for (Ingredient ingredient : components) {
+            ItemStack is = cycleItemStack(ingredient, 0);
+            this.drawStackAt(g, is.copyWithCount(1), x + coords.get(total)[0], y - 8 + coords.get(total)[1], mx, my, true);
+            total++;
+            cmps.add(is.copy());
+        }
+        g.pose().popPose();
+        int inst = Math.min(5, ri.getInstability(this.minecraft.player, rinp, cmps) / 2);
+        text = I18n.get("tc.inst") + " " + I18n.get("tc.inst." + inst);
+        offset = this.font.width(text);
+        g.drawString(this.font, text, x - offset / 2, y + 94, 5263440, false);
+        total = 0;
+        for (Aspect tag : aspects.getAspectsSortedByName()) {
+            int m = 0;
+            if (total / 5 >= rows && (rows > 1 || aspects.size() < 5)) {
+                m = 1;
+            }
+            int vx = sx + total % 5 * 20 + shift * m;
+            int vy = sy + total / 5 * 20;
+            if (mx >= vx && my >= vy && mx < vx + 16 && my < vy + 16) {
+                this.tipText = Arrays.asList(tag.getName(), tag.getLocalizedDescription().getString());
+            }
+            total++;
+        }
     }
 
     private void drawCruciblePage(GuiGraphics g, int x, int y, int mx, int my, CrucibleRecipe rc) {
@@ -1538,7 +1639,10 @@ public class GuiResearchPage extends Screen {
                 gi++;
             }
         }
-        // TODO этапы 10, 11: InfusionRecipe, RecipeMisc
+        // TODO этап 13: RecipeMisc
+        if (recipe instanceof InfusionRecipe ir && ir.getRecipeOutput() instanceof ItemStack out && ItemStack.isSameItem(out, stack)) {
+            return !ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, ir.getResearch()) ? -99 : start;
+        }
         if (recipe instanceof CrucibleRecipe cr && ItemStack.isSameItem(cr.getRecipeOutput(), stack)) {
             return !ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, cr.getResearch()) ? -99 : start;
         }

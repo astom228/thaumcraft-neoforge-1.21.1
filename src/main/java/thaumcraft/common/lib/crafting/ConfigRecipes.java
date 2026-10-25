@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.crafting;
 
+import thaumcraft.api.crafting.InfusionRecipe;
 import net.minecraft.core.registries.Registries;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,50 @@ public class ConfigRecipes {
         ThaumcraftApi.addMultiblockRecipeToCatalog(ResourceLocation.fromNamespaceAndPath("thaumcraft", "thaumatorium"),
                 new ThaumcraftApi.BluePrint("THAUMATORIUM", thaumotoriumBlueprint, new ItemStack(BlocksTC.metalAlchemical.get(), 2),
                         new ItemStack(BlocksTC.crucible.get())));
+    }
+
+    /**
+     * initializeInfusionRecipes оригинала: рецепты наполнения (каталог, на обеих сторонах). Перенесены те, чьи предметы уже есть;
+     * остальные — с этапами своих предметов (TODO ниже).
+     */
+    public static void initializeInfusionRecipes() {
+        // TODO этап 18: печати големов (SealHarvest, SealButcher, SealBreak)
+        cluster("CrystalClusterAir", BlocksTC.crystalAir.get(), Aspect.AIR, 0);
+        cluster("CrystalClusterFire", BlocksTC.crystalFire.get(), Aspect.FIRE, 0);
+        cluster("CrystalClusterWater", BlocksTC.crystalWater.get(), Aspect.WATER, 0);
+        cluster("CrystalClusterEarth", BlocksTC.crystalEarth.get(), Aspect.EARTH, 0);
+        cluster("CrystalClusterOrder", BlocksTC.crystalOrder.get(), Aspect.ORDER, 0);
+        cluster("CrystalClusterEntropy", BlocksTC.crystalEntropy.get(), Aspect.ENTROPY, 0);
+        cluster("CrystalClusterFlux", BlocksTC.crystalTaint.get(), Aspect.FLUX, 4);
+        // TODO этап 12: focus_2, focus_3
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("JarBrain"), new InfusionRecipe("JARBRAIN", new ItemStack(BlocksTC.jarBrain.get()), 4,
+                new AspectList().add(Aspect.MIND, 25).add(Aspect.SENSES, 25).add(Aspect.UNDEAD, 25), new ItemStack(BlocksTC.jarNormal.get()),
+                new ItemStack(ItemsTC.brain.get()), new ItemStack(Items.SPIDER_EYE), new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.SPIDER_EYE)));
+        // TODO этап 13: VisAmulet, RunicArmor (+ поддельные), стихийные инструменты, BootsTraveller, доспехи и маски «Таумиумной крепости»,
+        //  VerdantHeart (3), CLOUDRING, CuriosityBand, CHARMUNDYING
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("Mirror"), new InfusionRecipe("MIRROR", new ItemStack(BlocksTC.mirror.get()), 1,
+                new AspectList().add(Aspect.MOTION, 25).add(Aspect.DARKNESS, 25).add(Aspect.EXCHANGE, 25), new ItemStack(ItemsTC.mirroredGlass.get()),
+                Tags.Items.INGOTS_GOLD, Tags.Items.INGOTS_GOLD, Tags.Items.INGOTS_GOLD, new ItemStack(Items.ENDER_PEARL)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("MirrorHand"), new InfusionRecipe("MIRRORHAND", new ItemStack(ItemsTC.handMirror.get()), 5,
+                new AspectList().add(Aspect.TOOL, 50).add(Aspect.MOTION, 50), new ItemStack(BlocksTC.mirror.get()), Tags.Items.RODS_WOODEN,
+                new ItemStack(Items.COMPASS), new ItemStack(Items.MAP)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("MirrorEssentia"), new InfusionRecipe("MIRRORESSENTIA", new ItemStack(BlocksTC.mirrorEssentia.get()), 2,
+                new AspectList().add(Aspect.MOTION, 25).add(Aspect.WATER, 25).add(Aspect.EXCHANGE, 25), new ItemStack(ItemsTC.mirroredGlass.get()),
+                Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON, new ItemStack(Items.ENDER_PEARL)));
+        // TODO этап 11.6: наполняющие зачарования (IEBURROWING … IEESSENCE + поддельные)
+        // TODO этап 13: MindBiothaumic; этап 14: ArcaneBore, LampGrowth, LampFertility; этапы 13–16: CausalityCollapser (алюментум)
+    }
+
+    /** Кластер вис-кристаллов из кристалла (CrystalCluster* оригинала). */
+    private static void cluster(String name, net.minecraft.world.level.block.Block out, Aspect a, int inst) {
+        ThaumcraftApi.addInfusionCraftingRecipe(tc(name), new InfusionRecipe("CRYSTALFARMER", new ItemStack(out), inst,
+                new AspectList().add(a, 10).add(Aspect.CRYSTAL, 10).add(Aspect.TRAP, 5), ThaumcraftApiHelper.makeCrystal(a),
+                new ItemStack(Items.WHEAT_SEEDS), new ItemStack(ItemsTC.salisMundus.get())));
+    }
+
+    /** Ключ рецепта: как в оригинале, но в нижнем регистре (так их ищут исследования). */
+    private static ResourceLocation tc(String name) {
+        return ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, name.toLowerCase(java.util.Locale.ROOT));
     }
 
     /** Из initializeNormalRecipes оригинала: «поддельный» рецепт соли мира для книги (кристаллы — любые, сменяются). */
