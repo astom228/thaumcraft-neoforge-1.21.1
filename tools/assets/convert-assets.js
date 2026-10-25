@@ -324,6 +324,14 @@ function writeItem(id, src) {
   if (src.startsWith('model:')) {
     const model = readSrc(`models/item/${src.slice(6)}.json`);
     if (model.parent) model.parent = model.parent.includes(':') ? model.parent : 'minecraft:' + model.parent;
+    // свойства предметов Thaumcraft в 1.12 регистрировались без пространства имён; в 1.21 — thaumcraft:<имя>
+    const TC_PROPS = { focus: 'thaumcraft:focus' };
+    for (const o of model.overrides || []) {
+      const p = {};
+      for (const [k, v] of Object.entries(o.predicate || {})) p[TC_PROPS[k] || k] = v;
+      o.predicate = p;
+      if (o.model && !o.model.includes(':')) o.model = 'minecraft:' + o.model;
+    }
     write(`models/item/${id}.json`, model);
     return;
   }

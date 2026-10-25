@@ -129,8 +129,7 @@ public class BlockCrucible extends BaseEntityBlock {
                 }
                 return ItemInteractionResult.SUCCESS;
             }
-        } else if (!stack.isEmpty() && !player.isShiftKeyDown() && hit.getDirection() == Direction.UP) {
-            // TODO этап 12: && !(stack.getItem() instanceof ICaster)
+        } else if (!stack.isEmpty() && !player.isShiftKeyDown() && hit.getDirection() == Direction.UP && !(stack.getItem() instanceof thaumcraft.api.casters.ICaster)) {
             if (world.getBlockEntity(pos) instanceof TileCrucible tile) {
                 ItemStack ti = stack.copyWithCount(1);
                 if (tile.heat > 150 && tile.tank.getFluidAmount() > 0 && tile.attemptSmelt(ti, player) == null) {

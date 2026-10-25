@@ -541,6 +541,11 @@
     "celestial_notes_moon_8": "bs:celestial_notes#moon_8",
     "magic_mirror_linked": "model:mirror_on",
     "essentia_mirror_linked": "model:mirror_essentia_on",
-    "hand_mirror": "model:hand_mirror"
+    "hand_mirror": "model:hand_mirror",
+    "caster_basic": "model:caster_basic",
+    "caster_basic_model": "model:caster_basic_model",
+    "caster_basic_focus_model": "model:caster_basic_focus_model",
+    "caster_gauntlet": "model:caster_gauntlet",
+    "caster_gauntlet_focus": "model:caster_gauntlet_focus"
   }
 }

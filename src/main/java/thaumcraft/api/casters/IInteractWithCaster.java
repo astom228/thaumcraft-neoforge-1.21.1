@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-/** BlockEntity, реагирующий на ПКМ кастером (рукавицей). Кастеры — этап 12. */
+/** Блок или BlockEntity, реагирующий на ПКМ перчаткой заклинателя; true — щелчок обработан. */
 public interface IInteractWithCaster {
     boolean onCasterRightClick(Level world, ItemStack casterStack, Player player, BlockPos pos, Direction side, InteractionHand hand);
 }

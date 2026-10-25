@@ -1,6 +1,22 @@
 {
   "sources": [
-    { "type": "directory", "source": "blocks", "prefix": "blocks/" },
-    { "type": "directory", "source": "items", "prefix": "items/" }
+    {
+      "type": "directory",
+      "source": "blocks",
+      "prefix": "blocks/"
+    },
+    {
+      "type": "directory",
+      "source": "items",
+      "prefix": "items/"
+    },
+    {
+      "type": "single",
+      "resource": "thaumcraft:entity/armor/caster_basic"
+    },
+    {
+      "type": "single",
+      "resource": "thaumcraft:entity/armor/caster_advanced"
+    }
   ]
 }

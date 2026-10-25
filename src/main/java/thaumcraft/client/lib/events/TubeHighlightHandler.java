@@ -30,8 +30,8 @@ public class TubeHighlightHandler {
         if (player == null || mc.level == null) {
             return;
         }
-        // TODO этап 12: или кастер (ICaster)
-        boolean doodads = player.getMainHandItem().getItem() instanceof ItemResonator || player.getOffhandItem().getItem() instanceof ItemResonator;
+        boolean doodads = player.getMainHandItem().getItem() instanceof ItemResonator || player.getOffhandItem().getItem() instanceof ItemResonator
+                || player.getMainHandItem().getItem() instanceof thaumcraft.api.casters.ICaster || player.getOffhandItem().getItem() instanceof thaumcraft.api.casters.ICaster;
         if (!doodads) {
             return;
         }

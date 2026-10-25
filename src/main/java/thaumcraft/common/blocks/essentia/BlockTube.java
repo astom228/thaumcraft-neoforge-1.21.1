@@ -220,8 +220,7 @@ public class BlockTube extends BaseEntityBlock {
 
     private boolean activate(BlockState state, Level world, BlockPos pos, Player player, ItemStack held) {
         if (state.is(BlocksTC.tubeValve.get())) {
-            // TODO этап 12: || held.getItem() instanceof ICaster
-            if (held.getItem() instanceof ItemResonator || held.is(this.asItem())) {
+            if (held.getItem() instanceof ItemResonator || held.getItem() instanceof thaumcraft.api.casters.ICaster || held.is(this.asItem())) {
                 return false;
             }
             if (world.getBlockEntity(pos) instanceof TileTubeValve te) {

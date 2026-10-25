@@ -18,6 +18,7 @@ import thaumcraft.common.items.curios.ItemThaumonomicon;
 import thaumcraft.common.items.consumables.ItemLabel;
 import thaumcraft.common.items.tools.ItemResonator;
 import thaumcraft.common.items.tools.ItemHandMirror;
+import thaumcraft.common.items.casters.ItemCaster;
 import thaumcraft.common.items.consumables.ItemPhial;
 import thaumcraft.common.items.resources.ItemCrystalEssence;
 import thaumcraft.common.items.resources.ItemMagicDust;
@@ -82,6 +83,8 @@ public class ItemsTC {
     public static final DeferredItem<Item> phialFilled = ConfigItems.ITEMS.registerItem("essentia_phial", p -> new ItemPhial(true, p));
     public static final DeferredItem<Item> label = ConfigItems.ITEMS.registerItem("label", p -> new ItemLabel(false, p));
     public static final DeferredItem<Item> labelFilled = ConfigItems.ITEMS.registerItem("marked_label", p -> new ItemLabel(true, p));
+    // Перчатка заклинателя (ItemCaster "caster_basic", area 0); этап 11 — только щелчок по блокам (DECISIONS 92)
+    public static final DeferredItem<Item> casterBasic = ConfigItems.ITEMS.registerItem("caster_basic", p -> new ItemCaster(0, p));
     public static final DeferredItem<Item> handMirror = ConfigItems.ITEMS.registerItem("hand_mirror", ItemHandMirror::new);
     public static final DeferredItem<Item> resonator = ConfigItems.ITEMS.registerItem("essentia_resonator", ItemResonator::new);
     public static final DeferredItem<Item> salisMundus = ConfigItems.ITEMS.registerItem("salis_mundus", ItemMagicDust::new);

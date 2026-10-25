@@ -75,6 +75,10 @@ public class ClientRegistration {
     public static void clientSetup(net.neoforged.fml.event.lifecycle.FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             net.minecraft.resources.ResourceLocation linked = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "linked");
+            // перчатка с фокусом (свойство focus оригинала); фокусы — этап 12
+            net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.casterBasic.get(),
+                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "focus"),
+                    (stack, level, entity, seed) -> stack.getItem() instanceof thaumcraft.api.casters.ICaster c && c.getFocus(stack) != null ? 1.0F : 0.0F);
             for (var block : new net.minecraft.world.level.block.Block[]{thaumcraft.api.blocks.BlocksTC.mirror.get(), thaumcraft.api.blocks.BlocksTC.mirrorEssentia.get()}) {
                 net.minecraft.client.renderer.item.ItemProperties.register(block.asItem(), linked,
                         (stack, level, entity, seed) -> stack.has(thaumcraft.common.lib.TCDataComponents.MIRROR_LINK.get()) ? 1.0F : 0.0F);
