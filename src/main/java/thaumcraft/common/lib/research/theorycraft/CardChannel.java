@@ -12,7 +12,6 @@ import thaumcraft.api.research.theorycraft.TheorycraftCard;
 
 /**
  * «Направление»: показать фиал эссенции составного аспекта (не тратится) → 25 наполнения.
- * TODO этап 9: фиалы (ItemPhial.makeFilledPhial) — пока фиалов нет, карточка не выпадает (иначе её можно было бы разыграть без фиала).
  */
 public class CardChannel extends TheorycraftCard {
     Aspect aspect;
@@ -38,9 +37,8 @@ public class CardChannel extends TheorycraftCard {
         return !makeFilledPhial(this.aspect).isEmpty();
     }
 
-    /** ItemPhial.makeFilledPhial — этап 9. */
     static ItemStack makeFilledPhial(Aspect aspect) {
-        return ItemStack.EMPTY;
+        return thaumcraft.common.items.consumables.ItemPhial.makeFilledPhial(aspect);
     }
 
     @Override

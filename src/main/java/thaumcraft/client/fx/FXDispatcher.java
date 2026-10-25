@@ -398,4 +398,26 @@ public class FXDispatcher implements IFXDispatcher {
         fb.setLayer(1);
         ParticleEngine.addEffect(w, fb);
     }
+
+    /** Поток эссенции от p1 к p2 (count — фаза колебаний, ext — длина). */
+    public void essentiaTrailFx(BlockPos p1, BlockPos p2, int count, int color, float scale, int ext) {
+        thaumcraft.client.fx.other.FXEssentiaStream fb = new thaumcraft.client.fx.other.FXEssentiaStream(this.getWorld(), p1.getX() + 0.5,
+                p1.getY() + 0.5, p1.getZ() + 0.5, p2.getX() + 0.5, p2.getY() + 0.5, p2.getZ() + 0.5, count, color, scale, ext, 0.0);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    public void essentiaDropFx(double x, double y, double z, float r, float g, float b, float alpha) {
+        ClientLevel w = this.getWorld();
+        FXGeneric fb = new FXGeneric(w, x, y, z, w.random.nextGaussian() * 0.005F, w.random.nextGaussian() * 0.005F, w.random.nextGaussian() * 0.005F);
+        fb.setMaxAge(20 + w.random.nextInt(10));
+        fb.setRBGColorF(r, g, b);
+        fb.setAlphaF(alpha);
+        fb.setLoop(false);
+        fb.setParticles(25, 1, 1);
+        fb.setScale(0.4F + w.random.nextFloat() * 0.2F, 0.2F);
+        fb.setLayer(1);
+        fb.setGravity(0.01F);
+        fb.setRotationSpeed(0.0F);
+        ParticleEngine.addEffect(w, fb);
+    }
 }

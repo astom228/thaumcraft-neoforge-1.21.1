@@ -18,7 +18,7 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 /**
  * «Наполнение»: тратит предмет из списка и фиал эссенции составного аспекта → наполнение по количеству аспектов предмета.
- * TODO этап 9: фиалы; в список вернуть алюментум и соль мира, когда они появятся. Пока фиалов нет, карточка не выпадает.
+ * TODO: в начало списка вернуть алюментум (ItemsTC.alumentum), когда он появится.
  */
 public class CardInfuse extends TheorycraftCard {
     Aspect aspect;
@@ -26,7 +26,7 @@ public class CardInfuse extends TheorycraftCard {
 
     static ItemStack[] options() {
         return new ItemStack[] {new ItemStack(BlocksTC.nitor.get(DyeColor.YELLOW).get()), new ItemStack(ItemsTC.amber.get()),
-                new ItemStack(ItemsTC.brain.get()), new ItemStack(ItemsTC.fabric.get()), new ItemStack(ItemsTC.ingotThaumium.get()),
+                new ItemStack(ItemsTC.brain.get()), new ItemStack(ItemsTC.fabric.get()), new ItemStack(ItemsTC.salisMundus.get()), new ItemStack(ItemsTC.ingotThaumium.get()),
                 new ItemStack(ItemsTC.ingotBrass.get()), new ItemStack(ItemsTC.quicksilver.get()), new ItemStack(Items.GOLD_INGOT),
                 new ItemStack(Items.IRON_INGOT), new ItemStack(Items.DIAMOND), new ItemStack(Items.EMERALD), new ItemStack(Items.BLAZE_ROD),
                 new ItemStack(Items.LEATHER), new ItemStack(Blocks.WHITE_WOOL), new ItemStack(Items.BRICK), new ItemStack(Items.ARROW),

@@ -49,6 +49,11 @@ public class ColorHandler {
             AspectList al = ((ItemGenericEssentiaContainer) stack.getItem()).getAspects(stack);
             return al != null ? 0xFF000000 | al.getAspects()[0].getColor() : 0xFFFFFFFF;
         }, ItemsTC.crystalEssence.get());
+        // itemEssentiaAltColourHandler: у полного фиала и отмеченного ярлыка второй слой — цвет аспекта
+        event.register((stack, tintIndex) -> {
+            AspectList al = ((ItemGenericEssentiaContainer) stack.getItem()).getAspects(stack);
+            return al != null && tintIndex == 1 ? 0xFF000000 | al.getAspects()[0].getColor() : 0xFFFFFFFF;
+        }, ItemsTC.phialFilled.get(), ItemsTC.labelFilled.get());
         // itemCrystalPlanterColourHandler: предмет кристалла — цвет аспекта
         for (DeferredBlock<Block> c : CRYSTALS()) {
             int color = ((BlockCrystal) c.get()).aspect.getColor();

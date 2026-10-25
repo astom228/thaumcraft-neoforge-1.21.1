@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.MeshData;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4fStack;
 import thaumcraft.Thaumcraft;
+import thaumcraft.client.fx.particles.ICustomRenderParticle;
 import thaumcraft.client.fx.particles.IEngineParticle;
 
 /**
@@ -194,6 +196,18 @@ public class ParticleEngine {
             MeshData mesh = buffer.build();
             if (mesh != null) {
                 BufferUploader.drawWithShader(mesh);
+            }
+            // частицы со своей отрисовкой (в 1.12 — сброс буфера посреди пачки); затем вернуть шейдер и текстуру частиц
+            boolean custom = false;
+            for (Particle p : parts) {
+                if (p instanceof ICustomRenderParticle c && p.isAlive()) {
+                    c.renderCustom(new PoseStack(), camera, frame);
+                    custom = true;
+                }
+            }
+            if (custom) {
+                RenderSystem.setShader(() -> particleShader);
+                RenderSystem.setShaderTexture(0, particleTexture);
             }
         }
 
