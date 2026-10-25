@@ -1,0 +1,21 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "INFUSIONANCIENT",
+  "vis": 150,
+  "key": {
+    "S": {
+      "item": "thaumcraft:ancient_stone_slab"
+    },
+    "B": {
+      "item": "thaumcraft:ancient_stone"
+    }
+  },
+  "pattern": [
+    "SSS",
+    " B ",
+    "SSS"
+  ],
+  "result": {
+    "id": "thaumcraft:ancient_pedestal"
+  }
+}

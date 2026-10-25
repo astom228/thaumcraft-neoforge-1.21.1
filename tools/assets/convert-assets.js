@@ -302,7 +302,9 @@ function writeObjItem(id, bsName, variant) {
   if (!textures.particle) textures.particle = Object.values(textures)[0];
   const custom = Object.assign({}, d.custom, v.custom);
   const model = { loader: 'neoforge:obj', model: copyObj(modelName), flip_v: custom['flip-v'] === true, textures };
-  const display = convertDisplay(Object.assign({}, d.transform, v.transform));
+  const tr = v.transform !== undefined ? v.transform : d.transform;
+  // строковый transform forge (forge:default-block) — стандартные преобразования блока
+  const display = typeof tr === 'string' ? (tr === 'forge:default-block' ? DEFAULT_BLOCK_DISPLAY : {}) : convertDisplay(Object.assign({}, typeof d.transform === 'object' ? d.transform : {}, v.transform));
   if (Object.keys(display).length) model.display = display;
   write(`models/item/${id}.json`, model);
 }

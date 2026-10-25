@@ -251,6 +251,7 @@ public class FXDispatcher implements IFXDispatcher {
     }
 
     /** Облачко дыма (превращение блока солью мира и т.п.). */
+    @Override
     public void drawBamf(double x, double y, double z, float r, float g, float b, boolean sound, boolean flair, Direction side) {
         ClientLevel w = this.getWorld();
         if (sound) {

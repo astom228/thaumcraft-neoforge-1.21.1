@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.crafting;
 
+import thaumcraft.common.blocks.basic.BlockPillar;
 import thaumcraft.api.crafting.InfusionRecipe;
 import net.minecraft.core.registries.Registries;
 import java.util.ArrayList;
@@ -71,7 +72,11 @@ public class ConfigRecipes {
                 new ItemStack(BlocksTC.arcaneWorkbench.get())));
         // в 1.12 котёл с водой — тот же блок (уровень — свойство); в 1.21 у наполненных котлов свои блоки — тег minecraft:cauldrons
         IDustTrigger.registerDustTrigger(new DustTriggerOre("UNLOCKALCHEMY@1", BlockTags.CAULDRONS, new ItemStack(BlocksTC.crucible.get())));
-        // TODO многоблочные — этапы 11 (алтарь наполнения), 14 (адская печь), 18 (пресс големов)
+        // TODO многоблочные — этапы 14 (адская печь), 18 (пресс големов)
+        infusionAltar("INFUSION", "infusionaltar", BlocksTC.stoneArcane.get(), BlocksTC.pillarArcane.get(), BlocksTC.pedestalArcane.get());
+        infusionAltar("INFUSIONANCIENT", "infusionaltarancient", BlocksTC.stoneAncient.get(), BlocksTC.pillarAncient.get(), BlocksTC.pedestalAncient.get());
+        infusionAltar("INFUSIONELDRITCH", "infusionaltareldritch", BlocksTC.stoneEldritchTile.get(), BlocksTC.pillarEldritch.get(),
+                BlocksTC.pedestalEldritch.get());
         Part TH1 = new Part(BlocksTC.metalAlchemical.get().defaultBlockState(), BlocksTC.thaumatoriumTop.get()).setApplyPlayerFacing(true);
         Part TH2 = new Part(BlocksTC.metalAlchemical.get().defaultBlockState(), BlocksTC.thaumatorium.get()).setApplyPlayerFacing(true);
         Part TH3 = new Part(BlocksTC.crucible.get(), null);
@@ -80,6 +85,30 @@ public class ConfigRecipes {
         ThaumcraftApi.addMultiblockRecipeToCatalog(ResourceLocation.fromNamespaceAndPath("thaumcraft", "thaumatorium"),
                 new ThaumcraftApi.BluePrint("THAUMATORIUM", thaumotoriumBlueprint, new ItemStack(BlocksTC.metalAlchemical.get(), 2),
                         new ItemStack(BlocksTC.crucible.get())));
+    }
+
+    /**
+     * Алтарь наполнения (infusionAltar*Blueprint оригинала): матрица над камнем, четыре колонны (по две клетки камня, нижняя —
+     * колонна с заданной стороной, верхняя убирается) по углам и пьедестал под матрицей.
+     */
+    private static void infusionAltar(String research, String key, net.minecraft.world.level.block.Block stone, net.minecraft.world.level.block.Block pillar,
+                                      net.minecraft.world.level.block.Block pedestal) {
+        Part IM = new Part(BlocksTC.infusionMatrix.get(), null);
+        Part ST = new Part(stone, "AIR");
+        net.minecraft.world.level.block.state.properties.DirectionProperty F = BlockPillar.FACING;
+        Part SB1 = new Part(stone, pillar.defaultBlockState().setValue(F, net.minecraft.core.Direction.EAST));
+        Part SB2 = new Part(stone, pillar.defaultBlockState().setValue(F, net.minecraft.core.Direction.NORTH));
+        Part SB3 = new Part(stone, pillar.defaultBlockState().setValue(F, net.minecraft.core.Direction.SOUTH));
+        Part SB4 = new Part(stone, pillar.defaultBlockState().setValue(F, net.minecraft.core.Direction.WEST));
+        Part PD = new Part(pedestal.defaultBlockState(), null);
+        Part[][][] blueprint = new Part[][][] {
+                {{null, null, null}, {null, IM, null}, {null, null, null}},
+                {{ST, null, ST}, {null, null, null}, {ST, null, ST}},
+                {{SB1, null, SB2}, {null, PD, null}, {SB3, null, SB4}}
+        };
+        IDustTrigger.registerDustTrigger(new DustTriggerMultiblock(research, blueprint));
+        ThaumcraftApi.addMultiblockRecipeToCatalog(ResourceLocation.fromNamespaceAndPath("thaumcraft", key),
+                new ThaumcraftApi.BluePrint(research, blueprint, new ItemStack(stone, 8), new ItemStack(pedestal), new ItemStack(BlocksTC.infusionMatrix.get())));
     }
 
     /**

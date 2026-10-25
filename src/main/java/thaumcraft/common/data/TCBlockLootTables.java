@@ -74,6 +74,11 @@ public class TCBlockLootTables extends BlockLootSubProvider {
             add(c, noDrop());
         }
 
+        // Колонны наполнения роняют 2 камня в BlockPillar.onRemove (breakBlock оригинала), сами не выпадают
+        for (Block p : new Block[]{BlocksTC.pillarArcane.get(), BlocksTC.pillarAncient.get(), BlocksTC.pillarEldritch.get()}) {
+            add(p, noDrop());
+        }
+
         // Тауматориум (обе части) роняет алхимическую конструкцию
         add(BlocksTC.thaumatorium.get(), b -> createSingleItemTable(BlocksTC.metalAlchemical.get()));
         add(BlocksTC.thaumatoriumTop.get(), b -> createSingleItemTable(BlocksTC.metalAlchemical.get()));

@@ -33,6 +33,11 @@ public class TileThaumcraftInventory extends TileThaumcraft {
             }
 
             @Override
+            public int getSlotLimit(int slot) {
+                return TileThaumcraftInventory.this.getInventoryStackLimit();
+            }
+
+            @Override
             protected void onContentsChanged(int slot) {
                 TileThaumcraftInventory.this.setChanged();
                 if (TileThaumcraftInventory.this.isSyncedSlot(slot)) {
@@ -64,6 +69,11 @@ public class TileThaumcraftInventory extends TileThaumcraft {
 
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return true;
+    }
+
+    /** getInventoryStackLimit оригинала. */
+    public int getInventoryStackLimit() {
+        return 64;
     }
 
     public boolean isUsableByPlayer(Player player) {

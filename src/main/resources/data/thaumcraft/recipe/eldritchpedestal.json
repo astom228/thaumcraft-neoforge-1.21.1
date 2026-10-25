@@ -1,0 +1,21 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "INFUSIONELDRITCH",
+  "vis": 150,
+  "key": {
+    "S": {
+      "item": "thaumcraft:eldritch_stone_slab"
+    },
+    "B": {
+      "item": "thaumcraft:eldritch_stone"
+    }
+  },
+  "pattern": [
+    "SSS",
+    " B ",
+    "SSS"
+  ],
+  "result": {
+    "id": "thaumcraft:eldritch_pedestal"
+  }
+}

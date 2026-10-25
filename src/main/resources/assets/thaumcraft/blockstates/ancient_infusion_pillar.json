@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "thaumcraft:block/ancient_infusion_pillar"
+    },
+    "facing=south": {
+      "model": "thaumcraft:block/ancient_infusion_pillar",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "thaumcraft:block/ancient_infusion_pillar",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "thaumcraft:block/ancient_infusion_pillar",
+      "y": 270
+    }
+  }
+}

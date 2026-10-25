@@ -31,11 +31,7 @@ arcanelamp: нет BlocksTC.lampArcane
 levitator: нет BlocksTC.levitator
 redstonerelay: нет BlocksTC.redstoneRelay
 arcaneear: нет BlocksTC.arcaneEar
-infusionmatrix: нет BlocksTC.infusionMatrix
 matrixcost: нет ItemsTC.alumentum
-arcanepedestal: нет BlocksTC.pedestalArcane
-ancientpedestal: нет BlocksTC.pedestalAncient
-eldritchpedestal: нет BlocksTC.pedestalEldritch
 focuspouch: нет ItemsTC.focusPouch
 dioptra: нет BlocksTC.dioptra
 hungrychest: нет BlocksTC.hungryChest

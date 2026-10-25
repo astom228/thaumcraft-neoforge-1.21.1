@@ -43,6 +43,9 @@ public interface IFXDispatcher {
     default void drawBamf(double x, double y, double z, boolean sound, boolean flair, net.minecraft.core.Direction side) {
     }
 
+    default void drawBamf(double x, double y, double z, float r, float g, float b, boolean sound, boolean flair, net.minecraft.core.Direction side) {
+    }
+
     default void crucibleBubble(float x, float y, float z, float cr, float cg, float cb) {
     }
 

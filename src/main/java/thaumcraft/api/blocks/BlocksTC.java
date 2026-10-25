@@ -21,6 +21,9 @@ import thaumcraft.common.blocks.devices.BlockWaterJug;
 import thaumcraft.common.blocks.essentia.BlockJar;
 import thaumcraft.common.blocks.essentia.BlockTube;
 import thaumcraft.common.blocks.devices.BlockMirror;
+import thaumcraft.common.blocks.devices.BlockPedestal;
+import thaumcraft.common.blocks.basic.BlockPillar;
+import thaumcraft.common.blocks.crafting.BlockInfusionMatrix;
 import thaumcraft.common.blocks.devices.BlockBrainBox;
 import thaumcraft.common.blocks.crafting.BlockThaumatorium;
 import thaumcraft.common.blocks.devices.BlockMirrorItem;
@@ -298,6 +301,27 @@ public class BlocksTC {
     // Мнемоническая матрица (BlockBrainBox: прочность 1.0, setResistance(10) → 6, Material.IRON)
     public static final DeferredBlock<Block> brainBox = register("mnemonic_matrix", () -> new BlockBrainBox(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL).noOcclusion()));
+
+    // Руническая матрица (BlockTCDevice: прочность 2.0, сопротивление 12, Material.ROCK, добывается без инструмента)
+    public static final DeferredBlock<Block> infusionMatrix = register("infusion_matrix", () -> new BlockInfusionMatrix(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion()));
+    // Пьедесталы (BlockTCTile: прочность 2.0, сопротивление 12, Material.ROCK, добываются без инструмента)
+    public static final DeferredBlock<Block> pedestalArcane = register("arcane_pedestal", () -> new BlockPedestal(pedestal()));
+    public static final DeferredBlock<Block> pedestalAncient = register("ancient_pedestal", () -> new BlockPedestal(pedestal()));
+    public static final DeferredBlock<Block> pedestalEldritch = register("eldritch_pedestal", () -> new BlockPedestal(pedestal()));
+    // Колонны наполнения (BlockPillar: прочность 2.5, setResistance BlockTC 2 → по прочности 2.5, Material.ROCK — нужна кирка)
+    public static final DeferredBlock<Block> pillarArcane = register("infusion_pillar", () -> new BlockPillar(pillar()));
+    public static final DeferredBlock<Block> pillarAncient = register("ancient_infusion_pillar", () -> new BlockPillar(pillar()));
+    public static final DeferredBlock<Block> pillarEldritch = register("eldritch_infusion_pillar", () -> new BlockPillar(pillar()));
+
+    private static BlockBehaviour.Properties pedestal() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion();
+    }
+
+    private static BlockBehaviour.Properties pillar() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.5F, 2.5F).sound(SoundType.STONE).requiresCorrectToolForDrops()
+                .noOcclusion().pushReaction(PushReaction.BLOCK);
+    }
 
     private static BlockBehaviour.Properties thaumatoriumProps() {
         return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL).noOcclusion();

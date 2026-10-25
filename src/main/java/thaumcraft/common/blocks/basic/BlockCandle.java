@@ -18,9 +18,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 /**
  * Свеча из сала (16 цветов). Прочность 0.1, звук ткани, свет 14 (0.9375), без коллизии, рамка 0.375..0.625 × 0.5.
  * Ставится только на твёрдую верхнюю грань и ломается, когда опора пропадает. Цвет — окраска модели (ColorHandler).
- * TODO этап 11: IInfusionStabiliser.canStabaliseInfusion → true (стабилизатор инфузии).
+ * Стабилизирует наполнение (IInfusionStabiliser).
  */
-public class BlockCandle extends Block {
+public class BlockCandle extends Block implements thaumcraft.api.crafting.IInfusionStabiliser {
     private static final VoxelShape SHAPE = Block.box(6.0, 0.0, 6.0, 10.0, 8.0, 10.0);
     public final DyeColor dye;
 
@@ -60,5 +60,10 @@ public class BlockCandle extends Block {
         double z = pos.getZ() + 0.5F;
         level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0, 0.0, 0.0);
         level.addParticle(ParticleTypes.FLAME, x, y, z, 0.0, 0.0, 0.0);
+    }
+
+    @Override
+    public boolean canStabaliseInfusion(Level world, BlockPos pos) {
+        return true;
     }
 }

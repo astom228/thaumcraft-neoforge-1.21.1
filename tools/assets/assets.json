@@ -420,6 +420,30 @@
       "skip": [
         "normal"
       ]
+    },
+    "infusion_matrix": {
+      "src": "infusion_matrix"
+    },
+    "arcane_pedestal": {
+      "src": "pedestal_arcane"
+    },
+    "ancient_pedestal": {
+      "src": "pedestal_ancient"
+    },
+    "eldritch_pedestal": {
+      "src": "pedestal_eldritch"
+    },
+    "infusion_pillar": {
+      "src": "pillar_arcane",
+      "itemModel": "obj:pillar_arcane#inventory"
+    },
+    "ancient_infusion_pillar": {
+      "src": "pillar_ancient",
+      "itemModel": "obj:pillar_ancient#inventory"
+    },
+    "eldritch_infusion_pillar": {
+      "src": "pillar_eldritch",
+      "itemModel": "obj:pillar_eldritch#inventory"
     }
   },
   "items": {
