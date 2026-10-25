@@ -49,6 +49,9 @@ public class TileMirrorEssentia extends TileMirrorLinked implements IAspectSourc
 
     /** Парное зеркало (если загружено), заодно уточняет его сторону. */
     private BlockEntity partner() {
+        if (!this.linked) {
+            return null;
+        }
         BlockEntity te = this.targetTile(true);
         if (te != null && this.linkedFacing == Direction.DOWN) {
             this.linkedFacing = facingOf(te.getBlockState());

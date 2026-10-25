@@ -175,7 +175,8 @@ public class TileMirror extends TileMirrorLinked {
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            if (stack.isEmpty() || !(TileMirror.this.targetTile(true) instanceof TileMirror target)) {
+            // без действующей связи к паре не обращаемся (иначе — загрузка её чанка при каждой попытке воронки)
+            if (stack.isEmpty() || !TileMirror.this.linked || !TileMirror.this.isLinkValid(true) || !(TileMirror.this.targetTile(true) instanceof TileMirror target)) {
                 return stack;
             }
             if (!simulate) {
@@ -198,7 +199,7 @@ public class TileMirror extends TileMirrorLinked {
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return TileMirror.this.targetTile(true) instanceof TileMirror;
+            return TileMirror.this.linked && TileMirror.this.targetTile(true) instanceof TileMirror;
         }
     }
 }
