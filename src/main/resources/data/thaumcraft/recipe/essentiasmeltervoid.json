@@ -1,0 +1,30 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "ESSENTIASMELTERVOID",
+  "vis": 750,
+  "crystals": {
+    "ignis": 3
+  },
+  "key": {
+    "F": {
+      "item": "thaumcraft:essentia_smeltery"
+    },
+    "G": {
+      "item": "thaumcraft:advanced_alchemical_construct"
+    },
+    "I": {
+      "tag": "c:plates/void"
+    },
+    "B": {
+      "tag": "c:plates/brass"
+    }
+  },
+  "pattern": [
+    "BFB",
+    "IGI",
+    "III"
+  ],
+  "result": {
+    "id": "thaumcraft:void_metal_essentia_smeltery"
+  }
+}

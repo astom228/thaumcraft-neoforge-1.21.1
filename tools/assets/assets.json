@@ -347,6 +347,31 @@
     "brain_jar": {
       "src": "jar_brain",
       "renderType": "minecraft:translucent"
+    },
+    "centrifuge": {
+      "src": "centrifuge",
+      "renderType": "minecraft:cutout"
+    },
+    "essentia_smeltery": {
+      "src": "smelter_basic"
+    },
+    "thaumium_essentia_smeltery": {
+      "src": "smelter_thaumium"
+    },
+    "void_metal_essentia_smeltery": {
+      "src": "smelter_void"
+    },
+    "auxiliary_slurry_pump": {
+      "src": "smelter_aux",
+      "renderType": "minecraft:cutout"
+    },
+    "auxiliary_venting_port": {
+      "src": "smelter_vent",
+      "renderType": "minecraft:cutout"
+    },
+    "alembic": {
+      "src": "alembic",
+      "renderType": "minecraft:cutout"
     }
   },
   "items": {

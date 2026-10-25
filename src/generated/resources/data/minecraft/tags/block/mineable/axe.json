@@ -9,6 +9,8 @@
     "thaumcraft:wooden_table",
     "thaumcraft:research_table",
     "thaumcraft:arcane_workbench",
-    "thaumcraft:arcane_workbench_charger"
+    "thaumcraft:arcane_workbench_charger",
+    "thaumcraft:centrifuge",
+    "thaumcraft:alembic"
   ]
 }

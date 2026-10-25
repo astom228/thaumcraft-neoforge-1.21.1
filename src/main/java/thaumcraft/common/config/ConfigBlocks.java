@@ -12,6 +12,9 @@ import thaumcraft.common.tiles.misc.TileNitor;
 import thaumcraft.common.tiles.crafting.TileArcaneWorkbench;
 import thaumcraft.common.tiles.devices.TileWaterJug;
 import thaumcraft.common.tiles.essentia.TileJarBrain;
+import thaumcraft.common.tiles.essentia.TileAlembic;
+import thaumcraft.common.tiles.essentia.TileCentrifuge;
+import thaumcraft.common.tiles.essentia.TileSmelter;
 import thaumcraft.common.tiles.essentia.TileTube;
 import thaumcraft.common.tiles.essentia.TileTubeValve;
 import thaumcraft.common.tiles.essentia.TileTubeRestrict;
@@ -59,12 +62,20 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(TileTubeFilter::new, BlocksTC.tubeFilter.get()).build(null));
     public static final Supplier<BlockEntityType<TileTubeBuffer>> TUBE_BUFFER_TILE = TILES.register("essentia_buffer",
             () -> BlockEntityType.Builder.of(TileTubeBuffer::new, BlocksTC.tubeBuffer.get()).build(null));
+    public static final Supplier<BlockEntityType<TileCentrifuge>> CENTRIFUGE_TILE = TILES.register("centrifuge",
+            () -> BlockEntityType.Builder.of(TileCentrifuge::new, BlocksTC.centrifuge.get()).build(null));
+    public static final Supplier<BlockEntityType<TileSmelter>> SMELTER_TILE = TILES.register("essentia_smeltery",
+            () -> BlockEntityType.Builder.of(TileSmelter::new, BlocksTC.smelterBasic.get(), BlocksTC.smelterThaumium.get(), BlocksTC.smelterVoid.get())
+                    .build(null));
+    public static final Supplier<BlockEntityType<TileAlembic>> ALEMBIC_TILE = TILES.register("alembic",
+            () -> BlockEntityType.Builder.of(TileAlembic::new, BlocksTC.alembic.get()).build(null));
     public static final Supplier<BlockEntityType<TileArcaneWorkbench>> ARCANE_WORKBENCH_TILE = TILES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(TileArcaneWorkbench::new, BlocksTC.arcaneWorkbench.get()).build(null));
 
     /** Раздел 7: инвентари блоков — возможность IItemHandler. */
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RESEARCH_TABLE_TILE.get(), (tile, side) -> tile.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SMELTER_TILE.get(), TileSmelter::getItemHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, CRUCIBLE_TILE.get(), (tile, side) -> tile.tank);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, EVERFULL_URN_TILE.get(), TileWaterJug::capability);
     }

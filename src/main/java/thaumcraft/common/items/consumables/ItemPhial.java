@@ -65,7 +65,7 @@ public class ItemPhial extends ItemGenericEssentiaContainer {
         return true;
     }
 
-    /** Пустой фиал набирает 10 эссенции из банки, полный — выливает в неё. TODO этап 10.4: набрать из алембика. */
+    /** Пустой фиал набирает 10 эссенции из алембика или банки, полный — выливает в банку. */
     @Override
     public net.minecraft.world.InteractionResult onItemUseFirst(ItemStack stack, net.minecraft.world.item.context.UseOnContext context) {
         Level world = context.getLevel();
@@ -74,6 +74,24 @@ public class ItemPhial extends ItemGenericEssentiaContainer {
         net.minecraft.world.level.block.state.BlockState bi = world.getBlockState(pos);
         if (player == null) {
             return net.minecraft.world.InteractionResult.PASS;
+        }
+        if (!this.filled && bi.is(thaumcraft.api.blocks.BlocksTC.alembic.get())
+                && world.getBlockEntity(pos) instanceof thaumcraft.common.tiles.essentia.TileAlembic tile && tile.amount >= this.base) {
+            if (world.isClientSide) {
+                player.swing(context.getHand());
+                return net.minecraft.world.InteractionResult.PASS;
+            }
+            ItemStack phial = new ItemStack(ItemsTC.phialFilled.get());
+            this.setAspects(phial, new AspectList().add(tile.aspect, this.base));
+            if (tile.takeFromContainer(tile.aspect, this.base)) {
+                stack.shrink(1);
+                if (!player.getInventory().add(phial)) {
+                    world.addFreshEntity(new net.minecraft.world.entity.item.ItemEntity(world, player.getX(), player.getY(), player.getZ(), phial));
+                }
+                player.playSound(net.minecraft.sounds.SoundEvents.BOTTLE_FILL, 0.25F, 1.0F);
+                player.inventoryMenu.broadcastChanges();
+                return net.minecraft.world.InteractionResult.SUCCESS;
+            }
         }
         boolean isJar = bi.is(thaumcraft.api.blocks.BlocksTC.jarNormal.get()) || bi.is(thaumcraft.api.blocks.BlocksTC.jarVoid.get());
         if (!this.filled && isJar && world.getBlockEntity(pos) instanceof thaumcraft.common.tiles.essentia.TileJarFillable tile) {

@@ -34,6 +34,11 @@
     "thaumcraft:restricted_essentia_tube",
     "thaumcraft:directional_essentia_tube",
     "thaumcraft:filtered_essentia_tube",
-    "thaumcraft:essentia_buffer"
+    "thaumcraft:essentia_buffer",
+    "thaumcraft:essentia_smeltery",
+    "thaumcraft:thaumium_essentia_smeltery",
+    "thaumcraft:void_metal_essentia_smeltery",
+    "thaumcraft:auxiliary_slurry_pump",
+    "thaumcraft:auxiliary_venting_port"
   ]
 }

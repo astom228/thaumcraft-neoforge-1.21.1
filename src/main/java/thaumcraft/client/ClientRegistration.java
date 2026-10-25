@@ -41,6 +41,7 @@ public class ClientRegistration {
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(TCMenus.RESEARCH_TABLE.get(), GuiResearchTable::new);
         event.register(TCMenus.ARCANE_WORKBENCH.get(), GuiArcaneWorkbench::new);
+        event.register(TCMenus.SMELTER.get(), thaumcraft.client.gui.GuiSmelter::new);
     }
 
     /** Магические рецепты не входят в ванильную книгу рецептов; без категории клиент пишет предупреждение на каждый рецепт. */
@@ -59,6 +60,8 @@ public class ClientRegistration {
         event.registerBlockEntityRenderer(ConfigBlocks.TUBE_VALVE_TILE.get(), TileTubeRenderers.Valve::new);
         event.registerBlockEntityRenderer(ConfigBlocks.TUBE_ONEWAY_TILE.get(), TileTubeRenderers.Oneway::new);
         event.registerBlockEntityRenderer(ConfigBlocks.TUBE_BUFFER_TILE.get(), TileTubeRenderers.Buffer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.ALEMBIC_TILE.get(), thaumcraft.client.renderers.tile.TileAlembicRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.CENTRIFUGE_TILE.get(), thaumcraft.client.renderers.tile.TileCentrifugeRenderer::new);
     }
 
     @SubscribeEvent

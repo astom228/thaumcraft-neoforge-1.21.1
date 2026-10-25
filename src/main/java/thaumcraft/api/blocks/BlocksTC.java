@@ -20,6 +20,11 @@ import thaumcraft.common.blocks.crafting.BlockArcaneWorkbench;
 import thaumcraft.common.blocks.devices.BlockWaterJug;
 import thaumcraft.common.blocks.essentia.BlockJar;
 import thaumcraft.common.blocks.essentia.BlockTube;
+import thaumcraft.common.blocks.essentia.BlockAlembic;
+import thaumcraft.common.blocks.essentia.BlockCentrifuge;
+import thaumcraft.common.blocks.essentia.BlockSmelter;
+import thaumcraft.common.blocks.essentia.BlockSmelterAux;
+import thaumcraft.common.blocks.essentia.BlockSmelterVent;
 import thaumcraft.common.tiles.essentia.TileTube;
 import thaumcraft.common.tiles.essentia.TileTubeBuffer;
 import thaumcraft.common.tiles.essentia.TileTubeFilter;
@@ -247,6 +252,27 @@ public class BlocksTC {
     public static final DeferredBlock<Block> tubeFilter = register("filtered_essentia_tube",
             () -> new BlockTube(TileTubeFilter::new, ConfigBlocks.TUBE_FILTER_TILE, tube()));
     public static final DeferredBlock<Block> tubeBuffer = register("essentia_buffer", () -> new BlockTube(TileTubeBuffer::new, ConfigBlocks.TUBE_BUFFER_TILE, tube()));
+
+    // Центрифуга (BlockTCDevice: прочность 2.0, сопротивление 20 → 12, Material.WOOD; добывается без инструмента)
+    public static final DeferredBlock<Block> centrifuge = register("centrifuge", () -> new BlockCentrifuge(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+    // TODO этап 14: bellows (мехи)
+    // Плавильни (BlockTCDevice: прочность 2.0, сопротивление 12, Material.IRON; добываются без инструмента)
+    public static final DeferredBlock<Block> smelterBasic = register("essentia_smeltery", () -> new BlockSmelter(smelter()));
+    public static final DeferredBlock<Block> smelterThaumium = register("thaumium_essentia_smeltery", () -> new BlockSmelter(smelter()));
+    public static final DeferredBlock<Block> smelterVoid = register("void_metal_essentia_smeltery", () -> new BlockSmelter(smelter()));
+    // Насос и клапан (BlockTC: прочность 1.0, setResistance(10) → 6, Material.IRON)
+    public static final DeferredBlock<Block> smelterAux = register("auxiliary_slurry_pump", () -> new BlockSmelterAux(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL).noOcclusion()));
+    public static final DeferredBlock<Block> smelterVent = register("auxiliary_venting_port", () -> new BlockSmelterVent(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL).noOcclusion()));
+    // Алембик (BlockTCTile: прочность 2.0, сопротивление 12, Material.WOOD)
+    public static final DeferredBlock<Block> alembic = register("alembic", () -> new BlockAlembic(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+
+    private static BlockBehaviour.Properties smelter() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL);
+    }
 
     private static BlockBehaviour.Properties tube() {
         return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 3.0F).sound(SoundType.METAL).noOcclusion()

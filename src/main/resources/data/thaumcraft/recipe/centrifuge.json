@@ -1,0 +1,31 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "CENTRIFUGE",
+  "vis": 100,
+  "crystals": {
+    "ordo": 1,
+    "perditio": 1
+  },
+  "key": {
+    "T": {
+      "item": "thaumcraft:essentia_tube"
+    },
+    "P": {
+      "item": "thaumcraft:simple_arcane_mechanism"
+    },
+    "R": {
+      "item": "thaumcraft:morphic_resonator"
+    },
+    "C": {
+      "item": "thaumcraft:alchemical_construct"
+    }
+  },
+  "pattern": [
+    " T ",
+    "RCP",
+    " T "
+  ],
+  "result": {
+    "id": "thaumcraft:centrifuge"
+  }
+}

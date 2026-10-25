@@ -436,5 +436,12 @@
   "item.thaumcraft.essentia_resonator": "Резонатор эссенции",
   "tc.resonator1": "§9Содержит %1$s ед. эссенции %2$s§0",
   "tc.resonator2": "§5Всасывание %1$s %2$s §0 ",
-  "tc.resonator3": "без типа"
+  "tc.resonator3": "без типа",
+  "block.thaumcraft.essentia_smeltery": "Плавильня эссенции",
+  "block.thaumcraft.thaumium_essentia_smeltery": "Таумиевая плавильня эссенции",
+  "block.thaumcraft.void_metal_essentia_smeltery": "Пустотная плавильня эссенции",
+  "block.thaumcraft.auxiliary_slurry_pump": "Вспомогательный насос взвеси",
+  "block.thaumcraft.auxiliary_venting_port": "Вспомогательный отводящий клапан",
+  "block.thaumcraft.alembic": "Магический алембик",
+  "block.thaumcraft.centrifuge": "Центрифуга эссенции"
 }

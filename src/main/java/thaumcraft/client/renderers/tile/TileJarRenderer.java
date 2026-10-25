@@ -11,7 +11,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -25,7 +24,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import org.joml.Matrix4f;
 import thaumcraft.Thaumcraft;
 import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.Aspect;
+import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.tiles.essentia.TileJar;
 import thaumcraft.common.tiles.essentia.TileJarBrain;
@@ -82,7 +81,7 @@ public class TileJarRenderer implements BlockEntityRenderer<TileJar> {
                 pose.popPose();
             }
             if (jarTile.aspectFilter != null) {
-                this.renderLabel(jarTile, pose, buffers);
+                this.renderLabel(jarTile, pose, buffers, light);
             }
             if (jarTile.amount > 0) {
                 this.renderLiquid(jarTile, pose, buffers);
@@ -91,7 +90,7 @@ public class TileJarRenderer implements BlockEntityRenderer<TileJar> {
         pose.popPose();
     }
 
-    private void renderLabel(TileJarFillable tile, PoseStack pose, MultiBufferSource buffers) {
+    private void renderLabel(TileJarFillable tile, PoseStack pose, MultiBufferSource buffers, int light) {
         pose.pushPose();
         switch (tile.facing) {
             case 3 -> pose.mulPose(Axis.YP.rotationDegrees(180.0F));
@@ -102,16 +101,13 @@ public class TileJarRenderer implements BlockEntityRenderer<TileJar> {
         }
         float rot = (tile.aspectFilter.getTag().hashCode() + tile.getBlockPos().getX() + tile.facing) % 4 - 2;
         boolean crooked = ModConfig.CONFIG_GRAPHICS.crooked.get();
-        // ярлык: квадрат 0.5 по центру (UtilsFX.renderQuadCentered), без освещения
+        // ярлык: квадрат 0.5 по центру (UtilsFX.renderQuadCentered, яркость -99 — освещение блока)
         pose.pushPose();
         pose.translate(0.0F, -0.4F, 0.315F);
         if (crooked) {
             pose.mulPose(Axis.ZP.rotationDegrees(rot));
         }
-        pose.scale(0.5F, 0.5F, 0.5F);
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityTranslucent(TEX_LABEL));
-        Matrix4f m = pose.last().pose();
-        quad(vc, pose, m, -0.5F, 0.5F, 0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 1.0F);
+        UtilsFX.renderQuadCenteredWorld(pose, buffers.getBuffer(RenderType.entityTranslucent(TEX_LABEL)), 0.5F, 1.0F, 1.0F, 1.0F, 1.0F, light);
         pose.popPose();
         // значок аспекта (drawTag(bw): тёмный, прозрачность 0.8)
         pose.pushPose();
@@ -121,25 +117,9 @@ public class TileJarRenderer implements BlockEntityRenderer<TileJar> {
         }
         pose.scale(0.021F, 0.021F, 0.021F);
         pose.mulPose(Axis.YP.rotationDegrees(180.0F));
-        Aspect a = tile.aspectFilter;
-        if (a.getImage() != null) {
-            VertexConsumer vt = buffers.getBuffer(RenderType.entityTranslucent(a.getImage()));
-            Matrix4f m2 = pose.last().pose();
-            // drawTag(-8, -8): квадрат 16×16, u/v 0..1, v растёт вниз по y
-            quad(vt, pose, m2, -8.0F, 8.0F, 8.0F, -8.0F, 0.1F, 0.1F, 0.1F, 0.8F, 0.0F, 1.0F, 1.0F, 0.0F);
-        }
+        UtilsFX.drawTagWorld(pose, buffers, -8, -8, tile.aspectFilter, light);
         pose.popPose();
         pose.popPose();
-    }
-
-    /** Квадрат в плоскости XY: x0..x1, y0..y1; uv (u0,v0) в точке (x0,y0) … (u1,v1) в (x1,y1). */
-    private static void quad(VertexConsumer vc, PoseStack pose, Matrix4f m, float x0, float y0, float x1, float y1, float r, float g, float b, float a,
-                             float u0, float v0, float u1, float v1) {
-        int light = LightTexture.FULL_BRIGHT;
-        vc.addVertex(m, x0, y0, 0.0F).setColor(r, g, b, a).setUv(u0, v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
-        vc.addVertex(m, x1, y0, 0.0F).setColor(r, g, b, a).setUv(u1, v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
-        vc.addVertex(m, x1, y1, 0.0F).setColor(r, g, b, a).setUv(u1, v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
-        vc.addVertex(m, x0, y1, 0.0F).setColor(r, g, b, a).setUv(u0, v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
     }
 
     /** Жидкость: куб 0.25..0.75 × 0.0625..(0.0625 + уровень) с текстурой animatedglow цвета аспекта, яркость 200 (RenderCubes). */

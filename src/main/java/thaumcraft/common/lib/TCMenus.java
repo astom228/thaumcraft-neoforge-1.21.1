@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import thaumcraft.Thaumcraft;
 import thaumcraft.common.container.ContainerArcaneWorkbench;
 import thaumcraft.common.container.ContainerResearchTable;
+import thaumcraft.common.container.ContainerSmelter;
 
 /** Типы меню (в оригинале — GUI handler с номерами экранов). */
 public class TCMenus {
@@ -17,4 +18,6 @@ public class TCMenus {
             () -> IMenuTypeExtension.create(ContainerResearchTable::new));
     public static final Supplier<MenuType<ContainerArcaneWorkbench>> ARCANE_WORKBENCH = MENUS.register("arcane_workbench",
             () -> IMenuTypeExtension.create(ContainerArcaneWorkbench::new));
+    public static final Supplier<MenuType<ContainerSmelter>> SMELTER = MENUS.register("essentia_smeltery",
+            () -> IMenuTypeExtension.create(ContainerSmelter::new));
 }

@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexSorting;
 import java.text.DecimalFormat;
@@ -18,6 +19,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
@@ -141,6 +145,33 @@ public final class UtilsFX {
         b.addVertex(m, -h, -h, 0.0F).setUv(f1, f4).setColor(red, green, blue, opacity);
         BufferUploader.drawWithShader(b.buildOrThrow());
         RenderSystem.defaultBlendFunc();
+    }
+
+    /**
+     * renderQuadCentered(texture, scale, …) в мире (рендер BlockEntity): квадрат scale×scale в плоскости XY с теми же
+     * вершинами и UV, что TexturedQuadTC оригинала, нормаль (0, 0, 1). brightness -99 оригинала — освещение блока (light).
+     */
+    public static void renderQuadCenteredWorld(PoseStack pose, VertexConsumer vc, float scale, float r, float g, float b, float a, int light) {
+        float h = 0.5F * scale;
+        Matrix4f m = pose.last().pose();
+        vc.addVertex(m, -h, h, 0.0F).setColor(r, g, b, a).setUv(1.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
+        vc.addVertex(m, h, h, 0.0F).setColor(r, g, b, a).setUv(1.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
+        vc.addVertex(m, h, -h, 0.0F).setColor(r, g, b, a).setUv(0.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
+        vc.addVertex(m, -h, -h, 0.0F).setColor(r, g, b, a).setUv(0.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
+    }
+
+    /** drawTag(x, y, aspect) в мире: чёрно-белый значок 16×16 (цвет 0.1, прозрачность 0.8), освещение блока. */
+    public static void drawTagWorld(PoseStack pose, MultiBufferSource buffers, int x, int y, Aspect aspect, int light) {
+        if (aspect == null || aspect.getImage() == null) {
+            return;
+        }
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityTranslucent(aspect.getImage()));
+        Matrix4f m = pose.last().pose();
+        float r = 0.1F, g = 0.1F, b = 0.1F, a = 0.8F;
+        vc.addVertex(m, x, y + 16.0F, 0.0F).setColor(r, g, b, a).setUv(0.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
+        vc.addVertex(m, x + 16.0F, y + 16.0F, 0.0F).setColor(r, g, b, a).setUv(1.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
+        vc.addVertex(m, x + 16.0F, y, 0.0F).setColor(r, g, b, a).setUv(1.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
+        vc.addVertex(m, x, y, 0.0F).setColor(r, g, b, a).setUv(0.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 0, 1);
     }
 
     // --- текст с кодами § ----------------------------------------------------------------------------------------------

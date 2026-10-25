@@ -21,7 +21,13 @@
   "matrixmotion.json",
   "filter.json",
   "morphicresonator.json",
+  "alembic.json",
+  "essentiasmelter.json",
+  "essentiasmelterthaumium.json",
+  "essentiasmeltervoid.json",
   "alchemicalconstruct.json",
+  "smeltervent.json",
+  "centrifuge.json",
   "mindclockwork.json",
   "grappleguntip.json",
   "grapplegunspool.json"

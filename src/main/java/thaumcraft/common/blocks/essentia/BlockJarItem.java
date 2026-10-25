@@ -1,7 +1,14 @@
 package thaumcraft.common.blocks.essentia;
 
 import java.util.List;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -9,7 +16,9 @@ import net.minecraft.world.level.block.Block;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.common.lib.TCDataComponents;
+import thaumcraft.common.tiles.essentia.TileAlembic;
 
 /**
  * Банка-предмет (порт BlockJarItem): хранит эссенцию и ярлык (компоненты), при установке передаёт их блоку.
@@ -31,7 +40,48 @@ public class BlockJarItem extends BlockItem implements IEssentiaContainerItem {
         return 13;
     }
 
-    // TODO этап 10.4: onItemUseFirst — набрать эссенцию из алембика
+    /** Набрать в банку всю эссенцию алембика (до 250; с ярлыком — только аспект ярлыка, с эссенцией — только её аспект). */
+    @Override
+    public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
+        Level world = context.getLevel();
+        Player player = context.getPlayer();
+        BlockPos pos = context.getClickedPos();
+        if (player != null && world.getBlockState(pos).is(BlocksTC.alembic.get()) && !world.isClientSide
+                && world.getBlockEntity(pos) instanceof TileAlembic tile && tile.amount > 0) {
+            if (this.getFilter(itemstack) != null && this.getFilter(itemstack) != tile.aspect) {
+                return InteractionResult.FAIL;
+            }
+            if (this.getAspects(itemstack) != null && this.getAspects(itemstack).getAspects()[0] != tile.aspect) {
+                return InteractionResult.FAIL;
+            }
+            int amt = tile.amount;
+            if (this.getAspects(itemstack) != null && this.getAspects(itemstack).visSize() + amt > 250) {
+                amt = Math.abs(this.getAspects(itemstack).visSize() - 250);
+            }
+            if (amt <= 0) {
+                return InteractionResult.FAIL;
+            }
+            Aspect a = tile.aspect;
+            if (tile.takeFromContainer(tile.aspect, amt)) {
+                int base = this.getAspects(itemstack) == null ? 0 : this.getAspects(itemstack).visSize();
+                if (itemstack.getCount() > 1) {
+                    ItemStack stack = itemstack.copy();
+                    this.setAspects(stack, new AspectList().add(a, base + amt));
+                    itemstack.shrink(1);
+                    stack.setCount(1);
+                    if (!player.getInventory().add(stack)) {
+                        world.addFreshEntity(new ItemEntity(world, player.getX(), player.getY(), player.getZ(), stack));
+                    }
+                } else {
+                    this.setAspects(itemstack, new AspectList().add(a, base + amt));
+                }
+                player.playSound(SoundEvents.BOTTLE_FILL, 0.25F, 1.0F);
+                player.inventoryMenu.broadcastChanges();
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.PASS;
+    }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {

@@ -1,0 +1,33 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "IMPROVEDSMELTING2",
+  "vis": 150,
+  "crystals": {
+    "aer": 1
+  },
+  "key": {
+    "I": {
+      "tag": "c:plates/iron"
+    },
+    "B": {
+      "tag": "c:plates/brass"
+    },
+    "F": {
+      "item": "thaumcraft:essentia_filter"
+    },
+    "M": {
+      "item": "thaumcraft:essentia_filter"
+    },
+    "G": {
+      "item": "thaumcraft:alchemical_construct"
+    }
+  },
+  "pattern": [
+    "IBI",
+    "MGF",
+    "IBI"
+  ],
+  "result": {
+    "id": "thaumcraft:auxiliary_venting_port"
+  }
+}

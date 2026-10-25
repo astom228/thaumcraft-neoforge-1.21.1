@@ -39,18 +39,12 @@ eldritchpedestal: нет BlocksTC.pedestalEldritch
 focuspouch: нет ItemsTC.focusPouch
 dioptra: нет BlocksTC.dioptra
 hungrychest: нет BlocksTC.hungryChest
-alembic: нет BlocksTC.alembic
-essentiasmelter: нет BlocksTC.smelterBasic
-essentiasmelterthaumium: нет BlocksTC.smelterThaumium
-essentiasmeltervoid: нет BlocksTC.smelterVoid
 advalchemyconstruct: нет ItemsTC.primordialPearl
 potionsprayer: нет BlocksTC.potionSprayer
-smelteraux: нет BlocksTC.smelterAux
-smeltervent: нет BlocksTC.smelterVent
+smelteraux: нет BlocksTC.bellows
 essentiatransportin: нет BlocksTC.essentiaTransportInput
 essentiatransportout: нет BlocksTC.essentiaTransportOutput
 bellows: нет BlocksTC.bellows
-centrifuge: нет BlocksTC.centrifuge
 mnemonicmatrix: нет BlocksTC.brainBox
 automatedcrossbow: нет crossbow_turret (ItemsTC.turretPlacer meta 0)
 advancedcrossbow: нет advanced_crossbow_turret (ItemsTC.turretPlacer meta 1)

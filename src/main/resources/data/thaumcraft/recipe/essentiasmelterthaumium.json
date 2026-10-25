@@ -1,0 +1,30 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "ESSENTIASMELTERTHAUMIUM",
+  "vis": 250,
+  "crystals": {
+    "ignis": 2
+  },
+  "key": {
+    "F": {
+      "item": "thaumcraft:essentia_smeltery"
+    },
+    "G": {
+      "item": "thaumcraft:alchemical_construct"
+    },
+    "I": {
+      "tag": "c:plates/thaumium"
+    },
+    "B": {
+      "tag": "c:plates/brass"
+    }
+  },
+  "pattern": [
+    "BFB",
+    "IGI",
+    "III"
+  ],
+  "result": {
+    "id": "thaumcraft:thaumium_essentia_smeltery"
+  }
+}
