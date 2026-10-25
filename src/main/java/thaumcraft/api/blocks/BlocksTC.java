@@ -20,6 +20,9 @@ import thaumcraft.common.blocks.crafting.BlockArcaneWorkbench;
 import thaumcraft.common.blocks.devices.BlockWaterJug;
 import thaumcraft.common.blocks.essentia.BlockJar;
 import thaumcraft.common.blocks.essentia.BlockTube;
+import thaumcraft.common.blocks.essentia.BlockEssentiaTransport;
+import thaumcraft.common.tiles.essentia.TileEssentiaInput;
+import thaumcraft.common.tiles.essentia.TileEssentiaOutput;
 import thaumcraft.common.blocks.essentia.BlockAlembic;
 import thaumcraft.common.blocks.essentia.BlockCentrifuge;
 import thaumcraft.common.blocks.essentia.BlockSmelter;
@@ -269,6 +272,16 @@ public class BlocksTC {
     // Алембик (BlockTCTile: прочность 2.0, сопротивление 12, Material.WOOD)
     public static final DeferredBlock<Block> alembic = register("alembic", () -> new BlockAlembic(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+
+    // Переливатели эссенции (BlockEssentiaTransport: прочность 1.0, setResistance(10) → 6, Material.IRON)
+    public static final DeferredBlock<Block> essentiaTransportInput = register("essentia_input",
+            () -> new BlockEssentiaTransport(TileEssentiaInput::new, ConfigBlocks.ESSENTIA_INPUT_TILE, transport()));
+    public static final DeferredBlock<Block> essentiaTransportOutput = register("essentia_output",
+            () -> new BlockEssentiaTransport(TileEssentiaOutput::new, ConfigBlocks.ESSENTIA_OUTPUT_TILE, transport()));
+
+    private static BlockBehaviour.Properties transport() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL).noOcclusion();
+    }
 
     private static BlockBehaviour.Properties smelter() {
         return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL);

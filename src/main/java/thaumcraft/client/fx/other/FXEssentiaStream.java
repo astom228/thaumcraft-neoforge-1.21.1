@@ -65,7 +65,13 @@ public class FXEssentiaStream extends Particle implements IEngineParticle, ICust
         this.targetZ = tz;
         BlockPos bp1 = BlockPos.containing(this.x, this.y, this.z);
         BlockPos bp2 = BlockPos.containing(this.targetX, this.targetY, this.targetZ);
-        // TODO этап 10.5: у ввода/вывода эссенции (BlockEssentiaTransport) поток начинается со сдвигом 0.05 по их стороне
+        net.minecraft.world.level.block.state.BlockState bs = w.getBlockState(bp1);
+        if (bs.getBlock() instanceof thaumcraft.common.blocks.essentia.BlockEssentiaTransport) {
+            net.minecraft.core.Direction f = bs.getValue(thaumcraft.common.blocks.essentia.BlockEssentiaTransport.FACING);
+            this.x = this.x + f.getStepX() * 0.05F;
+            this.y = this.y + f.getStepY() * 0.05F;
+            this.z = this.z + f.getStepZ() * 0.05F;
+        }
         double dx = tx - this.x;
         double dy = ty - this.y;
         double dz = tz - this.z;

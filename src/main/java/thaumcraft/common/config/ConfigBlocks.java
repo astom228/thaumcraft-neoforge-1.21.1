@@ -12,6 +12,8 @@ import thaumcraft.common.tiles.misc.TileNitor;
 import thaumcraft.common.tiles.crafting.TileArcaneWorkbench;
 import thaumcraft.common.tiles.devices.TileWaterJug;
 import thaumcraft.common.tiles.essentia.TileJarBrain;
+import thaumcraft.common.tiles.essentia.TileEssentiaInput;
+import thaumcraft.common.tiles.essentia.TileEssentiaOutput;
 import thaumcraft.common.tiles.essentia.TileAlembic;
 import thaumcraft.common.tiles.essentia.TileCentrifuge;
 import thaumcraft.common.tiles.essentia.TileSmelter;
@@ -69,6 +71,10 @@ public class ConfigBlocks {
                     .build(null));
     public static final Supplier<BlockEntityType<TileAlembic>> ALEMBIC_TILE = TILES.register("alembic",
             () -> BlockEntityType.Builder.of(TileAlembic::new, BlocksTC.alembic.get()).build(null));
+    public static final Supplier<BlockEntityType<TileEssentiaInput>> ESSENTIA_INPUT_TILE = TILES.register("essentia_input",
+            () -> BlockEntityType.Builder.of(TileEssentiaInput::new, BlocksTC.essentiaTransportInput.get()).build(null));
+    public static final Supplier<BlockEntityType<TileEssentiaOutput>> ESSENTIA_OUTPUT_TILE = TILES.register("essentia_output",
+            () -> BlockEntityType.Builder.of(TileEssentiaOutput::new, BlocksTC.essentiaTransportOutput.get()).build(null));
     public static final Supplier<BlockEntityType<TileArcaneWorkbench>> ARCANE_WORKBENCH_TILE = TILES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(TileArcaneWorkbench::new, BlocksTC.arcaneWorkbench.get()).build(null));
 

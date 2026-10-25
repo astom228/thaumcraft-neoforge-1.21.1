@@ -39,6 +39,8 @@
     "thaumcraft:thaumium_essentia_smeltery",
     "thaumcraft:void_metal_essentia_smeltery",
     "thaumcraft:auxiliary_slurry_pump",
-    "thaumcraft:auxiliary_venting_port"
+    "thaumcraft:auxiliary_venting_port",
+    "thaumcraft:essentia_input",
+    "thaumcraft:essentia_output"
   ]
 }

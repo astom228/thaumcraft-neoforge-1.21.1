@@ -41,6 +41,8 @@
   "block.thaumcraft.eldritch_stone": "Потусторонний камень",
   "block.thaumcraft.eldritch_stone_slab": "Плита из потустороннего камня",
   "block.thaumcraft.essentia_buffer": "Буфер эссенции",
+  "block.thaumcraft.essentia_input": "Наполняющий переливатель эссенции",
+  "block.thaumcraft.essentia_output": "Опустошающий переливатель эссенции",
   "block.thaumcraft.essentia_smeltery": "Плавильня эссенции",
   "block.thaumcraft.essentia_tube": "Трубка эссенции",
   "block.thaumcraft.essentia_valve": "Клапан эссенции",

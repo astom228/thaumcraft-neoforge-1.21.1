@@ -443,5 +443,7 @@
   "block.thaumcraft.auxiliary_slurry_pump": "Вспомогательный насос взвеси",
   "block.thaumcraft.auxiliary_venting_port": "Вспомогательный отводящий клапан",
   "block.thaumcraft.alembic": "Магический алембик",
-  "block.thaumcraft.centrifuge": "Центрифуга эссенции"
+  "block.thaumcraft.centrifuge": "Центрифуга эссенции",
+  "block.thaumcraft.essentia_input": "Наполняющий переливатель эссенции",
+  "block.thaumcraft.essentia_output": "Опустошающий переливатель эссенции"
 }

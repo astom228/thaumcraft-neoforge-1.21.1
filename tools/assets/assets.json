@@ -372,6 +372,14 @@
     "alembic": {
       "src": "alembic",
       "renderType": "minecraft:cutout"
+    },
+    "essentia_input": {
+      "src": "essentia_input",
+      "renderType": "minecraft:cutout"
+    },
+    "essentia_output": {
+      "src": "essentia_output",
+      "renderType": "minecraft:cutout"
     }
   },
   "items": {

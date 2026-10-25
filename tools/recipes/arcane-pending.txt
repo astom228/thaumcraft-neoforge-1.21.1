@@ -42,8 +42,6 @@ hungrychest: нет BlocksTC.hungryChest
 advalchemyconstruct: нет ItemsTC.primordialPearl
 potionsprayer: нет BlocksTC.potionSprayer
 smelteraux: нет BlocksTC.bellows
-essentiatransportin: нет BlocksTC.essentiaTransportInput
-essentiatransportout: нет BlocksTC.essentiaTransportOutput
 bellows: нет BlocksTC.bellows
 mnemonicmatrix: нет BlocksTC.brainBox
 automatedcrossbow: нет crossbow_turret (ItemsTC.turretPlacer meta 0)

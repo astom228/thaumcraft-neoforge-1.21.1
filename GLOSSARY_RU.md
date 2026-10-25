@@ -117,6 +117,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Auxiliary Slurry Pump | Вспомогательный насос взвеси (slurry — взвесь эссенции) | принято |
 | Auxiliary Venting Port | Вспомогательный отводящий клапан | принято |
 | Arcane Alembic | Магический алембик (Arcane — магический, как у верстака) | принято |
+| Filling / Emptying Essentia Transfuser | Наполняющий / опустошающий переливатель эссенции | принято |
 | Thaumatorium | Тауматориум | принято |
 | Phial | Фиал | принято |
 | Label | Ярлык | принято |
