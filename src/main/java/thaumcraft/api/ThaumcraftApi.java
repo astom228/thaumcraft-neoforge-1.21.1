@@ -14,6 +14,7 @@ import thaumcraft.api.aspects.AspectHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.IThaumcraftRecipe;
+import thaumcraft.api.crafting.Part;
 import thaumcraft.api.internal.CommonInternals;
 import thaumcraft.api.internal.IInternalMethodHandler;
 import thaumcraft.common.lib.InternalMethodHandler;
@@ -53,6 +54,11 @@ public class ThaumcraftApi {
 
     /** Рецепт тигля. Регистрировать при FMLCommonSetupEvent (на обеих сторонах). */
     public static void addCrucibleRecipe(ResourceLocation registry, CrucibleRecipe recipe) {
+        getCraftingRecipes().put(registry, recipe);
+    }
+
+    /** Схема многоблочной конструкции для книги (страница «Конструкция»). Регистрировать при FMLCommonSetupEvent. */
+    public static void addMultiblockRecipeToCatalog(ResourceLocation registry, BluePrint recipe) {
         getCraftingRecipes().put(registry, recipe);
     }
 
@@ -209,4 +215,53 @@ public class ThaumcraftApi {
         }
     }
 
+
+    /** Схема многоблочной конструкции (порт ThaumcraftApi.BluePrint): слои сверху вниз, ингредиенты для книги. */
+    public static class BluePrint implements IThaumcraftRecipe {
+        Part[][][] parts;
+        String research;
+        ItemStack displayStack;
+        ItemStack[] ingredientList;
+        private String group;
+
+        public BluePrint(String research, Part[][][] parts, ItemStack... ingredientList) {
+            this.parts = parts;
+            this.research = research;
+            this.ingredientList = ingredientList;
+        }
+
+        public BluePrint(String research, ItemStack display, Part[][][] parts, ItemStack... ingredientList) {
+            this.parts = parts;
+            this.research = research;
+            this.displayStack = display;
+            this.ingredientList = ingredientList;
+        }
+
+        public Part[][][] getParts() {
+            return this.parts;
+        }
+
+        @Override
+        public String getResearch() {
+            return this.research;
+        }
+
+        public ItemStack[] getIngredientList() {
+            return this.ingredientList;
+        }
+
+        public ItemStack getDisplayStack() {
+            return this.displayStack;
+        }
+
+        @Override
+        public String getGroup() {
+            return this.group;
+        }
+
+        public BluePrint setGroup(ResourceLocation loc) {
+            this.group = loc.toString();
+            return this;
+        }
+    }
 }

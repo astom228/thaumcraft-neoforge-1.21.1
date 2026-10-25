@@ -404,6 +404,22 @@
           "model": "thaumcraft:item/essentia_mirror_linked"
         }
       ]
+    },
+    "thaumatorium": {
+      "src": "thaumatorium",
+      "skip": [
+        "facing=up",
+        "facing=down",
+        "normal"
+      ],
+      "item": false
+    },
+    "mnemonic_matrix": {
+      "src": "brain_box",
+      "renderType": "minecraft:cutout",
+      "skip": [
+        "normal"
+      ]
     }
   },
   "items": {

@@ -93,7 +93,7 @@ public class ServerEvents {
                 allow = false;
             }
             if (world.mayInteract(vs.player, vs.pos) && allow
-                    && (vs.target == null || vs.target.isEmpty() || !ItemStack.isSameItem(vs.target, new ItemStack(bs.getBlock())))
+                    && (vs.targetState != null ? vs.targetState != bs : (vs.target == null || vs.target.isEmpty() || !ItemStack.isSameItem(vs.target, new ItemStack(bs.getBlock()))))
                     && !EventHooks.onBlockPlace(vs.player, BlockSnapshot.create(world.dimension(), world, vs.pos), Direction.UP)
                     && vs.allowSwap.test(new SwapperPredicate(world, vs.player, vs.pos))) {
                 int slot;
@@ -129,7 +129,9 @@ public class ServerEvents {
                             ThaumcraftApi.internalMethods.drainVis(world, vs.pos, vs.visCost, false);
                         }
                     }
-                    if (vs.target != null && !vs.target.isEmpty()) {
+                    if (vs.targetState != null) {
+                        world.setBlock(vs.pos, vs.targetState, 3);
+                    } else if (vs.target != null && !vs.target.isEmpty()) {
                         Block tb = Block.byItem(vs.target.getItem());
                         if (tb != Blocks.AIR) {
                             world.setBlock(vs.pos, tb.defaultBlockState(), 3);
@@ -154,7 +156,7 @@ public class ServerEvents {
                                     BlockPos np = vs.pos.offset(xx, yy, zz);
                                     boolean m = vs.source != null && vs.source.test(world.getBlockState(np));
                                     if ((xx != 0 || yy != 0 || zz != 0) && m && BlockUtils.isBlockExposed(world, np)) {
-                                        queue2.offer(new VirtualSwapper(np, vs.source, vs.target, vs.consumeTarget, vs.lifespan - 1, vs.player, vs.fx,
+                                        queue2.offer(new VirtualSwapper(np, vs.source, vs.target, vs.targetState, vs.consumeTarget, vs.lifespan - 1, vs.player, vs.fx,
                                                 vs.fancy, vs.color, vs.pickup, vs.silk, vs.fortune, vs.allowSwap, vs.visCost));
                                     }
                                 }
@@ -179,7 +181,18 @@ public class ServerEvents {
             return;
         }
         swapList.computeIfAbsent(world.dimension(), k -> new ArrayDeque<>())
-                .offer(new VirtualSwapper(pos, source, target, consumeTarget, life, player, fx, fancy, color, pickup, silk, fortune, allowSwap, visCost));
+                .offer(new VirtualSwapper(pos, source, target, null, consumeTarget, life, player, fx, fancy, color, pickup, silk, fortune, allowSwap, visCost));
+    }
+
+    /** То же, но цель — готовое состояние блока (в 1.12 — предмет-блок с metadata: сторона, вариант). */
+    public static void addSwapper(Level world, BlockPos pos, Predicate<BlockState> source, BlockState targetState, Player player, boolean fx, boolean fancy,
+                                  int color) {
+        if (world.isClientSide) {
+            return;
+        }
+        swapList.computeIfAbsent(world.dimension(), k -> new ArrayDeque<>())
+                .offer(new VirtualSwapper(pos, source, new ItemStack(targetState.getBlock()), targetState, false, 0, player, fx, fancy, color, false, false, 0,
+                        DEFAULT_PREDICATE, 0.0F));
     }
 
     /** Выполнить на сервере через delay тиков. */
@@ -211,7 +224,7 @@ public class ServerEvents {
         }
     }
 
-    record VirtualSwapper(BlockPos pos, Predicate<BlockState> source, ItemStack target, boolean consumeTarget, int lifespan, Player player, boolean fx,
+    record VirtualSwapper(BlockPos pos, Predicate<BlockState> source, ItemStack target, BlockState targetState, boolean consumeTarget, int lifespan, Player player, boolean fx,
                           boolean fancy, int color, boolean pickup, boolean silk, int fortune, Predicate<SwapperPredicate> allowSwap, float visCost) {
     }
 }

@@ -41,6 +41,9 @@
     "thaumcraft:auxiliary_slurry_pump",
     "thaumcraft:auxiliary_venting_port",
     "thaumcraft:essentia_input",
-    "thaumcraft:essentia_output"
+    "thaumcraft:essentia_output",
+    "thaumcraft:thaumatorium",
+    "thaumcraft:thaumatorium_top",
+    "thaumcraft:mnemonic_matrix"
   ]
 }

@@ -10,6 +10,7 @@ import thaumcraft.common.container.ContainerArcaneWorkbench;
 import thaumcraft.common.container.ContainerResearchTable;
 import thaumcraft.common.container.ContainerSmelter;
 import thaumcraft.common.container.ContainerHandMirror;
+import thaumcraft.common.container.ContainerThaumatorium;
 
 /** Типы меню (в оригинале — GUI handler с номерами экранов). */
 public class TCMenus {
@@ -23,4 +24,6 @@ public class TCMenus {
             () -> IMenuTypeExtension.create(ContainerSmelter::new));
     public static final Supplier<MenuType<ContainerHandMirror>> HAND_MIRROR = MENUS.register("hand_mirror",
             () -> IMenuTypeExtension.create(ContainerHandMirror::new));
+    public static final Supplier<MenuType<ContainerThaumatorium>> THAUMATORIUM = MENUS.register("thaumatorium",
+            () -> IMenuTypeExtension.create(ContainerThaumatorium::new));
 }

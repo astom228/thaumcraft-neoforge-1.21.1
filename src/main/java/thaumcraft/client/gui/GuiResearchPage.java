@@ -41,7 +41,9 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.capabilities.IPlayerKnowledge;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
+import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.Part;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
@@ -102,6 +104,12 @@ public class GuiResearchPage extends Screen {
     boolean hasRecipePages;
     boolean renderingCompound = false;
     static boolean cycleMultiblockLines = false;
+    /** Схема открытой страницы конструкции (пересоздаётся при смене рецепта — blockAccess = null оригинала). */
+    BlueprintBlockAccess blockAccess = null;
+    private Object blockAccessFor = null;
+    final HashMap<ResourceLocation, BlueprintBlockAccess> blockAccessIcons = new HashMap<>();
+    float rotX = 25.0F;
+    float rotY = -45.0F;
     /** Места ссылок на рецепты ингредиентов: x, y (позиция мыши при наведении, как в оригинале), рецепт, страница. */
     final List<Object[]> reference = new ArrayList<>();
     private int cycle = -1;
@@ -221,7 +229,9 @@ public class GuiResearchPage extends Screen {
         if (this.lastCycle < System.currentTimeMillis()) {
             this.cycle++;
             this.lastCycle = System.currentTimeMillis() + 1000L;
-            // TODO: многоблочные схемы — cycleMultiblockLines / blockAccess.sliceLine
+            if (cycleMultiblockLines && this.blockAccess != null) {
+                this.blockAccess.sliceLine++;
+            }
         }
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -588,8 +598,11 @@ public class GuiResearchPage extends Screen {
                         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                         if (list.get(i) instanceof ItemStack stack) {
                             this.drawStackAt(g, stack, x + 287 + sh - le, y - 1, mx, my, false, true);
+                        } else if (list.get(i) instanceof Part[][][] parts) {
+                            BlueprintBlockAccess ba = this.blockAccessIcons.computeIfAbsent(rk, k -> new BlueprintBlockAccess(parts, true));
+                            int h = parts.length;
+                            ba.render(g, x + 295 + sh - le, y + 6 + h, 4.0F, parts, this.rotX, this.rotY);
                         }
-                        // TODO: многоблочные схемы (Part[][][]) — с их этапами
                         y += space;
                     }
                 }
@@ -631,7 +644,18 @@ public class GuiResearchPage extends Screen {
         }
         List<Object> list = recipeLists2.computeIfAbsent(rkey, k -> new ArrayList<>());
         List<Object> outputs = recipeOutputs2.computeIfAbsent(rkey, k -> new ArrayList<>());
-        // TODO этапы 10, 11: BluePrint, InfusionRecipe, RecipeMisc (с проверкой исследования)
+        // TODO этап 11: InfusionRecipe, RecipeMisc (с проверкой исследования)
+        if (recipe instanceof ThaumcraftApi.BluePrint r) {
+            if (ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, r.getResearch())) {
+                list.add(r);
+                if (r.getDisplayStack() != null) {
+                    outputs.add(r.getDisplayStack());
+                } else {
+                    outputs.add(r.getParts());
+                }
+            }
+            return;
+        }
         if (recipe instanceof CrucibleRecipe re) {
             ItemStack is = cycleItemStack(re.getCatalyst(), 0);
             if (!is.isEmpty() && ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, re.getResearch())) {
@@ -670,8 +694,11 @@ public class GuiResearchPage extends Screen {
                 this.recipePage = this.recipePageMax;
             }
             Object recipe = list.get(this.recipePage % list.size());
-            // TODO этапы 10, 11: инфузия, многоблочные конструкции
-            if (recipe instanceof CrucibleRecipe cr) {
+            // TODO этап 11: инфузия
+            if (recipe instanceof ThaumcraftApi.BluePrint bp) {
+                this.drawCompoundCraftingPage(g, x + 128, y + 128, mx, my, bp);
+                this.renderingCompound = true;
+            } else if (recipe instanceof CrucibleRecipe cr) {
                 this.drawCruciblePage(g, x + 128, y + 128, mx, my, cr);
             } else if (recipe instanceof IArcaneRecipe ar) {
                 this.drawArcaneCraftingPage(g, x + 128, y + 128, mx, my, ar);
@@ -793,6 +820,37 @@ public class GuiResearchPage extends Screen {
     }
 
     /** Страница рецепта тигля: тигель, катализатор слева, аспекты в тигле (с подсказками), результат сверху. */
+    private void drawCompoundCraftingPage(GuiGraphics g, int x, int y, int mx, int my, ThaumcraftApi.BluePrint recipe) {
+        if (recipe.getParts() == null) {
+            return;
+        }
+        if (this.blockAccess == null || this.blockAccessFor != recipe) {
+            this.blockAccess = new BlueprintBlockAccess(recipe.getParts(), false);
+            this.blockAccessFor = recipe;
+        }
+        int ySize = recipe.getParts().length;
+        int xSize = recipe.getParts()[0].length;
+        int zSize = recipe.getParts()[0][0].length;
+        String text = I18n.get("recipe.type.construct");
+        int offset = this.font.width(text);
+        g.drawString(this.font, text, x - offset / 2, y - 104, 5263440, false);
+        int s = Math.max(Math.max(xSize, zSize), ySize) * 2;
+        float scale = 38 - s;
+        this.blockAccess.render(g, x, y, scale, recipe.getParts(), this.rotX, this.rotY);
+        ItemStack[] ingredients = recipe.getIngredientList();
+        if (ingredients != null) {
+            for (int a = 0; a < ingredients.length; a++) {
+                if (ingredients[a] != null && !ingredients[a].isEmpty()) {
+                    this.drawStackAt(g, ingredients[a], x - 85 + a * 17, y + 90, mx, my, true);
+                }
+            }
+        }
+        RenderSystem.enableBlend();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.mouseInside(x + 80, y + 100, 8, 8, mx, my) ? 1.0F : 0.75F);
+        g.blit(tex1, x + 80, y + 100, cycleMultiblockLines ? 168 : 160, 224, 8, 8);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
     private void drawCruciblePage(GuiGraphics g, int x, int y, int mx, int my, CrucibleRecipe rc) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();

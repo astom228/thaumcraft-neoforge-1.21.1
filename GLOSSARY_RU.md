@@ -119,6 +119,8 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Arcane Alembic | Магический алембик (Arcane — магический, как у верстака) | принято |
 | Filling / Emptying Essentia Transfuser | Наполняющий / опустошающий переливатель эссенции | принято |
 | Thaumatorium | Тауматориум | принято |
+| Mnemonic Matrix | Мнемоническая матрица | принято |
+| Mystical Construct (тип рецепта) | Мистическая конструкция | принято |
 | Phial | Фиал | принято |
 | Label | Ярлык | принято |
 | Runic Shielding (Warding) | Руническая защита | принято |

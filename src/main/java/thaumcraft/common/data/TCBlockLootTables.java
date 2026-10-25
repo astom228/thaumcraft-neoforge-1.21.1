@@ -74,6 +74,10 @@ public class TCBlockLootTables extends BlockLootSubProvider {
             add(c, noDrop());
         }
 
+        // Тауматориум (обе части) роняет алхимическую конструкцию
+        add(BlocksTC.thaumatorium.get(), b -> createSingleItemTable(BlocksTC.metalAlchemical.get()));
+        add(BlocksTC.thaumatoriumTop.get(), b -> createSingleItemTable(BlocksTC.metalAlchemical.get()));
+
         // Зеркала: связанное выпадает со связью (dropMirror оригинала)
         for (Block m : new Block[]{BlocksTC.mirror.get(), BlocksTC.mirrorEssentia.get()}) {
             add(m, b -> LootTable.lootTable().withPool(applyExplosionCondition(b, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))

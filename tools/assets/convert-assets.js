@@ -137,10 +137,11 @@ function convertBlock(id, spec) {
   const variants = {};
   let inventory = null;
 
-  const simpleKeys = Object.keys(bs.variants).filter((k) => k === 'normal' || k === 'inventory' || k.includes('='));
-  const propKeys = bs.forge_marker ? Object.keys(bs.variants).filter((k) => !simpleKeys.includes(k) && !ignore.has(k)) : [];
+  const skip = new Set(spec.skip || []); // варианты, которых нет у свойства 1.21 (например facing=up у горизонтальной стороны)
+  const simpleKeys = Object.keys(bs.variants).filter((k) => !skip.has(k) && (k === 'normal' || k === 'inventory' || k.includes('=')));
+  const propKeys = bs.forge_marker ? Object.keys(bs.variants).filter((k) => !simpleKeys.includes(k) && !skip.has(k) && !ignore.has(k)) : [];
   // игнорируемые свойства: в ключ не попадают, но их переопределения (первое значение) применяются
-  const ignoredOver = bs.forge_marker ? Object.keys(bs.variants).filter((k) => !simpleKeys.includes(k) && ignore.has(k)).map((k) => Object.values(bs.variants[k])[0]) : [];
+  const ignoredOver = bs.forge_marker ? Object.keys(bs.variants).filter((k) => !simpleKeys.includes(k) && !skip.has(k) && ignore.has(k)).map((k) => Object.values(bs.variants[k])[0]) : [];
 
   for (const k of simpleKeys) {
     const entries = asList(bs.variants[k]).map((e) => merge(defaults, ...ignoredOver, e));

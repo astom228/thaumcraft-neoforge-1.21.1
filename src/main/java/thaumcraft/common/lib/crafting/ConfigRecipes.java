@@ -25,6 +25,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.IDustTrigger;
+import thaumcraft.api.crafting.Part;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
 import thaumcraft.api.items.ItemsTC;
@@ -69,7 +70,15 @@ public class ConfigRecipes {
                 new ItemStack(BlocksTC.arcaneWorkbench.get())));
         // в 1.12 котёл с водой — тот же блок (уровень — свойство); в 1.21 у наполненных котлов свои блоки — тег minecraft:cauldrons
         IDustTrigger.registerDustTrigger(new DustTriggerOre("UNLOCKALCHEMY@1", BlockTags.CAULDRONS, new ItemStack(BlocksTC.crucible.get())));
-        // TODO многоблочные — этапы 10 (тауматориум), 11 (алтарь наполнения), 14 (адская печь), 18 (пресс големов)
+        // TODO многоблочные — этапы 11 (алтарь наполнения), 14 (адская печь), 18 (пресс големов)
+        Part TH1 = new Part(BlocksTC.metalAlchemical.get().defaultBlockState(), BlocksTC.thaumatoriumTop.get()).setApplyPlayerFacing(true);
+        Part TH2 = new Part(BlocksTC.metalAlchemical.get().defaultBlockState(), BlocksTC.thaumatorium.get()).setApplyPlayerFacing(true);
+        Part TH3 = new Part(BlocksTC.crucible.get(), null);
+        Part[][][] thaumotoriumBlueprint = new Part[][][] {{{TH1}}, {{TH2}}, {{TH3}}};
+        IDustTrigger.registerDustTrigger(new DustTriggerMultiblock("THAUMATORIUM", thaumotoriumBlueprint));
+        ThaumcraftApi.addMultiblockRecipeToCatalog(ResourceLocation.fromNamespaceAndPath("thaumcraft", "thaumatorium"),
+                new ThaumcraftApi.BluePrint("THAUMATORIUM", thaumotoriumBlueprint, new ItemStack(BlocksTC.metalAlchemical.get(), 2),
+                        new ItemStack(BlocksTC.crucible.get())));
     }
 
     /** Из initializeNormalRecipes оригинала: «поддельный» рецепт соли мира для книги (кристаллы — любые, сменяются). */

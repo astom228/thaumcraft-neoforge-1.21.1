@@ -32,7 +32,8 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
                 matrixSpeed.get(), matrixCost.get(), tableStone.get(), crucible.get(), everfullUrn.get(),
                 tube.get(), tubeValve.get(), tubeRestrict.get(), tubeOneway.get(), tubeFilter.get(), tubeBuffer.get(),
                 smelterBasic.get(), smelterThaumium.get(), smelterVoid.get(), smelterAux.get(), smelterVent.get(),
-                essentiaTransportInput.get(), essentiaTransportOutput.get());
+                essentiaTransportInput.get(), essentiaTransportOutput.get(),
+                thaumatorium.get(), thaumatoriumTop.get(), brainBox.get());
         tag(BlockTags.NEEDS_STONE_TOOL).add(oreAmber.get());
         tag(BlockTags.NEEDS_IRON_TOOL).add(oreCinnabar.get());
         tag(BlockTags.MINEABLE_WITH_AXE).add(plankGreatwood.get(), plankSilverwood.get(), stairsGreatwood.get(), stairsSilverwood.get(),

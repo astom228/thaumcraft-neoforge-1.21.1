@@ -134,4 +134,28 @@ public class InventoryUtils {
     public static boolean stackEqualExact(ItemStack stack1, ItemStack stack2) {
         return ItemStack.isSameItemSameComponents(stack1, stack2);
     }
+
+    /** Вставить стак в инвентарь блока со стороны side (IItemHandler); незагруженный чанк не трогается. Возвращает остаток. */
+    public static ItemStack insertStackAt(net.minecraft.world.level.Level world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction side, ItemStack stack,
+                                          boolean simulate) {
+        if (!world.isLoaded(pos)) {
+            return stack;
+        }
+        net.neoforged.neoforge.items.IItemHandler inventory = world.getCapability(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK, pos, side);
+        return inventory == null ? stack : net.neoforged.neoforge.items.ItemHandlerHelper.insertItemStacked(inventory, stack, simulate);
+    }
+
+    /** ejectStackAt: в инвентарь перед стороной side, иначе — предметом, вылетающим в эту сторону. */
+    public static void ejectStackAt(net.minecraft.world.level.Level world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction side, ItemStack out) {
+        out = insertStackAt(world, pos.relative(side), side.getOpposite(), out, false);
+        if (!out.isEmpty()) {
+            if (world.getBlockState(pos.relative(side)).isCollisionShapeFullBlock(world, pos.relative(side))) {
+                pos = pos.relative(side.getOpposite());
+            }
+            net.minecraft.world.entity.item.ItemEntity e = new net.minecraft.world.entity.item.ItemEntity(world, pos.getX() + 0.5 + side.getStepX(),
+                    (float) pos.getY() + side.getStepY(), pos.getZ() + 0.5 + side.getStepZ(), out);
+            e.setDeltaMovement(0.3 * side.getStepX(), 0.3 * side.getStepY(), 0.3 * side.getStepZ());
+            world.addFreshEntity(e);
+        }
+    }
 }

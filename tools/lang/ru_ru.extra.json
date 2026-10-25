@@ -454,5 +454,9 @@
   "item.thaumcraft.hand_mirror": "Магическое ручное зеркало",
   "tc.handmirrorlinkedto": "Связано с",
   "tc.handmirrorlinked": "Связь установлена.",
-  "tc.handmirrorerror": "Зеркало назначения пропало или сдвинуто. Связь разорвана."
+  "tc.handmirrorerror": "Зеркало назначения пропало или сдвинуто. Связь разорвана.",
+  "block.thaumcraft.thaumatorium": "Тауматориум",
+  "block.thaumcraft.thaumatorium_top": "Тауматориум",
+  "block.thaumcraft.mnemonic_matrix": "Мнемоническая матрица",
+  "recipe.type.construct": "Мистическая конструкция"
 }

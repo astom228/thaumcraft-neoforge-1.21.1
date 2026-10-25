@@ -21,6 +21,8 @@ import thaumcraft.common.blocks.devices.BlockWaterJug;
 import thaumcraft.common.blocks.essentia.BlockJar;
 import thaumcraft.common.blocks.essentia.BlockTube;
 import thaumcraft.common.blocks.devices.BlockMirror;
+import thaumcraft.common.blocks.devices.BlockBrainBox;
+import thaumcraft.common.blocks.crafting.BlockThaumatorium;
 import thaumcraft.common.blocks.devices.BlockMirrorItem;
 import thaumcraft.common.tiles.devices.TileMirror;
 import thaumcraft.common.tiles.devices.TileMirrorEssentia;
@@ -288,6 +290,18 @@ public class BlocksTC {
             () -> new BlockMirror(TileMirror::new, ConfigBlocks.MIRROR_TILE, mirror()), BlockMirrorItem::new);
     public static final DeferredBlock<Block> mirrorEssentia = registerWithItem("essentia_mirror",
             () -> new BlockMirror(TileMirrorEssentia::new, ConfigBlocks.MIRROR_ESSENTIA_TILE, mirror()), BlockMirrorItem::new);
+
+    // Тауматориум: низ и верх (BlockTCDevice: прочность 2.0, сопротивление 12, Material.IRON) — без предмета, не во вкладке
+    public static final DeferredBlock<Block> thaumatorium = ConfigBlocks.BLOCKS.register("thaumatorium", () -> new BlockThaumatorium(false, thaumatoriumProps()));
+    public static final DeferredBlock<Block> thaumatoriumTop = ConfigBlocks.BLOCKS.register("thaumatorium_top",
+            () -> new BlockThaumatorium(true, thaumatoriumProps()));
+    // Мнемоническая матрица (BlockBrainBox: прочность 1.0, setResistance(10) → 6, Material.IRON)
+    public static final DeferredBlock<Block> brainBox = register("mnemonic_matrix", () -> new BlockBrainBox(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL).noOcclusion()));
+
+    private static BlockBehaviour.Properties thaumatoriumProps() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL).noOcclusion();
+    }
 
     private static BlockBehaviour.Properties mirror() {
         return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.1F, 6.0F).sound(SoundsTC.JAR).noOcclusion()
