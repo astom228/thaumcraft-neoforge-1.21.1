@@ -308,6 +308,18 @@
     },
     "crucible": {
       "src": "crucible"
+    },
+    "warded_jar": {
+      "src": "jar_normal",
+      "renderType": "minecraft:translucent"
+    },
+    "void_jar": {
+      "src": "jar_void",
+      "renderType": "minecraft:translucent"
+    },
+    "brain_jar": {
+      "src": "jar_brain",
+      "renderType": "minecraft:translucent"
     }
   },
   "items": {

@@ -29,4 +29,12 @@ public class TCDataComponents {
             "placeholder_enchantments",
             b -> b.persistent(Codec.unboundedMap(ResourceKey.codec(Registries.ENCHANTMENT), Codec.INT))
                     .networkSynchronized(ByteBufCodecs.map(LinkedHashMap::new, ResourceKey.streamCodec(Registries.ENCHANTMENT), ByteBufCodecs.VAR_INT)));
+
+    /** Фильтр банки — тег аспекта с ярлыка (в оригинале — NBT "AspectFilter" у предмета-банки). */
+    public static final Supplier<DataComponentType<String>> ASPECT_FILTER = COMPONENTS.registerComponentType("aspect_filter",
+            b -> b.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
+    /** Опыт мозга в банке (в оригинале — NBT "xp" у предмета). */
+    public static final Supplier<DataComponentType<Integer>> BRAIN_XP = COMPONENTS.registerComponentType("brain_xp",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 }

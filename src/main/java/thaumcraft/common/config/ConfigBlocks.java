@@ -10,6 +10,9 @@ import thaumcraft.Thaumcraft;
 import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.common.tiles.misc.TileNitor;
 import thaumcraft.common.tiles.crafting.TileArcaneWorkbench;
+import thaumcraft.common.tiles.essentia.TileJarBrain;
+import thaumcraft.common.tiles.essentia.TileJarFillable;
+import thaumcraft.common.tiles.essentia.TileJarFillableVoid;
 import thaumcraft.common.tiles.crafting.TileCrucible;
 import thaumcraft.common.tiles.crafting.TileResearchTable;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -29,6 +32,12 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(TileResearchTable::new, BlocksTC.researchTable.get()).build(null));
     public static final Supplier<BlockEntityType<TileCrucible>> CRUCIBLE_TILE = TILES.register("crucible",
             () -> BlockEntityType.Builder.of(TileCrucible::new, BlocksTC.crucible.get()).build(null));
+    public static final Supplier<BlockEntityType<TileJarFillable>> WARDED_JAR_TILE = TILES.register("warded_jar",
+            () -> BlockEntityType.Builder.of(TileJarFillable::new, BlocksTC.jarNormal.get()).build(null));
+    public static final Supplier<BlockEntityType<TileJarFillableVoid>> VOID_JAR_TILE = TILES.register("void_jar",
+            () -> BlockEntityType.Builder.of(TileJarFillableVoid::new, BlocksTC.jarVoid.get()).build(null));
+    public static final Supplier<BlockEntityType<TileJarBrain>> BRAIN_JAR_TILE = TILES.register("brain_jar",
+            () -> BlockEntityType.Builder.of(TileJarBrain::new, BlocksTC.jarBrain.get()).build(null));
     public static final Supplier<BlockEntityType<TileArcaneWorkbench>> ARCANE_WORKBENCH_TILE = TILES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(TileArcaneWorkbench::new, BlocksTC.arcaneWorkbench.get()).build(null));
 

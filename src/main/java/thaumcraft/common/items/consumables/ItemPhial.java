@@ -59,5 +59,67 @@ public class ItemPhial extends ItemGenericEssentiaContainer {
     public void onCraftedBy(ItemStack stack, Level world, Player player) {
     }
 
-    // TODO этапы 10.2, 10.4: onItemUseFirst — набрать из банки/алембика, вылить в банку
+    /** doesSneakBypassUse: с Shift фиал тоже работает с банкой, а не с блоком. */
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.level.LevelReader level, net.minecraft.core.BlockPos pos, Player player) {
+        return true;
+    }
+
+    /** Пустой фиал набирает 10 эссенции из банки, полный — выливает в неё. TODO этап 10.4: набрать из алембика. */
+    @Override
+    public net.minecraft.world.InteractionResult onItemUseFirst(ItemStack stack, net.minecraft.world.item.context.UseOnContext context) {
+        Level world = context.getLevel();
+        Player player = context.getPlayer();
+        net.minecraft.core.BlockPos pos = context.getClickedPos();
+        net.minecraft.world.level.block.state.BlockState bi = world.getBlockState(pos);
+        if (player == null) {
+            return net.minecraft.world.InteractionResult.PASS;
+        }
+        boolean isJar = bi.is(thaumcraft.api.blocks.BlocksTC.jarNormal.get()) || bi.is(thaumcraft.api.blocks.BlocksTC.jarVoid.get());
+        if (!this.filled && isJar && world.getBlockEntity(pos) instanceof thaumcraft.common.tiles.essentia.TileJarFillable tile) {
+            if (tile.amount >= this.base) {
+                if (world.isClientSide) {
+                    player.swing(context.getHand());
+                    return net.minecraft.world.InteractionResult.PASS;
+                }
+                Aspect asp = Aspect.getAspect(tile.aspect.getTag());
+                if (tile.takeFromContainer(asp, this.base)) {
+                    stack.shrink(1);
+                    ItemStack phial = new ItemStack(ItemsTC.phialFilled.get());
+                    this.setAspects(phial, new AspectList().add(asp, this.base));
+                    if (!player.getInventory().add(phial)) {
+                        world.addFreshEntity(new net.minecraft.world.entity.item.ItemEntity(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, phial));
+                    }
+                    player.playSound(net.minecraft.sounds.SoundEvents.BOTTLE_FILL, 0.25F, 1.0F);
+                    player.inventoryMenu.broadcastChanges();
+                    return net.minecraft.world.InteractionResult.SUCCESS;
+                }
+            }
+        }
+        AspectList al = this.getAspects(stack);
+        if (al != null && al.size() == 1) {
+            Aspect aspect = al.getAspects()[0];
+            if (this.filled && isJar && world.getBlockEntity(pos) instanceof thaumcraft.common.tiles.essentia.TileJarFillable tile) {
+                if (tile.amount <= 250 - this.base && tile.doesContainerAccept(aspect)) {
+                    if (world.isClientSide) {
+                        player.swing(context.getHand());
+                        return net.minecraft.world.InteractionResult.PASS;
+                    }
+                    if (tile.addToContainer(aspect, this.base) == 0) {
+                        world.sendBlockUpdated(pos, bi, bi, 3);
+                        tile.setChanged();
+                        stack.shrink(1);
+                        ItemStack empty = new ItemStack(ItemsTC.phial.get());
+                        if (!player.getInventory().add(empty)) {
+                            world.addFreshEntity(new net.minecraft.world.entity.item.ItemEntity(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, empty));
+                        }
+                        player.playSound(net.minecraft.sounds.SoundEvents.BOTTLE_FILL, 0.25F, 1.0F);
+                        player.inventoryMenu.broadcastChanges();
+                        return net.minecraft.world.InteractionResult.SUCCESS;
+                    }
+                }
+            }
+        }
+        return net.minecraft.world.InteractionResult.PASS;
+    }
 }

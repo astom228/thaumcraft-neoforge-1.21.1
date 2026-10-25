@@ -11,6 +11,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent;
 import thaumcraft.client.renderers.tile.TileCrucibleRenderer;
+import thaumcraft.client.renderers.tile.TileJarRenderer;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.lib.crafting.ConfigRecipes;
@@ -51,6 +52,9 @@ public class ClientRegistration {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ConfigEntities.SPECIAL_ITEM.get(), ItemEntityRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.CRUCIBLE_TILE.get(), TileCrucibleRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.WARDED_JAR_TILE.get(), TileJarRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.VOID_JAR_TILE.get(), TileJarRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.BRAIN_JAR_TILE.get(), TileJarRenderer::new);
     }
 
     @SubscribeEvent

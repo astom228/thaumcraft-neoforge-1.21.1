@@ -40,7 +40,7 @@ function modelRef(m) {
 
 // Копирует собственную модель оригинала (models/block/<name>.json) как есть
 const copied = new Set();
-function copyBlockModel(ref) {
+function copyBlockModel(ref, renderType) {
   const m = ref.match(/^thaumcraft:block\/(.+)$/);
   if (!m || copied.has(m[1])) return;
   const src = path.join(SRC, 'models/block', m[1] + '.json');
@@ -51,6 +51,7 @@ function copyBlockModel(ref) {
     model.parent = modelRef(model.parent);
     copyBlockModel(model.parent);
   }
+  if (renderType && !model.render_type) model.render_type = renderType;
   write(`models/block/${m[1]}.json`, model);
 }
 
@@ -100,7 +101,7 @@ function toVariant(id, entry, models, renderType) {
     }
     ref = models.get(key);
   } else {
-    copyBlockModel(ref);
+    copyBlockModel(ref, renderType);
   }
   const v = { model: ref };
   if (entry.x) v.x = entry.x;
@@ -179,7 +180,7 @@ function convertBlock(id, spec) {
   } else {
     const inv = inventory && Object.keys(inventory).length ? inventory : null;
     let parent;
-    if (inv && (inv.model || inv.textures)) parent = toVariant(id, inv, models).model;
+    if (inv && (inv.model || inv.textures)) parent = toVariant(id, inv, models, spec.renderType).model;
     else parent = asList(Object.values(variants)[0])[0].model;
     const item = { parent };
     // forge:default-block — стандартные преобразования блока (как у minecraft:block/block); нужны, если у модели нет родителя

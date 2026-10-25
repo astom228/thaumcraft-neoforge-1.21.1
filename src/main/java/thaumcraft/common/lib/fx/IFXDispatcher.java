@@ -55,6 +55,9 @@ public interface IFXDispatcher {
     default void crucibleFrothDown(float x, float y, float z) {
     }
 
+    default void spark(double d, double e, double f, float size, float r, float g, float b, float a) {
+    }
+
     /** Текущая реализация (на клиенте подставляется в ThaumcraftClient). */
     static IFXDispatcher get() {
         return Holder.instance;

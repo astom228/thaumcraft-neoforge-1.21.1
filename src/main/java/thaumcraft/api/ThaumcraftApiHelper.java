@@ -116,4 +116,14 @@ public class ThaumcraftApiHelper {
         }
         return null;
     }
+
+    /** Соседний блок (по стороне face), передающий эссенцию и готовый соединиться с этой стороны; незагруженный чанк — null. */
+    public static net.minecraft.world.level.block.entity.BlockEntity getConnectableTile(net.minecraft.world.level.BlockGetter world, BlockPos pos, Direction face) {
+        BlockPos p = pos.relative(face);
+        if (world instanceof net.minecraft.world.level.LevelReader lr && !lr.hasChunkAt(p)) {
+            return null;
+        }
+        net.minecraft.world.level.block.entity.BlockEntity te = world.getBlockEntity(p);
+        return te instanceof thaumcraft.api.aspects.IEssentiaTransport et && et.isConnectable(face.getOpposite()) ? te : null;
+    }
 }

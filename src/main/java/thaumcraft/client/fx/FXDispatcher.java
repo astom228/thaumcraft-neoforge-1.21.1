@@ -420,4 +420,18 @@ public class FXDispatcher implements IFXDispatcher {
         fb.setRotationSpeed(0.0F);
         ParticleEngine.addEffect(w, fb);
     }
+
+    @Override
+    public void spark(double d, double e, double f, float size, float r, float g, float b, float a) {
+        ClientLevel w = this.getWorld();
+        FXGeneric fb = new FXGeneric(w, d, e, f, 0.0, 0.0, 0.0);
+        fb.setMaxAge(5 + w.random.nextInt(5));
+        fb.setAlphaF(a);
+        fb.setRBGColorF(r, g, b);
+        fb.setGridSize(16);
+        fb.setParticles(8 + w.random.nextInt(3) * 16, 8, 1);
+        fb.setScale(size);
+        fb.setFlipped(w.random.nextBoolean());
+        ParticleEngine.addEffect(w, fb);
+    }
 }

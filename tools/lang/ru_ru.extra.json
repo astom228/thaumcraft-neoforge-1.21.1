@@ -422,5 +422,8 @@
   "item.thaumcraft.phial": "Стеклянный фиал",
   "item.thaumcraft.essentia_phial": "Фиал эссенции",
   "item.thaumcraft.label": "Чистый ярлык",
-  "item.thaumcraft.marked_label": "Отмеченный ярлык"
+  "item.thaumcraft.marked_label": "Отмеченный ярлык",
+  "block.thaumcraft.warded_jar": "Защищённая банка",
+  "block.thaumcraft.void_jar": "Пустотная банка",
+  "block.thaumcraft.brain_jar": "Мозг в банке"
 }

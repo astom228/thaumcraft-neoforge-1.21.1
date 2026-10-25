@@ -17,6 +17,12 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import thaumcraft.common.blocks.basic.BlockCandle;
 import thaumcraft.common.blocks.basic.BlockTable;
 import thaumcraft.common.blocks.crafting.BlockArcaneWorkbench;
+import thaumcraft.common.blocks.essentia.BlockJar;
+import thaumcraft.common.blocks.essentia.BlockJarBrainItem;
+import thaumcraft.common.blocks.essentia.BlockJarItem;
+import thaumcraft.common.tiles.essentia.TileJarBrain;
+import thaumcraft.common.tiles.essentia.TileJarFillable;
+import thaumcraft.common.tiles.essentia.TileJarFillableVoid;
 import thaumcraft.common.blocks.crafting.BlockArcaneWorkbenchCharger;
 import thaumcraft.common.blocks.crafting.BlockCrucible;
 import thaumcraft.common.blocks.crafting.BlockResearchTable;
@@ -210,6 +216,28 @@ public class BlocksTC {
     // Тигель (BlockTCTile: прочность 2.0, сопротивление 20 → 12; Material.IRON — нужна кирка)
     public static final DeferredBlock<Block> crucible = register("crucible", () -> new BlockCrucible(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
+
+    // Банки (BlockJar: Material.GLASS, прочность 0.3, сопротивление BlockTCTile 20 → 12, звук банки)
+    public static final DeferredBlock<Block> jarNormal = registerWithItem("warded_jar", () -> new BlockJar(TileJarFillable::new,
+            ConfigBlocks.WARDED_JAR_TILE, jar()), BlockJarItem::new);
+    public static final DeferredBlock<Block> jarVoid = registerWithItem("void_jar", () -> new BlockJar(TileJarFillableVoid::new,
+            ConfigBlocks.VOID_JAR_TILE, jar()), BlockJarItem::new);
+    public static final DeferredBlock<Block> jarBrain = registerWithItem("brain_jar", () -> new BlockJar(TileJarBrain::new,
+            ConfigBlocks.BRAIN_JAR_TILE, jar()), BlockJarBrainItem::new);
+
+    private static BlockBehaviour.Properties jar() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.NONE).strength(0.3F, 12.0F).sound(SoundsTC.JAR).noOcclusion()
+                .isValidSpawn((s, l, p, e) -> false).isRedstoneConductor((s, l, p) -> false).isSuffocating((s, l, p) -> false)
+                .isViewBlocking((s, l, p) -> false);
+    }
+
+    /** Блок с собственным классом предмета (в оригинале — registerBlock(block, ItemBlockClass)). */
+    private static DeferredBlock<Block> registerWithItem(String name, Supplier<? extends Block> block,
+                                                         java.util.function.BiFunction<Block, net.minecraft.world.item.Item.Properties, ? extends net.minecraft.world.item.Item> item) {
+        DeferredBlock<Block> holder = ConfigBlocks.BLOCKS.register(name, block);
+        ConfigItems.ITEMS.register(name, () -> item.apply(holder.get(), new net.minecraft.world.item.Item.Properties()));
+        return holder;
+    }
 
     /** Регистрирует блок и его предмет (в оригинале — ConfigBlocks.registerBlock). */
     private static DeferredBlock<Block> register(String name, Supplier<? extends Block> block) {

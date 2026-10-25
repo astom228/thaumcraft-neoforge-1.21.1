@@ -16,8 +16,6 @@ tubefilter: нет BlocksTC.tubeFilter
 tuberestrict: нет BlocksTC.tubeRestrict
 tubeoneway: нет BlocksTC.tubeOneway
 tubebuffer: нет BlocksTC.tubeBuffer
-wardedjar: нет BlocksTC.jarNormal
-jarvoid: нет BlocksTC.jarVoid
 bannerwhite: нет BlocksTC.banners
 bannerorange: нет BlocksTC.banners
 bannermagenta: нет BlocksTC.banners
