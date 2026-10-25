@@ -29,7 +29,7 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
                 stairsArcane.get(), stairsArcaneBrick.get(), stairsAncient.get(),
                 slabArcaneStone.get(), slabArcaneBrick.get(), slabAncient.get(), slabEldritch.get(),
                 metalBlockBrass.get(), metalBlockThaumium.get(), metalBlockVoid.get(), metalAlchemical.get(), metalAlchemicalAdvanced.get(),
-                matrixSpeed.get(), matrixCost.get(), tableStone.get(), crucible.get());
+                matrixSpeed.get(), matrixCost.get(), tableStone.get(), crucible.get(), everfullUrn.get());
         tag(BlockTags.NEEDS_STONE_TOOL).add(oreAmber.get());
         tag(BlockTags.NEEDS_IRON_TOOL).add(oreCinnabar.get());
         tag(BlockTags.MINEABLE_WITH_AXE).add(plankGreatwood.get(), plankSilverwood.get(), stairsGreatwood.get(), stairsSilverwood.get(),

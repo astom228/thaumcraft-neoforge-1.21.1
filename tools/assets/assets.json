@@ -309,6 +309,9 @@
     "crucible": {
       "src": "crucible"
     },
+    "everfull_urn": {
+      "src": "everfull_urn"
+    },
     "warded_jar": {
       "src": "jar_normal",
       "renderType": "minecraft:translucent"

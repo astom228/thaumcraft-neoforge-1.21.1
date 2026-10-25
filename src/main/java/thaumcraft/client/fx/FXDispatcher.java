@@ -434,4 +434,30 @@ public class FXDispatcher implements IFXDispatcher {
         fb.setFlipped(w.random.nextBoolean());
         ParticleEngine.addEffect(w, fb);
     }
+
+    @Override
+    public void jarSplashFx(double x, double y, double z) {
+        ClientLevel w = this.getWorld();
+        FXGeneric fb = new FXGeneric(w, x + w.random.nextGaussian() * 0.075F, y, z + w.random.nextGaussian() * 0.075F, w.random.nextGaussian() * 0.015F,
+                0.075F + w.random.nextFloat() * 0.05F, w.random.nextGaussian() * 0.015F);
+        fb.setMaxAge(20 + w.random.nextInt(10));
+        Color c = new Color(2650102);
+        fb.setRBGColorF(c.getRed() / 255.0F, c.getGreen() / 255.0F, c.getBlue() / 255.0F);
+        fb.setAlphaF(0.5F);
+        fb.setLoop(false);
+        fb.setParticles(73, 1, 1);
+        fb.setScale(0.4F + w.random.nextFloat() * 0.3F, 0.0F);
+        fb.setLayer(1);
+        fb.setGravity(0.3F);
+        fb.setRotationSpeed(0.0F);
+        ParticleEngine.addEffect(w, fb);
+    }
+
+    /** Струя воды (неиссякаемая урна): тот же поток, что у эссенции, но с подъёмом 0.2 и без длины. */
+    @Override
+    public void waterTrailFx(BlockPos p1, BlockPos p2, int count, int color, float scale) {
+        thaumcraft.client.fx.other.FXEssentiaStream fb = new thaumcraft.client.fx.other.FXEssentiaStream(this.getWorld(), p1.getX() + 0.5,
+                p1.getY() + 0.66, p1.getZ() + 0.5, p2.getX() + 0.5, p2.getY() + 0.5, p2.getZ() + 0.5, count, color, scale, 0, 0.2);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
 }

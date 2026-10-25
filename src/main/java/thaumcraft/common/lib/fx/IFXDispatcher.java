@@ -58,6 +58,12 @@ public interface IFXDispatcher {
     default void spark(double d, double e, double f, float size, float r, float g, float b, float a) {
     }
 
+    default void jarSplashFx(double x, double y, double z) {
+    }
+
+    default void waterTrailFx(net.minecraft.core.BlockPos p1, net.minecraft.core.BlockPos p2, int count, int color, float scale) {
+    }
+
     /** Текущая реализация (на клиенте подставляется в ThaumcraftClient). */
     static IFXDispatcher get() {
         return Holder.instance;

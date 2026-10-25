@@ -425,5 +425,6 @@
   "item.thaumcraft.marked_label": "Отмеченный ярлык",
   "block.thaumcraft.warded_jar": "Защищённая банка",
   "block.thaumcraft.void_jar": "Пустотная банка",
-  "block.thaumcraft.brain_jar": "Мозг в банке"
+  "block.thaumcraft.brain_jar": "Мозг в банке",
+  "block.thaumcraft.everfull_urn": "Неиссякаемая урна"
 }

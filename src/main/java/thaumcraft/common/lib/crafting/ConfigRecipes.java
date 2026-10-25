@@ -123,7 +123,8 @@ public class ConfigRecipes {
         // TODO этап 15: BottleTaint (из фиала Выброса): FLUX 30, WATER 30; SaneSoap (из блока плоти): MIND 75, ELDRITCH 50, ORDER 75, LIFE 50
         // TODO этап 14: BathSalts (из соли мира): MIND 40, AIR 40, ORDER 40, LIFE 40
         // TODO этап 18: печати големов (SealCollect…SealUse) — 12 рецептов
-        // TODO этап 10: EverfullUrn (из цветочного горшка): WATER 30, CRAFT 10, EARTH 10
+        ThaumcraftApi.addCrucibleRecipe(id("everfullurn"), new CrucibleRecipe("EVERFULLURN", new ItemStack(BlocksTC.everfullUrn.get()),
+                new ItemStack(Items.FLOWER_POT), new AspectList().add(Aspect.WATER, 30).add(Aspect.CRAFT, 10).add(Aspect.EARTH, 10)));
     }
 
     private static void purification(String metal, ItemLike cluster, TagKey<Item> ore) {

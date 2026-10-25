@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import thaumcraft.common.blocks.basic.BlockCandle;
 import thaumcraft.common.blocks.basic.BlockTable;
 import thaumcraft.common.blocks.crafting.BlockArcaneWorkbench;
+import thaumcraft.common.blocks.devices.BlockWaterJug;
 import thaumcraft.common.blocks.essentia.BlockJar;
 import thaumcraft.common.blocks.essentia.BlockJarBrainItem;
 import thaumcraft.common.blocks.essentia.BlockJarItem;
@@ -224,6 +225,10 @@ public class BlocksTC {
             ConfigBlocks.VOID_JAR_TILE, jar()), BlockJarItem::new);
     public static final DeferredBlock<Block> jarBrain = registerWithItem("brain_jar", () -> new BlockJar(TileJarBrain::new,
             ConfigBlocks.BRAIN_JAR_TILE, jar()), BlockJarBrainItem::new);
+
+    // Неиссякаемая урна (BlockTCDevice: прочность 2.0, сопротивление 20 → 12, Material.ROCK; добывается без инструмента)
+    public static final DeferredBlock<Block> everfullUrn = register("everfull_urn", () -> new BlockWaterJug(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion()));
 
     private static BlockBehaviour.Properties jar() {
         return BlockBehaviour.Properties.of().mapColor(MapColor.NONE).strength(0.3F, 12.0F).sound(SoundsTC.JAR).noOcclusion()
