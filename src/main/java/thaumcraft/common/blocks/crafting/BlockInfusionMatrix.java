@@ -13,7 +13,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.crafting.TileInfusionMatrix;
 
-/** Руническая матрица (порт BlockInfusionMatrix). TODO этап 11.5: рисуется рендером BlockEntity (кольца), а не моделью. */
+/** Руническая матрица (порт BlockInfusionMatrix): рисуется только рендером BlockEntity (TileInfusionMatrixRenderer). */
 public class BlockInfusionMatrix extends BaseEntityBlock {
     public static final MapCodec<BlockInfusionMatrix> CODEC = simpleCodec(BlockInfusionMatrix::new);
 
@@ -28,7 +28,7 @@ public class BlockInfusionMatrix extends BaseEntityBlock {
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override

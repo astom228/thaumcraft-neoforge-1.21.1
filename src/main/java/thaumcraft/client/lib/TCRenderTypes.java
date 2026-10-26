@@ -21,6 +21,21 @@ public final class TCRenderTypes extends RenderType {
                     .setTextureState(MultiTextureStateShard.builder().add(TUNNEL, false, false).add(PARTICLEFIELD, false, false).build())
                     .setCullState(NO_CULL).createCompositeState(false));
 
+    private static final java.util.function.Function<ResourceLocation, RenderType> ADDITIVE_ENTITY = net.minecraft.Util.memoize(tex -> create(
+            "thaumcraft_additive_entity", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
+            CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER).setTextureState(new TextureStateShard(tex, false, false))
+                    .setTransparencyState(LIGHTNING_TRANSPARENCY).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).createCompositeState(true)));
+
+    /** Модель с текстурой, аддитивно (glBlendFunc(SRC_ALPHA, ONE)) — свечение кубиков рунической матрицы. */
+    public static RenderType additiveEntity(ResourceLocation tex) {
+        return ADDITIVE_ENTITY.apply(tex);
+    }
+
+    /** Лучи ореола матрицы (drawHalo): цвет без текстуры, аддитивно, без записи глубины. */
+    public static final RenderType HALO = create("thaumcraft_halo", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, true,
+            CompositeState.builder().setShaderState(POSITION_COLOR_SHADER).setTransparencyState(LIGHTNING_TRANSPARENCY).setWriteMaskState(COLOR_WRITE)
+                    .createCompositeState(false));
+
     private TCRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload,
                           Runnable setupState, Runnable clearState) {
         super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);

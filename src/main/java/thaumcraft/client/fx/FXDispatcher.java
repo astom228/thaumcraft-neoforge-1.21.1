@@ -475,4 +475,45 @@ public class FXDispatcher implements IFXDispatcher {
         fb.setScale(scale);
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
+
+    @Override
+    public void drawInfusionParticles1(double x, double y, double z, net.minecraft.core.BlockPos pos, net.minecraft.world.item.ItemStack stack) {
+        var r = this.getWorld().random;
+        thaumcraft.client.fx.particles.FXBoreParticles fb = new thaumcraft.client.fx.particles.FXBoreParticles(this.getWorld(), x, y, z, pos.getX() + 0.5,
+                pos.getY() - 0.5, pos.getZ() + 0.5, (float) r.nextGaussian() * 0.03F, (float) r.nextGaussian() * 0.03F, (float) r.nextGaussian() * 0.03F, stack)
+                .getObjectColor(pos);
+        fb.setAlphaF(0.3F);
+        net.minecraft.client.Minecraft.getInstance().particleEngine.add(fb);
+    }
+
+    @Override
+    public void drawInfusionParticles2(double x, double y, double z, net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+        thaumcraft.client.fx.particles.FXBoreParticles fb = new thaumcraft.client.fx.particles.FXBoreParticles(this.getWorld(), x, y, z, pos.getX() + 0.5,
+                pos.getY() - 0.5, pos.getZ() + 0.5, state).getObjectColor(pos);
+        fb.setAlphaF(0.3F);
+        net.minecraft.client.Minecraft.getInstance().particleEngine.add(fb);
+    }
+
+    @Override
+    public void drawInfusionParticles3(double x, double y, double z, int x2, int y2, int z2) {
+        thaumcraft.client.fx.particles.FXBoreSparkle fb = new thaumcraft.client.fx.particles.FXBoreSparkle(this.getWorld(), x, y, z, x2 + 0.5, y2 - 0.5, z2 + 0.5);
+        fb.setRGB(0.4F + this.getWorld().random.nextFloat() * 0.2F, 0.2F, 0.6F + this.getWorld().random.nextFloat() * 0.3F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    @Override
+    public void drawInfusionParticles4(double x, double y, double z, int x2, int y2, int z2) {
+        thaumcraft.client.fx.particles.FXBoreSparkle fb = new thaumcraft.client.fx.particles.FXBoreSparkle(this.getWorld(), x, y, z, x2 + 0.5, y2 - 0.5, z2 + 0.5);
+        fb.setRGB(0.2F, 0.6F + this.getWorld().random.nextFloat() * 0.3F, 0.3F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    /** В оригинале молния шла через ванильный движок частиц; здесь — через движок Thaumcraft (своя отрисовка, аддитивно). */
+    @Override
+    public void arcLightning(double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float h) {
+        if (h <= 0.0F) {
+            h = 0.1F;
+        }
+        ParticleEngine.addEffect(this.getWorld(), new thaumcraft.client.fx.beams.FXArc(this.getWorld(), x, y, z, tx, ty, tz, r, g, b, h));
+    }
 }
