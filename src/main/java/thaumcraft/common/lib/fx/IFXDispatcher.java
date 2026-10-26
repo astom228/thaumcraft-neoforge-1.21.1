@@ -18,6 +18,26 @@ public interface IFXDispatcher {
     default void drawNitorFlames(double x, double y, double z, double x2, double y2, double z2, int color, int a) {
     }
 
+    /** Молния от (x, y, z) к (tx, ty, tz) (arcLightning оригинала). */
+    default void arcLightning(double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float h) {
+    }
+
+    /** Частицы наполнения: предмет-не-блок с пьедестала летит к матрице. */
+    default void drawInfusionParticles1(double x, double y, double z, net.minecraft.core.BlockPos pos, net.minecraft.world.item.ItemStack stack) {
+    }
+
+    /** Частицы наполнения: блок с пьедестала летит к матрице. */
+    default void drawInfusionParticles2(double x, double y, double z, net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+    }
+
+    /** Частицы наполнения: искры с пьедестала к матрице. */
+    default void drawInfusionParticles3(double x, double y, double z, int x2, int y2, int z2) {
+    }
+
+    /** Частицы наполнения: опыт игрока к матрице. */
+    default void drawInfusionParticles4(double x, double y, double z, int x2, int y2, int z2) {
+    }
+
     default void blockRunes(double x, double y, double z, float r, float g, float b, int dur, float grav) {
     }
 

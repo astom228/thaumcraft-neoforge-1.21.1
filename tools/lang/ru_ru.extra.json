@@ -505,5 +505,11 @@
   "block.thaumcraft.eldritch_pedestal": "Потусторонний пьедестал",
   "block.thaumcraft.infusion_pillar": "Колонна наполнения",
   "block.thaumcraft.ancient_infusion_pillar": "Древняя колонна наполнения",
-  "block.thaumcraft.eldritch_infusion_pillar": "Потусторонняя колонна наполнения"
+  "block.thaumcraft.eldritch_infusion_pillar": "Потусторонняя колонна наполнения",
+  "effect.thaumcraft.flux_taint": "Отравление скверной",
+  "effect.thaumcraft.vis_exhaust": "Лихорадка Выброса",
+  "potion.flux_taint": "Отравление скверной",
+  "potion.vis_exhaust": "Лихорадка Выброса",
+  "death.attack.taint": "%1$s поддался скверне",
+  "death.attack.taint.player": "%1$s поддался скверне в бою с %2$s"
 }

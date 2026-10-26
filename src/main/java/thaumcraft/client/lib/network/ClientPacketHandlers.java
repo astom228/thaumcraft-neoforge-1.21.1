@@ -78,6 +78,34 @@ public final class ClientPacketHandlers {
         pk.clearResearchFlag(key, IPlayerKnowledge.EnumResearchFlag.POPUP);
     }
 
+    /** PacketFXInfusionSource: источник частиц наполнения у матрицы (пьедестал — 60 тиков, игрок — 15). */
+    public static void handleInfusionSource(thaumcraft.common.lib.network.fx.PacketFXInfusionSource msg) {
+        var level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+        int tx = msg.x() - msg.dx();
+        int ty = msg.y() - msg.dy();
+        int tz = msg.z() - msg.dz();
+        String key = tx + ":" + ty + ":" + tz + ":" + msg.color();
+        if (level.getBlockEntity(new net.minecraft.core.BlockPos(msg.x(), msg.y(), msg.z())) instanceof thaumcraft.common.tiles.crafting.TileInfusionMatrix is) {
+            int count = level.getBlockEntity(new net.minecraft.core.BlockPos(tx, ty, tz)) instanceof thaumcraft.common.tiles.crafting.TilePedestal ? 60 : 15;
+            thaumcraft.common.tiles.crafting.TileInfusionMatrix.SourceFX sf = is.sourceFX.get(key);
+            if (sf != null) {
+                sf.ticks = count;
+            } else {
+                is.sourceFX.put(key, new thaumcraft.common.tiles.crafting.TileInfusionMatrix.SourceFX(new net.minecraft.core.BlockPos(tx, ty, tz), count, msg.color()));
+            }
+        }
+    }
+
+    /** PacketFXBlockArc: молния от цели к центру блока. */
+    public static void handleBlockArc(thaumcraft.common.lib.network.fx.PacketFXBlockArc msg) {
+        if (Minecraft.getInstance().level != null) {
+            IFXDispatcher.get().arcLightning(msg.tx(), msg.ty(), msg.tz(), msg.x() + 0.5, msg.y() + 0.5, msg.z() + 0.5, msg.r(), msg.g(), msg.b(), 0.5F);
+        }
+    }
+
     /** PacketKnowledgeGain: эффект на HUD и звук. */
     public static void handleBlockBamf(PacketFXBlockBamf msg) {
         if (Minecraft.getInstance().level == null) {

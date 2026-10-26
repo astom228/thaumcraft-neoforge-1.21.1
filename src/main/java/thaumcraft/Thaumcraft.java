@@ -43,6 +43,7 @@ public class Thaumcraft {
         ThaumcraftAttachments.ATTACHMENTS.register(modEventBus);
         TCDataComponents.COMPONENTS.register(modEventBus);
         TCMenus.MENUS.register(modEventBus);
+        thaumcraft.common.config.ConfigPotions.EFFECTS.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::loadComplete);
         modEventBus.addListener(ConfigBlocks::registerCapabilities);

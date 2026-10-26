@@ -48,6 +48,10 @@ public class PacketHandler {
                 (msg, ctx) -> ClientPacketHandlers.handleBlockBamf(msg));
         registrar.playToClient(PacketFXEssentiaSource.TYPE, PacketFXEssentiaSource.STREAM_CODEC,
                 (msg, ctx) -> thaumcraft.client.lib.events.EssentiaSourceFXClient.handle(msg));
+        registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXInfusionSource.TYPE, thaumcraft.common.lib.network.fx.PacketFXInfusionSource.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleInfusionSource(msg));
+        registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXBlockArc.TYPE, thaumcraft.common.lib.network.fx.PacketFXBlockArc.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleBlockArc(msg));
         registrar.playToClient(PacketWarpMessage.TYPE, PacketWarpMessage.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleWarpMessage(msg));
     }

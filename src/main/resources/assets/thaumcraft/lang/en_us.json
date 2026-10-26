@@ -321,6 +321,8 @@
   "death.attack.taint": "%1$s was corrupted by Taint",
   "death.attack.taint.player": "%1$s was corrupted by Taint whilst fighting %2$s",
   "death.attack.tentacle": "%1$s was squeezed by %2$s",
+  "effect.thaumcraft.flux_taint": "Taint Poison",
+  "effect.thaumcraft.vis_exhaust": "Flux Flu",
   "enchantment.infusion.ARCING": "Arcing",
   "enchantment.infusion.BURROWING": "Burrowing",
   "enchantment.infusion.COLLECTOR": "Collector",

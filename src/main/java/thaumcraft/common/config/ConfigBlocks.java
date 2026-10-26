@@ -30,6 +30,7 @@ import thaumcraft.common.tiles.essentia.TileJarFillableVoid;
 import thaumcraft.common.tiles.crafting.TileCrucible;
 import thaumcraft.common.tiles.crafting.TileThaumatorium;
 import thaumcraft.common.tiles.crafting.TilePedestal;
+import thaumcraft.common.tiles.crafting.TileInfusionMatrix;
 import thaumcraft.common.tiles.crafting.TileThaumatoriumTop;
 import thaumcraft.common.tiles.crafting.TileResearchTable;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -91,6 +92,8 @@ public class ConfigBlocks {
     public static final Supplier<BlockEntityType<TilePedestal>> PEDESTAL_TILE = TILES.register("pedestal",
             () -> BlockEntityType.Builder.of(TilePedestal::new, BlocksTC.pedestalArcane.get(), BlocksTC.pedestalAncient.get(), BlocksTC.pedestalEldritch.get())
                     .build(null));
+    public static final Supplier<BlockEntityType<TileInfusionMatrix>> INFUSION_MATRIX_TILE = TILES.register("infusion_matrix",
+            () -> BlockEntityType.Builder.of(TileInfusionMatrix::new, BlocksTC.infusionMatrix.get()).build(null));
     public static final Supplier<BlockEntityType<TileArcaneWorkbench>> ARCANE_WORKBENCH_TILE = TILES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(TileArcaneWorkbench::new, BlocksTC.arcaneWorkbench.get()).build(null));
 
