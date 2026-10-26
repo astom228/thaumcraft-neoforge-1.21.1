@@ -42,4 +42,17 @@ public class TCDataComponents {
     /** Связь зеркала или ручного зеркала (в оригинале — NBT linkX/linkY/linkZ/linkDim; предмет-зеркало со связью — metadata 1). */
     public static final Supplier<DataComponentType<GlobalPos>> MIRROR_LINK = COMPONENTS.registerComponentType("mirror_link",
             b -> b.persistent(GlobalPos.CODEC).networkSynchronized(GlobalPos.STREAM_CODEC));
+
+    /** Наполняющие зачарования предмета (в оригинале — NBT "infench"). */
+    public static final Supplier<DataComponentType<java.util.List<thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.Entry>>> INFUSION_ENCHANTMENTS =
+            COMPONENTS.registerComponentType("infusion_enchantments", b -> b.persistent(thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.Entry.CODEC.listOf())
+                    .networkSynchronized(thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.Entry.STREAM_CODEC.apply(ByteBufCodecs.list())));
+
+    /** Искажение от предмета (в оригинале — NBT "TC.WARP"); учитывается системой Искажения (этап 15). */
+    public static final Supplier<DataComponentType<Integer>> WARPING = COMPONENTS.registerComponentType("warping",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    /** Заряд рунической защиты (в оригинале — NBT "TC.RUNIC"); действие защиты — этап 13. */
+    public static final Supplier<DataComponentType<Integer>> RUNIC_CHARGE = COMPONENTS.registerComponentType("runic_charge",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 }

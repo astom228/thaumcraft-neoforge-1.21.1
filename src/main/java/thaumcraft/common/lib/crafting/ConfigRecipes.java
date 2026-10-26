@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.crafting;
 
+import thaumcraft.common.lib.enchantment.EnumInfusionEnchantment;
 import thaumcraft.common.blocks.basic.BlockPillar;
 import thaumcraft.api.crafting.InfusionRecipe;
 import net.minecraft.core.registries.Registries;
@@ -139,8 +140,31 @@ public class ConfigRecipes {
         ThaumcraftApi.addInfusionCraftingRecipe(tc("MirrorEssentia"), new InfusionRecipe("MIRRORESSENTIA", new ItemStack(BlocksTC.mirrorEssentia.get()), 2,
                 new AspectList().add(Aspect.MOTION, 25).add(Aspect.WATER, 25).add(Aspect.EXCHANGE, 25), new ItemStack(ItemsTC.mirroredGlass.get()),
                 Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON, new ItemStack(Items.ENDER_PEARL)));
-        // TODO этап 11.6: наполняющие зачарования (IEBURROWING … IEESSENCE + поддельные)
+        // наполняющие зачарования; в книге — «поддельные» рецепты с примером инструмента
+        infusionEnchantment("IEBURROWING", EnumInfusionEnchantment.BURROWING, new AspectList().add(Aspect.SENSES, 80).add(Aspect.EARTH, 150),
+                Items.RABBIT_FOOT, Items.WOODEN_PICKAXE);
+        infusionEnchantment("IECOLLECTOR", EnumInfusionEnchantment.COLLECTOR, new AspectList().add(Aspect.DESIRE, 80).add(Aspect.WATER, 100),
+                Items.LEAD, Items.STONE_AXE);
+        infusionEnchantment("IEDESTRUCTIVE", EnumInfusionEnchantment.DESTRUCTIVE, new AspectList().add(Aspect.AVERSION, 200).add(Aspect.ENTROPY, 250),
+                net.minecraft.world.level.block.Blocks.TNT, Items.STONE_PICKAXE);
+        infusionEnchantment("IEREFINING", EnumInfusionEnchantment.REFINING, new AspectList().add(Aspect.ORDER, 80).add(Aspect.EXCHANGE, 60),
+                ItemsTC.salisMundus.get(), Items.IRON_PICKAXE);
+        infusionEnchantment("IESOUNDING", EnumInfusionEnchantment.SOUNDING, new AspectList().add(Aspect.SENSES, 40).add(Aspect.FIRE, 60),
+                Items.MAP, Items.GOLDEN_PICKAXE);
+        infusionEnchantment("IEARCING", EnumInfusionEnchantment.ARCING, new AspectList().add(Aspect.ENERGY, 40).add(Aspect.AIR, 60),
+                net.minecraft.world.level.block.Blocks.REDSTONE_BLOCK, Items.WOODEN_SWORD);
+        infusionEnchantment("IEESSENCE", EnumInfusionEnchantment.ESSENCE, new AspectList().add(Aspect.BEAST, 40).add(Aspect.FLUX, 60),
+                ItemsTC.crystalEssence.get(), Items.STONE_SWORD);
+        // руническое усиление: доспехи (безделушки и «поддельные» RunicArmorFake0–2 с кольцом — этап 13)
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("RunicArmor"), new InfusionRunicAugmentRecipe());
         // TODO этап 13: MindBiothaumic; этап 14: ArcaneBore, LampGrowth, LampFertility; этапы 13–16: CausalityCollapser (алюментум)
+    }
+
+    private static void infusionEnchantment(String key, EnumInfusionEnchantment ench, AspectList aspects, net.minecraft.world.level.ItemLike item,
+                                            net.minecraft.world.item.Item example) {
+        InfusionEnchantmentRecipe r = new InfusionEnchantmentRecipe(ench, aspects, new ItemStack(Items.ENCHANTED_BOOK), new ItemStack(item));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc(key), r);
+        ThaumcraftApi.addFakeCraftingRecipe(tc(key + "FAKE"), new InfusionEnchantmentRecipe(r, new ItemStack(example)));
     }
 
     /** Кластер вис-кристаллов из кристалла (CrystalCluster* оригинала). */

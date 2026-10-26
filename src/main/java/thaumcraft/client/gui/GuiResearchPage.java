@@ -645,7 +645,7 @@ public class GuiResearchPage extends Screen {
         }
         List<Object> list = recipeLists2.computeIfAbsent(rkey, k -> new ArrayList<>());
         List<Object> outputs = recipeOutputs2.computeIfAbsent(rkey, k -> new ArrayList<>());
-        // TODO этап 13: RecipeMisc; этап 11.6: InfusionEnchantmentRecipe, InfusionRunicAugmentRecipe
+        // TODO этап 13: RecipeMisc
         if (recipe instanceof InfusionRecipe re) {
             ItemStack is = infusionDisplay(re);
             if (!is.isEmpty() && ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, re.getResearch())) {
@@ -864,6 +864,11 @@ public class GuiResearchPage extends Screen {
     /** Что показывать результатом рецепта наполнения: предмет или центральный предмет с записанным компонентом. */
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static ItemStack infusionDisplay(InfusionRecipe re) {
+        if (re instanceof thaumcraft.common.lib.crafting.InfusionEnchantmentRecipe || re instanceof thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe) {
+            ItemStack[] in = re.getRecipeInput().getItems();
+            Object o = in.length == 0 ? null : re.getRecipeOutput(null, in[0].copy(), new java.util.ArrayList<>());
+            return o instanceof ItemStack is ? is : ItemStack.EMPTY;
+        }
         if (re.getRecipeOutput() instanceof ItemStack out) {
             return out;
         }
@@ -884,7 +889,18 @@ public class GuiResearchPage extends Screen {
         RenderSystem.defaultBlendFunc();
         List<Ingredient> components = ri.getComponents();
         AspectList aspects = ri.getAspects();
-        // TODO этап 11.6: InfusionRunicAugmentRecipe / InfusionEnchantmentRecipe — свои компоненты, аспекты и результат
+        if (ri instanceof thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe rar && ri.getRecipeInput().getItems().length > 0) {
+            ItemStack in0 = ri.getRecipeInput().getItems()[0];
+            components = rar.getComponents(in0);
+            List<ItemStack> com = new ArrayList<>();
+            for (Ingredient c : components) {
+                com.add(c.getItems().length > 0 ? c.getItems()[0] : ItemStack.EMPTY);
+            }
+            aspects = ri.getAspects(this.minecraft.player, in0, com);
+        }
+        if (ri instanceof thaumcraft.common.lib.crafting.InfusionEnchantmentRecipe && ri.getRecipeInput().getItems().length > 0) {
+            aspects = ri.getAspects(this.minecraft.player, ri.getRecipeInput().getItems()[0], new ArrayList<>());
+        }
         String text = I18n.get("recipe.type.infusion");
         int offset = this.font.width(text);
         g.drawString(this.font, text, x - offset / 2, y - 104, 5263440, false);

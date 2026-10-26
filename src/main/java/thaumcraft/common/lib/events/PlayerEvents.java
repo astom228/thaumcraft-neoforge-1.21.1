@@ -85,4 +85,26 @@ public class PlayerEvents {
             ThaumcraftCapabilities.getWarp(player).sync(player);
         }
     }
+
+    /** Заряд рунической защиты предмета (TC.RUNIC оригинала). */
+    public static int getRunicCharge(net.minecraft.world.item.ItemStack stack) {
+        return stack.getOrDefault(thaumcraft.common.lib.TCDataComponents.RUNIC_CHARGE.get(), 0);
+    }
+
+    /** Искажение от предмета: IWarpingGear + TC.WARP оригинала. */
+    public static int getFinalWarp(net.minecraft.world.item.ItemStack stack, net.minecraft.world.entity.player.Player player) {
+        if (stack == null || stack.isEmpty()) {
+            return 0;
+        }
+        int warp = 0;
+        if (stack.getItem() instanceof thaumcraft.api.items.IWarpingGear armor) {
+            warp += armor.getWarp(stack, player);
+        }
+        return warp + stack.getOrDefault(thaumcraft.common.lib.TCDataComponents.WARPING.get(), 0);
+    }
+
+    /** Скидка Вис от предмета, %. */
+    public static int getFinalDiscount(net.minecraft.world.item.ItemStack stack, net.minecraft.world.entity.player.Player player) {
+        return stack != null && !stack.isEmpty() && stack.getItem() instanceof thaumcraft.api.items.IVisDiscountGear gear ? gear.getVisDiscount(stack, player) : 0;
+    }
 }

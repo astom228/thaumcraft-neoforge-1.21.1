@@ -40,9 +40,26 @@ public class TooltipEvents {
         }
     }
 
-    /** PlayerEvents.tooltipEvent: у предметов с аспектами внутри — список «Aer x1» (названия аспектов — латинские). */
+    /**
+     * PlayerEvents.tooltipEvent: заряд рунической защиты, Искажение, скидка Вис, у предметов с аспектами внутри — «Aer x1»
+     * (названия аспектов — латинские), наполняющие зачарования (вставляются второй строкой).
+     */
     @SubscribeEvent
     public static void itemTooltip(ItemTooltipEvent event) {
+        net.minecraft.world.item.ItemStack stack = event.getItemStack();
+        int charge = thaumcraft.common.lib.events.PlayerEvents.getRunicCharge(stack);
+        if (charge > 0) {
+            event.getToolTip().add(Component.translatable("item.runic.charge").append(" +" + charge).withStyle(net.minecraft.ChatFormatting.GOLD));
+        }
+        int warp = thaumcraft.common.lib.events.PlayerEvents.getFinalWarp(stack, event.getEntity());
+        if (warp > 0) {
+            event.getToolTip().add(Component.translatable("item.warping").append(" " + warp).withStyle(net.minecraft.ChatFormatting.DARK_PURPLE));
+        }
+        int al = thaumcraft.common.lib.events.PlayerEvents.getFinalDiscount(stack, event.getEntity());
+        if (al > 0) {
+            event.getToolTip().add(Component.translatable("tc.visdiscount").append(": " + al + "%").withStyle(net.minecraft.ChatFormatting.DARK_PURPLE));
+        }
+        // TODO этап 13: заряд (IRechargable, tc.charge)
         if (event.getItemStack().getItem() instanceof IEssentiaContainerItem container) {
             AspectList aspects = container.getAspects(event.getItemStack());
             if (aspects != null && aspects.size() > 0) {
@@ -51,6 +68,18 @@ public class TooltipEvents {
                 }
             }
         }
-        // TODO этапы 11, 13: руническая защита, Искажение предмета, скидка Вис, заряд, инфузионные зачарования
+        var ies = thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.getInfusionEnchantmentTagList(stack);
+        if (ies != null && !event.getToolTip().isEmpty()) {
+            for (var e : ies) {
+                var ie = e.enchantment();
+                if (ie != null) {
+                    net.minecraft.network.chat.MutableComponent line = Component.translatable("enchantment.infusion." + ie.name());
+                    if (ie.maxLevel > 1) {
+                        line = line.append(" ").append(Component.translatable("enchantment.level." + e.lvl()));
+                    }
+                    event.getToolTip().add(1, line.withStyle(net.minecraft.ChatFormatting.GOLD));
+                }
+            }
+        }
     }
 }

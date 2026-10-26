@@ -511,5 +511,14 @@
   "potion.flux_taint": "Отравление скверной",
   "potion.vis_exhaust": "Лихорадка Выброса",
   "death.attack.taint": "%1$s поддался скверне",
-  "death.attack.taint.player": "%1$s поддался скверне в бою с %2$s"
+  "death.attack.taint.player": "%1$s поддался скверне в бою с %2$s",
+  "item.runic.charge": "Рунический щит",
+  "item.warping": "Искажение",
+  "enchantment.infusion.COLLECTOR": "Собиратель",
+  "enchantment.infusion.DESTRUCTIVE": "Разрушитель",
+  "enchantment.infusion.BURROWING": "Проходчик",
+  "enchantment.infusion.SOUNDING": "Зондирование",
+  "enchantment.infusion.REFINING": "Очистка",
+  "enchantment.infusion.ARCING": "Дуга",
+  "enchantment.infusion.ESSENCE": "Сборщик эссенции"
 }

@@ -126,6 +126,8 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Phial | Фиал | принято |
 | Label | Ярлык | принято |
 | Runic Shielding (Warding) | Руническая защита | принято |
+| Infusion Enchantments: Collector / Destructive / Burrowing / Sounding / Refining / Arcing / Essence Harvester | Собиратель / Разрушитель / Проходчик / Зондирование / Очистка / Дуга / Сборщик эссенции | принято |
+| Runic shield (заряд) | Рунический щит | принято |
 | Vis Generator / Vis Battery | Вис-генератор / Вис-батарея | принято (по «Вис-резонатор») |
 | Flux Condenser | Конденсатор выброса | принято |
 | Flux Rift | Разлом выброса | принято |
