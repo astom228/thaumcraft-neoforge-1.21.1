@@ -516,4 +516,9 @@ public class FXDispatcher implements IFXDispatcher {
         }
         ParticleEngine.addEffect(this.getWorld(), new thaumcraft.client.fx.beams.FXArc(this.getWorld(), x, y, z, tx, ty, tz, r, g, b, h));
     }
+
+    @Override
+    public void drawSlash(double x, double y, double z, double x2, double y2, double z2, int dur) {
+        ParticleEngine.addEffect(this.getWorld(), new thaumcraft.client.fx.particles.FXPlane(this.getWorld(), x, y, z, x2, y2, z2, dur));
+    }
 }

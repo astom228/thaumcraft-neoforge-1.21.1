@@ -52,6 +52,10 @@ public class PacketHandler {
                 (msg, ctx) -> ClientPacketHandlers.handleInfusionSource(msg));
         registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXBlockArc.TYPE, thaumcraft.common.lib.network.fx.PacketFXBlockArc.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleBlockArc(msg));
+        registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXScanSource.TYPE, thaumcraft.common.lib.network.fx.PacketFXScanSource.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleScanSource(msg));
+        registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXSlash.TYPE, thaumcraft.common.lib.network.fx.PacketFXSlash.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleSlash(msg));
         registrar.playToClient(PacketWarpMessage.TYPE, PacketWarpMessage.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleWarpMessage(msg));
     }

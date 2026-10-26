@@ -16,4 +16,9 @@ public class ConfigEntities {
     public static final Supplier<EntityType<EntitySpecialItem>> SPECIAL_ITEM = ENTITIES.register("special_item",
             () -> EntityType.Builder.<EntitySpecialItem>of(EntitySpecialItem::new, MobCategory.MISC).sized(0.25F, 0.25F)
                     .clientTrackingRange(4).updateInterval(20).build("special_item"));
+
+    // EntityRegistry.registerModEntity(…, "FollowItem", …, 64, 20, false)
+    public static final Supplier<EntityType<thaumcraft.common.entities.EntityFollowingItem>> FOLLOWING_ITEM = ENTITIES.register("following_item",
+            () -> EntityType.Builder.<thaumcraft.common.entities.EntityFollowingItem>of(thaumcraft.common.entities.EntityFollowingItem::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(20).build("following_item"));
 }

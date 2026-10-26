@@ -55,6 +55,7 @@ public class ClientRegistration {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ConfigEntities.SPECIAL_ITEM.get(), ItemEntityRenderer::new);
+        event.registerEntityRenderer(ConfigEntities.FOLLOWING_ITEM.get(), ItemEntityRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.CRUCIBLE_TILE.get(), TileCrucibleRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.WARDED_JAR_TILE.get(), TileJarRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.VOID_JAR_TILE.get(), TileJarRenderer::new);

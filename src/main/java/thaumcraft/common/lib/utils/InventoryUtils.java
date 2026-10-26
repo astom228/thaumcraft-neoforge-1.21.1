@@ -158,4 +158,22 @@ public class InventoryUtils {
             world.addFreshEntity(e);
         }
     }
+
+    /** Выбросить добычу у блока; followItem — предметы летят к target (EntityFollowingItem, «Собиратель»). */
+    public static void dropHarvestsAtPos(net.minecraft.world.level.Level world, net.minecraft.core.BlockPos pos, java.util.List<ItemStack> list,
+                                         boolean followItem, int color, net.minecraft.world.entity.Entity target) {
+        for (ItemStack item : list) {
+            if (!world.isClientSide && world.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_DOBLOCKDROPS) && !world.restoringBlockSnapshots) {
+                float f = 0.5F;
+                double d0 = world.random.nextFloat() * f + (1.0F - f) * 0.5;
+                double d1 = world.random.nextFloat() * f + (1.0F - f) * 0.5;
+                double d2 = world.random.nextFloat() * f + (1.0F - f) * 0.5;
+                net.minecraft.world.entity.item.ItemEntity entityitem = followItem && target != null
+                        ? new thaumcraft.common.entities.EntityFollowingItem(world, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, item, target, color)
+                        : new net.minecraft.world.entity.item.ItemEntity(world, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, item);
+                entityitem.setDefaultPickUpDelay();
+                world.addFreshEntity(entityitem);
+            }
+        }
+    }
 }

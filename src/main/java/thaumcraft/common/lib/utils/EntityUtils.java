@@ -64,4 +64,20 @@ public class EntityUtils {
         pz += vec3d.z * 0.3;
         return new Vec3(px, py, pz);
     }
+
+    /** Свои: тот же, верхом/везёт, одна команда, приручённый им; игроки — если PvP выключен. */
+    public static boolean isFriendly(net.minecraft.world.entity.Entity source, net.minecraft.world.entity.Entity target) {
+        if (source == null || target == null) {
+            return false;
+        }
+        if (source.getId() == target.getId() || source.isPassengerOfSameVehicle(target) || source.hasPassenger(target) || target.hasPassenger(source)
+                || source.isAlliedTo(target)) {
+            return true;
+        }
+        if (target instanceof net.minecraft.world.entity.OwnableEntity own && own.getOwner() != null && own.getOwner().equals(source)) {
+            return true;
+        }
+        return !target.level().isClientSide && target instanceof net.minecraft.world.entity.player.Player && target.getServer() != null
+                && !target.getServer().isPvpAllowed();
+    }
 }

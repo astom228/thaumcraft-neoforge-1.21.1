@@ -99,6 +99,107 @@ public final class ClientPacketHandlers {
         }
     }
 
+    /** PacketFXSlash: росчерк от существа к существу (середина высоты). */
+    public static void handleSlash(thaumcraft.common.lib.network.fx.PacketFXSlash msg) {
+        var level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+        net.minecraft.world.entity.Entity a = level.getEntity(msg.source());
+        net.minecraft.world.entity.Entity b = level.getEntity(msg.target());
+        if (a != null && b != null) {
+            IFXDispatcher.get().drawSlash(a.getX(), a.getBoundingBox().minY + a.getBbHeight() / 2.0F, a.getZ(), b.getX(),
+                    b.getBoundingBox().minY + b.getBbHeight() / 2.0F, b.getZ(), 8);
+        }
+    }
+
+    /** PacketFXScanSource: подсветить группы руд вокруг блока — вспышка цвета руды, позже для дальних. */
+    public static void handleScanSource(thaumcraft.common.lib.network.fx.PacketFXScanSource msg) {
+        var world = Minecraft.getInstance().level;
+        if (world == null) {
+            return;
+        }
+        net.minecraft.core.BlockPos pos = net.minecraft.core.BlockPos.of(msg.loc());
+        int range = 4 + msg.size() * 4;
+        java.util.List<net.minecraft.core.BlockPos> positions = new java.util.ArrayList<>();
+        for (int xx = -range; xx <= range; xx++) {
+            for (int yy = -range; yy <= range; yy++) {
+                for (int zz = -range; zz <= range; zz++) {
+                    net.minecraft.core.BlockPos p = pos.offset(xx, yy, zz);
+                    if (world.isLoaded(p) && thaumcraft.common.lib.utils.Utils.isOreBlock(world, p)) {
+                        positions.add(p);
+                    }
+                }
+            }
+        }
+        while (!positions.isEmpty()) {
+            net.minecraft.core.BlockPos start = positions.remove(0);
+            java.util.List<net.minecraft.core.BlockPos> coll = new java.util.ArrayList<>();
+            coll.add(start);
+            calcGroup(world, start, coll, positions);
+            int c = getOreColor(world.getBlockState(start));
+            double x = 0.0;
+            double y = 0.0;
+            double z = 0.0;
+            for (net.minecraft.core.BlockPos p : coll) {
+                x += p.getX() + 0.5;
+                y += p.getY() + 0.5;
+                z += p.getZ() + 0.5;
+            }
+            x /= coll.size();
+            y /= coll.size();
+            z /= coll.size();
+            double dis = Math.sqrt(pos.distToCenterSqr(x, y, z));
+            thaumcraft.client.fx.particles.FXGeneric fb = new thaumcraft.client.fx.particles.FXGeneric(world, x, y, z, 0.0, 0.0, 0.0);
+            fb.setMaxAge(44);
+            java.awt.Color cc = new java.awt.Color(c);
+            fb.setRBGColorF(cc.getRed() / 255.0F, cc.getGreen() / 255.0F, cc.getBlue() / 255.0F);
+            float q = (cc.getRed() / 255.0F + cc.getGreen() / 255.0F + cc.getBlue() / 255.0F) / 3.0F;
+            fb.setAlphaF(0.0F, 1.0F, 0.8F, 0.0F);
+            fb.setParticles(240, 15, 1);
+            fb.setGridSize(16);
+            fb.setLoop(true);
+            fb.setScale(9.0F);
+            fb.setLayer(q < 0.25F ? 3 : 2);
+            fb.setRotationSpeed(0.0F);
+            thaumcraft.client.fx.ParticleEngine.addEffectWithDelay(world, fb, (int) (dis * 3.0));
+        }
+    }
+
+    private static void calcGroup(net.minecraft.world.level.Level world, net.minecraft.core.BlockPos start, java.util.List<net.minecraft.core.BlockPos> coll,
+                                  java.util.List<net.minecraft.core.BlockPos> positions) {
+        net.minecraft.world.level.block.state.BlockState bs = world.getBlockState(start);
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    net.minecraft.core.BlockPos t = start.offset(x, y, z);
+                    if (world.getBlockState(t).equals(bs) && positions.contains(t)) {
+                        positions.remove(t);
+                        coll.add(t);
+                        if (positions.isEmpty()) {
+                            return;
+                        }
+                        calcGroup(world, t, coll, positions);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Цвет руды по имени OreDictionary (IRON, COAL, …) → по тегам c:ores/… того же смысла. */
+    private static int getOreColor(net.minecraft.world.level.block.state.BlockState bi) {
+        String[][] map = {{"iron", "14200723"}, {"coal", "1052688"}, {"redstone", "16711680"}, {"gold", "16576075"}, {"lapis", "1328572"},
+                {"diamond", "6155509"}, {"emerald", "1564002"}, {"quartz", "15064789"}, {"silver", "14342653"}, {"tin", "15724539"},
+                {"copper", "16620629"}, {"amber", "16626469"}, {"cinnabar", "10159368"}};
+        for (String[] m : map) {
+            if (bi.is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,
+                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("c", "ores/" + m[0])))) {
+                return Integer.parseInt(m[1]);
+            }
+        }
+        return 12632256;
+    }
+
     /** PacketFXBlockArc: молния от цели к центру блока. */
     public static void handleBlockArc(thaumcraft.common.lib.network.fx.PacketFXBlockArc msg) {
         if (Minecraft.getInstance().level != null) {

@@ -44,6 +44,7 @@ public class Thaumcraft {
         TCDataComponents.COMPONENTS.register(modEventBus);
         TCMenus.MENUS.register(modEventBus);
         thaumcraft.common.config.ConfigPotions.EFFECTS.register(modEventBus);
+        thaumcraft.common.lib.events.RareEarthsLootModifier.LOOT_MODIFIERS.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::loadComplete);
         modEventBus.addListener(ConfigBlocks::registerCapabilities);
@@ -61,6 +62,8 @@ public class Thaumcraft {
         event.enqueueWork(ConfigRecipes::initializeFakeRecipes);
         event.enqueueWork(ConfigRecipes::initializeAlchemyRecipes);
         event.enqueueWork(ConfigRecipes::initializeInfusionRecipes);
+        // самородные кластеры для «Очистки» (initMisc / modCompatibility оригинала)
+        event.enqueueWork(thaumcraft.common.lib.utils.Utils::initSpecialMining);
     }
 
     /** postInit оригинала: загрузка JSON исследований после того, как все моды зарегистрировали категории и файлы. */

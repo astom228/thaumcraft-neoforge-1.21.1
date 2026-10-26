@@ -233,6 +233,7 @@
   "entity.TaintacleGiant.name": "Гигантское заражённое щупальце",
   "entity.TaintacleTiny.name": "Заражённый усик",
   "entity.ThaumSlime.name": "Таум-слизень",
+  "entity.thaumcraft.following_item": "Магический предмет",
   "entity.thaumcraft.special_item": "Магический предмет",
   "fail.crimsonrites": "В этой книге нет ничего, кроме безумного бреда.",
   "false.start": "Такое чувство, будто это должно работать, но чего-то не хватает...",
