@@ -30,6 +30,14 @@ public class ConfigItems {
         return book;
     }
 
+    /** Котёл с водой снимает краску с робы тауматурга (ItemRobeArmor.onItemUseFirst оригинала: −1 уровень воды). */
+    public static void registerCauldron() {
+        for (net.minecraft.world.item.Item robe : new net.minecraft.world.item.Item[] {thaumcraft.api.items.ItemsTC.clothChest.get(),
+                thaumcraft.api.items.ItemsTC.clothLegs.get(), thaumcraft.api.items.ItemsTC.clothBoots.get()}) {
+            net.minecraft.core.cauldron.CauldronInteraction.WATER.map().put(robe, net.minecraft.core.cauldron.CauldronInteraction.DYED_ITEM);
+        }
+    }
+
     /** Элементы фокусов (ConfigItems.initFoci оригинала): ключ, значок для манипулятора, цвет. Вызывается при запуске. */
     public static void initFoci() {
         reg(thaumcraft.api.casters.FocusMediumRoot::new, "root", 10066329);

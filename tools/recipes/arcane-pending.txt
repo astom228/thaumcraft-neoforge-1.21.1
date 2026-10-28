@@ -2,9 +2,6 @@
 activatorrail: нет BlocksTC.activatorRail
 sanitychecker: нет ItemsTC.sanityChecker
 rechargepedestal: нет BlocksTC.rechargePedestal
-robechest: нет ItemsTC.clothChest
-robelegs: нет ItemsTC.clothLegs
-robeboots: нет ItemsTC.clothBoots
 sealblank: нет ItemsTC.seals
 arcanespa: нет BlocksTC.spa
 bannerwhite: нет BlocksTC.banners

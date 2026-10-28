@@ -37,6 +37,17 @@ public class ClientRegistration {
                 shader -> ParticleEngine.particleShader = shader);
     }
 
+    /** Цвет робы на теле без краски — 6961280 оригинала (а не цвет кожи по умолчанию). */
+    @SubscribeEvent
+    public static void registerClientExtensions(net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent event) {
+        event.registerItem(new net.neoforged.neoforge.client.extensions.common.IClientItemExtensions() {
+            @Override
+            public int getDefaultDyeColor(net.minecraft.world.item.ItemStack stack) {
+                return 0xFF000000 | thaumcraft.common.items.armor.ItemRobeArmor.getColor(stack);
+            }
+        }, thaumcraft.api.items.ItemsTC.clothChest.get(), thaumcraft.api.items.ItemsTC.clothLegs.get(), thaumcraft.api.items.ItemsTC.clothBoots.get());
+    }
+
     /** Клавиши перчатки (KeyHandler). */
     @SubscribeEvent
     public static void registerKeys(net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent event) {

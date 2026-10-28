@@ -132,7 +132,12 @@ public class ConfigRecipes {
         ThaumcraftApi.addInfusionCraftingRecipe(tc("JarBrain"), new InfusionRecipe("JARBRAIN", new ItemStack(BlocksTC.jarBrain.get()), 4,
                 new AspectList().add(Aspect.MIND, 25).add(Aspect.SENSES, 25).add(Aspect.UNDEAD, 25), new ItemStack(BlocksTC.jarNormal.get()),
                 new ItemStack(ItemsTC.brain.get()), new ItemStack(Items.SPIDER_EYE), new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.SPIDER_EYE)));
-        // TODO этап 13: VisAmulet, поддельные RunicArmorFake0–2 для книги (центр — безделушка), стихийные инструменты, BootsTraveller, доспехи и маски «Таумиумной крепости»,
+        // BootsTraveller: рыба любого вида (Items.FISH, 32767) → тег minecraft:fishes
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("BootsTraveller"), new InfusionRecipe("BOOTSTRAVELLER", new ItemStack(ItemsTC.travellerBoots.get()), 1,
+                new AspectList().add(Aspect.FLIGHT, 100).add(Aspect.MOTION, 100), new ItemStack(Items.LEATHER_BOOTS),
+                ThaumcraftApiHelper.makeCrystal(Aspect.AIR), ThaumcraftApiHelper.makeCrystal(Aspect.AIR), new ItemStack(ItemsTC.fabric.get()),
+                new ItemStack(ItemsTC.fabric.get()), new ItemStack(Items.FEATHER), net.minecraft.tags.ItemTags.FISHES));
+        // TODO этап 13: VisAmulet, поддельные RunicArmorFake0–2 для книги (центр — безделушка), стихийные инструменты, доспехи и маски «Таумиумной крепости»,
         //  VerdantHeart (3), CLOUDRING, CuriosityBand, CHARMUNDYING
         ThaumcraftApi.addInfusionCraftingRecipe(tc("Mirror"), new InfusionRecipe("MIRROR", new ItemStack(BlocksTC.mirror.get()), 1,
                 new AspectList().add(Aspect.MOTION, 25).add(Aspect.DARKNESS, 25).add(Aspect.EXCHANGE, 25), new ItemStack(ItemsTC.mirroredGlass.get()),

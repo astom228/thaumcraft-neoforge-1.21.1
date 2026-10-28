@@ -59,7 +59,12 @@ public class TooltipEvents {
         if (al > 0) {
             event.getToolTip().add(Component.translatable("tc.visdiscount").append(": " + al + "%").withStyle(net.minecraft.ChatFormatting.DARK_PURPLE));
         }
-        // TODO этап 13: заряд (IRechargable, tc.charge)
+        if (event.getItemStack().getItem() instanceof thaumcraft.api.items.IRechargable) {
+            int c = thaumcraft.api.items.RechargeHelper.getCharge(event.getItemStack());
+            if (c >= 0) {
+                event.getToolTip().add(Component.translatable("tc.charge").append(" " + c).withStyle(net.minecraft.ChatFormatting.YELLOW));
+            }
+        }
         if (event.getItemStack().getItem() instanceof IEssentiaContainerItem container) {
             AspectList aspects = container.getAspects(event.getItemStack());
             if (aspects != null && aspects.size() > 0) {

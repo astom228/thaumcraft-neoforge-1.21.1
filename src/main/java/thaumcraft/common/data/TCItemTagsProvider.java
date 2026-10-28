@@ -45,6 +45,19 @@ public class TCItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.GEMS).addTag(TCTags.Items.GEMS_AMBER);
         tag(TCTags.Items.QUICKSILVER).add(quicksilver.get());
 
+        // инструменты и броня: ванильные категории (зачаровываемость на столе, ремонт и т.п.)
+        tag(ItemTags.SWORDS).add(thaumiumSword.get(), voidSword.get());
+        tag(ItemTags.PICKAXES).add(thaumiumPick.get(), voidPick.get());
+        tag(ItemTags.AXES).add(thaumiumAxe.get(), voidAxe.get());
+        tag(ItemTags.SHOVELS).add(thaumiumShovel.get(), voidShovel.get());
+        tag(ItemTags.HOES).add(thaumiumHoe.get(), voidHoe.get());
+        tag(ItemTags.HEAD_ARMOR).add(thaumiumHelm.get(), voidHelm.get());
+        tag(ItemTags.CHEST_ARMOR).add(thaumiumChest.get(), voidChest.get(), clothChest.get());
+        tag(ItemTags.LEG_ARMOR).add(thaumiumLegs.get(), voidLegs.get(), clothLegs.get());
+        tag(ItemTags.FOOT_ARMOR).add(thaumiumBoots.get(), voidBoots.get(), clothBoots.get(), travellerBoots.get());
+        // роба окрашивается, как кожаная броня
+        tag(ItemTags.DYEABLE).add(clothChest.get(), clothLegs.get(), clothBoots.get());
+
         tag(TCTags.Items.INGOTS_THAUMIUM).add(ingotThaumium.get());
         tag(TCTags.Items.INGOTS_VOID).add(ingotVoid.get());
         tag(TCTags.Items.INGOTS_BRASS).add(ingotBrass.get());

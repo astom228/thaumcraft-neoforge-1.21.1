@@ -56,6 +56,14 @@ public class TCDataComponents {
     public static final Supplier<DataComponentType<Integer>> RUNIC_CHARGE = COMPONENTS.registerComponentType("runic_charge",
             b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    /** Заряд Вис предмета IRechargable (в оригинале — NBT "tc.charge"). */
+    public static final Supplier<DataComponentType<Integer>> CHARGE = COMPONENTS.registerComponentType("charge",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    /** Запас хода сапог странника в секундах до следующего списания заряда (в оригинале — NBT "energy"). */
+    public static final Supplier<DataComponentType<Integer>> TRAVELLER_ENERGY = COMPONENTS.registerComponentType("traveller_energy",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     /** Пакет фокуса (в оригинале — NBT "package" у фокуса): формат FocusPackage.serialize. Значение не изменять — только заменять. */
     public static final Supplier<DataComponentType<net.minecraft.nbt.CompoundTag>> FOCUS_PACKAGE = COMPONENTS.registerComponentType("focus_package",
             b -> b.persistent(net.minecraft.nbt.CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));

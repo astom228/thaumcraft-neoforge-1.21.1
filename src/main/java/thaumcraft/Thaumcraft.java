@@ -34,6 +34,7 @@ public class Thaumcraft {
         ItemsTC.init();
         ConfigBlocks.BLOCKS.register(modEventBus);
         ConfigBlocks.TILES.register(modEventBus);
+        thaumcraft.api.ThaumcraftMaterials.ARMOR_MATERIALS.register(modEventBus);
         ConfigItems.ITEMS.register(modEventBus);
         ConfigEntities.ENTITIES.register(modEventBus);
         SoundsTC.SOUNDS.register(modEventBus);
@@ -67,6 +68,8 @@ public class Thaumcraft {
         event.enqueueWork(ConfigRecipes::initializeInfusionRecipes);
         // самородные кластеры для «Очистки» (initMisc / modCompatibility оригинала)
         event.enqueueWork(thaumcraft.common.lib.utils.Utils::initSpecialMining);
+        // роба тауматурга отмывается в котле с водой, как кожаная броня (onItemUseFirst оригинала)
+        event.enqueueWork(ConfigItems::registerCauldron);
     }
 
     /** postInit оригинала: загрузка JSON исследований после того, как все моды зарегистрировали категории и файлы. */

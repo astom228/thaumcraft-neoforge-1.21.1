@@ -64,6 +64,9 @@ public class ColorHandler {
             int color = ((BlockNitor) n.get()).dye.getMapColor().col;
             event.register((stack, tintIndex) -> color, n.get());
         }
+        // itemArmorColourHandler: окрашиваемая роба — слой 0 цветом, остальные без окраски (пустотная роба — этап 13.4)
+        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : 0xFF000000 | thaumcraft.common.items.armor.ItemRobeArmor.getColor(stack),
+                ItemsTC.clothChest.get(), ItemsTC.clothLegs.get(), ItemsTC.clothBoots.get());
         // itemCasterColourHandler: у перчатки с фокусом слои 1+ — цвет фокуса
         event.register((stack, tintIndex) -> {
             thaumcraft.common.items.casters.ItemCaster item = (thaumcraft.common.items.casters.ItemCaster) stack.getItem();

@@ -30,12 +30,44 @@ public class PlayerEvents {
     /** livingTick оригинала (часть для игрока на сервере): отложенная синхронизация знаний и периодические находки. */
     @SubscribeEvent
     public static void livingTick(PlayerTickEvent.Post event) {
+        if (event.getEntity().level().isClientSide) {
+            thaumcraft.common.items.armor.ItemBootsTraveller.handleSpeedMods(event.getEntity());
+        }
         if (event.getEntity() instanceof ServerPlayer player) {
             if (player.tickCount % 20 == 0 && ResearchManager.syncList.remove(player.getUUID())) {
                 ThaumcraftCapabilities.getKnowledge(player).sync(player);
             }
             if (player.tickCount % 200 == 0) {
                 ConfigResearch.checkPeriodicStuff(player);
+            }
+        }
+    }
+
+    /**
+     * onFallDamage оригинала (LivingHurtEvent 1.12 — до брони, как LivingIncomingDamageEvent): сапоги странника (с зарядом и без)
+     * уменьшают урон от падения — f/2 − 1, меньше 1 — отмена. TODO этап 13.3: кольцо облаков — f/3 − 2.
+     */
+    @SubscribeEvent
+    public static void onFallDamage(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
+        if (event.getSource().is(net.minecraft.world.damagesource.DamageTypes.FALL) && event.getEntity() instanceof net.minecraft.world.entity.player.Player player) {
+            if (player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.FEET).is(thaumcraft.api.items.ItemsTC.travellerBoots.get())) {
+                float f = Math.max(0.0F, event.getAmount() / 2.0F - 1.0F);
+                if (f < 1.0F) {
+                    event.setCanceled(true);
+                    return;
+                }
+                event.setAmount(f);
+            }
+        }
+    }
+
+    /** Сапоги странника с зарядом — прыжок выше (playerJumps оригинала). */
+    @SubscribeEvent
+    public static void playerJumps(net.neoforged.neoforge.event.entity.living.LivingEvent.LivingJumpEvent event) {
+        if (event.getEntity() instanceof net.minecraft.world.entity.player.Player player) {
+            ItemStack is = player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.FEET);
+            if (is.is(thaumcraft.api.items.ItemsTC.travellerBoots.get()) && thaumcraft.api.items.RechargeHelper.getCharge(is) > 0) {
+                player.setDeltaMovement(player.getDeltaMovement().add(0.0, 0.275F, 0.0));
             }
         }
     }

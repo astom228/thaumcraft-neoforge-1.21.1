@@ -89,6 +89,12 @@ public class TCRecipeProvider extends RecipeProvider {
         plate(out, "thaumiumplate", THAUMIUM, TCTags.Items.INGOTS_THAUMIUM, plateThaumium.get());
         plate(out, "voidplate", VOID, TCTags.Items.INGOTS_VOID, plateVoid.get());
 
+        // --- таумиумные и пустотные инструменты и броня (oreDictRecipe оригинала; "stickWood" → c:rods/wooden) ---
+        gear(out, "thaumium", THAUMIUM, TCTags.Items.INGOTS_THAUMIUM, thaumiumHelm.get(), thaumiumChest.get(), thaumiumLegs.get(), thaumiumBoots.get(),
+                thaumiumShovel.get(), thaumiumPick.get(), thaumiumAxe.get(), thaumiumHoe.get(), thaumiumSword.get());
+        gear(out, "void", VOID, TCTags.Items.INGOTS_VOID, voidHelm.get(), voidChest.get(), voidLegs.get(), voidBoots.get(),
+                voidShovel.get(), voidPick.get(), voidAxe.get(), voidHoe.get(), voidSword.get());
+
         // --- растения ---
         single(out, "shimmerleaftoquicksilver", null, BlocksTC.shimmerleaf.get(), quicksilver.get(), 1);
         single(out, "cinderpearltoblazepowder", null, BlocksTC.cinderpearl.get(), Items.BLAZE_POWDER, 1);
@@ -217,6 +223,37 @@ public class TCRecipeProvider extends RecipeProvider {
 
     private static TagKey<Item> tag(String path) {
         return TagKey.create(net.minecraft.core.registries.Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));
+    }
+
+    /** Шлем, нагрудник, поножи, ботинки, лопата, кирка, топор, мотыга, меч — узоры и имена рецептов оригинала. */
+    private void gear(RecipeOutput out, String p, String group, TagKey<Item> ingot, ItemLike helm, ItemLike chest, ItemLike legs, ItemLike boots,
+                      ItemLike shovel, ItemLike pick, ItemLike axe, ItemLike hoe, ItemLike sword) {
+        armorPiece(out, p + "helm", group, ingot, helm, "III", "I I");
+        armorPiece(out, p + "chest", group, ingot, chest, "I I", "III", "III");
+        armorPiece(out, p + "legs", group, ingot, legs, "III", "I I", "I I");
+        armorPiece(out, p + "boots", group, ingot, boots, "I I", "I I");
+        toolPiece(out, p + "shovel", group, ingot, shovel, "I", "S", "S");
+        toolPiece(out, p + "pick", group, ingot, pick, "III", " S ", " S ");
+        toolPiece(out, p + "axe", group, ingot, axe, "II", "SI", "S ");
+        toolPiece(out, p + "hoe", group, ingot, hoe, "II", "S ", "S ");
+        toolPiece(out, p + "sword", group, ingot, sword, "I", "I", "S");
+    }
+
+    private void armorPiece(RecipeOutput out, String name, String group, TagKey<Item> ingot, ItemLike result, String... rows) {
+        ShapedRecipeBuilder b = ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result).group(group).define('I', ingot);
+        for (String r : rows) {
+            b.pattern(r);
+        }
+        b.unlockedBy("has", has(ingot)).save(out, id(name));
+    }
+
+    private void toolPiece(RecipeOutput out, String name, String group, TagKey<Item> ingot, ItemLike result, String... rows) {
+        ShapedRecipeBuilder b = ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result).group(group).define('I', ingot)
+                .define('S', Tags.Items.RODS_WOODEN);
+        for (String r : rows) {
+            b.pattern(r);
+        }
+        b.unlockedBy("has", has(ingot)).save(out, id(name));
     }
 
     private void toNuggets(RecipeOutput out, String name, ItemLike ingot, ItemLike nugget, String group) {

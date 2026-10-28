@@ -7,7 +7,10 @@ import java.util.Optional;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import thaumcraft.api.ThaumcraftMaterials;
 import net.neoforged.neoforge.registries.DeferredItem;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.consumables.ItemZombieBrain;
@@ -139,6 +142,54 @@ public class ItemsTC {
 
     // TODO этап 13: заменить на ItemGoggles (броня + очки откровения). Пока нужен как иконка вкладки.
     public static final DeferredItem<Item> goggles = ConfigItems.ITEMS.registerSimpleItem("goggles", new Item.Properties().stacksTo(1));
+
+    // --- инструменты (ConfigItems.initItems: ThaumcraftMaterials.TOOLMAT_*) ---
+    public static final DeferredItem<Item> thaumiumAxe = tool("thaumium_axe", p -> new thaumcraft.common.items.tools.ItemThaumiumAxe(ThaumcraftMaterials.TOOLMAT_THAUMIUM, p));
+    public static final DeferredItem<Item> thaumiumSword = tool("thaumium_sword", p -> new thaumcraft.common.items.tools.ItemThaumiumSword(ThaumcraftMaterials.TOOLMAT_THAUMIUM, p));
+    public static final DeferredItem<Item> thaumiumShovel = tool("thaumium_shovel", p -> new thaumcraft.common.items.tools.ItemThaumiumShovel(ThaumcraftMaterials.TOOLMAT_THAUMIUM, p));
+    public static final DeferredItem<Item> thaumiumPick = tool("thaumium_pickaxe", p -> new thaumcraft.common.items.tools.ItemThaumiumPickaxe(ThaumcraftMaterials.TOOLMAT_THAUMIUM, p));
+    public static final DeferredItem<Item> thaumiumHoe = tool("thaumium_hoe", p -> new thaumcraft.common.items.tools.ItemThaumiumHoe(ThaumcraftMaterials.TOOLMAT_THAUMIUM, p));
+    public static final DeferredItem<Item> voidAxe = tool("void_metal_axe", p -> new thaumcraft.common.items.tools.ItemVoidAxe(ThaumcraftMaterials.TOOLMAT_VOID, p));
+    public static final DeferredItem<Item> voidSword = tool("void_metal_sword", p -> new thaumcraft.common.items.tools.ItemVoidSword(ThaumcraftMaterials.TOOLMAT_VOID, p));
+    public static final DeferredItem<Item> voidShovel = tool("void_metal_shovel", p -> new thaumcraft.common.items.tools.ItemVoidShovel(ThaumcraftMaterials.TOOLMAT_VOID, p));
+    public static final DeferredItem<Item> voidPick = tool("void_metal_pickaxe", p -> new thaumcraft.common.items.tools.ItemVoidPickaxe(ThaumcraftMaterials.TOOLMAT_VOID, p));
+    public static final DeferredItem<Item> voidHoe = tool("void_metal_hoe", p -> new thaumcraft.common.items.tools.ItemVoidHoe(ThaumcraftMaterials.TOOLMAT_VOID, p));
+
+    // --- броня (ConfigItems.initItems: ThaumcraftMaterials.ARMORMAT_*; прочность — множитель оригинала) ---
+    public static final DeferredItem<Item> thaumiumHelm = thaumiumArmor("thaumium_helmet", ArmorItem.Type.HELMET);
+    public static final DeferredItem<Item> thaumiumChest = thaumiumArmor("thaumium_chestplate", ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<Item> thaumiumLegs = thaumiumArmor("thaumium_leggings", ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<Item> thaumiumBoots = thaumiumArmor("thaumium_boots", ArmorItem.Type.BOOTS);
+    public static final DeferredItem<Item> clothChest = robe("thaumaturge_robe", ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<Item> clothLegs = robe("thaumaturge_leggings", ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<Item> clothBoots = robe("thaumaturge_boots", ArmorItem.Type.BOOTS);
+    // ItemBootsTraveller: setMaxDamage(350), редкость RARE
+    public static final DeferredItem<Item> travellerBoots = ConfigItems.ITEMS.registerItem("traveller_boots",
+            p -> new thaumcraft.common.items.armor.ItemBootsTraveller(ThaumcraftMaterials.ARMORMAT_SPECIAL, p),
+            new Item.Properties().durability(350).rarity(Rarity.RARE));
+    public static final DeferredItem<Item> voidHelm = voidArmor("void_metal_helmet", ArmorItem.Type.HELMET);
+    public static final DeferredItem<Item> voidChest = voidArmor("void_metal_chestplate", ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<Item> voidLegs = voidArmor("void_metal_leggings", ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<Item> voidBoots = voidArmor("void_metal_boots", ArmorItem.Type.BOOTS);
+
+    private static DeferredItem<Item> tool(String name, java.util.function.Function<Item.Properties, Item> factory) {
+        return ConfigItems.ITEMS.registerItem(name, factory);
+    }
+
+    private static DeferredItem<Item> thaumiumArmor(String name, ArmorItem.Type type) {
+        return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.armor.ItemThaumiumArmor(ThaumcraftMaterials.ARMORMAT_THAUMIUM, type, p),
+                new Item.Properties().durability(type.getDurability(ThaumcraftMaterials.DURABILITY_THAUMIUM)).rarity(Rarity.UNCOMMON));
+    }
+
+    private static DeferredItem<Item> robe(String name, ArmorItem.Type type) {
+        return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.armor.ItemRobeArmor(ThaumcraftMaterials.ARMORMAT_ROBE, type, p),
+                new Item.Properties().durability(type.getDurability(ThaumcraftMaterials.DURABILITY_SPECIAL)).rarity(Rarity.UNCOMMON));
+    }
+
+    private static DeferredItem<Item> voidArmor(String name, ArmorItem.Type type) {
+        return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.armor.ItemVoidArmor(ThaumcraftMaterials.ARMORMAT_VOID, type, p),
+                new Item.Properties().durability(type.getDurability(ThaumcraftMaterials.DURABILITY_VOID)).rarity(Rarity.UNCOMMON));
+    }
 
     private static DeferredItem<Item> curio(String name, int type) {
         return ConfigItems.ITEMS.registerItem(name, p -> new ItemCurio(type, p));
