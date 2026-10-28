@@ -125,7 +125,10 @@ public class ConfigRecipes {
         cluster("CrystalClusterOrder", BlocksTC.crystalOrder.get(), Aspect.ORDER, 0);
         cluster("CrystalClusterEntropy", BlocksTC.crystalEntropy.get(), Aspect.ENTROPY, 0);
         cluster("CrystalClusterFlux", BlocksTC.crystalTaint.get(), Aspect.FLUX, 4);
-        // TODO этап 12: focus_2, focus_3
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("focus_2"), new InfusionRecipe("FOCUSADVANCED@1", new ItemStack(ItemsTC.focus2.get()), 3,
+                new AspectList().add(Aspect.MAGIC, 25).add(Aspect.ORDER, 50), new ItemStack(ItemsTC.focus1.get()),
+                new ItemStack(ItemsTC.quicksilver.get()), Tags.Items.GEMS_DIAMOND, new ItemStack(ItemsTC.quicksilver.get()), new ItemStack(Items.ENDER_PEARL)));
+        // TODO: focus_3 — вместе с изначальной жемчужиной (ItemsTC.primordialPearl): MAGIC 25, ORDER 50, VOID 100, нестабильность 5
         ThaumcraftApi.addInfusionCraftingRecipe(tc("JarBrain"), new InfusionRecipe("JARBRAIN", new ItemStack(BlocksTC.jarBrain.get()), 4,
                 new AspectList().add(Aspect.MIND, 25).add(Aspect.SENSES, 25).add(Aspect.UNDEAD, 25), new ItemStack(BlocksTC.jarNormal.get()),
                 new ItemStack(ItemsTC.brain.get()), new ItemStack(Items.SPIDER_EYE), new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.SPIDER_EYE)));
@@ -218,7 +221,8 @@ public class ConfigRecipes {
                 new ItemStack(Items.ROTTEN_FLESH), new AspectList().merge(Aspect.FIRE, 1)));
         ThaumcraftApi.addCrucibleRecipe(id("hedge_leather"), new CrucibleRecipe("HEDGEALCHEMY@1", new ItemStack(Items.LEATHER),
                 new ItemStack(Items.ROTTEN_FLESH), new AspectList().merge(Aspect.AIR, 3).merge(Aspect.BEAST, 3)));
-        // TODO этап 12: focus_1 (ItemsTC.focus1 из кристалла порядка): CRYSTAL 20, MAGIC 10, AURA 5
+        ThaumcraftApi.addCrucibleRecipe(id("focus_1"), new CrucibleRecipe("UNLOCKAUROMANCY", new ItemStack(ItemsTC.focus1.get()),
+                ThaumcraftApiHelper.makeCrystal(Aspect.ORDER), new AspectList().merge(Aspect.CRYSTAL, 20).merge(Aspect.MAGIC, 10).merge(Aspect.AURA, 5)));
         purification("iron", ItemsTC.clusterIron.get(), Tags.Items.ORES_IRON);
         purification("gold", ItemsTC.clusterGold.get(), Tags.Items.ORES_GOLD);
         purification("cinnabar", ItemsTC.clusterCinnabar.get(), TCTags.Items.ORES_CINNABAR);

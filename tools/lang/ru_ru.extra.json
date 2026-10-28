@@ -541,5 +541,11 @@
   "stability.VERY_STABLE": "Очень стабильно",
   "stability.STABLE": "Стабильно",
   "stability.UNSTABLE": "Нестабильно",
-  "stability.VERY_UNSTABLE": "Опасно нестабильно"
+  "stability.VERY_UNSTABLE": "Опасно нестабильно",
+  "item.thaumcraft.focus_1": "Чистый простой фокус",
+  "item.thaumcraft.focus_2": "Чистый продвинутый фокус",
+  "item.thaumcraft.focus_3": "Чистый великий фокус",
+  "item.thaumcraft.focus_pouch": "Сумка для фокусов",
+  "item.Focus.cost1": "Вис за заклинание",
+  "tc.vis.cost": "Расход Вис:"
 }

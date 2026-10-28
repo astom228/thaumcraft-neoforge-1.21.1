@@ -100,6 +100,7 @@ public class ParticleEngine {
         }
         particlesDelayed.clear();
         thaumcraft.client.lib.events.HudHandler.clear();
+        thaumcraft.common.items.casters.CasterManager.clearClient();
     }
 
     @SubscribeEvent

@@ -55,4 +55,18 @@ public class TCDataComponents {
     /** Заряд рунической защиты (в оригинале — NBT "TC.RUNIC"); действие защиты — этап 13. */
     public static final Supplier<DataComponentType<Integer>> RUNIC_CHARGE = COMPONENTS.registerComponentType("runic_charge",
             b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    /** Пакет фокуса (в оригинале — NBT "package" у фокуса): формат FocusPackage.serialize. Значение не изменять — только заменять. */
+    public static final Supplier<DataComponentType<net.minecraft.nbt.CompoundTag>> FOCUS_PACKAGE = COMPONENTS.registerComponentType("focus_package",
+            b -> b.persistent(net.minecraft.nbt.CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
+
+    /** Фокус в перчатке (в оригинале — NBT "focus"): один предмет. */
+    public static final Supplier<DataComponentType<net.minecraft.world.item.component.ItemContainerContents>> CASTER_FOCUS =
+            COMPONENTS.registerComponentType("caster_focus", b -> b.persistent(net.minecraft.world.item.component.ItemContainerContents.CODEC)
+                    .networkSynchronized(net.minecraft.world.item.component.ItemContainerContents.STREAM_CODEC));
+
+    /** Блок, выбранный перчаткой для фокуса с выбором блока (в оригинале — NBT "picked"). */
+    public static final Supplier<DataComponentType<net.minecraft.world.item.component.ItemContainerContents>> CASTER_PICKED =
+            COMPONENTS.registerComponentType("caster_picked", b -> b.persistent(net.minecraft.world.item.component.ItemContainerContents.CODEC)
+                    .networkSynchronized(net.minecraft.world.item.component.ItemContainerContents.STREAM_CODEC));
 }

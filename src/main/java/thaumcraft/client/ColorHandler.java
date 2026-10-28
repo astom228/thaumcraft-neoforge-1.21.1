@@ -64,6 +64,15 @@ public class ColorHandler {
             int color = ((BlockNitor) n.get()).dye.getMapColor().col;
             event.register((stack, tintIndex) -> color, n.get());
         }
+        // itemCasterColourHandler: у перчатки с фокусом слои 1+ — цвет фокуса
+        event.register((stack, tintIndex) -> {
+            thaumcraft.common.items.casters.ItemCaster item = (thaumcraft.common.items.casters.ItemCaster) stack.getItem();
+            thaumcraft.common.items.casters.ItemFocus focus = item.getFocus(stack);
+            return tintIndex > 0 && focus != null ? 0xFF000000 | focus.getFocusColor(item.getFocusStack(stack)) : -1;
+        }, ItemsTC.casterBasic.get());
+        // itemFocusColourHandler: фокус — средний цвет эффектов заклинания
+        event.register((stack, tintIndex) -> 0xFF000000 | ((thaumcraft.common.items.casters.ItemFocus) stack.getItem()).getFocusColor(stack),
+                ItemsTC.focus1.get(), ItemsTC.focus2.get(), ItemsTC.focus3.get());
         for (DeferredBlock<Block> candle : BlocksTC.candles.values()) {
             int color = ((BlockCandle) candle.get()).dye.getMapColor().col;
             event.register((stack, tintIndex) -> color, candle.get());

@@ -85,6 +85,10 @@ public class ItemsTC {
     public static final DeferredItem<Item> labelFilled = ConfigItems.ITEMS.registerItem("marked_label", p -> new ItemLabel(true, p));
     // Перчатка заклинателя (ItemCaster "caster_basic", area 0); этап 11 — только щелчок по блокам (DECISIONS 92)
     public static final DeferredItem<Item> casterBasic = ConfigItems.ITEMS.registerItem("caster_basic", p -> new ItemCaster(0, p));
+    // фокусы: предельная сложность 15 / 25 / 50
+    public static final DeferredItem<Item> focus1 = ConfigItems.ITEMS.registerItem("focus_1", p -> new thaumcraft.common.items.casters.ItemFocus(15, p));
+    public static final DeferredItem<Item> focus2 = ConfigItems.ITEMS.registerItem("focus_2", p -> new thaumcraft.common.items.casters.ItemFocus(25, p));
+    public static final DeferredItem<Item> focus3 = ConfigItems.ITEMS.registerItem("focus_3", p -> new thaumcraft.common.items.casters.ItemFocus(50, p));
     public static final DeferredItem<Item> handMirror = ConfigItems.ITEMS.registerItem("hand_mirror", ItemHandMirror::new);
     public static final DeferredItem<Item> resonator = ConfigItems.ITEMS.registerItem("essentia_resonator", ItemResonator::new);
     public static final DeferredItem<Item> salisMundus = ConfigItems.ITEMS.registerItem("salis_mundus", ItemMagicDust::new);
