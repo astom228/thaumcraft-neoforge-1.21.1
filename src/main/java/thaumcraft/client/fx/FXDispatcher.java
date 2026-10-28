@@ -542,4 +542,36 @@ public class FXDispatcher implements IFXDispatcher {
         fb.setRotationSpeed(rand.nextFloat(), rand.nextBoolean() ? -1.0F : 1.0F);
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
+
+    @Override
+    public void arcBolt(double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float width) {
+        ParticleEngine.addEffect(this.getWorld(), new thaumcraft.client.fx.beams.FXBolt(this.getWorld(), x, y, z, tx, ty, tz, r, g, b, width));
+    }
+
+    @Override
+    public void drawFireMote(float x, float y, float z, float vx, float vy, float vz, float r, float g, float b, float alpha, float scale) {
+        boolean bb = this.getWorld().random.nextBoolean();
+        thaumcraft.client.fx.particles.FXFireMote glow = new thaumcraft.client.fx.particles.FXFireMote(this.getWorld(), x, y, z, vx, vy, vz, r, g, b,
+                bb ? scale / 3.0F : scale, bb ? 1 : 0);
+        glow.setAlphaF(alpha);
+        ParticleEngine.addEffect(this.getWorld(), glow);
+    }
+
+    @Override
+    public void drawFocusCloudParticle(double x, double y, double z, double mx, double my, double mz, int c) {
+        java.awt.Color color = new java.awt.Color(c);
+        var rand = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, mx, my, mz);
+        fb.setMaxAge(20 + rand.nextInt(10));
+        fb.setRBGColorF(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F);
+        fb.setAlphaF(0.0F, 0.66F, 0.0F);
+        fb.setGridSize(16);
+        fb.setParticles(56 + rand.nextInt(4), 1, 1);
+        fb.setScale(5.0F + rand.nextFloat(), 10.0F + rand.nextFloat());
+        fb.setLayer(0);
+        fb.setSlowDown(0.99);
+        fb.setWind(0.001);
+        fb.setRotationSpeed(rand.nextFloat(), rand.nextBoolean() ? -0.25F : 0.25F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
 }

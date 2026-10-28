@@ -76,6 +76,7 @@ public class ServerEvents {
         swapList.clear();
         thaumcraft.api.casters.FocusEngine.clearServerState();
         thaumcraft.common.items.casters.CasterManager.clearServer();
+        thaumcraft.common.entities.projectile.EntityFocusCloud.clearServer();
     }
 
     private static void tickBlockSwap(ServerLevel world) {

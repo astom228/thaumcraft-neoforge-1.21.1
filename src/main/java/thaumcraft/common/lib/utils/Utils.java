@@ -98,4 +98,25 @@ public final class Utils {
         BlockState bi = world.getBlockState(pos);
         return !bi.isAir() && !bi.is(Blocks.BEDROCK) && bi.is(Tags.Blocks.ORES);
     }
+
+    /** Точка x внутри конуса с вершиной t, осью к b и углом раствора aperture (радианы), не дальше b. */
+    public static boolean isLyingInCone(double[] x, double[] t, double[] b, float aperture) {
+        double halfAperture = aperture / 2.0F;
+        double[] apexToXVect = dif(t, x);
+        double[] axisVect = dif(t, b);
+        boolean isInInfiniteCone = dotProd(apexToXVect, axisVect) / magn(apexToXVect) / magn(axisVect) > Math.cos(halfAperture);
+        return isInInfiniteCone && dotProd(apexToXVect, axisVect) / magn(axisVect) < magn(axisVect);
+    }
+
+    public static double dotProd(double[] a, double[] b) {
+        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    }
+
+    public static double[] dif(double[] a, double[] b) {
+        return new double[] {a[0] - b[0], a[1] - b[1], a[2] - b[2]};
+    }
+
+    public static double magn(double[] a) {
+        return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
+    }
 }

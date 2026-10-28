@@ -547,5 +547,9 @@
   "item.thaumcraft.focus_3": "Чистый великий фокус",
   "item.thaumcraft.focus_pouch": "Сумка для фокусов",
   "item.Focus.cost1": "Вис за заклинание",
-  "tc.vis.cost": "Расход Вис:"
+  "tc.vis.cost": "Расход Вис:",
+  "entity.thaumcraft.spellbat": "Летучая мышь заклинания",
+  "entity.thaumcraft.focus_projectile": "Снаряд фокуса",
+  "entity.thaumcraft.focus_cloud": "Облако фокуса",
+  "entity.thaumcraft.focus_mine": "Мина фокуса"
 }

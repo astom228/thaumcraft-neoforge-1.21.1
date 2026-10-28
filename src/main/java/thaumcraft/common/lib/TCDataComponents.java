@@ -65,6 +65,19 @@ public class TCDataComponents {
             COMPONENTS.registerComponentType("caster_focus", b -> b.persistent(net.minecraft.world.item.component.ItemContainerContents.CODEC)
                     .networkSynchronized(net.minecraft.world.item.component.ItemContainerContents.STREAM_CODEC));
 
+    /** Область «Плана» у перчатки: размеры x, y, z и выбранная ось (в оригинале — NBT "areax/areay/areaz/aread"). */
+    public record CasterArea(int x, int y, int z, int dim) {
+        public static final Codec<CasterArea> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.create(i -> i.group(
+                Codec.INT.fieldOf("x").forGetter(CasterArea::x), Codec.INT.fieldOf("y").forGetter(CasterArea::y),
+                Codec.INT.fieldOf("z").forGetter(CasterArea::z), Codec.INT.fieldOf("dim").forGetter(CasterArea::dim)).apply(i, CasterArea::new));
+        public static final net.minecraft.network.codec.StreamCodec<io.netty.buffer.ByteBuf, CasterArea> STREAM_CODEC =
+                net.minecraft.network.codec.StreamCodec.composite(ByteBufCodecs.VAR_INT, CasterArea::x, ByteBufCodecs.VAR_INT, CasterArea::y,
+                        ByteBufCodecs.VAR_INT, CasterArea::z, ByteBufCodecs.VAR_INT, CasterArea::dim, CasterArea::new);
+    }
+
+    public static final Supplier<DataComponentType<CasterArea>> CASTER_AREA = COMPONENTS.registerComponentType("caster_area",
+            b -> b.persistent(CasterArea.CODEC).networkSynchronized(CasterArea.STREAM_CODEC));
+
     /** Блок, выбранный перчаткой для фокуса с выбором блока (в оригинале — NBT "picked"). */
     public static final Supplier<DataComponentType<net.minecraft.world.item.component.ItemContainerContents>> CASTER_PICKED =
             COMPONENTS.registerComponentType("caster_picked", b -> b.persistent(net.minecraft.world.item.component.ItemContainerContents.CODEC)

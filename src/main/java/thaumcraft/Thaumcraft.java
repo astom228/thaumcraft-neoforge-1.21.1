@@ -48,6 +48,7 @@ public class Thaumcraft {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::loadComplete);
         modEventBus.addListener(ConfigBlocks::registerCapabilities);
+        modEventBus.addListener(ConfigEntities::registerAttributes);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, ModConfig.CLIENT_SPEC);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_SPEC);
     }
@@ -55,6 +56,8 @@ public class Thaumcraft {
     private void commonSetup(FMLCommonSetupEvent event) {
         // ConfigAspects.registerEntityAspects (в оригинале — postInit); не зависит от данных мира
         event.enqueueWork(ConfigAspects::initEntities);
+        // ConfigItems.initFoci (в оригинале — preInit): элементы фокусов, до чтения любых пакетов
+        event.enqueueWork(ConfigItems::initFoci);
         // init оригинала: категории и файлы исследований (дополнения регистрируют свои там же)
         event.enqueueWork(ConfigResearch::init);
         // ConfigRecipes.initializeCompoundRecipes (в оригинале — init)

@@ -40,9 +40,8 @@ import thaumcraft.common.world.aura.AuraHandler;
  * Перчатка заклинателя (порт ItemCaster). ПКМ — заклинание фокуса за Вис из ауры (area: 0 — свой чанк, 1 — ещё 4 соседних
  * через 16 блоков, 2 — 3×3 чанка), с перезарядкой по сложности фокуса. Щелчок по блоку: IInteractWithCaster блока/BlockEntity,
  * затем триггеры CasterTriggerRegistry, затем выбор блока (Shift) для фокуса с IFocusBlockPicker.
- * TODO этап 12.3: IArchitect (подсветка блоков фокуса «План»).
  */
-public class ItemCaster extends Item implements ICaster {
+public class ItemCaster extends Item implements ICaster, thaumcraft.api.items.IArchitect {
     /** Порядок EnumFacing.HORIZONTALS 1.12: S, W, N, E. */
     private static final Direction[] HORIZONTALS = {Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST};
     final int area;
@@ -375,5 +374,50 @@ public class ItemCaster extends Item implements ICaster {
             }
         }
         return out;
+    }
+
+    // IArchitect: подсветка области — от узла фокуса с IArchitect («План»)
+
+    private thaumcraft.api.items.IArchitect architect(ItemStack stack) {
+        if (this.getFocus(stack) == null) {
+            return null;
+        }
+        FocusPackage fp = ItemFocus.getPackage(this.getFocusStack(stack));
+        if (fp != null) {
+            for (IFocusElement fe : fp.nodes) {
+                if (fe instanceof thaumcraft.api.items.IArchitect a) {
+                    return a;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public java.util.ArrayList<BlockPos> getArchitectBlocks(ItemStack stack, Level world, BlockPos pos, Direction side, Player player) {
+        thaumcraft.api.items.IArchitect a = this.architect(stack);
+        return a != null ? a.getArchitectBlocks(stack, world, pos, side, player) : null;
+    }
+
+    @Override
+    public boolean showAxis(ItemStack stack, Level world, Player player, Direction side, EnumAxis axis) {
+        thaumcraft.api.items.IArchitect a = this.architect(stack);
+        return a != null && a.showAxis(stack, world, player, side, axis);
+    }
+
+    @Override
+    public net.minecraft.world.phys.HitResult getArchitectMOP(ItemStack stack, Level world, LivingEntity player) {
+        if (this.getFocus(stack) != null) {
+            FocusPackage fp = ItemFocus.getPackage(this.getFocusStack(stack));
+            if (fp != null && FocusEngine.doesPackageContainElement(fp, "thaumcraft.PLAN")) {
+                return ((thaumcraft.api.items.IArchitect) FocusEngine.getElement("thaumcraft.PLAN")).getArchitectMOP(this.getFocusStack(stack), world, player);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean useBlockHighlight(ItemStack stack) {
+        return false;
     }
 }

@@ -100,5 +100,9 @@
   "tc.mirror.linked_to": "Linked to %s,%s,%s in %s",
   "tc.mirror.in_dimension": "in %s",
   "effect.thaumcraft.flux_taint": "Taint Poison",
-  "effect.thaumcraft.vis_exhaust": "Flux Flu"
+  "effect.thaumcraft.vis_exhaust": "Flux Flu",
+  "entity.thaumcraft.spellbat": "Spellbat",
+  "entity.thaumcraft.focus_projectile": "Focus Projectile",
+  "entity.thaumcraft.focus_cloud": "Focus Cloud",
+  "entity.thaumcraft.focus_mine": "Focus Mine"
 }

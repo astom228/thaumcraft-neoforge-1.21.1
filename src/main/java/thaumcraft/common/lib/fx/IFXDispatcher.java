@@ -38,6 +38,18 @@ public interface IFXDispatcher {
     default void drawInfusionParticles4(double x, double y, double z, int x2, int y2, int z2) {
     }
 
+    /** Клуб облака фокуса цвета c (drawFocusCloudParticle). */
+    default void drawFocusCloudParticle(double x, double y, double z, double mx, double my, double mz, int c) {
+    }
+
+    /** Огонёк (drawFireMote): в половине случаев втрое меньше и на слое 1. */
+    default void drawFireMote(float x, float y, float z, float vx, float vy, float vz, float r, float g, float b, float alpha, float scale) {
+    }
+
+    /** Разряд от (x, y, z) к (tx, ty, tz) (arcBolt, FXBolt). */
+    default void arcBolt(double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float width) {
+    }
+
     /** Клуб Выброса в блоке p (drawPollutionParticles). */
     default void drawPollutionParticles(net.minecraft.core.BlockPos p) {
     }

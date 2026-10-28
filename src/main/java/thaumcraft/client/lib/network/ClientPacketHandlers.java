@@ -99,6 +99,34 @@ public final class ClientPacketHandlers {
         }
     }
 
+    /** PacketFXZap: разряд «Разряда». */
+    public static void handleZap(thaumcraft.common.lib.network.fx.PacketFXZap msg) {
+        if (Minecraft.getInstance().level == null) {
+            return;
+        }
+        java.awt.Color c = new java.awt.Color(msg.color());
+        IFXDispatcher.get().arcBolt(msg.source().x, msg.source().y, msg.source().z, msg.target().x, msg.target().y, msg.target().z,
+                c.getRed() / 255.0F, c.getGreen() / 255.0F, c.getBlue() / 255.0F, msg.width());
+    }
+
+    /** PacketFXFocusEffect: по 10 / (число эффектов) частиц каждого эффекта. */
+    public static void handleFocusEffect(thaumcraft.common.lib.network.fx.PacketFXFocusEffect msg) {
+        var world = Minecraft.getInstance().level;
+        if (world == null) {
+            return;
+        }
+        String[] partKeys = msg.parts().split("%");
+        int amt = Math.max(1, 10 / partKeys.length);
+        for (String k : partKeys) {
+            if (thaumcraft.api.casters.FocusEngine.getElement(k) instanceof thaumcraft.api.casters.FocusEffect part) {
+                for (int a = 0; a < amt; a++) {
+                    part.renderParticleFX(world, msg.x(), msg.y(), msg.z(), msg.mx() + world.random.nextGaussian() / 20.0,
+                            msg.my() + world.random.nextGaussian() / 20.0, msg.mz() + world.random.nextGaussian() / 20.0);
+                }
+            }
+        }
+    }
+
     /** PacketFXPollute: клубы Выброса над блоком. */
     public static void handlePollute(thaumcraft.common.lib.network.fx.PacketFXPollute msg) {
         if (Minecraft.getInstance().level == null) {
