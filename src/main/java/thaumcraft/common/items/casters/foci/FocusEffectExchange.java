@@ -40,10 +40,10 @@ public class FocusEffectExchange extends FocusEffect implements thaumcraft.api.c
         return Aspect.EXCHANGE;
     }
 
-    /** Как в оригинале: из-за приоритета операций — (удача + 1) · 3 (DECISIONS 99). */
+    /** 5 + шёлковое касание · 4 + удача (как у «Разрушения»); в оригинале из-за приоритета операций — (удача + 1) · 3 (DEVIATIONS 42). */
     @Override
     public int getComplexity() {
-        return 5 + this.getSettingValue("silk") * 4 + this.getSettingValue("fortune") == 0 ? 0 : (this.getSettingValue("fortune") + 1) * 3;
+        return 5 + this.getSettingValue("silk") * 4 + (this.getSettingValue("fortune") == 0 ? 0 : (this.getSettingValue("fortune") + 1) * 3);
     }
 
     @Override
