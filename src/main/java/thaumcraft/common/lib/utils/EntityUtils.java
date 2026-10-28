@@ -161,4 +161,57 @@ public class EntityUtils {
         return !target.level().isClientSide && target instanceof net.minecraft.world.entity.player.Player && target.getServer() != null
                 && !target.getServer().isPvpAllowed();
     }
+
+    /** Видит ли игрок аспекты в мире: IGoggles в основной руке, броне или безделушках. */
+    public static boolean hasGoggles(Entity e) {
+        if (!(e instanceof net.minecraft.world.entity.player.Player viewer)) {
+            return false;
+        }
+        if (viewer.getMainHandItem().getItem() instanceof thaumcraft.api.items.IGoggles g && g.showIngamePopups(viewer.getMainHandItem(), viewer)) {
+            return true;
+        }
+        for (net.minecraft.world.item.ItemStack s : viewer.getInventory().armor) {
+            if (s.getItem() instanceof thaumcraft.api.items.IGoggles g && g.showIngamePopups(s, viewer)) {
+                return true;
+            }
+        }
+        net.neoforged.neoforge.items.IItemHandler baubles = BaubleUtils.getBaubles(viewer);
+        if (baubles != null) {
+            for (int a = 0; a < baubles.getSlots(); a++) {
+                net.minecraft.world.item.ItemStack s = baubles.getStackInSlot(a);
+                if (s.getItem() instanceof thaumcraft.api.items.IGoggles g && g.showIngamePopups(s, viewer)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /** Видит ли игрок скрытое: IRevealer в руках, броне или безделушках. */
+    public static boolean hasRevealer(Entity e) {
+        if (!(e instanceof net.minecraft.world.entity.player.Player viewer)) {
+            return false;
+        }
+        if (viewer.getMainHandItem().getItem() instanceof thaumcraft.api.items.IRevealer r && r.showNodes(viewer.getMainHandItem(), viewer)) {
+            return true;
+        }
+        if (viewer.getOffhandItem().getItem() instanceof thaumcraft.api.items.IRevealer r && r.showNodes(viewer.getOffhandItem(), viewer)) {
+            return true;
+        }
+        for (net.minecraft.world.item.ItemStack s : viewer.getInventory().armor) {
+            if (s.getItem() instanceof thaumcraft.api.items.IRevealer r && r.showNodes(s, viewer)) {
+                return true;
+            }
+        }
+        net.neoforged.neoforge.items.IItemHandler baubles = BaubleUtils.getBaubles(viewer);
+        if (baubles != null) {
+            for (int a = 0; a < baubles.getSlots(); a++) {
+                net.minecraft.world.item.ItemStack s = baubles.getStackInSlot(a);
+                if (s.getItem() instanceof thaumcraft.api.items.IRevealer r && r.showNodes(s, viewer)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

@@ -140,8 +140,10 @@ public class ItemsTC {
     public static final DeferredItem<Item> grappleGunTip = simple("grappler_head");
     public static final DeferredItem<Item> grappleGunSpool = simple("grappler_spool");
 
-    // TODO этап 13: заменить на ItemGoggles (броня + очки откровения). Пока нужен как иконка вкладки.
-    public static final DeferredItem<Item> goggles = ConfigItems.ITEMS.registerSimpleItem("goggles", new Item.Properties().stacksTo(1));
+    // ItemGoggles: шлем SPECIAL, setMaxDamage(350), RARE; безделушка на голову
+    public static final DeferredItem<Item> goggles = ConfigItems.ITEMS.registerItem("goggles",
+            p -> new thaumcraft.common.items.armor.ItemGoggles(ThaumcraftMaterials.ARMORMAT_SPECIAL, p),
+            new Item.Properties().durability(350).rarity(Rarity.RARE));
 
     // --- инструменты (ConfigItems.initItems: ThaumcraftMaterials.TOOLMAT_*) ---
     public static final DeferredItem<Item> thaumiumAxe = tool("thaumium_axe", p -> new thaumcraft.common.items.tools.ItemThaumiumAxe(ThaumcraftMaterials.TOOLMAT_THAUMIUM, p));

@@ -108,6 +108,9 @@ public class ClientRegistration {
     /** Предмет-зеркало со связью — модель «открытого» зеркала (metadata 1 оригинала). */
     @SubscribeEvent
     public static void clientSetup(net.neoforged.fml.event.lifecycle.FMLClientSetupEvent event) {
+        // очки откровения в слоте головы Curios
+        top.theillusivec4.curios.api.client.CuriosRendererRegistry.register(thaumcraft.api.items.ItemsTC.goggles.get(),
+                thaumcraft.client.renderers.item.GogglesCurioRenderer::new);
         event.enqueueWork(() -> {
             net.minecraft.resources.ResourceLocation linked = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "linked");
             // перчатка с фокусом (свойство focus оригинала); фокусы — этап 12

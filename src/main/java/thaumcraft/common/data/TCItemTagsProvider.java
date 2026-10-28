@@ -51,13 +51,14 @@ public class TCItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.AXES).add(thaumiumAxe.get(), voidAxe.get());
         tag(ItemTags.SHOVELS).add(thaumiumShovel.get(), voidShovel.get());
         tag(ItemTags.HOES).add(thaumiumHoe.get(), voidHoe.get());
-        tag(ItemTags.HEAD_ARMOR).add(thaumiumHelm.get(), voidHelm.get());
+        tag(ItemTags.HEAD_ARMOR).add(thaumiumHelm.get(), voidHelm.get(), goggles.get());
         tag(ItemTags.CHEST_ARMOR).add(thaumiumChest.get(), voidChest.get(), clothChest.get());
         tag(ItemTags.LEG_ARMOR).add(thaumiumLegs.get(), voidLegs.get(), clothLegs.get());
         tag(ItemTags.FOOT_ARMOR).add(thaumiumBoots.get(), voidBoots.get(), clothBoots.get(), travellerBoots.get());
         // безделушки: слоты Curios
         tag(TCTags.Items.CURIOS_NECKLACE).add(amuletMundane.get(), amuletFancy.get(), amuletVisFound.get(), amuletVis.get());
         tag(TCTags.Items.CURIOS_RING).add(ringMundane.get(), ringApprentice.get(), ringFancy.get());
+        tag(TCTags.Items.CURIOS_HEAD).add(goggles.get());
         tag(TCTags.Items.CURIOS_BELT).add(girdleMundane.get(), girdleFancy.get(), focusPouch.get());
         // роба окрашивается, как кожаная броня
         tag(ItemTags.DYEABLE).add(clothChest.get(), clothLegs.get(), clothBoots.get());
