@@ -78,6 +78,11 @@ public class TCDataComponents {
     public static final Supplier<DataComponentType<CasterArea>> CASTER_AREA = COMPONENTS.registerComponentType("caster_area",
             b -> b.persistent(CasterArea.CODEC).networkSynchronized(CasterArea.STREAM_CODEC));
 
+    /** Содержимое сумки для фокусов (в оригинале — NBT "Items" сумки): 18 слотов. */
+    public static final Supplier<DataComponentType<net.minecraft.world.item.component.ItemContainerContents>> POUCH_CONTENTS =
+            COMPONENTS.registerComponentType("pouch_contents", b -> b.persistent(net.minecraft.world.item.component.ItemContainerContents.CODEC)
+                    .networkSynchronized(net.minecraft.world.item.component.ItemContainerContents.STREAM_CODEC));
+
     /** Блок, выбранный перчаткой для фокуса с выбором блока (в оригинале — NBT "picked"). */
     public static final Supplier<DataComponentType<net.minecraft.world.item.component.ItemContainerContents>> CASTER_PICKED =
             COMPONENTS.registerComponentType("caster_picked", b -> b.persistent(net.minecraft.world.item.component.ItemContainerContents.CODEC)

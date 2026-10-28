@@ -88,6 +88,7 @@ public class ItemsTC {
     // фокусы: предельная сложность 15 / 25 / 50
     public static final DeferredItem<Item> focus1 = ConfigItems.ITEMS.registerItem("focus_1", p -> new thaumcraft.common.items.casters.ItemFocus(15, p));
     public static final DeferredItem<Item> focus2 = ConfigItems.ITEMS.registerItem("focus_2", p -> new thaumcraft.common.items.casters.ItemFocus(25, p));
+    public static final DeferredItem<Item> focusPouch = ConfigItems.ITEMS.registerItem("focus_pouch", thaumcraft.common.items.casters.ItemFocusPouch::new);
     public static final DeferredItem<Item> focus3 = ConfigItems.ITEMS.registerItem("focus_3", p -> new thaumcraft.common.items.casters.ItemFocus(50, p));
     public static final DeferredItem<Item> handMirror = ConfigItems.ITEMS.registerItem("hand_mirror", ItemHandMirror::new);
     public static final DeferredItem<Item> resonator = ConfigItems.ITEMS.registerItem("essentia_resonator", ItemResonator::new);

@@ -17,7 +17,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 /**
  * Порт CasterManager: скидка Вис, расход Вис с перчаток в инвентаре, перезарядка заклинаний.
  * Перезарядка — по id существа, отдельные таблицы для клиента и сервера (как в оригинале); серверная очищается при
- * остановке сервера, клиентская — при выходе из мира. TODO этап 12.6: смена фокуса (changeFocus).
+ * остановке сервера, клиентская — при выходе из мира.
  */
 public class CasterManager {
     static final Map<Integer, Long> cooldownServer = new HashMap<>();
@@ -60,6 +60,168 @@ public class CasterManager {
             ItemStack item = player.getInventory().items.get(a);
             if (item.getItem() instanceof ICaster caster && caster.consumeVis(item, player, cost, true, false)) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    /** Ячейки Curios игрока (в 1.12 — Baubles); null — без Curios. */
+    private static net.neoforged.neoforge.items.IItemHandlerModifiable curios(Player player) {
+        return CuriosApi.getCuriosInventory(player).map(h -> (net.neoforged.neoforge.items.IItemHandlerModifiable) h.getEquippedCurios()).orElse(null);
+    }
+
+    /**
+     * Сменить фокус перчатки (changeFocus оригинала): фокусы ищутся в сумках на поясе (Curios), в основном инвентаре и в
+     * сумках в нём; ключ — getSortingHelper. focus — нужный ключ (иначе следующий по порядку, иначе первый); «REMOVE» —
+     * снять фокус. Снятый фокус кладётся в сумку, иначе в инвентарь (если некуда — остаётся в перчатке).
+     * Ячейки сумок: ≥ 0 — основной инвентарь, < 0 — Curios (−(номер + 1); в 1.12 — номер Baubles − 4).
+     */
+    public static void changeFocus(ItemStack is, net.minecraft.world.level.Level w, Player player, String focus) {
+        ICaster wand = (ICaster) is.getItem();
+        java.util.TreeMap<String, Integer> foci = new java.util.TreeMap<>();
+        HashMap<Integer, Integer> pouches = new HashMap<>();
+        int pouchcount = 0;
+        ItemStack item;
+        net.neoforged.neoforge.items.IItemHandlerModifiable baubles = curios(player);
+        if (baubles != null) {
+            for (int a = 0; a < baubles.getSlots(); a++) {
+                ItemStack bs = baubles.getStackInSlot(a);
+                if (bs.getItem() instanceof ItemFocusPouch pouch) {
+                    pouchcount++;
+                    pouches.put(pouchcount, -(a + 1));
+                    net.minecraft.core.NonNullList<ItemStack> inv = pouch.getInventory(bs);
+                    for (int q = 0; q < inv.size(); q++) {
+                        item = inv.get(q);
+                        if (item.getItem() instanceof ItemFocus f) {
+                            String sh = f.getSortingHelper(item);
+                            if (sh != null) {
+                                foci.put(sh, q + pouchcount * 1000);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        net.minecraft.core.NonNullList<ItemStack> main = player.getInventory().items;
+        for (int a = 0; a < 36; a++) {
+            item = main.get(a);
+            if (item.getItem() instanceof ItemFocus f) {
+                String sh = f.getSortingHelper(item);
+                if (sh == null) {
+                    continue;
+                }
+                foci.put(sh, a);
+            }
+            if (item.getItem() instanceof ItemFocusPouch pouch) {
+                pouches.put(++pouchcount, a);
+                net.minecraft.core.NonNullList<ItemStack> inv = pouch.getInventory(item);
+                for (int q = 0; q < inv.size(); q++) {
+                    ItemStack fi = inv.get(q);
+                    if (fi.getItem() instanceof ItemFocus f) {
+                        String sh = f.getSortingHelper(fi);
+                        if (sh != null) {
+                            foci.put(sh, q + pouchcount * 1000);
+                        }
+                    }
+                }
+            }
+        }
+        if (!focus.equals("REMOVE") && !foci.isEmpty()) {
+            String newkey = focus;
+            if (foci.get(newkey) == null) {
+                newkey = foci.higherKey(newkey);
+            }
+            if (newkey == null || foci.get(newkey) == null) {
+                newkey = foci.firstKey();
+            }
+            item = ItemStack.EMPTY;
+            int code = foci.get(newkey);
+            if (code < 1000 && code >= 0) {
+                item = main.get(code).copy();
+            } else {
+                int pid = code / 1000;
+                if (pouches.containsKey(pid)) {
+                    int pouchslot = pouches.get(pid);
+                    int focusslot = code - pid * 1000;
+                    item = fetchFocusFromPouch(player, focusslot, pouchslot);
+                }
+            }
+            if (item.isEmpty()) {
+                return;
+            }
+            if (code < 1000 && code >= 0) {
+                player.getInventory().setItem(code, ItemStack.EMPTY);
+            }
+            player.playSound(thaumcraft.common.lib.SoundsTC.ticks.get(), 0.3F, 1.0F);
+            if (wand.getFocus(is) != null && (addFocusToPouch(player, wand.getFocusStack(is).copy(), pouches)
+                    || player.getInventory().add(wand.getFocusStack(is).copy()))) {
+                wand.setFocus(is, ItemStack.EMPTY);
+            }
+            if (wand.getFocus(is) == null) {
+                wand.setFocus(is, item);
+            } else if (!addFocusToPouch(player, item, pouches)) {
+                if (!player.getInventory().add(item)) {
+                    player.drop(item, false);
+                }
+            }
+        } else if (wand.getFocus(is) != null && (addFocusToPouch(player, wand.getFocusStack(is).copy(), pouches)
+                || player.getInventory().add(wand.getFocusStack(is).copy()))) {
+            wand.setFocus(is, null);
+            player.playSound(thaumcraft.common.lib.SoundsTC.ticks.get(), 0.3F, 0.9F);
+        }
+    }
+
+    private static ItemStack pouchAt(Player player, int pouchslot) {
+        if (pouchslot >= 0) {
+            return player.getInventory().items.get(pouchslot);
+        }
+        net.neoforged.neoforge.items.IItemHandlerModifiable baubles = curios(player);
+        return baubles == null ? ItemStack.EMPTY : baubles.getStackInSlot(-pouchslot - 1);
+    }
+
+    private static void pouchChanged(Player player, int pouchslot, ItemStack pouch) {
+        if (pouchslot >= 0) {
+            player.getInventory().setItem(pouchslot, pouch);
+            player.getInventory().setChanged();
+        } else {
+            net.neoforged.neoforge.items.IItemHandlerModifiable baubles = curios(player);
+            if (baubles != null) {
+                baubles.setStackInSlot(-pouchslot - 1, pouch);
+            }
+        }
+    }
+
+    private static ItemStack fetchFocusFromPouch(Player player, int focusid, int pouchslot) {
+        ItemStack pouch = pouchAt(player, pouchslot);
+        if (!(pouch.getItem() instanceof ItemFocusPouch p)) {
+            return ItemStack.EMPTY;
+        }
+        net.minecraft.core.NonNullList<ItemStack> inv = p.getInventory(pouch);
+        ItemStack contents = inv.get(focusid);
+        ItemStack focus = ItemStack.EMPTY;
+        if (contents.getItem() instanceof ItemFocus) {
+            focus = contents.copy();
+            inv.set(focusid, ItemStack.EMPTY);
+            p.setInventory(pouch, inv);
+            pouchChanged(player, pouchslot, pouch);
+        }
+        return focus;
+    }
+
+    private static boolean addFocusToPouch(Player player, ItemStack focus, HashMap<Integer, Integer> pouches) {
+        for (Integer pouchslot : pouches.values()) {
+            ItemStack pouch = pouchAt(player, pouchslot);
+            if (!(pouch.getItem() instanceof ItemFocusPouch p)) {
+                continue;
+            }
+            net.minecraft.core.NonNullList<ItemStack> inv = p.getInventory(pouch);
+            for (int q = 0; q < inv.size(); q++) {
+                if (inv.get(q).isEmpty()) {
+                    inv.set(q, focus.copy());
+                    p.setInventory(pouch, inv);
+                    pouchChanged(player, pouchslot, pouch);
+                    return true;
+                }
             }
         }
         return false;

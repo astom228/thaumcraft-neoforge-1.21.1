@@ -45,6 +45,7 @@ public class ClientRegistration {
         event.register(TCMenus.HAND_MIRROR.get(), thaumcraft.client.gui.GuiHandMirror::new);
         event.register(TCMenus.THAUMATORIUM.get(), thaumcraft.client.gui.GuiThaumatorium::new);
         event.register(TCMenus.FOCAL_MANIPULATOR.get(), thaumcraft.client.gui.GuiFocalManipulator::new);
+        event.register(TCMenus.FOCUS_POUCH.get(), thaumcraft.client.gui.GuiFocusPouch::new);
     }
 
     /** Магические рецепты не входят в ванильную книгу рецептов; без категории клиент пишет предупреждение на каждый рецепт. */

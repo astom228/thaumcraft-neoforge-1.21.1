@@ -28,4 +28,6 @@ public class TCMenus {
             () -> IMenuTypeExtension.create(ContainerThaumatorium::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerFocalManipulator>> FOCAL_MANIPULATOR = MENUS.register("focal_manipulator",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerFocalManipulator::new));
+    public static final Supplier<MenuType<thaumcraft.common.container.ContainerFocusPouch>> FOCUS_POUCH = MENUS.register("focus_pouch",
+            () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerFocusPouch::new));
 }
