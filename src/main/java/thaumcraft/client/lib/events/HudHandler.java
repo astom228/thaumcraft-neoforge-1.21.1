@@ -26,7 +26,7 @@ import thaumcraft.common.world.aura.AuraChunk;
 
 /**
  * Порт HudHandler: эффект получения знаний (пока открыт любой экран тоже), HUD предметов — с предметами
- * (таумометр — 7.3, кастер — этап 12, проверка рассудка — с ней). Только клиент.
+ * (таумометр, перчатка заклинателя; проверка рассудка — с ней). Только клиент.
  */
 public class HudHandler {
     static final ResourceLocation HUD = rl("textures/gui/hud.png");
@@ -55,10 +55,15 @@ public class HudHandler {
             RenderSystem.setShaderTexture(0, HUD);
             ItemStack handStack = player.getMainHandItem();
             boolean rT = false;
+            boolean rC = false;
             for (int a = 0; a < 2; a++) {
                 if (!handStack.isEmpty()) {
-                    // TODO этап 12: кастер (ICaster); проверка рассудка — с предметом
-                    if (!rT && handStack.getItem() instanceof ItemThaumometer) {
+                    // TODO: проверка рассудка — с предметом (ItemSanityChecker)
+                    if (!rC && handStack.getItem() instanceof thaumcraft.api.casters.ICaster) {
+                        renderCastingWandHud(mc, pose, renderTickTime, player, handStack, hh);
+                        RenderSystem.setShaderTexture(0, HUD);
+                        rC = true;
+                    } else if (!rT && handStack.getItem() instanceof ItemThaumometer) {
                         renderThaumometerHud(mc, pose, renderTickTime, player);
                         rT = true;
                     }
@@ -135,6 +140,96 @@ public class HudHandler {
         UtilsFX.drawTexturedQuad(pose, 1.0F, 1.0F, 72.0F, 48.0F, 16.0F, 80.0F, -90.0F);
         start = 8.0F + (1.0F - base) * 64.0F;
         UtilsFX.drawTexturedQuad(pose, 2.0F, start, 117.0F, 61.0F, 14.0F, 5.0F, -90.0F);
+    }
+
+    /**
+     * Шкала перчатки (renderCastingWandHud): циферблат вверху слева (или внизу — dialBottom), столбик Вис ауры относительно
+     * базы; с Shift — числа (Вис и расход фокуса со скидкой); фокус в центре, а при выбранном блоке («Обмен») — блок и его число.
+     */
+    static void renderCastingWandHud(Minecraft mc, PoseStack pose, float partialTicks, Player player, ItemStack wandstack, int hh) {
+        thaumcraft.api.casters.ICaster wand = (thaumcraft.api.casters.ICaster) wandstack.getItem();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        pose.pushPose();
+        int dailLocation = thaumcraft.common.config.ModConfig.CONFIG_GRAPHICS.dialBottom.get() ? hh - 32 : 0;
+        pose.translate(0.0F, dailLocation, 0.0F);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderTexture(0, HUD);
+        pose.pushPose();
+        pose.scale(0.5F, 0.5F, 0.5F);
+        UtilsFX.drawTexturedQuad(pose, 0.0F, 0.0F, 0.0F, 0.0F, 64.0F, 64.0F, -90.0F);
+        pose.popPose();
+        pose.translate(16.0F, 16.0F, 0.0F);
+        int max = currentAura.getBase();
+        int amt = (int) currentAura.getVis();
+        thaumcraft.common.items.casters.ItemFocus focus = wand.getFocus(wandstack) instanceof thaumcraft.common.items.casters.ItemFocus f ? f : null;
+        ItemStack focusStack = wand.getFocusStack(wandstack);
+        pose.pushPose();
+        pose.translate(16.0F, -10.0F, 0.0F);
+        pose.scale(0.5F, 0.5F, 0.5F);
+        // без базы ауры (0) в оригинале — деление на ноль; столбик пуст
+        int loc = max > 0 ? Math.min(30, (int) (30.0F * amt / max)) : 0;
+        java.awt.Color ac = new java.awt.Color(thaumcraft.api.aspects.Aspect.ENERGY.getColor());
+        RenderSystem.setShaderColor(ac.getRed() / 255.0F, ac.getGreen() / 255.0F, ac.getBlue() / 255.0F, 0.8F);
+        UtilsFX.drawTexturedQuad(pose, -4.0F, 35 - loc, 104.0F, 0.0F, 8.0F, loc, -90.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        UtilsFX.drawTexturedQuad(pose, -8.0F, -3.0F, 72.0F, 0.0F, 16.0F, 42.0F, -90.0F);
+        if (player.isShiftKeyDown()) {
+            pose.pushPose();
+            pose.mulPose(Axis.ZP.rotationDegrees(-90.0F));
+            pose.translate(-32.0F, -4.0F, 0.0F);
+            drawStringWithShadow(mc, pose, SECONDS_FORMATTER.format(amt), 0xFFFFFF);
+            pose.popPose();
+            if (focus != null && focus.getVisCost(focusStack) > 0.0F) {
+                float mod = wand.getConsumptionModifier(wandstack, player, false);
+                String msg = SECONDS_FORMATTER.format(focus.getVisCost(focusStack) * mod);
+                pose.pushPose();
+                pose.translate(-32 - mc.font.width(msg) / 2.0F, 32.0F, 0.0F);
+                drawStringWithShadow(mc, pose, msg, 0xFFFFFF);
+                pose.popPose();
+            }
+            RenderSystem.setShaderTexture(0, HUD);
+        }
+        pose.popPose();
+        if (focus != null) {
+            ItemStack pickedStack = wand.getPickedBlock(player.getInventory().getSelected());
+            net.minecraft.client.gui.GuiGraphics g = new net.minecraft.client.gui.GuiGraphics(mc, mc.renderBuffers().bufferSource());
+            g.pose().last().pose().set(pose.last().pose());
+            if (pickedStack != null && !pickedStack.isEmpty()) {
+                renderWandTradeHud(mc, g, player, pickedStack);
+            } else {
+                g.pose().translate(-24.0F, -24.0F, 90.0F);
+                g.renderItem(focusStack, 16, 16);
+            }
+            g.flush();
+        }
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        pose.popPose();
+    }
+
+    /** Выбранный перчаткой блок и сколько таких в основном инвентаре (renderWandTradeHud). */
+    static void renderWandTradeHud(Minecraft mc, net.minecraft.client.gui.GuiGraphics g, Player player, ItemStack picked) {
+        int amount = 0;
+        for (ItemStack is : player.getInventory().items) {
+            if (!is.isEmpty() && ItemStack.isSameItem(is, picked)) {
+                amount += is.getCount();
+            }
+        }
+        g.renderItem(picked, -8, -8);
+        String am = "" + amount;
+        int sw = mc.font.width(am);
+        g.pose().pushPose();
+        g.pose().translate(0.0F, -mc.font.lineHeight, 500.0F);
+        g.pose().scale(0.5F, 0.5F, 0.5F);
+        for (int a = -1; a <= 1; a++) {
+            for (int b = -1; b <= 1; b++) {
+                if ((a == 0 || b == 0) && (a != 0 || b != 0)) {
+                    g.drawString(mc.font, am, a + 16 - sw, b + 24, 0, false);
+                }
+            }
+        }
+        g.drawString(mc.font, am, 16 - sw, 24, 0xFFFFFF, false);
+        g.pose().popPose();
     }
 
     /** Gui.drawString 1.12 (с тенью) в текущей матрице. */

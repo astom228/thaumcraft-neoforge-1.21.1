@@ -104,5 +104,7 @@
   "entity.thaumcraft.spellbat": "Spellbat",
   "entity.thaumcraft.focus_projectile": "Focus Projectile",
   "entity.thaumcraft.focus_cloud": "Focus Cloud",
-  "entity.thaumcraft.focus_mine": "Focus Mine"
+  "entity.thaumcraft.focus_mine": "Focus Mine",
+  "key.thaumcraft.change_focus": "Change Caster Focus",
+  "key.thaumcraft.misc_toggle": "Misc Caster Toggle"
 }

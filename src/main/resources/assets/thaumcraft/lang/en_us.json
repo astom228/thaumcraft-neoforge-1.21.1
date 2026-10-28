@@ -768,6 +768,8 @@
   "item.warping": "Warping",
   "itemGroup.thaumcraft": "Thaumcraft",
   "key.categories.thaumcraft": "Thaumcraft",
+  "key.thaumcraft.change_focus": "Change Caster Focus",
+  "key.thaumcraft.misc_toggle": "Misc Caster Toggle",
   "not.pechwand": "You cannot fathom the workings of this yet.",
   "potion.blurred": "Blurred Vision",
   "potion.deathgaze": "Deadly Gaze",

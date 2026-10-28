@@ -407,6 +407,8 @@
   "item.warping": "Искажение",
   "itemGroup.thaumcraft": "Thaumcraft",
   "key.categories.thaumcraft": "Thaumcraft",
+  "key.thaumcraft.change_focus": "Сменить фокус перчатки",
+  "key.thaumcraft.misc_toggle": "Переключатель перчатки",
   "potion.flux_taint": "Отравление скверной",
   "potion.vis_exhaust": "Лихорадка Выброса",
   "recipe.clickthrough": "Нажмите для просмотра рецепта",

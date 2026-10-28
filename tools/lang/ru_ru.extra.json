@@ -631,5 +631,7 @@
   "wandtable.text2": "Затраты опыта",
   "wandtable.text3": "Начать создание",
   "wandtable.text4": "Нужные кристаллы",
-  "wandtable.text5": "Общая сложность"
+  "wandtable.text5": "Общая сложность",
+  "key.thaumcraft.change_focus": "Сменить фокус перчатки",
+  "key.thaumcraft.misc_toggle": "Переключатель перчатки"
 }

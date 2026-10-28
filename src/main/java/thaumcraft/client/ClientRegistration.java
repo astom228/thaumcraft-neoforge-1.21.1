@@ -37,6 +37,20 @@ public class ClientRegistration {
                 shader -> ParticleEngine.particleShader = shader);
     }
 
+    /** Клавиши перчатки (KeyHandler). */
+    @SubscribeEvent
+    public static void registerKeys(net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent event) {
+        event.register(thaumcraft.client.lib.events.KeyHandler.keyF);
+        event.register(thaumcraft.client.lib.events.KeyHandler.keyG);
+    }
+
+    /** Радиальное меню фокусов — слой поверх интерфейса. */
+    @SubscribeEvent
+    public static void registerGuiLayers(net.neoforged.neoforge.client.event.RegisterGuiLayersEvent event) {
+        event.registerAboveAll(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "foci_radial"),
+                thaumcraft.client.lib.events.WandRenderingHandler::renderRadialLayer);
+    }
+
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(TCMenus.RESEARCH_TABLE.get(), GuiResearchTable::new);

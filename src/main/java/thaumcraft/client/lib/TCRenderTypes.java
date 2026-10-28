@@ -36,6 +36,17 @@ public final class TCRenderTypes extends RenderType {
             CompositeState.builder().setShaderState(POSITION_COLOR_SHADER).setTransparencyState(LIGHTNING_TRANSPARENCY).setWriteMaskState(COLOR_WRITE)
                     .createCompositeState(false));
 
+    private static final java.util.function.Function<ResourceLocation, RenderType> ARCHITECT = net.minecraft.Util.memoize(tex -> create(
+            "thaumcraft_architect", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 256, false, true,
+            CompositeState.builder().setShaderState(new ShaderStateShard(net.minecraft.client.renderer.GameRenderer::getPositionTexColorShader)).setTextureState(new TextureStateShard(tex, false, false))
+                    .setTransparencyState(LIGHTNING_TRANSPARENCY).setDepthTestState(NO_DEPTH_TEST).setCullState(NO_CULL).setWriteMaskState(COLOR_WRITE)
+                    .createCompositeState(false)));
+
+    /** Рамки и стрелки «Плана»: текстура, аддитивно (SRC_ALPHA, ONE), сквозь блоки, обе стороны, без записи глубины. */
+    public static RenderType architect(ResourceLocation tex) {
+        return ARCHITECT.apply(tex);
+    }
+
     private TCRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload,
                           Runnable setupState, Runnable clearState) {
         super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);
