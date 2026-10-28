@@ -74,6 +74,7 @@ public class ServerEvents {
     public static void serverStopped(ServerStoppedEvent event) {
         serverRunList.clear();
         swapList.clear();
+        thaumcraft.api.casters.FocusEngine.clearServerState();
     }
 
     private static void tickBlockSwap(ServerLevel world) {
