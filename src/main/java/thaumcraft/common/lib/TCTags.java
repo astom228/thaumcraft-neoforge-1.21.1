@@ -13,6 +13,9 @@ import net.minecraft.world.level.block.Block;
 public final class TCTags {
     public static final class Blocks {
         public static final TagKey<Block> ORES_AMBER = c("ores/amber");
+        /** Блоки, сквозь которые не проходит «Разлом» (portableHoleBlackList оригинала: кровати, поршни, двери, адская печь). */
+        public static final TagKey<Block> PORTABLE_HOLE_BLACKLIST = TagKey.create(net.minecraft.core.registries.Registries.BLOCK,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(thaumcraft.Thaumcraft.MODID, "portable_hole_blacklist"));
         public static final TagKey<Block> ORES_CINNABAR = c("ores/cinnabar");
         public static final TagKey<Block> ORES_QUARTZ = c("ores/quartz");
         public static final TagKey<Block> STORAGE_BLOCKS_THAUMIUM = c("storage_blocks/thaumium");

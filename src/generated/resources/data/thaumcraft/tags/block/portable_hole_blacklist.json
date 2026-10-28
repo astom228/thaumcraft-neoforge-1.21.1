@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#minecraft:beds",
+    "#minecraft:doors",
+    "minecraft:piston",
+    "minecraft:piston_head",
+    "minecraft:sticky_piston",
+    "minecraft:moving_piston"
+  ]
+}

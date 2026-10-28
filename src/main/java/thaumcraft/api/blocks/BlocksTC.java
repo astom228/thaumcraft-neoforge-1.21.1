@@ -351,6 +351,23 @@ public class BlocksTC {
                 .isViewBlocking((s, l, p) -> false);
     }
 
+    // Невидимые блоки-эффекты (BlockEffect: Material.AIR, сопротивление 999, свет 0.5 → 7, у мерцания 15). Без предмета
+    // (в 1.12 был бесполезный предмет с пустой моделью). Заменяемые и проходимые, как воздух
+    public static final DeferredBlock<Block> effectShock = ConfigBlocks.BLOCKS.register("effect_shock", () -> new thaumcraft.common.blocks.misc.BlockEffect(effectProps(7)));
+    public static final DeferredBlock<Block> effectSap = ConfigBlocks.BLOCKS.register("effect_sap", () -> new thaumcraft.common.blocks.misc.BlockEffect(effectProps(7)));
+    public static final DeferredBlock<Block> effectGlimmer = ConfigBlocks.BLOCKS.register("effect_glimmer", () -> new thaumcraft.common.blocks.misc.BlockEffect(effectProps(15)));
+
+    // Дыра «Разлома» (BlockHole: неразрушима, сопротивление 6000000, звук ткани, свет 0.7 → 10). Без предмета
+    public static final DeferredBlock<Block> hole = ConfigBlocks.BLOCKS.register("hole", () -> new thaumcraft.common.blocks.misc.BlockHole(
+            BlockBehaviour.Properties.of().strength(-1.0F, 6000000.0F).sound(SoundType.WOOL).lightLevel(st -> 10).noCollission().noOcclusion()
+                    .noLootTable().randomTicks().pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
+
+    private static BlockBehaviour.Properties effectProps(int light) {
+        // не air(): воздушные состояния не получают случайных тиков, и эффект не исчезал бы
+        return BlockBehaviour.Properties.of().replaceable().noCollission().noOcclusion().noLootTable().randomTicks().strength(0.0F, 999.0F)
+                .lightLevel(st -> light).pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY);
+    }
+
     /** Блок с собственным классом предмета (в оригинале — registerBlock(block, ItemBlockClass)). */
     private static DeferredBlock<Block> registerWithItem(String name, Supplier<? extends Block> block,
                                                          java.util.function.BiFunction<Block, net.minecraft.world.item.Item.Properties, ? extends net.minecraft.world.item.Item> item) {

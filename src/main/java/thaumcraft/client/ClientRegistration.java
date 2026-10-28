@@ -71,6 +71,7 @@ public class ClientRegistration {
         event.registerBlockEntityRenderer(ConfigBlocks.CENTRIFUGE_TILE.get(), thaumcraft.client.renderers.tile.TileCentrifugeRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.THAUMATORIUM_TILE.get(), thaumcraft.client.renderers.tile.TileThaumatoriumRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.INFUSION_MATRIX_TILE.get(), thaumcraft.client.renderers.tile.TileInfusionMatrixRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.HOLE_TILE.get(), thaumcraft.client.renderers.tile.TileHoleRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.PEDESTAL_TILE.get(), thaumcraft.client.renderers.tile.TilePedestalRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.MIRROR_TILE.get(), thaumcraft.client.renderers.tile.TileMirrorRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.MIRROR_ESSENTIA_TILE.get(), thaumcraft.client.renderers.tile.TileMirrorRenderer::new);

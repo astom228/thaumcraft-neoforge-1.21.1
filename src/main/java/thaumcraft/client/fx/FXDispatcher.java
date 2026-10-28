@@ -574,4 +574,146 @@ public class FXDispatcher implements IFXDispatcher {
         fb.setRotationSpeed(rand.nextFloat(), rand.nextBoolean() ? -0.25F : 0.25F);
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
+
+    @Override
+    public void drawGenericParticles(double x, double y, double z, double mx, double my, double mz, thaumcraft.common.lib.fx.GenPart part) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, mx, my, mz);
+        fb.setMaxAge(part.age);
+        fb.setRBGColorF(part.redStart, part.greenStart, part.blueStart, part.redEnd, part.greenEnd, part.blueEnd);
+        fb.setAlphaF(part.alpha);
+        fb.setLoop(part.loop);
+        fb.setParticles(part.partStart, part.partNum, part.partInc);
+        fb.setScale(part.scale);
+        fb.setLayer(part.layer);
+        fb.setRotationSpeed(part.rotstart, part.rot);
+        fb.setSlowDown(part.slowDown);
+        fb.setGravity(part.grav);
+        fb.setGridSize(part.grid);
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, part.delay);
+    }
+
+    @Override
+    public void sparkle(float x, float y, float z, float r, float g, float b) {
+        var rand = this.getWorld().random;
+        if (rand.nextInt(6) < 4) {
+            FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, 0.0, 0.0, 0.0);
+            fb.setMaxAge(6 + rand.nextInt(4));
+            fb.setRBGColorF(r, g, b);
+            fb.setAlphaF(0.9F);
+            fb.setLoop(true);
+            fb.setParticles(320, 16, 1);
+            fb.setScale(0.6F + rand.nextFloat() * 0.2F);
+            fb.setLayer(0);
+            fb.setRotationSpeed(0.0F);
+            ParticleEngine.addEffectWithDelay(this.getWorld(), fb, 0);
+        }
+    }
+
+    @Override
+    public void focusFrostFX(double x, double y, double z, double mx, double my, double mz) {
+        var rand = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, mx, my, mz);
+        fb.setMaxAge(40 + rand.nextInt(40));
+        fb.setAlphaF(1.0F, 0.0F);
+        fb.setParticles(8, 1, 1);
+        fb.setGravity(0.033F);
+        fb.setSlowDown(0.8);
+        fb.setRandomMovementScale(0.0025F, 1.0E-4F, 0.0025F);
+        fb.setScale((float) (0.7F + rand.nextGaussian() * 0.3F));
+        fb.setRotationSpeed(rand.nextFloat() * 3.0F, (float) rand.nextGaussian() / 4.0F);
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, 0);
+    }
+
+    @Override
+    public void focusBreakFX(double x, double y, double z, double mx, double my, double mz) {
+        var rand = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, mx, my, mz);
+        fb.setMaxAge(6 + rand.nextInt(6));
+        int q = rand.nextInt(4);
+        fb.setParticles(704 + q * 3, 3, 1);
+        fb.setSlowDown(0.8);
+        fb.setScale((float) (1.7F + rand.nextGaussian() * 0.3F));
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    @Override
+    public void focusHealFX(double x, double y, double z, double vx, double vy, double vz) {
+        var rand = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, vx + rand.nextGaussian() * 0.01, vy + rand.nextGaussian() * 0.01, vz + rand.nextGaussian() * 0.01);
+        fb.setMaxAge((int) (10.0F + 10.0F * rand.nextFloat()));
+        fb.setRBGColorF(1.0F, 1.0F, 1.0F);
+        fb.setAlphaF(0.0F, 0.7F, 0.7F, 0.0F);
+        fb.setGridSize(64);
+        fb.setParticles(0, 1, 1);
+        fb.setScale(rand.nextFloat() * 2.0F, rand.nextFloat());
+        fb.setSlowDown(0.8);
+        fb.setGravity((float) (rand.nextGaussian() * 0.1F));
+        fb.setRandomMovementScale(0.0125F, 0.0125F, 0.0125F);
+        fb.setRotationSpeed((float) rand.nextGaussian());
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, rand.nextInt(4));
+    }
+
+    @Override
+    public void focusFluxFX(double x, double y, double z, double vx, double vy, double vz) {
+        var rand = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, vx + rand.nextGaussian() * 0.01, vy + rand.nextGaussian() * 0.01, vz + rand.nextGaussian() * 0.01);
+        fb.setMaxAge((int) (15.0F + 10.0F * rand.nextFloat()));
+        fb.setRBGColorF(0.25F + rand.nextFloat() * 0.25F, 0.0F, 0.25F + rand.nextFloat() * 0.25F);
+        fb.setAlphaF(0.0F, 1.0F, 1.0F, 0.0F);
+        fb.setGridSize(64);
+        fb.setParticles(128, 14, 1);
+        fb.setScale(2.0F + rand.nextFloat(), 0.25F + rand.nextFloat() * 0.25F);
+        fb.setLoop(true);
+        fb.setSlowDown(0.9);
+        fb.setGravity((float) (rand.nextGaussian() * 0.1F));
+        fb.setRandomMovementScale(0.0125F, 0.0125F, 0.0125F);
+        fb.setRotationSpeed((float) rand.nextGaussian());
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, rand.nextInt(4));
+    }
+
+    @Override
+    public void focusCurseFX(double x, double y, double z, double mx, double my, double mz) {
+        var rand = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, mx, my, mz);
+        fb.setMaxAge(8);
+        fb.setRBGColorF(0.41F + rand.nextFloat() * 0.2F, 0.0F, 0.019F + rand.nextFloat() * 0.2F);
+        fb.setAlphaF(0.0F, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 0.0F);
+        fb.setGridSize(16);
+        fb.setParticles(72 + rand.nextInt(4), 1, 1);
+        fb.setScale(2.0F + rand.nextFloat() * 4.0F);
+        fb.setLoop(false);
+        fb.setSlowDown(0.9);
+        fb.setGravity(0.0F);
+        fb.setRotationSpeed(rand.nextFloat(), 0.0F);
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, rand.nextInt(4));
+    }
+
+    @Override
+    public void focusExchangeFX(double x, double y, double z, double vx, double vy, double vz) {
+        var rand = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, vx + rand.nextGaussian() * 0.01, vy + rand.nextGaussian() * 0.01, vz + rand.nextGaussian() * 0.01);
+        fb.setMaxAge(9);
+        fb.setRBGColorF(0.25F + rand.nextFloat() * 0.25F, 0.25F + rand.nextFloat() * 0.25F, 0.25F + rand.nextFloat() * 0.25F);
+        fb.setAlphaF(0.0F, 0.6F, 0.6F, 0.0F);
+        fb.setGridSize(64);
+        fb.setParticles(448, 9, 1);
+        fb.setScale(0.5F, 0.25F);
+        fb.setGravity((float) (rand.nextGaussian() * 0.01F));
+        fb.setRandomMovementScale(0.0025F, 0.0025F, 0.0025F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    @Override
+    public void focusRiftFX(double x, double y, double z, double mx, double my, double mz) {
+        var rand = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, mx, my, mz);
+        fb.setMaxAge(16 + rand.nextInt(16));
+        fb.setParticles(384 + rand.nextInt(16), 1, 1);
+        fb.setSlowDown(0.75);
+        fb.setAlphaF(1.0F, 0.0F);
+        fb.setScale((float) (0.7F + rand.nextGaussian() * 0.3F));
+        fb.setRBGColorF(0.25F, 0.25F, 1.0F);
+        fb.setRandomMovementScale(0.01F, 0.01F, 0.01F);
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, 0);
+    }
 }

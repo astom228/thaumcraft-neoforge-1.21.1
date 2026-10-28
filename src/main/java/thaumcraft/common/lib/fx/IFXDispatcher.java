@@ -38,6 +38,36 @@ public interface IFXDispatcher {
     default void drawInfusionParticles4(double x, double y, double z, int x2, int y2, int z2) {
     }
 
+    /** Частицы эффектов фокусов (renderParticleFX: мороз, разрушение, исцеление, Выброс, проклятие, обмен, разлом). */
+    default void focusFrostFX(double x, double y, double z, double mx, double my, double mz) {
+    }
+
+    default void focusBreakFX(double x, double y, double z, double mx, double my, double mz) {
+    }
+
+    default void focusHealFX(double x, double y, double z, double vx, double vy, double vz) {
+    }
+
+    default void focusFluxFX(double x, double y, double z, double vx, double vy, double vz) {
+    }
+
+    default void focusCurseFX(double x, double y, double z, double mx, double my, double mz) {
+    }
+
+    default void focusExchangeFX(double x, double y, double z, double vx, double vy, double vz) {
+    }
+
+    default void focusRiftFX(double x, double y, double z, double mx, double my, double mz) {
+    }
+
+    /** Искорка (sparkle): в 2/3 случаев — мерцающая частица 320–335 цвета (r, g, b). */
+    default void sparkle(float x, float y, float z, float r, float g, float b) {
+    }
+
+    /** Обобщённая частица по параметрам GenPart (drawGenericParticles). */
+    default void drawGenericParticles(double x, double y, double z, double mx, double my, double mz, GenPart part) {
+    }
+
     /** Клуб облака фокуса цвета c (drawFocusCloudParticle). */
     default void drawFocusCloudParticle(double x, double y, double z, double mx, double my, double mz, int c) {
     }

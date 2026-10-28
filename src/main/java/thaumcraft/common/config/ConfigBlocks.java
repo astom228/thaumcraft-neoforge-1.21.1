@@ -94,6 +94,8 @@ public class ConfigBlocks {
                     .build(null));
     public static final Supplier<BlockEntityType<TileInfusionMatrix>> INFUSION_MATRIX_TILE = TILES.register("infusion_matrix",
             () -> BlockEntityType.Builder.of(TileInfusionMatrix::new, BlocksTC.infusionMatrix.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.misc.TileHole>> HOLE_TILE = TILES.register("hole",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.misc.TileHole::new, BlocksTC.hole.get()).build(null));
     public static final Supplier<BlockEntityType<TileArcaneWorkbench>> ARCANE_WORKBENCH_TILE = TILES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(TileArcaneWorkbench::new, BlocksTC.arcaneWorkbench.get()).build(null));
 

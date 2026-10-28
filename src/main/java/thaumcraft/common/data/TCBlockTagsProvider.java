@@ -62,6 +62,9 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.LEAVES).add(leafGreatwood.get(), leafSilverwood.get());
 
         // OreDictionary: oreAmber, oreCinnabar, oreQuartz, blockThaumium, blockVoid, blockBrass
+        tag(TCTags.Blocks.PORTABLE_HOLE_BLACKLIST).addTag(net.minecraft.tags.BlockTags.BEDS).addTag(net.minecraft.tags.BlockTags.DOORS)
+                .add(net.minecraft.world.level.block.Blocks.PISTON, net.minecraft.world.level.block.Blocks.PISTON_HEAD,
+                        net.minecraft.world.level.block.Blocks.STICKY_PISTON, net.minecraft.world.level.block.Blocks.MOVING_PISTON);
         tag(TCTags.Blocks.ORES_AMBER).add(oreAmber.get());
         tag(TCTags.Blocks.ORES_CINNABAR).add(oreCinnabar.get());
         tag(TCTags.Blocks.ORES_QUARTZ).add(oreQuartz.get());

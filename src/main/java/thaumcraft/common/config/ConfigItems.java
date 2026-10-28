@@ -40,7 +40,19 @@ public class ConfigItems {
         reg(thaumcraft.common.items.casters.foci.FocusMediumMine::new, "mine", 8760709);
         reg(thaumcraft.common.items.casters.foci.FocusMediumPlan::new, "plan", 8760728);
         reg(thaumcraft.common.items.casters.foci.FocusMediumSpellBat::new, "spellbat", 8760748);
-        // TODO этап 12.4: эффекты (fire, frost, air, earth, flux, break, rift, exchange, curse, heal) и модификаторы (scatter, split)
+        reg(thaumcraft.common.items.casters.foci.FocusEffectFire::new, "fire", 16734721);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectFrost::new, "frost", 14811135);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectAir::new, "air", 16777086);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectEarth::new, "earth", 5685248);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectFlux::new, "flux", 8388736);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectBreak::new, "break", 9063176);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectRift::new, "rift", 3084645);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectExchange::new, "exchange", 5735255);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectCurse::new, "curse", 6946821);
+        reg(thaumcraft.common.items.casters.foci.FocusEffectHeal::new, "heal", 14548997);
+        reg(thaumcraft.common.items.casters.foci.FocusModScatter::new, "scatter", 10066329);
+        reg(thaumcraft.common.items.casters.foci.FocusModSplitTarget::new, "split_target", 10066329);
+        reg(thaumcraft.common.items.casters.foci.FocusModSplitTrajectory::new, "split_trajectory", 10066329);
     }
 
     private static void reg(java.util.function.Supplier<? extends thaumcraft.api.casters.IFocusElement> element, String icon, int color) {

@@ -36,13 +36,14 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 /**
  * Серверные задачи по мирам (порт части ServerEvents): отложенные действия (addRunnableServer) и «виртуальная» замена блоков
  * (addSwapper — соль мира, позже фокус обмена). Очереди только серверные, по измерениям; очищаются при остановке сервера.
- * Остальное из worldTick оригинала (поломка блоков, регенерация чанков, печати) — со своими системами.
+ * Поломка блоков (addBreaker — фокусы «Разрушение», «Земля»). Регенерация чанков и печати — со своими системами.
  */
 @EventBusSubscriber(modid = Thaumcraft.MODID)
 public class ServerEvents {
     public static final Predicate<SwapperPredicate> DEFAULT_PREDICATE = p -> true;
     private static final Map<ResourceKey<Level>, Deque<RunnableEntry>> serverRunList = new ConcurrentHashMap<>();
     private static final Map<ResourceKey<Level>, Deque<VirtualSwapper>> swapList = new ConcurrentHashMap<>();
+    private static final Map<ResourceKey<Level>, Deque<BreakData>> breakList = new ConcurrentHashMap<>();
 
     @SubscribeEvent
     public static void worldTick(LevelTickEvent.Post event) {
@@ -68,12 +69,14 @@ public class ServerEvents {
             rlist.addAll(temp);
         }
         tickBlockSwap(level);
+        tickBlockBreak(level);
     }
 
     @SubscribeEvent
     public static void serverStopped(ServerStoppedEvent event) {
         serverRunList.clear();
         swapList.clear();
+        breakList.clear();
         thaumcraft.api.casters.FocusEngine.clearServerState();
         thaumcraft.common.items.casters.CasterManager.clearServer();
         thaumcraft.common.entities.projectile.EntityFocusCloud.clearServer();
@@ -229,5 +232,91 @@ public class ServerEvents {
 
     record VirtualSwapper(BlockPos pos, Predicate<BlockState> source, ItemStack target, BlockState targetState, boolean consumeTarget, int lifespan, Player player, boolean fx,
                           boolean fancy, int color, boolean pickup, boolean silk, int fortune, Predicate<SwapperPredicate> allowSwap, float visCost) {
+    }
+
+    /**
+     * Постепенная поломка блока за игрока (addBreaker оригинала): каждый тик прочность уменьшается на strength, трещины видны
+     * (fx); при нуле — добыча (с шёлковым касанием / удачей), Вис ауры — плата. Блок изменился или выгружен — отмена.
+     */
+    public static void addBreaker(Level world, BlockPos pos, BlockState source, Player player, boolean fx, boolean silk, int fortune, float str,
+                                  float durabilityCurrent, float durabilityMax, int delay, float vis, Runnable run) {
+        if (world.isClientSide) {
+            return;
+        }
+        if (delay > 0) {
+            addRunnableServer(world, () -> addBreaker(world, pos, source, player, fx, silk, fortune, str, durabilityCurrent, durabilityMax, 0, vis, run),
+                    delay);
+        } else {
+            breakList.computeIfAbsent(world.dimension(), k -> new java.util.concurrent.ConcurrentLinkedDeque<>())
+                    .offer(new BreakData(str, durabilityCurrent, durabilityMax, pos, source, player, fx, silk, fortune, vis));
+            if (run != null) {
+                run.run();
+            }
+        }
+    }
+
+    private static void tickBlockBreak(ServerLevel world) {
+        Deque<BreakData> queue = breakList.get(world.dimension());
+        if (queue == null) {
+            return;
+        }
+        Deque<BreakData> queue2 = new ArrayDeque<>();
+        BreakData vs;
+        while ((vs = queue.poll()) != null) {
+            if (!world.isLoaded(vs.pos)) {
+                continue;
+            }
+            BlockState bs = world.getBlockState(vs.pos);
+            if (bs == vs.source) {
+                if ((!(vs.visCost > 0.0F) || !(thaumcraft.api.aura.AuraHelper.getVis(world, vs.pos) < vs.visCost)) && world.mayInteract(vs.player, vs.pos)
+                        && bs.getDestroySpeed(world, vs.pos) >= 0.0F) {
+                    if (vs.fx) {
+                        world.destroyBlockProgress(vs.pos.hashCode(), vs.pos, (int) ((1.0F - vs.durabilityCurrent / vs.durabilityMax) * 10.0F));
+                    }
+                    vs.durabilityCurrent -= vs.strength;
+                    if (vs.durabilityCurrent <= 0.0F) {
+                        thaumcraft.common.lib.utils.BlockUtils.harvestBlock(world, vs.player, vs.pos, true, vs.silk, vs.fortune, false);
+                        if (vs.fx) {
+                            world.destroyBlockProgress(vs.pos.hashCode(), vs.pos, -1);
+                        }
+                        if (vs.visCost > 0.0F) {
+                            thaumcraft.api.aura.AuraHelper.drainVis(world, vs.pos, vs.visCost, false);
+                        }
+                    } else {
+                        queue2.offer(vs);
+                    }
+                }
+            } else if (vs.fx) {
+                world.destroyBlockProgress(vs.pos.hashCode(), vs.pos, -1);
+            }
+        }
+        queue.addAll(queue2);
+    }
+
+    public static class BreakData {
+        final float strength;
+        float durabilityCurrent;
+        final float durabilityMax;
+        final BlockState source;
+        final BlockPos pos;
+        final Player player;
+        final boolean fx;
+        final boolean silk;
+        final int fortune;
+        final float visCost;
+
+        public BreakData(float strength, float durabilityCurrent, float durabilityMax, BlockPos pos, BlockState source, Player player, boolean fx,
+                         boolean silk, int fortune, float vis) {
+            this.strength = strength;
+            this.durabilityCurrent = durabilityCurrent;
+            this.durabilityMax = durabilityMax;
+            this.pos = pos;
+            this.source = source;
+            this.player = player;
+            this.fx = fx;
+            this.silk = silk;
+            this.fortune = fortune;
+            this.visCost = vis;
+        }
     }
 }

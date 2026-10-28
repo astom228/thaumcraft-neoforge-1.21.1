@@ -98,10 +98,18 @@ public class BlockUtils {
     /**
      * Добыть блок за игрока (harvestBlock оригинала): событие ломания (если не skipEvent), эффект разрушения, в творческом —
      * без выпадения; иначе выпадение с инструментом в руке, но без его износа (износ считают вызывающие).
-     * TODO этап 12: alwaysDrop / silkOverride / fortuneOverride (фокусы).
      */
     public static boolean harvestBlock(Level world, net.minecraft.world.entity.player.Player p, net.minecraft.core.BlockPos pos, boolean alwaysDrop,
                                        boolean skipEvent) {
+        return harvestBlock(world, p, pos, alwaysDrop, false, 0, skipEvent);
+    }
+
+    /**
+     * То же с переопределением зачарований (фокусы «Разрушение» и т.п.): шёлковое касание и/или удача уровня fortuneOverride
+     * (если она выше удачи игрока) — на копии инструмента; без инструмента или при alwaysDrop — на зачарованном заменителе.
+     */
+    public static boolean harvestBlock(Level world, net.minecraft.world.entity.player.Player p, net.minecraft.core.BlockPos pos, boolean alwaysDrop,
+                                       boolean silkOverride, int fortuneOverride, boolean skipEvent) {
         if (world.isClientSide || !(p instanceof net.minecraft.server.level.ServerPlayer player) || !world.isLoaded(pos)) {
             return false;
         }
@@ -130,8 +138,26 @@ public class BlockUtils {
                 state.getBlock().destroy(world, pos, state);
             }
         } else {
-            net.minecraft.world.item.ItemStack tool = player.getMainHandItem().copy();
+            net.minecraft.world.item.ItemStack itemstack1 = player.getMainHandItem();
+            net.minecraft.world.item.ItemStack tool = itemstack1.copy();
             boolean canHarvest = alwaysDrop || state.canHarvestBlock(world, pos, player);
+            var enchants = world.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
+            var fortuneE = enchants.getHolderOrThrow(net.minecraft.world.item.enchantment.Enchantments.FORTUNE);
+            if (silkOverride || fortuneOverride > net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantmentLevel(fortuneE, player)) {
+                if (alwaysDrop || tool.isEmpty()) {
+                    tool = new net.minecraft.world.item.ItemStack(thaumcraft.api.items.ItemsTC.enchantedPlaceholder.get());
+                }
+                net.minecraft.world.item.enchantment.ItemEnchantments.Mutable m = new net.minecraft.world.item.enchantment.ItemEnchantments.Mutable(
+                        net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantmentsForCrafting(itemstack1));
+                if (silkOverride) {
+                    m.set(enchants.getHolderOrThrow(net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH), 1);
+                }
+                int fort = Math.max(fortuneOverride, m.getLevel(fortuneE));
+                if (fort > 0) {
+                    m.set(fortuneE, fort);
+                }
+                net.minecraft.world.item.enchantment.EnchantmentHelper.setEnchantments(tool, m.toImmutable());
+            }
             removed = state.onDestroyedByPlayer(world, pos, player, canHarvest, world.getFluidState(pos));
             if (removed) {
                 state.getBlock().destroy(world, pos, state);
@@ -148,5 +174,10 @@ public class BlockUtils {
             }
         }
         return removed;
+    }
+
+    /** Сквозь блок не проходит «Разлом» (тег thaumcraft:portable_hole_blacklist вместо списка строк оригинала). */
+    public static boolean isPortableHoleBlackListed(net.minecraft.world.level.block.state.BlockState state) {
+        return state.is(thaumcraft.common.lib.TCTags.Blocks.PORTABLE_HOLE_BLACKLIST);
     }
 }

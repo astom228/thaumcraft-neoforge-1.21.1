@@ -94,7 +94,8 @@ public class TCBlockLootTables extends BlockLootSubProvider {
         // Остальные блоки этапа роняют сами себя
         for (DeferredHolder<Block, ? extends Block> holder : ConfigBlocks.BLOCKS.getEntries()) {
             Block block = holder.get();
-            if (!this.map.containsKey(block.getLootTable())) {
+            // noLootTable (блоки-эффекты, дыра) — без таблицы
+            if (block.getLootTable() != net.minecraft.world.level.storage.loot.BuiltInLootTables.EMPTY && !this.map.containsKey(block.getLootTable())) {
                 dropSelf(block);
             }
         }
@@ -115,6 +116,7 @@ public class TCBlockLootTables extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ConfigBlocks.BLOCKS.getEntries().stream().map(h -> (Block) h.get())::iterator;
+        return ConfigBlocks.BLOCKS.getEntries().stream().map(h -> (Block) h.get())
+                .filter(b -> b.getLootTable() != net.minecraft.world.level.storage.loot.BuiltInLootTables.EMPTY)::iterator;
     }
 }

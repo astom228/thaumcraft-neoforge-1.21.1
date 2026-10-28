@@ -99,6 +99,24 @@ public final class ClientPacketHandlers {
         }
     }
 
+    /** PacketFXFocusPartImpact: вспышка эффектов в точке попадания. */
+    public static void handleFocusPartImpact(thaumcraft.common.lib.network.fx.PacketFXFocusPartImpact msg) {
+        var world = Minecraft.getInstance().level;
+        if (world == null) {
+            return;
+        }
+        String[] partKeys = msg.parts().split("%");
+        int amt = Math.max(1, 15 / partKeys.length);
+        for (String k : partKeys) {
+            if (thaumcraft.api.casters.FocusEngine.getElement(k) instanceof thaumcraft.api.casters.FocusEffect part) {
+                for (int a = 0; a < amt; a++) {
+                    part.renderParticleFX(world, msg.x(), msg.y(), msg.z(), world.random.nextGaussian() * 0.15, world.random.nextGaussian() * 0.15,
+                            world.random.nextGaussian() * 0.15);
+                }
+            }
+        }
+    }
+
     /** PacketFXZap: разряд «Разряда». */
     public static void handleZap(thaumcraft.common.lib.network.fx.PacketFXZap msg) {
         if (Minecraft.getInstance().level == null) {
