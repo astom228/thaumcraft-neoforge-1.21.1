@@ -388,13 +388,39 @@ public class ThaumcraftCraftingManager {
         if (ret != null) {
             return ret;
         }
-        // generateTagsFromInfusionRecipes оригинала всегда падал: getAspectsFromIngredients(…, recipe = null, …) обходит
-        // остатки рецепта (exlist == null) → NPE, которое глотал getObjectTags. Итог 1:1 — у результата наполнения аспекты
-        // не выводятся (и до рецептов верстака дело не доходит); остаются только заданные явно и бонусные.
-        if (ThaumcraftApi.getInfusionRecipe(stack) != null) {
+        ret = generateTagsFromInfusionRecipes(stack, history);
+        return ret != null ? ret : generateTagsFromCraftingRecipes(stack, history);
+    }
+
+    /**
+     * Аспекты результата наполнения: аспекты центрального предмета и компонентов (× 0.75) + √(эссенции рецепта) / размер стака.
+     * В оригинале этот путь всегда падал с NPE (остатки рецепта при recipe == null) и аспекты не выводились — исправлено
+     * (DEVIATIONS 36).
+     */
+    private static AspectList generateTagsFromInfusionRecipes(ItemStack stack, ArrayList<String> history) {
+        InfusionRecipe cr = ThaumcraftApi.getInfusionRecipe(stack);
+        if (cr == null || !(cr.getRecipeOutput() instanceof ItemStack ro) || ro.isEmpty()) {
             return null;
         }
-        return generateTagsFromCraftingRecipes(stack, history);
+        AspectList ot = cr.getAspects().copy();
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(cr.getRecipeInput());
+        ingredients.addAll(cr.getComponents());
+        AspectList out = new AspectList();
+        AspectList ot2 = getAspectsFromIngredients(ingredients, ro, null, history);
+        for (Aspect tt : ot2.getAspects()) {
+            out.add(tt, ot2.getAmount(tt));
+        }
+        for (Aspect tt : ot.getAspects()) {
+            int amt = (int) (Math.sqrt(ot.getAmount(tt)) / ro.getCount());
+            out.add(tt, amt);
+        }
+        for (Aspect as : out.copy().getAspects()) {
+            if (out.getAmount(as) <= 0) {
+                out.remove(as);
+            }
+        }
+        return out;
     }
 
     private static AspectList generateTagsFromCraftingRecipes(ItemStack stack, ArrayList<String> history) {
@@ -442,7 +468,7 @@ public class ThaumcraftCraftingManager {
 
     /**
      * Сумма аспектов ингредиентов (первый подходящий предмет каждого) минус остатки рецепта (вёдра и т.п.), × 0.75 / количество.
-     * В оригинале при recipe == null (инфузия) остатки не вычислялись и цикл по ним падал с NPE — поведение сохранено.
+     * При recipe == null (наполнение) остатков нет (в оригинале цикл по ним падал с NPE — DEVIATIONS 36).
      */
     static AspectList getAspectsFromIngredients(List<Ingredient> ingredients, ItemStack recipeOut, Recipe<?> recipe, ArrayList<String> history) {
         AspectList out = new AspectList();
@@ -480,7 +506,7 @@ public class ThaumcraftCraftingManager {
                 }
             }
         }
-        for (ItemStack ri : exlist) {
+        for (ItemStack ri : exlist == null ? List.<ItemStack>of() : exlist) {
             if (!ri.isEmpty()) {
                 AspectList obj = getObjectTags(ri, history);
                 for (Aspect as : obj.getAspects()) {
