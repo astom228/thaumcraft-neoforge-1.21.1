@@ -16,9 +16,9 @@ import thaumcraft.api.items.ItemsTC;
 import thaumcraft.common.lib.TCDataComponents;
 
 /**
- * Руническое усиление (порт InfusionRunicAugmentRecipe): доспех (TODO этап 13: и безделушка) получает +1 заряда рунической
- * защиты; нужны Салис Мундус и янтарь, плюс по янтарю на каждый уже имеющийся заряд. Стоимость удваивается с каждым зарядом.
- * Само действие защиты — этап 13.
+ * Руническое усиление (порт InfusionRunicAugmentRecipe): доспех или безделушка получает +1 заряда рунической защиты;
+ * нужны Салис Мундус и янтарь, плюс по янтарю на каждый уже имеющийся заряд. Стоимость удваивается с каждым зарядом.
+ * Действие защиты — PlayerEvents.handleRunicArmor.
  */
 public class InfusionRunicAugmentRecipe extends InfusionRecipe {
 
@@ -49,8 +49,7 @@ public class InfusionRunicAugmentRecipe extends InfusionRecipe {
         if (this.getRecipeInput() == null || !ThaumcraftCapabilities.knowsResearch(player, this.research)) {
             return false;
         }
-        // TODO этап 13: || безделушка (IBauble → Curios)
-        if (!(central.getItem() instanceof ArmorItem)) {
+        if (!(central.getItem() instanceof ArmorItem) && !thaumcraft.common.lib.utils.BaubleUtils.isBauble(central)) {
             return false;
         }
         return (this.getRecipeInput() == Ingredient.EMPTY || this.getRecipeInput().test(central))

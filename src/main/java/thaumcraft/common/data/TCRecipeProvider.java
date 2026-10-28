@@ -39,6 +39,7 @@ public class TCRecipeProvider extends RecipeProvider {
     private static final String VOID = "thaumcraft:void_stuff";
     private static final String CANDLES = "thaumcraft:tallowcandles";
     private static final String INKWELL = "thaumcraft:inkwell";
+    private static final String BAUBLES = "thaumcraft:baubles_stuff";
 
     public TCRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
@@ -94,6 +95,20 @@ public class TCRecipeProvider extends RecipeProvider {
                 thaumiumShovel.get(), thaumiumPick.get(), thaumiumAxe.get(), thaumiumHoe.get(), thaumiumSword.get());
         gear(out, "void", VOID, TCTags.Items.INGOTS_VOID, voidHelm.get(), voidChest.get(), voidLegs.get(), voidBoots.get(),
                 voidShovel.get(), voidPick.get(), voidAxe.get(), voidHoe.get(), voidSword.get());
+
+        // --- безделушки (группа baubles_stuff; имена рецептов оригинала, в т.ч. опечатка "babule") ---
+        bauble(out, "babuleamulet", amuletMundane.get(), new String[] {" S ", "S S", " I "}, 'S', Tags.Items.STRINGS, 'I', TCTags.Items.INGOTS_BRASS);
+        bauble(out, "babulering", ringMundane.get(), new String[] {"NNN", "N N", "NNN"}, 'N', TCTags.Items.NUGGETS_BRASS, null, null);
+        bauble(out, "babulegirdle", girdleMundane.get(), new String[] {" L ", "L L", " I "}, 'L', Tags.Items.LEATHERS, 'I', TCTags.Items.INGOTS_BRASS);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, amuletFancy.get()).group(BAUBLES).pattern(" S ").pattern("SGS").pattern(" I ")
+                .define('S', Tags.Items.STRINGS).define('G', Tags.Items.GEMS_DIAMOND).define('I', Tags.Items.INGOTS_GOLD)
+                .unlockedBy("has", has(Tags.Items.GEMS_DIAMOND)).save(out, id("babuleamuletfancy"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ringFancy.get()).group(BAUBLES).pattern("NGN").pattern("N N").pattern("NNN")
+                .define('G', Tags.Items.GEMS_DIAMOND).define('N', Tags.Items.NUGGETS_GOLD)
+                .unlockedBy("has", has(Tags.Items.GEMS_DIAMOND)).save(out, id("babuleringfancy"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, girdleFancy.get()).group(BAUBLES).pattern(" L ").pattern("LGL").pattern(" I ")
+                .define('L', Tags.Items.LEATHERS).define('G', Tags.Items.GEMS_DIAMOND).define('I', Tags.Items.INGOTS_GOLD)
+                .unlockedBy("has", has(Tags.Items.GEMS_DIAMOND)).save(out, id("babulegirdlefancy"));
 
         // --- растения ---
         single(out, "shimmerleaftoquicksilver", null, BlocksTC.shimmerleaf.get(), quicksilver.get(), 1);
@@ -254,6 +269,17 @@ public class TCRecipeProvider extends RecipeProvider {
             b.pattern(r);
         }
         b.unlockedBy("has", has(ingot)).save(out, id(name));
+    }
+
+    private void bauble(RecipeOutput out, String name, ItemLike result, String[] rows, char k1, TagKey<Item> t1, Character k2, TagKey<Item> t2) {
+        ShapedRecipeBuilder b = ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result).group(BAUBLES).define(k1, t1);
+        if (k2 != null) {
+            b.define(k2, t2);
+        }
+        for (String r : rows) {
+            b.pattern(r);
+        }
+        b.unlockedBy("has", has(t1)).save(out, id(name));
     }
 
     private void toNuggets(RecipeOutput out, String name, ItemLike ingot, ItemLike nugget, String group) {

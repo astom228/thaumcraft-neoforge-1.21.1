@@ -40,7 +40,7 @@ public class InfusionEnchantmentRecipe extends InfusionRecipe {
         return this.enchantment;
     }
 
-    /** Подходит ли предмет под виды зачарования (toolClasses). TODO этап 13: безделушки (Curios) и заряжаемые предметы. */
+    /** Подходит ли предмет под виды зачарования (toolClasses): оружие, инструменты, броня, безделушки (Curios), заряжаемые. */
     static boolean fits(EnumInfusionEnchantment ench, ItemStack central) {
         if (ench.toolClasses.contains("all")) {
             return true;
@@ -62,9 +62,19 @@ public class InfusionEnchantmentRecipe extends InfusionRecipe {
                 case BOOTS -> "boots";
                 default -> "none";
             };
-            return ench.toolClasses.contains("armor") || ench.toolClasses.contains(at);
+            if (ench.toolClasses.contains("armor") || ench.toolClasses.contains(at)) {
+                return true;
+            }
         }
-        return false;
+        String bt = thaumcraft.common.lib.utils.BaubleUtils.getBaubleType(central);
+        if (bt != null) {
+            // в 1.12 различались только AMULET / BELT / RING, прочие типы — "none"
+            String at = bt.equals("amulet") || bt.equals("belt") || bt.equals("ring") ? bt : "none";
+            if (ench.toolClasses.contains("bauble") || ench.toolClasses.contains(at)) {
+                return true;
+            }
+        }
+        return central.getItem() instanceof thaumcraft.api.items.IRechargable && ench.toolClasses.contains("chargable");
     }
 
     @Override

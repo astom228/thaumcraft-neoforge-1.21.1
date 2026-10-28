@@ -18,6 +18,9 @@ public class ThaumcraftAttachments {
             () -> AttachmentType.serializable(PlayerKnowledge::new).copyOnDeath().build());
     public static final Supplier<AttachmentType<PlayerWarp>> WARP = ATTACHMENTS.register("warp",
             () -> AttachmentType.serializable(PlayerWarp::new).copyOnDeath().build());
+    /** Состояние рунической защиты игрока (статические карты PlayerEvents оригинала); не сохраняется. */
+    public static final Supplier<AttachmentType<RunicShield>> RUNIC = ATTACHMENTS.register("runic_shield",
+            () -> AttachmentType.builder(RunicShield::new).build());
     /** Аура чанка (в оригинале — NBT чанка "Thaumcraft": base, vis, flux). */
     public static final Supplier<AttachmentType<AuraChunk>> AURA = ATTACHMENTS.register("aura",
             () -> AttachmentType.serializable(AuraChunk::new).build());

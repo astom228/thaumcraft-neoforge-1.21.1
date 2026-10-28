@@ -47,7 +47,8 @@ const VARIANTS = {
   'ItemsTC.mind': { 0: 'clockwork_mind', 1: 'biothaumic_mind' },
   'ItemsTC.filter': { 0: 'essentia_filter' },
   'BlocksTC.tube': { 0: 'essentia_tube' },
-  'ItemsTC.baubles': { 2: 'mundane_belt' },
+  'ItemsTC.baubles': { 0: 'mundane_amulet', 1: 'mundane_ring', 2: 'mundane_belt', 3: 'apprentice_ring', 4: 'fancy_amulet', 5: 'fancy_ring', 6: 'fancy_belt' },
+  'ItemsTC.amuletVis': { 0: 'vis_stone', 1: 'vis_amulet' },
   'ItemsTC.turretPlacer': { 0: 'crossbow_turret', 1: 'advanced_crossbow_turret' },
 };
 

@@ -137,7 +137,11 @@ public class ConfigRecipes {
                 new AspectList().add(Aspect.FLIGHT, 100).add(Aspect.MOTION, 100), new ItemStack(Items.LEATHER_BOOTS),
                 ThaumcraftApiHelper.makeCrystal(Aspect.AIR), ThaumcraftApiHelper.makeCrystal(Aspect.AIR), new ItemStack(ItemsTC.fabric.get()),
                 new ItemStack(ItemsTC.fabric.get()), new ItemStack(Items.FEATHER), net.minecraft.tags.ItemTags.FISHES));
-        // TODO этап 13: VisAmulet, поддельные RunicArmorFake0–2 для книги (центр — безделушка), стихийные инструменты, доспехи и маски «Таумиумной крепости»,
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("VisAmulet"), new InfusionRecipe("VISAMULET", new ItemStack(ItemsTC.amuletVis.get()), 6,
+                new AspectList().add(Aspect.AURA, 50).add(Aspect.ENERGY, 100).add(Aspect.VOID, 50), new ItemStack(ItemsTC.amuletMundane.get()),
+                new ItemStack(ItemsTC.visResonator.get()), ThaumcraftApiHelper.makeCrystal(Aspect.AIR), ThaumcraftApiHelper.makeCrystal(Aspect.FIRE),
+                ThaumcraftApiHelper.makeCrystal(Aspect.WATER), ThaumcraftApiHelper.makeCrystal(Aspect.EARTH), ThaumcraftApiHelper.makeCrystal(Aspect.ORDER)));
+        // TODO этап 13: стихийные инструменты, доспехи и маски «Таумиумной крепости»,
         //  VerdantHeart (3), CLOUDRING, CuriosityBand, CHARMUNDYING
         ThaumcraftApi.addInfusionCraftingRecipe(tc("Mirror"), new InfusionRecipe("MIRROR", new ItemStack(BlocksTC.mirror.get()), 1,
                 new AspectList().add(Aspect.MOTION, 25).add(Aspect.DARKNESS, 25).add(Aspect.EXCHANGE, 25), new ItemStack(ItemsTC.mirroredGlass.get()),
@@ -163,8 +167,15 @@ public class ConfigRecipes {
                 net.minecraft.world.level.block.Blocks.REDSTONE_BLOCK, Items.WOODEN_SWORD);
         infusionEnchantment("IEESSENCE", EnumInfusionEnchantment.ESSENCE, new AspectList().add(Aspect.BEAST, 40).add(Aspect.FLUX, 60),
                 ItemsTC.crystalEssence.get(), Items.STONE_SWORD);
-        // руническое усиление: доспехи (безделушки и «поддельные» RunicArmorFake0–2 с кольцом — этап 13)
+        // руническое усиление: доспехи и безделушки; в книге — «поддельные» RunicArmorFake0–2 с простым кольцом (заряд 0–2)
         ThaumcraftApi.addInfusionCraftingRecipe(tc("RunicArmor"), new InfusionRunicAugmentRecipe());
+        for (int a = 0; a < 3; a++) {
+            ItemStack in = new ItemStack(ItemsTC.ringMundane.get());
+            if (a > 0) {
+                in.set(thaumcraft.common.lib.TCDataComponents.RUNIC_CHARGE.get(), a);
+            }
+            ThaumcraftApi.addFakeCraftingRecipe(tc("RunicArmorFake" + a), new InfusionRunicAugmentRecipe(in));
+        }
         // TODO этап 13: MindBiothaumic; этап 14: ArcaneBore, LampGrowth, LampFertility; этапы 13–16: CausalityCollapser (алюментум)
     }
 

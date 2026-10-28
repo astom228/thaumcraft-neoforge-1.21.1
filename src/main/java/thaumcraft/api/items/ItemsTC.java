@@ -172,6 +172,24 @@ public class ItemsTC {
     public static final DeferredItem<Item> voidLegs = voidArmor("void_metal_leggings", ArmorItem.Type.LEGGINGS);
     public static final DeferredItem<Item> voidBoots = voidArmor("void_metal_boots", ArmorItem.Type.BOOTS);
 
+    // --- безделушки (ItemBaubles meta 0–6, ItemAmuletVis meta 0–1; слоты Curios — теги) ---
+    public static final DeferredItem<Item> amuletMundane = bauble("mundane_amulet", 0);
+    public static final DeferredItem<Item> ringMundane = bauble("mundane_ring", 1);
+    public static final DeferredItem<Item> girdleMundane = bauble("mundane_belt", 2);
+    public static final DeferredItem<Item> ringApprentice = bauble("apprentice_ring", 3);
+    public static final DeferredItem<Item> amuletFancy = bauble("fancy_amulet", 4);
+    public static final DeferredItem<Item> ringFancy = bauble("fancy_ring", 5);
+    public static final DeferredItem<Item> girdleFancy = bauble("fancy_belt", 6);
+    public static final DeferredItem<Item> amuletVisFound = ConfigItems.ITEMS.registerItem("vis_stone",
+            p -> new thaumcraft.common.items.baubles.ItemAmuletVis(false, p), new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> amuletVis = ConfigItems.ITEMS.registerItem("vis_amulet",
+            p -> new thaumcraft.common.items.baubles.ItemAmuletVis(true, p), new Item.Properties().stacksTo(1).rarity(Rarity.RARE));
+
+    private static DeferredItem<Item> bauble(String name, int meta) {
+        return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.baubles.ItemBaubles(meta, p),
+                new Item.Properties().stacksTo(1).rarity(meta >= 3 ? Rarity.UNCOMMON : Rarity.COMMON));
+    }
+
     private static DeferredItem<Item> tool(String name, java.util.function.Function<Item.Properties, Item> factory) {
         return ConfigItems.ITEMS.registerItem(name, factory);
     }

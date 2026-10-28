@@ -1,0 +1,24 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "FOCUSPOUCH",
+  "vis": 25,
+  "key": {
+    "B": {
+      "item": "thaumcraft:mundane_belt"
+    },
+    "L": {
+      "tag": "c:leathers"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "LGL",
+    "LBL",
+    "LLL"
+  ],
+  "result": {
+    "id": "thaumcraft:focus_pouch"
+  }
+}

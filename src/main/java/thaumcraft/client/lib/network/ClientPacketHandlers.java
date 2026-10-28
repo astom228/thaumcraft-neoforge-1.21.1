@@ -118,6 +118,46 @@ public final class ClientPacketHandlers {
     }
 
     /** PacketFXZap: разряд «Разряда». */
+    /** PacketFXShield: вспышка рунической защиты, повёрнутая к источнику удара (−1 — сверху и снизу, −2 — снизу, −3 — сверху). */
+    public static void handleShield(thaumcraft.common.lib.network.fx.PacketFXShield msg) {
+        net.minecraft.client.multiplayer.ClientLevel world = Minecraft.getInstance().level;
+        if (world == null) {
+            return;
+        }
+        net.minecraft.world.entity.Entity p = world.getEntity(msg.source());
+        if (p == null) {
+            return;
+        }
+        if (msg.target() >= 0) {
+            float pitch;
+            float yaw;
+            net.minecraft.world.entity.Entity t = world.getEntity(msg.target());
+            if (t != null) {
+                double d0 = p.getX() - t.getX();
+                double d1 = (p.getBoundingBox().minY + p.getBoundingBox().maxY) / 2.0 - (t.getBoundingBox().minY + t.getBoundingBox().maxY) / 2.0;
+                double d2 = p.getZ() - t.getZ();
+                double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+                yaw = (float) (Math.atan2(d2, d0) * 180.0 / Math.PI) - 90.0F;
+                pitch = (float) (-(Math.atan2(d1, d3) * 180.0 / Math.PI));
+            } else {
+                pitch = 90.0F;
+                yaw = 0.0F;
+            }
+            shield(world, p, yaw, pitch);
+        } else if (msg.target() == -1) {
+            shield(world, p, 0.0F, 90.0F);
+            shield(world, p, 0.0F, 270.0F);
+        } else if (msg.target() == -2) {
+            shield(world, p, 0.0F, 270.0F);
+        } else if (msg.target() == -3) {
+            shield(world, p, 0.0F, 90.0F);
+        }
+    }
+
+    private static void shield(net.minecraft.client.multiplayer.ClientLevel world, net.minecraft.world.entity.Entity p, float yaw, float pitch) {
+        thaumcraft.client.fx.ParticleEngine.addEffect(world, new thaumcraft.client.fx.other.FXShieldRunes(world, p, 8, yaw, pitch));
+    }
+
     public static void handleZap(thaumcraft.common.lib.network.fx.PacketFXZap msg) {
         if (Minecraft.getInstance().level == null) {
             return;

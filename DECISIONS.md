@@ -360,3 +360,10 @@
     (swords, head_armor и т.п.) — чтобы предметы зачаровывались на столе, как в 1.12. Самопочинка пустотного металла — только на
     сервере; надетая броня — 2 ед./с (onUpdate + onArmorTick оригинала). Заряд Вис — компонент thaumcraft:charge, «energy» сапог —
     thaumcraft:traveller_energy. Урон от падения в сапогах — LivingIncomingDamageEvent (аналог LivingHurtEvent 1.12).
+103. **Безделушки и руническая защита (этап 13.2а)**: игроку выдаются слоты Curios necklace, ring ×2, belt, head, charm
+    (data/thaumcraft/curios); тип безделушки — по тегам curios:* (BaubleUtils вместо IBauble/BaublesApi). Предметы безделушек —
+    ICurioItem (тик — curioTick). Руническая защита: состояние — несохраняемое вложение игрока thaumcraft:runic_shield вместо
+    статических карт; щит — поглощение урона, а предел поглощения 1.21 (атрибут max_absorption) поднимается временным
+    модификатором на сумму зарядов. Задержки shieldRecharge / shieldWait (мс в конфиге) считаются в игровых тиках (мс / 50) —
+    при лагах сервера щит не восстанавливается быстрее игрового времени. Вспышка щита — OBJ-полусфера hemis.obj (свой
+    минимальный загрузчик WavefrontObject, пригодится големам).

@@ -27,7 +27,6 @@ levitator: нет BlocksTC.levitator
 redstonerelay: нет BlocksTC.redstoneRelay
 arcaneear: нет BlocksTC.arcaneEar
 matrixcost: нет ItemsTC.alumentum
-focuspouch: нет mundane_belt (ItemsTC.baubles meta 2)
 dioptra: нет BlocksTC.dioptra
 hungrychest: нет BlocksTC.hungryChest
 advalchemyconstruct: нет ItemsTC.primordialPearl

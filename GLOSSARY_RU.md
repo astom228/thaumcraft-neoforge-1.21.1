@@ -151,6 +151,10 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Eerie | Зловещие земли | принято (биом) |
 | Outer Lands | Внешние земли | принято (биом) |
 | Boots of the Traveller | Сапоги странника | принято |
+| Bauble (Mundane / Fancy Amulet, Ring, Belt) | Безделушка (Простой / Изящный амулет, кольцо, пояс) | |
+| Apprentice's Ring | Кольцо ученика | |
+| Vis Stone / Amulet of Vis | Камень Вис / Амулет Вис | |
+| Lesser Sapping (void metal) | Малое ослабление | |
 | Thaumium Fortress (armor) | Таумиумная крепость (доспех) | принято |
 | Primal Crusher | Первозданный сокрушитель | принято |
 | Crimson Blade | Багровый клинок | принято |

@@ -65,6 +65,17 @@ public final class TCTags {
         /** OreDictionary "nitor" — все ниторы. */
         public static final TagKey<Item> NITOR = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("thaumcraft", "nitor"));
 
+        /** Слоты Curios (BaubleType оригинала → слоты Curios, DEVIATIONS 1). */
+        public static final TagKey<Item> CURIOS_NECKLACE = curios("necklace");
+        public static final TagKey<Item> CURIOS_RING = curios("ring");
+        public static final TagKey<Item> CURIOS_BELT = curios("belt");
+        public static final TagKey<Item> CURIOS_HEAD = curios("head");
+        public static final TagKey<Item> CURIOS_CHARM = curios("charm");
+
+        private static TagKey<Item> curios(String path) {
+            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", path));
+        }
+
         private static TagKey<Item> c(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));
         }

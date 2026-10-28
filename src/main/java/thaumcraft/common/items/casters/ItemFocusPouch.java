@@ -17,9 +17,9 @@ import thaumcraft.common.lib.TCDataComponents;
 
 /**
  * Сумка для фокусов (порт ItemFocusPouch): 18 фокусов; ПКМ — открыть. Фокусы из сумки (в инвентаре и на поясе)
- * доступны при смене фокуса перчатки. Ношение на поясе (Curios) — этап 13.
+ * доступны при смене фокуса перчатки. Носится на поясе (Curios, тег curios:belt).
  */
-public class ItemFocusPouch extends Item {
+public class ItemFocusPouch extends Item implements top.theillusivec4.curios.api.type.capability.ICurioItem {
     public static final int SIZE = 18;
 
     public ItemFocusPouch(Properties properties) {

@@ -34,6 +34,7 @@ public class PlayerEvents {
             thaumcraft.common.items.armor.ItemBootsTraveller.handleSpeedMods(event.getEntity());
         }
         if (event.getEntity() instanceof ServerPlayer player) {
+            handleRunicArmor(player);
             if (player.tickCount % 20 == 0 && ResearchManager.syncList.remove(player.getUUID())) {
                 ThaumcraftCapabilities.getKnowledge(player).sync(player);
             }
@@ -46,9 +47,24 @@ public class PlayerEvents {
     /**
      * onFallDamage оригинала (LivingHurtEvent 1.12 — до брони, как LivingIncomingDamageEvent): сапоги странника (с зарядом и без)
      * уменьшают урон от падения — f/2 − 1, меньше 1 — отмена. TODO этап 13.3: кольцо облаков — f/3 − 2.
+     * Здесь же — эффект удара по рунической защите (часть EntityEvents.entityHurt оригинала для игрока).
      */
     @SubscribeEvent
     public static void onFallDamage(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer sp && sp.getAbsorptionAmount() >= 1.0F && hasRunicShield(sp)) {
+            int target = -1;
+            if (event.getSource().getEntity() != null) {
+                target = event.getSource().getEntity().getId();
+            }
+            if (event.getSource().is(net.minecraft.world.damagesource.DamageTypes.FALL)) {
+                target = -2;
+            }
+            if (event.getSource().is(net.minecraft.world.damagesource.DamageTypes.FALLING_BLOCK)) {
+                target = -3;
+            }
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayersNear(sp.serverLevel(), null, sp.getX(), sp.getY(), sp.getZ(), 32.0,
+                    new thaumcraft.common.lib.network.fx.PacketFXShield(sp.getId(), target));
+        }
         if (event.getSource().is(net.minecraft.world.damagesource.DamageTypes.FALL) && event.getEntity() instanceof net.minecraft.world.entity.player.Player player) {
             if (player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.FEET).is(thaumcraft.api.items.ItemsTC.travellerBoots.get())) {
                 float f = Math.max(0.0F, event.getAmount() / 2.0F - 1.0F);
@@ -116,6 +132,84 @@ public class PlayerEvents {
             ThaumcraftCapabilities.getKnowledge(player).sync(player);
             ThaumcraftCapabilities.getWarp(player).sync(player);
         }
+    }
+
+    private static final net.minecraft.resources.ResourceLocation RUNIC_ID =
+            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "runic_shielding");
+
+    /**
+     * Руническая защита (handleRunicArmor оригинала): раз в секунду — сумма зарядов брони и безделушек; щит — поглощение урона,
+     * восстанавливается по 1 за shieldCost Вис ауры раз в shieldRecharge мс, после обнуления — пауза shieldWait мс.
+     * В 1.21 поглощение ограничено атрибутом max_absorption — щит добавляет к нему временный модификатор на сумму зарядов.
+     * Время — игровые тики (мс / 50), а не системные часы (DECISIONS 103).
+     */
+    private static void handleRunicArmor(ServerPlayer player) {
+        thaumcraft.common.lib.capabilities.RunicShield rs = player.getData(thaumcraft.common.lib.capabilities.ThaumcraftAttachments.RUNIC);
+        if (player.tickCount % 20 == 0) {
+            int max = 0;
+            for (ItemStack s : player.getInventory().armor) {
+                max += getRunicCharge(s);
+            }
+            net.neoforged.neoforge.items.IItemHandler baubles = thaumcraft.common.lib.utils.BaubleUtils.getBaubles(player);
+            if (baubles != null) {
+                for (int a = 0; a < baubles.getSlots(); a++) {
+                    max += getRunicCharge(baubles.getStackInSlot(a));
+                }
+            }
+            if (rs.lastMaxCharge >= 0) {
+                int charge = rs.lastMaxCharge;
+                if (charge > max) {
+                    player.setAbsorptionAmount(player.getAbsorptionAmount() - (charge - max));
+                }
+                if (max <= 0) {
+                    rs.lastMaxCharge = -1;
+                }
+            }
+            net.minecraft.world.entity.ai.attributes.AttributeInstance cap = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_ABSORPTION);
+            if (cap != null) {
+                net.minecraft.world.entity.ai.attributes.AttributeModifier cur = cap.getModifier(RUNIC_ID);
+                if (max <= 0) {
+                    if (cur != null) {
+                        cap.removeModifier(RUNIC_ID);
+                    }
+                } else if (cur == null || cur.amount() != max) {
+                    cap.addOrUpdateTransientModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(RUNIC_ID, max,
+                            net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE));
+                }
+                if (player.getAbsorptionAmount() > player.getMaxAbsorption()) {
+                    player.setAbsorptionAmount(player.getMaxAbsorption());
+                }
+            }
+            if (max > 0) {
+                rs.max = max;
+                rs.lastMaxCharge = max;
+            } else {
+                rs.max = 0;
+            }
+        }
+        if (rs.max > 0) {
+            long time = player.level().getGameTime();
+            int charge = (int) player.getAbsorptionAmount();
+            if (charge == 0 && rs.lastCharge > 0) {
+                rs.nextCycle = time + thaumcraft.common.config.ModConfig.CONFIG_MISC.shieldWait.get() / 50;
+                rs.lastCharge = 0;
+            }
+            net.minecraft.core.BlockPos pos = player.blockPosition();
+            int cost = thaumcraft.common.config.ModConfig.CONFIG_MISC.shieldCost.get();
+            if (charge < rs.max && rs.nextCycle < time && !thaumcraft.api.aura.AuraHelper.shouldPreserveAura(player.level(), player, pos)
+                    && thaumcraft.api.aura.AuraHelper.getVis(player.level(), pos) >= cost) {
+                thaumcraft.api.aura.AuraHelper.drainVis(player.level(), pos, cost, false);
+                rs.nextCycle = time + thaumcraft.common.config.ModConfig.CONFIG_MISC.shieldRecharge.get() / 50;
+                player.setAbsorptionAmount(charge + 1);
+                rs.lastCharge = charge + 1;
+            }
+        }
+    }
+
+    /** Есть ли у игрока действующая руническая защита (runicInfo и lastMaxCharge оригинала). */
+    public static boolean hasRunicShield(net.minecraft.world.entity.player.Player player) {
+        thaumcraft.common.lib.capabilities.RunicShield rs = player.getData(thaumcraft.common.lib.capabilities.ThaumcraftAttachments.RUNIC);
+        return rs.max > 0 && rs.lastMaxCharge >= 0;
     }
 
     /** Заряд рунической защиты предмета (TC.RUNIC оригинала). */

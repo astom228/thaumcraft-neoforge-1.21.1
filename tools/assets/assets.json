@@ -575,6 +575,15 @@
     "void_metal_helmet": "model:void_helm",
     "void_metal_chestplate": "model:void_chest",
     "void_metal_leggings": "model:void_legs",
-    "void_metal_boots": "model:void_boots"
+    "void_metal_boots": "model:void_boots",
+    "mundane_amulet": "bs:baubles#amulet_mundane",
+    "mundane_ring": "bs:baubles#ring_mundane",
+    "mundane_belt": "bs:baubles#girdle_mundane",
+    "apprentice_ring": "bs:baubles#ring_apprentice",
+    "fancy_amulet": "bs:baubles#amulet_fancy",
+    "fancy_ring": "bs:baubles#ring_fancy",
+    "fancy_belt": "bs:baubles#girdle_fancy",
+    "vis_stone": "bs:amulet_vis#found",
+    "vis_amulet": "bs:amulet_vis#crafted"
   }
 }
