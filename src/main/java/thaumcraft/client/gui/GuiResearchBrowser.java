@@ -618,7 +618,7 @@ public class GuiResearchBrowser extends Screen {
 
     /**
      * Значок исследования 16×16 (drawResearchIcon): значки сменяются раз в секунду; картинка с кадрами по высоте или ширине
-     * анимируется (кадр 150 мс); bw — затемнённый значок. Значки фокусов — этап 12.
+     * анимируется (кадр 150 мс); bw — затемнённый значок; «focus:КЛЮЧ» — значок элемента фокуса.
      */
     public static void drawResearchIcon(GuiGraphics g, ResearchEntry iconResearch, int iconX, int iconY, float zLevel, boolean bw) {
         if (iconResearch.getIcons() == null || iconResearch.getIcons().length == 0) {
@@ -652,8 +652,12 @@ public class GuiResearchBrowser extends Screen {
         } else if (icon instanceof ItemStack stack) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             g.renderItem(stack, iconX, iconY);
+        } else if (icon instanceof String str && str.startsWith("focus")) {
+            String k = str.replaceAll("focus:", "");
+            if (thaumcraft.api.casters.FocusEngine.getElement(k.trim()) instanceof thaumcraft.api.casters.FocusNode fp) {
+                GuiFocalManipulator.drawPart(g, fp, iconX + 8, iconY + 8, 24.0F, false, bw ? 0.2F : 1.0F);
+            }
         }
-        // TODO этап 12: строка "focus:…" — GuiFocalManipulator.drawPart
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 

@@ -122,8 +122,14 @@ public class ServerEvents {
                             if (vs.silk && !bs.getBlock().asItem().getDefaultInstance().isEmpty()) {
                                 ret.add(new ItemStack(bs.getBlock()));
                             } else {
-                                // TODO этап 12 (фокус обмена): удача (fortune) при выпадении
-                                ret = Block.getDrops(bs, world, vs.pos, world.getBlockEntity(vs.pos), vs.player, ItemStack.EMPTY);
+                                // удача фокуса — зачарованным заменителем (в 1.12 — параметр fortune у getDrops)
+                                ItemStack tool = ItemStack.EMPTY;
+                                if (vs.fortune > 0) {
+                                    tool = new ItemStack(thaumcraft.api.items.ItemsTC.enchantedPlaceholder.get());
+                                    tool.enchant(world.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                                            .getHolderOrThrow(net.minecraft.world.item.enchantment.Enchantments.FORTUNE), vs.fortune);
+                                }
+                                ret = Block.getDrops(bs, world, vs.pos, world.getBlockEntity(vs.pos), vs.player, tool);
                             }
                             for (ItemStack is : ret) {
                                 if (!vs.player.getInventory().add(is)) {

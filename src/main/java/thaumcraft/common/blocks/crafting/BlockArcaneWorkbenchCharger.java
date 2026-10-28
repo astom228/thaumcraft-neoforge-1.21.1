@@ -14,8 +14,8 @@ import thaumcraft.api.blocks.BlocksTC;
 import thaumcraft.common.tiles.TileThaumcraft;
 
 /**
- * Зарядник верстака (порт BlockArcaneWorkbenchCharger): ставится только на магический верстак (на фокусный манипулятор —
- * с этапа 12), без опоры выпадает предметом; правый клик открывает верстак под ним.
+ * Зарядник верстака (порт BlockArcaneWorkbenchCharger): ставится на магический верстак или фокусный манипулятор, без опоры
+ * выпадает предметом; правый клик открывает экран блока под ним.
  */
 public class BlockArcaneWorkbenchCharger extends Block {
 
@@ -24,8 +24,7 @@ public class BlockArcaneWorkbenchCharger extends Block {
     }
 
     private static boolean isValidBase(BlockState below) {
-        // TODO этап 12: || below.is(BlocksTC.wandWorkbench) (фокусный манипулятор, меню 7)
-        return below.is(BlocksTC.arcaneWorkbench.get());
+        return below.is(BlocksTC.arcaneWorkbench.get()) || below.is(BlocksTC.wandWorkbench.get());
     }
 
     @Override
@@ -53,6 +52,9 @@ public class BlockArcaneWorkbenchCharger extends Block {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockState(pos.below()).is(BlocksTC.arcaneWorkbench.get())) {
             BlockArcaneWorkbench.openGui(level, pos.below(), player);
+        }
+        if (!level.isClientSide && level.getBlockState(pos.below()).is(BlocksTC.wandWorkbench.get())) {
+            BlocksTC.wandWorkbench.get().defaultBlockState().useWithoutItem(level, player, hit.withPosition(pos.below()));
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

@@ -398,14 +398,19 @@ public class GuiFocalManipulator extends AbstractContainerScreen<ContainerFocalM
 
     /** Значок элемента: подложка цвета элемента (эффект / носитель) и картинка; корень и модификаторы — вдвое крупнее, без подложки. */
     public static void drawPart(GuiGraphics g, FocusNode node, int x, int y, float scale, boolean mouseover) {
+        drawPart(g, node, x, y, scale, mouseover, 1.0F);
+    }
+
+    /** shade < 1 — затемнённый значок (неизученное исследование в книге; в 1.12 — яркость 50 вместо 220). */
+    public static void drawPart(GuiGraphics g, FocusNode node, int x, int y, float scale, boolean mouseover, float shade) {
         boolean root = node.getType() == IFocusElement.EnumUnitType.MOD || node.getKey().equals("ROOT");
         if (root) {
             scale *= 2.0F;
         }
         Color color = new Color(FocusEngine.getElementColor(node.getKey()));
-        float r = color.getRed() / 255.0F;
-        float gr = color.getGreen() / 255.0F;
-        float b = color.getBlue() / 255.0F;
+        float r = color.getRed() / 255.0F * shade;
+        float gr = color.getGreen() / 255.0F * shade;
+        float b = color.getBlue() / 255.0F * shade;
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         if (node.getType() == IFocusElement.EnumUnitType.EFFECT) {
@@ -415,7 +420,7 @@ public class GuiFocalManipulator extends AbstractContainerScreen<ContainerFocalM
         }
         g.pose().pushPose();
         g.pose().translate(0.0, 0.0, 1.0);
-        quad(g, FocusEngine.getElementIcon(node.getKey()), x, y, scale / 2.0F + (mouseover ? 2 : 0), 1.0F, 1.0F, 1.0F);
+        quad(g, FocusEngine.getElementIcon(node.getKey()), x, y, scale / 2.0F + (mouseover ? 2 : 0), shade, shade, shade);
         g.pose().popPose();
     }
 
