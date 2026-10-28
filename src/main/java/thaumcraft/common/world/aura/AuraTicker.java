@@ -83,7 +83,7 @@ public class AuraTicker {
         if (st.tick % CYCLE == 0) {
             BlockPos rift = AuraHandler.riftTrigger.remove(level.dimension());
             if (rift != null && !ModConfig.CONFIG_MISC.wussMode.get()) {
-                // TODO (после этапа 6): EntityFluxRift.createRift(level, rift)
+                // TODO этап 15: EntityFluxRift.createRift(level, rift)
             }
         }
     }

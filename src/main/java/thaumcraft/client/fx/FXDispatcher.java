@@ -521,4 +521,25 @@ public class FXDispatcher implements IFXDispatcher {
     public void drawSlash(double x, double y, double z, double x2, double y2, double z2, int dur) {
         ParticleEngine.addEffect(this.getWorld(), new thaumcraft.client.fx.particles.FXPlane(this.getWorld(), x, y, z, x2, y2, z2, dur));
     }
+
+    @Override
+    public void drawPollutionParticles(net.minecraft.core.BlockPos p) {
+        var rand = this.getWorld().random;
+        float x = p.getX() + 0.2F + rand.nextFloat() * 0.6F;
+        float y = p.getY() + 0.2F + rand.nextFloat() * 0.6F;
+        float z = p.getZ() + 0.2F + rand.nextFloat() * 0.6F;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, (rand.nextFloat() - rand.nextFloat()) * 0.005, 0.02,
+                (rand.nextFloat() - rand.nextFloat()) * 0.005);
+        fb.setMaxAge(400 + rand.nextInt(100));
+        fb.setRBGColorF(1.0F, 0.3F, 0.9F);
+        fb.setAlphaF(0.5F, 0.0F);
+        fb.setGridSize(16);
+        fb.setParticles(56, 1, 1);
+        fb.setScale(2.0F, 5.0F);
+        fb.setLayer(1);
+        fb.setSlowDown(1.0);
+        fb.setWind(0.001);
+        fb.setRotationSpeed(rand.nextFloat(), rand.nextBoolean() ? -1.0F : 1.0F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
 }

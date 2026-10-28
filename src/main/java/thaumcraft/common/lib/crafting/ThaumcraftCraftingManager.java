@@ -388,7 +388,12 @@ public class ThaumcraftCraftingManager {
         if (ret != null) {
             return ret;
         }
-        // TODO этап 11: generateTagsFromInfusionRecipes
+        // generateTagsFromInfusionRecipes оригинала всегда падал: getAspectsFromIngredients(…, recipe = null, …) обходит
+        // остатки рецепта (exlist == null) → NPE, которое глотал getObjectTags. Итог 1:1 — у результата наполнения аспекты
+        // не выводятся (и до рецептов верстака дело не доходит); остаются только заданные явно и бонусные.
+        if (ThaumcraftApi.getInfusionRecipe(stack) != null) {
+            return null;
+        }
         return generateTagsFromCraftingRecipes(stack, history);
     }
 

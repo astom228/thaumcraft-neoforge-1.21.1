@@ -128,7 +128,10 @@ public class InternalMethodHandler implements IInternalMethodHandler {
         if (!world.isClientSide) {
             AuraHandler.addFlux(world, pos, amount);
             if (showEffect && amount > 0.0F) {
-                // TODO этап 6: PacketFXPollute(pos, amount) всем в радиусе 32
+                if (world instanceof net.minecraft.server.level.ServerLevel sl) {
+                    net.neoforged.neoforge.network.PacketDistributor.sendToPlayersNear(sl, null, pos.getX(), pos.getY(), pos.getZ(), 32.0,
+                            new thaumcraft.common.lib.network.fx.PacketFXPollute(pos, amount));
+                }
             }
         }
     }

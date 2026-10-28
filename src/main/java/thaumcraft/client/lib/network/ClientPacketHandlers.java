@@ -99,6 +99,17 @@ public final class ClientPacketHandlers {
         }
     }
 
+    /** PacketFXPollute: клубы Выброса над блоком. */
+    public static void handlePollute(thaumcraft.common.lib.network.fx.PacketFXPollute msg) {
+        if (Minecraft.getInstance().level == null) {
+            return;
+        }
+        net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(msg.x(), msg.y(), msg.z());
+        for (int a = 0; a < Math.min(40, msg.amount()); a++) {
+            IFXDispatcher.get().drawPollutionParticles(p);
+        }
+    }
+
     /** PacketFXSlash: росчерк от существа к существу (середина высоты). */
     public static void handleSlash(thaumcraft.common.lib.network.fx.PacketFXSlash msg) {
         var level = Minecraft.getInstance().level;

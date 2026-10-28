@@ -44,8 +44,8 @@ public class EssentiaSourceFXClient {
         }
         if (Minecraft.getInstance().level != null) {
             for (EssentiaSourceFX fx : sourceFX.values()) {
-                // TODO этап 11: у матрицы наполнения поток идёт на блок ниже (mod = -1)
-                int mod = 0;
+                // к рунической матрице поток идёт на блок ниже
+                int mod = Minecraft.getInstance().level.getBlockEntity(fx.start()) instanceof thaumcraft.common.tiles.crafting.TileInfusionMatrix ? -1 : 0;
                 FXDispatcher.INSTANCE.essentiaTrailFx(fx.end(), fx.start().above(mod), tickCount, fx.color(), 0.1F, fx.ext());
             }
             sourceFX.clear();

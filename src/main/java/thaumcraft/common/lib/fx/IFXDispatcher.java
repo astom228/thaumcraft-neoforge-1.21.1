@@ -38,6 +38,10 @@ public interface IFXDispatcher {
     default void drawInfusionParticles4(double x, double y, double z, int x2, int y2, int z2) {
     }
 
+    /** Клуб Выброса в блоке p (drawPollutionParticles). */
+    default void drawPollutionParticles(net.minecraft.core.BlockPos p) {
+    }
+
     /** Росчерк удара от (x, y, z) к (x2, y2, z2) за dur тиков (drawSlash). */
     default void drawSlash(double x, double y, double z, double x2, double y2, double z2, int dur) {
     }

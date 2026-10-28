@@ -41,7 +41,7 @@ public final class UtilsFX {
     /**
      * Значок аспекта 16×16 с количеством (drawTag оригинала). blend — второй аргумент glBlendFunc: 771 — обычное смешивание,
      * 1 — аддитивное (так рисуются почти все аспекты). bw — чёрно-белый (неизвестный) значок.
-     * TODO этап 6: bonus > 0 — анимированный пузырёк из текстуры частиц.
+     * bonus > 0 (анимированный пузырёк) не переносится: в оригинале drawTag нигде не вызывается с bonus > 0.
      */
     public static void drawTag(GuiGraphics g, int x, int y, Aspect aspect, float amount, int bonus, int blend, float alpha, boolean bw) {
         if (aspect == null) {
