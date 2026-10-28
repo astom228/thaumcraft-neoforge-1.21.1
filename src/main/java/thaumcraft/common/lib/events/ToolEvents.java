@@ -179,6 +179,9 @@ public class ToolEvents {
     @SubscribeEvent
     public static void harvestBlockEvent(net.neoforged.neoforge.event.level.BlockDropsEvent event) {
         Level world = event.getLevel();
+        if (BlockUtils.isHarvestingWithoutExperience()) {
+            event.setDroppedExperience(0);
+        }
         if (world.isClientSide || !(event.getBreaker() instanceof net.minecraft.world.entity.player.Player player)) {
             return;
         }

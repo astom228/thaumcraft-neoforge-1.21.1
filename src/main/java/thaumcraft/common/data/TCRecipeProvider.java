@@ -121,7 +121,9 @@ public class TCRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlocksTC.tableStone.get())
                 .pattern("SSS").pattern("W W").define('S', Items.SMOOTH_STONE_SLAB).define('W', Items.STONE)
                 .unlockedBy("has", has(Items.STONE)).save(out, id("tablestone"));
-        // TODO: scribingtoolscraft1 (фиал + перо + чёрный краситель) — вместе с фиалом
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, scribingTools.get()).group(INKWELL)
+                .requires(phial.get()).requires(Items.FEATHER).requires(Tags.Items.DYES_BLACK)
+                .unlockedBy("has", has(Items.FEATHER)).save(out, id("scribingtoolscraft1"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, scribingTools.get()).group(INKWELL)
                 .requires(Items.GLASS_BOTTLE).requires(Items.FEATHER).requires(Tags.Items.DYES_BLACK)
                 .unlockedBy("has", has(Items.FEATHER)).save(out, id("scribingtoolscraft2"));
@@ -151,6 +153,28 @@ public class TCRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, jarBrace.get(), 2)
                 .pattern("NSN").pattern("S S").pattern("NSN").define('N', TCTags.Items.NUGGETS_BRASS).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has", has(TCTags.Items.NUGGETS_BRASS)).save(out, id("brassbrace"));
+
+        // фиалы: "blockGlass" — любое стекло
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, phial.get(), 8)
+                .pattern(" C ").pattern("G G").pattern(" G ").define('G', Tags.Items.GLASS_BLOCKS).define('C', Items.CLAY_BALL)
+                .unlockedBy("has", has(Items.CLAY_BALL)).save(out, id("phial"));
+
+        // --- ярлыки: чистый, с аспектом (чистый + фиал этого аспекта), снятие пометки ---
+        String labels = "thaumcraft:jarlabels";
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, label.get(), 4).group(labels)
+                .requires(Tags.Items.DYES_BLACK).requires(Tags.Items.SLIME_BALLS).requires(Items.PAPER, 4)
+                .unlockedBy("has", has(Items.PAPER)).save(out, id("jarlabel"));
+        for (thaumcraft.api.aspects.Aspect aspect : thaumcraft.api.aspects.Aspect.aspects.values()) {
+            net.minecraft.world.item.ItemStack marked = new net.minecraft.world.item.ItemStack(labelFilled.get());
+            marked.set(thaumcraft.common.lib.TCDataComponents.ASPECTS.get(), new thaumcraft.api.aspects.AspectList().add(aspect, 1));
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, marked).group(labels)
+                    .requires(label.get())
+                    .requires(net.neoforged.neoforge.common.crafting.DataComponentIngredient.of(false, thaumcraft.common.lib.TCDataComponents.ASPECTS,
+                            new thaumcraft.api.aspects.AspectList().add(aspect, 10), phialFilled.get()))
+                    .unlockedBy("has", has(label.get())).save(out, id("label_" + aspect.getTag()));
+        }
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, label.get()).group(labels).requires(labelFilled.get())
+                .unlockedBy("has", has(labelFilled.get())).save(out, id("jarlabelnull"));
 
         // --- печь (initializeSmelting) ---
         smelt(out, "smelt_cinnabar_ore", BlocksTC.oreCinnabar.get(), quicksilver.get(), 1, 1.0F);

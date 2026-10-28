@@ -80,6 +80,13 @@ public class BlockUtils {
         return worked;
     }
 
+    /** Идёт добыча без события ломки — опыт не выпадает (ToolEvents.harvestBlockEvent). Только серверный поток. */
+    private static boolean noExperience = false;
+
+    public static boolean isHarvestingWithoutExperience() {
+        return noExperience;
+    }
+
     public static boolean harvestBlockSkipCheck(Level world, net.minecraft.world.entity.player.Player player, net.minecraft.core.BlockPos pos) {
         return harvestBlock(world, player, pos, false, true);
     }
@@ -111,7 +118,11 @@ public class BlockUtils {
             world.sendBlockUpdated(pos, state, state, 3);
             return false;
         }
-        world.levelEvent(null, 2001, pos, net.minecraft.world.level.block.Block.getId(state));
+        // эффект разрушения: остальным — из playerWillDestroy (в 1.12 его вызывал removedByPlayer), самому игроку — пакетом
+        // (у него нет предсказания ломки этого блока); в оригинале — playEvent(null, 2001) для всех
+        player.connection.send(new net.minecraft.network.protocol.game.ClientboundLevelEventPacket(2001, pos,
+                net.minecraft.world.level.block.Block.getId(state), false));
+        state = state.getBlock().playerWillDestroy(world, pos, state, player);
         boolean removed;
         if (player.isCreative()) {
             removed = state.onDestroyedByPlayer(world, pos, player, false, world.getFluidState(pos));
@@ -126,7 +137,14 @@ public class BlockUtils {
                 state.getBlock().destroy(world, pos, state);
             }
             if (removed && canHarvest) {
-                state.getBlock().playerDestroy(world, player, pos, state, tile, tool);
+                // опыт: без события ломки (skipEvent) в оригинале его не было (exp = 0)
+                boolean prev = noExperience;
+                noExperience = skipEvent;
+                try {
+                    state.getBlock().playerDestroy(world, player, pos, state, tile, tool);
+                } finally {
+                    noExperience = prev;
+                }
             }
         }
         return removed;

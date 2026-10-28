@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "thaumcraft:jarlabels",
+  "ingredients": [
+    {
+      "item": "thaumcraft:label"
+    },
+    {
+      "type": "neoforge:components",
+      "components": {
+        "thaumcraft:aspects": [
+          {
+            "amount": 10,
+            "key": "vitreus"
+          }
+        ]
+      },
+      "items": "thaumcraft:essentia_phial"
+    }
+  ],
+  "result": {
+    "components": {
+      "thaumcraft:aspects": [
+        {
+          "amount": 1,
+          "key": "vitreus"
+        }
+      ]
+    },
+    "count": 1,
+    "id": "thaumcraft:marked_label"
+  }
+}
