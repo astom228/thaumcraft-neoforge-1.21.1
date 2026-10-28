@@ -40,11 +40,16 @@ public class TileThaumcraftInventory extends TileThaumcraft {
             @Override
             protected void onContentsChanged(int slot) {
                 TileThaumcraftInventory.this.setChanged();
+                TileThaumcraftInventory.this.onSlotContentsChanged(slot);
                 if (TileThaumcraftInventory.this.isSyncedSlot(slot)) {
                     TileThaumcraftInventory.this.syncTile(false);
                 }
             }
         };
+    }
+
+    /** Содержимое слота изменилось (на обеих сторонах; на клиенте — и при синхронизации). */
+    protected void onSlotContentsChanged(int slot) {
     }
 
     public IItemHandler getItemHandler() {

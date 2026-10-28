@@ -1,0 +1,37 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "BASEAUROMANCY@2",
+  "vis": 100,
+  "crystals": {
+    "terra": 1,
+    "aqua": 1
+  },
+  "key": {
+    "S": {
+      "item": "thaumcraft:arcane_stone_slab"
+    },
+    "T": {
+      "item": "thaumcraft:stone_table"
+    },
+    "R": {
+      "item": "thaumcraft:vis_resonator"
+    },
+    "B": {
+      "item": "thaumcraft:arcane_stone"
+    },
+    "G": {
+      "tag": "c:ingots/gold"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    }
+  },
+  "pattern": [
+    "ISI",
+    "BRB",
+    "GTG"
+  ],
+  "result": {
+    "id": "thaumcraft:focal_manipulator"
+  }
+}

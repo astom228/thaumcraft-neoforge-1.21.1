@@ -716,4 +716,15 @@ public class FXDispatcher implements IFXDispatcher {
         fb.setRandomMovementScale(0.01F, 0.01F, 0.01F);
         ParticleEngine.addEffectWithDelay(this.getWorld(), fb, 0);
     }
+
+    @Override
+    public void visSparkle(int x, int y, int z, int x2, int y2, int z2, int color) {
+        var rand = this.getWorld().random;
+        thaumcraft.client.fx.particles.FXVisSparkle fb = new thaumcraft.client.fx.particles.FXVisSparkle(this.getWorld(), x + rand.nextFloat(),
+                y + rand.nextFloat(), z + rand.nextFloat(), x2 + 0.4 + rand.nextFloat() * 0.2F, y2 + 0.4 + rand.nextFloat() * 0.2F,
+                z2 + 0.4 + rand.nextFloat() * 0.2F);
+        java.awt.Color c = new java.awt.Color(color);
+        fb.setRBGColorF(c.getRed() / 255.0F, c.getGreen() / 255.0F, c.getBlue() / 255.0F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
 }

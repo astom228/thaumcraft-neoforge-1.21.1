@@ -42,6 +42,12 @@ public class PacketHandler {
                 (msg, ctx) -> PacketSyncProgressToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToServer(PacketSyncResearchFlagsToServer.TYPE, PacketSyncResearchFlagsToServer.STREAM_CODEC,
                 (msg, ctx) -> PacketSyncResearchFlagsToServer.handle(msg, (ServerPlayer) ctx.player()));
+        registrar.playToServer(thaumcraft.common.lib.network.playerdata.PacketFocusNodesToServer.TYPE,
+                thaumcraft.common.lib.network.playerdata.PacketFocusNodesToServer.STREAM_CODEC,
+                (msg, ctx) -> thaumcraft.common.lib.network.playerdata.PacketFocusNodesToServer.handle(msg, (ServerPlayer) ctx.player()));
+        registrar.playToServer(thaumcraft.common.lib.network.playerdata.PacketFocusNameToServer.TYPE,
+                thaumcraft.common.lib.network.playerdata.PacketFocusNameToServer.STREAM_CODEC,
+                (msg, ctx) -> thaumcraft.common.lib.network.playerdata.PacketFocusNameToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToServer(PacketStartTheoryToServer.TYPE, PacketStartTheoryToServer.STREAM_CODEC,
                 (msg, ctx) -> PacketStartTheoryToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToClient(PacketFXBlockBamf.TYPE, PacketFXBlockBamf.STREAM_CODEC,

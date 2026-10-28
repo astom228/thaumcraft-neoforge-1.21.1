@@ -44,6 +44,7 @@ public class ClientRegistration {
         event.register(TCMenus.SMELTER.get(), thaumcraft.client.gui.GuiSmelter::new);
         event.register(TCMenus.HAND_MIRROR.get(), thaumcraft.client.gui.GuiHandMirror::new);
         event.register(TCMenus.THAUMATORIUM.get(), thaumcraft.client.gui.GuiThaumatorium::new);
+        event.register(TCMenus.FOCAL_MANIPULATOR.get(), thaumcraft.client.gui.GuiFocalManipulator::new);
     }
 
     /** Магические рецепты не входят в ванильную книгу рецептов; без категории клиент пишет предупреждение на каждый рецепт. */
@@ -72,6 +73,7 @@ public class ClientRegistration {
         event.registerBlockEntityRenderer(ConfigBlocks.THAUMATORIUM_TILE.get(), thaumcraft.client.renderers.tile.TileThaumatoriumRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.INFUSION_MATRIX_TILE.get(), thaumcraft.client.renderers.tile.TileInfusionMatrixRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.HOLE_TILE.get(), thaumcraft.client.renderers.tile.TileHoleRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.FOCAL_MANIPULATOR_TILE.get(), thaumcraft.client.renderers.tile.TileFocalManipulatorRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.PEDESTAL_TILE.get(), thaumcraft.client.renderers.tile.TilePedestalRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.MIRROR_TILE.get(), thaumcraft.client.renderers.tile.TileMirrorRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.MIRROR_ESSENTIA_TILE.get(), thaumcraft.client.renderers.tile.TileMirrorRenderer::new);

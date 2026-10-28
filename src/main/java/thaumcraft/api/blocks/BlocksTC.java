@@ -234,6 +234,9 @@ public class BlocksTC {
     // Магический верстак (BlockTCDevice → BlockTCTile: прочность 2.0, сопротивление 20 → 12; Material.WOOD)
     public static final DeferredBlock<Block> arcaneWorkbench = register("arcane_workbench", () -> new BlockArcaneWorkbench(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+    // Фокусный манипулятор (BlockFocalManipulator: BlockTCDevice, Material.ROCK — прочность 2.0, сопротивление 12; камень)
+    public static final DeferredBlock<Block> wandWorkbench = register("focal_manipulator", () -> new thaumcraft.common.blocks.crafting.BlockFocalManipulator(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion()));
     // Зарядник верстака (BlockTC: прочность 1.25, setResistance(10) → 6; Material.WOOD)
     public static final DeferredBlock<Block> arcaneWorkbenchCharger = register("arcane_workbench_charger", () -> new BlockArcaneWorkbenchCharger(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.25F, 6.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));

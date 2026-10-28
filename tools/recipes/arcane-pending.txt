@@ -2,7 +2,6 @@
 activatorrail: нет BlocksTC.activatorRail
 sanitychecker: нет ItemsTC.sanityChecker
 rechargepedestal: нет BlocksTC.rechargePedestal
-wand_workbench: нет BlocksTC.wandWorkbench
 robechest: нет ItemsTC.clothChest
 robelegs: нет ItemsTC.clothLegs
 robeboots: нет ItemsTC.clothBoots

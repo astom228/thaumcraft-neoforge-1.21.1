@@ -60,6 +60,10 @@ public interface IFXDispatcher {
     default void focusRiftFX(double x, double y, double z, double mx, double my, double mz) {
     }
 
+    /** Искра Вис от (x, y, z) к (x2, y2, z2) цвета color (visSparkle). */
+    default void visSparkle(int x, int y, int z, int x2, int y2, int z2, int color) {
+    }
+
     /** Искорка (sparkle): в 2/3 случаев — мерцающая частица 320–335 цвета (r, g, b). */
     default void sparkle(float x, float y, float z, float r, float g, float b) {
     }

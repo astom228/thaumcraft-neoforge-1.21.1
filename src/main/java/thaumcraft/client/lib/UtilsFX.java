@@ -420,4 +420,19 @@ public final class UtilsFX {
 
     private UtilsFX() {
     }
+
+    /** renderItemStackShaded: предмет и его число в интерфейсе (на 32 выше по глубине); shade 1 — без затемнения. */
+    public static boolean renderItemStackShaded(GuiGraphics g, net.minecraft.world.item.ItemStack itm, int x, int y, float shade) {
+        if (itm == null || itm.isEmpty()) {
+            return false;
+        }
+        g.pose().pushPose();
+        g.pose().translate(0.0F, 0.0F, 32.0F);
+        RenderSystem.setShaderColor(shade, shade, shade, shade);
+        g.renderItem(itm, x, y);
+        g.renderItemDecorations(Minecraft.getInstance().font, itm, x, y);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        g.pose().popPose();
+        return true;
+    }
 }
