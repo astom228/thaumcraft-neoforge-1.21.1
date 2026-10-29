@@ -823,5 +823,6 @@
   "block.thaumcraft.spa": "Магическая купель",
   "text.spa.mix.true": "Смешивать с добавкой",
   "text.spa.mix.false": "Только жидкость",
-  "block.thaumcraft.potion_sprayer": "Распылитель зелий"
+  "block.thaumcraft.potion_sprayer": "Распылитель зелий",
+  "block.thaumcraft.recharge_pedestal": "Пьедестал подзарядки"
 }

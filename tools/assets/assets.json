@@ -573,6 +573,10 @@
     },
     "potion_sprayer": {
       "src": "potion_sprayer"
+    },
+    "recharge_pedestal": {
+      "src": "recharge_pedestal",
+      "renderType": "minecraft:cutout"
     }
   },
   "items": {

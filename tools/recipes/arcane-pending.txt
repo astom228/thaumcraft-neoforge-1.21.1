@@ -1,6 +1,5 @@
 # Магические рецепты, ожидающие предметов (tools/recipes/convert-arcane.js)
 activatorrail: нет BlocksTC.activatorRail
-rechargepedestal: нет BlocksTC.rechargePedestal
 sealblank: нет ItemsTC.seals
 dioptra: нет BlocksTC.dioptra
 automatedcrossbow: нет crossbow_turret (ItemsTC.turretPlacer meta 0)

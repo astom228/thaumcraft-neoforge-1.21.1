@@ -152,6 +152,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Infernal Furnace | Адская печь | принято |
 | Arcane Spa | Магическая купель | принято |
 | Potion Sprayer | Распылитель зелий | принято |
+| Recharge Pedestal | Пьедестал подзарядки | принято |
 | Arcane Ear / Levitator / Lamp | Магическое ухо / левитатор / лампа | принято |
 | Dioptra | Диоптр | принято |
 | Portable Hole / Dimensional Tear | Переносная дыра / Пространственный разрыв | принято |
