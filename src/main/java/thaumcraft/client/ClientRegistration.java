@@ -46,6 +46,31 @@ public class ClientRegistration {
                 return 0xFF000000 | thaumcraft.common.items.armor.ItemRobeArmor.getColor(stack);
             }
         }, thaumcraft.api.items.ItemsTC.clothChest.get(), thaumcraft.api.items.ItemsTC.clothLegs.get(), thaumcraft.api.items.ItemsTC.clothBoots.get());
+        // Жидкости: очищающая — текстуры воды с цветом 0x77FFCCAA, жидкая смерть — animatedglow с цветом 0xF0440099 (getColor оригинала)
+        event.registerFluidType(fluidExt(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_still"),
+                net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_flow"), 0x77FFCCAA), thaumcraft.common.config.ConfigFluids.PURIFYING_TYPE.get());
+        net.minecraft.resources.ResourceLocation glow = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "blocks/animatedglow");
+        event.registerFluidType(fluidExt(glow, glow, 0xF0440099), thaumcraft.common.config.ConfigFluids.DEATH_TYPE.get());
+    }
+
+    private static net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions fluidExt(net.minecraft.resources.ResourceLocation still,
+            net.minecraft.resources.ResourceLocation flow, int color) {
+        return new net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions() {
+            @Override
+            public net.minecraft.resources.ResourceLocation getStillTexture() {
+                return still;
+            }
+
+            @Override
+            public net.minecraft.resources.ResourceLocation getFlowingTexture() {
+                return flow;
+            }
+
+            @Override
+            public int getTintColor() {
+                return color;
+            }
+        };
     }
 
     /** Клавиши перчатки (KeyHandler). */
@@ -120,6 +145,10 @@ public class ClientRegistration {
         top.theillusivec4.curios.api.client.CuriosRendererRegistry.register(thaumcraft.api.items.ItemsTC.bandCuriosity.get(),
                 () -> new thaumcraft.client.renderers.item.GogglesCurioRenderer(thaumcraft.client.renderers.item.GogglesCurioRenderer.CURIOSITY_BAND));
         event.enqueueWork(() -> {
+            for (net.minecraft.world.level.material.Fluid f : new net.minecraft.world.level.material.Fluid[] {thaumcraft.common.config.ConfigFluids.PURIFYING.get(),
+                    thaumcraft.common.config.ConfigFluids.PURIFYING_FLOWING.get(), thaumcraft.common.config.ConfigFluids.DEATH.get(), thaumcraft.common.config.ConfigFluids.DEATH_FLOWING.get()}) {
+                net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(f, net.minecraft.client.renderer.RenderType.translucent());
+            }
             net.minecraft.resources.ResourceLocation linked = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "linked");
             // перчатка с фокусом (свойство focus оригинала); фокусы — этап 12
             net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.casterBasic.get(),

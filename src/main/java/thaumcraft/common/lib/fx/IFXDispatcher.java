@@ -129,6 +129,14 @@ public interface IFXDispatcher {
     default void drawLevitatorParticles(double x, double y, double z, double x2, double y2, double z2) {
     }
 
+    /** Искорка над очищающей жидкостью (BlockFluidPure.randomDisplayTick). */
+    default void purifyingFluidFx(double x, double y, double z) {
+    }
+
+    /** Слизистый пузырь (FXSlimyBubble). */
+    default void slimyBubble(double x, double y, double z, float scale, float alpha, float r, float g, float b) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

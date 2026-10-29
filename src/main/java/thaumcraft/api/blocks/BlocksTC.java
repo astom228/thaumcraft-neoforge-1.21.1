@@ -218,6 +218,13 @@ public class BlocksTC {
         return BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.0F, 5.0F).sound(SoundType.WOOD).noOcclusion();
     }
 
+    // Жидкости (BlockFluidPure / BlockFluidDeath): свойства воды, без предметов; свет очищающей — 5
+    public static final DeferredBlock<Block> purifyingFluid = ConfigBlocks.BLOCKS.register("purifying_fluid",
+            () -> new thaumcraft.common.blocks.misc.BlockFluidPure(thaumcraft.common.config.ConfigFluids.PURIFYING.get(),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GRAY).lightLevel(st -> 5)));
+    public static final DeferredBlock<Block> liquidDeath = ConfigBlocks.BLOCKS.register("liquid_death",
+            () -> new thaumcraft.common.blocks.misc.BlockFluidDeath(thaumcraft.common.config.ConfigFluids.DEATH.get(),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PURPLE)));
     // Голодный сундук (BlockHungryChest): Material.WOOD, твёрдость 2.5 → сопротивление 12.5, рисуется блок-сущностью
     public static final DeferredBlock<Block> hungryChest = register("hungry_chest", () -> new thaumcraft.common.blocks.devices.BlockHungryChest(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F, 12.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));

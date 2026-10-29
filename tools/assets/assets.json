@@ -748,6 +748,7 @@
     "grappler": "model:grapple_gun",
     "grapple_gun_1": "model:grapple_gun_1",
     "grapple_gun_2": "model:grapple_gun_2",
-    "alumentum": "model:alumentum"
+    "alumentum": "model:alumentum",
+    "bath_salts": "model:bath_salts"
   }
 }

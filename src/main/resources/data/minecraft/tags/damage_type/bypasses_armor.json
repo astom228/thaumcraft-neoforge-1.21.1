@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "thaumcraft:taint"
+    "thaumcraft:taint",
+    "thaumcraft:dissolve"
   ]
 }

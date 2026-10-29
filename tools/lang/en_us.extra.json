@@ -110,5 +110,8 @@
   "entity.thaumcraft.alumentum": "Alumentum",
   "entity.thaumcraft.grapple": "Grapple",
   "block.thaumcraft.growth_lamp": "Lamp of Growth",
-  "block.thaumcraft.infernal_furnace": "Infernal Furnace"
+  "block.thaumcraft.infernal_furnace": "Infernal Furnace",
+  "effect.thaumcraft.warp_ward": "Warp Ward",
+  "item.thaumcraft.purifying_fluid_bucket": "Purifying Fluid Bucket",
+  "item.thaumcraft.liquid_death_bucket": "Liquid Death Bucket"
 }

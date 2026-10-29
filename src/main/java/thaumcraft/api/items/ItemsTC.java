@@ -38,6 +38,15 @@ public class ItemsTC {
     // ItemAlumentum: бросается, топливо 4800
     public static final DeferredItem<Item> alumentum = ConfigItems.ITEMS.registerItem("alumentum", thaumcraft.common.items.consumables.ItemAlumentum::new);
     public static final DeferredItem<Item> quicksilver = simple("quicksilver");
+    // Вёдра жидкостей (универсальное ведро Forge в 1.12): редкие, по одному
+    public static final DeferredItem<Item> bucketPure = ConfigItems.ITEMS.registerItem("purifying_fluid_bucket",
+            p -> new net.minecraft.world.item.BucketItem(thaumcraft.common.config.ConfigFluids.PURIFYING.get(), p),
+            new Item.Properties().craftRemainder(net.minecraft.world.item.Items.BUCKET).stacksTo(1).rarity(Rarity.RARE));
+    public static final DeferredItem<Item> bucketDeath = ConfigItems.ITEMS.registerItem("liquid_death_bucket",
+            p -> new net.minecraft.world.item.BucketItem(thaumcraft.common.config.ConfigFluids.DEATH.get(), p),
+            new Item.Properties().craftRemainder(net.minecraft.world.item.Items.BUCKET).stacksTo(1).rarity(Rarity.RARE));
+    // ItemBathSalts: брошенные живут 200 тиков
+    public static final DeferredItem<Item> bathSalts = ConfigItems.ITEMS.registerItem("bath_salts", thaumcraft.common.items.consumables.ItemBathSalts::new);
     // ingot: thaumium, void, brass
     public static final DeferredItem<Item> ingotThaumium = simple("thaumium_ingot");
     public static final DeferredItem<Item> ingotVoid = simple("void_metal_ingot");

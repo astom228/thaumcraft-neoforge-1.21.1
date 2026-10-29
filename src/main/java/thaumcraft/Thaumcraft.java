@@ -32,6 +32,8 @@ public class Thaumcraft {
     public Thaumcraft(IEventBus modEventBus, ModContainer modContainer) {
         BlocksTC.init();
         ItemsTC.init();
+        thaumcraft.common.config.ConfigFluids.FLUID_TYPES.register(modEventBus);
+        thaumcraft.common.config.ConfigFluids.FLUIDS.register(modEventBus);
         ConfigBlocks.BLOCKS.register(modEventBus);
         ConfigBlocks.TILES.register(modEventBus);
         thaumcraft.api.ThaumcraftMaterials.ARMOR_MATERIALS.register(modEventBus);

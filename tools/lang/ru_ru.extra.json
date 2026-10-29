@@ -808,5 +808,16 @@
   "block.thaumcraft.placeholder_anvil": "Пресс големов",
   "block.thaumcraft.placeholder_table": "Пресс големов",
   "block.thaumcraft.placeholder_bars": "Пресс големов",
-  "block.thaumcraft.placeholder_cauldron": "Пресс големов"
+  "block.thaumcraft.placeholder_cauldron": "Пресс големов",
+  "effect.thaumcraft.warp_ward": "Защита от Искажения",
+  "potion.warpward": "Защита от Искажения",
+  "block.thaumcraft.purifying_fluid": "Очищающая жидкость",
+  "block.thaumcraft.liquid_death": "Жидкая смерть",
+  "fluid.purifying_fluid": "Очищающая жидкость",
+  "fluid.liquid_death": "Жидкая смерть",
+  "item.thaumcraft.purifying_fluid_bucket": "Ведро очищающей жидкости",
+  "item.thaumcraft.liquid_death_bucket": "Ведро жидкой смерти",
+  "item.thaumcraft.bath_salts": "Очищающие соли для ванн",
+  "death.attack.dissolve": "%1$s растворился",
+  "death.attack.dissolve.player": "%1$s растворился в бою с %2$s"
 }

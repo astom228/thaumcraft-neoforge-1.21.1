@@ -399,9 +399,11 @@ public class ConfigRecipes {
         purification("tin", ItemsTC.clusterTin.get(), oreTag("tin"));
         purification("silver", ItemsTC.clusterSilver.get(), oreTag("silver"));
         purification("lead", ItemsTC.clusterLead.get(), oreTag("lead"));
-        // TODO LiquidDeath (ведро жидкой смерти из ведра): DEATH 100, ALCHEMY 20, ENTROPY 50 — с жидкостью (этап 15)
+        ThaumcraftApi.addCrucibleRecipe(id("liquiddeath"), new CrucibleRecipe("LIQUIDDEATH", new ItemStack(ItemsTC.bucketDeath.get()),
+                new ItemStack(Items.BUCKET), new AspectList().add(Aspect.DEATH, 100).add(Aspect.ALCHEMY, 20).add(Aspect.ENTROPY, 50)));
         // TODO этап 15: BottleTaint (из фиала Выброса): FLUX 30, WATER 30; SaneSoap (из блока плоти): MIND 75, ELDRITCH 50, ORDER 75, LIFE 50
-        // TODO этап 14: BathSalts (из соли мира): MIND 40, AIR 40, ORDER 40, LIFE 40
+        ThaumcraftApi.addCrucibleRecipe(id("bathsalts"), new CrucibleRecipe("BATHSALTS", new ItemStack(ItemsTC.bathSalts.get()),
+                new ItemStack(ItemsTC.salisMundus.get()), new AspectList().add(Aspect.MIND, 40).add(Aspect.AIR, 40).add(Aspect.ORDER, 40).add(Aspect.LIFE, 40)));
         // TODO этап 18: печати големов (SealCollect…SealUse) — 12 рецептов
         ThaumcraftApi.addCrucibleRecipe(id("everfullurn"), new CrucibleRecipe("EVERFULLURN", new ItemStack(BlocksTC.everfullUrn.get()),
                 new ItemStack(Items.FLOWER_POT), new AspectList().add(Aspect.WATER, 30).add(Aspect.CRAFT, 10).add(Aspect.EARTH, 10)));
