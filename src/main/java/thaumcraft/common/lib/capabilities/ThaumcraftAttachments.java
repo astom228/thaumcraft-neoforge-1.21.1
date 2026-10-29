@@ -21,6 +21,8 @@ public class ThaumcraftAttachments {
     /** Состояние рунической защиты игрока (статические карты PlayerEvents оригинала); не сохраняется. */
     public static final Supplier<AttachmentType<RunicShield>> RUNIC = ATTACHMENTS.register("runic_shield",
             () -> AttachmentType.builder(RunicShield::new).build());
+    /** Текущий крюк крюкомёта игрока (id сущности, −1 — нет; статическая карта grapples оригинала); только сервер, не сохраняется. */
+    public static final Supplier<AttachmentType<Integer>> GRAPPLE = ATTACHMENTS.register("grapple", () -> AttachmentType.builder(() -> -1).build());
     /** Аура чанка (в оригинале — NBT чанка "Thaumcraft": base, vis, flux). */
     public static final Supplier<AttachmentType<AuraChunk>> AURA = ATTACHMENTS.register("aura",
             () -> AttachmentType.serializable(AuraChunk::new).build());

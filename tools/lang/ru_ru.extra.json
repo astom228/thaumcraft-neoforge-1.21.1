@@ -751,5 +751,6 @@
   "item.thaumcraft.uncommon_loot_bag": "Необычное сокровище",
   "item.thaumcraft.rare_loot_bag": "Редкое сокровище",
   "tc.lootbag": "Нажмите, чтобы открыть, или сохраните для обмена.",
-  "not.pechwand": "Вы пока не можете постичь, как это устроено."
+  "not.pechwand": "Вы пока не можете постичь, как это устроено.",
+  "item.thaumcraft.grappler": "Магический крюкомёт"
 }

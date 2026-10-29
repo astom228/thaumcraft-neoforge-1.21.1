@@ -624,6 +624,9 @@
     "sanity_checker": "model:sanity_checker",
     "common_loot_bag": "bs:loot_bag#common",
     "uncommon_loot_bag": "bs:loot_bag#uncommon",
-    "rare_loot_bag": "bs:loot_bag#rare"
+    "rare_loot_bag": "bs:loot_bag#rare",
+    "grappler": "model:grapple_gun",
+    "grapple_gun_1": "model:grapple_gun_1",
+    "grapple_gun_2": "model:grapple_gun_2"
   }
 }

@@ -80,6 +80,10 @@ public class TCDataComponents {
     public static final Supplier<DataComponentType<Boolean>> FORTRESS_GOGGLES = COMPONENTS.registerComponentType("fortress_goggles",
             b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
+    /** Крюкомёт заряжен — крюк в полёте или держит (в оригинале — NBT "loaded"). */
+    public static final Supplier<DataComponentType<Boolean>> GRAPPLE_LOADED = COMPONENTS.registerComponentType("grapple_loaded",
+            b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+
     /** Пакет фокуса (в оригинале — NBT "package" у фокуса): формат FocusPackage.serialize. Значение не изменять — только заменять. */
     public static final Supplier<DataComponentType<net.minecraft.nbt.CompoundTag>> FOCUS_PACKAGE = COMPONENTS.registerComponentType("focus_package",
             b -> b.persistent(net.minecraft.nbt.CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));

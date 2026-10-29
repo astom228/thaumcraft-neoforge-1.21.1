@@ -137,6 +137,9 @@ public class ItemsTC {
                     .effect(() -> new MobEffectInstance(MobEffects.HUNGER, 30, 0), 0.8F).build()));
 
     public static final DeferredItem<Item> jarBrace = simple("jar_brace");
+    // ItemGrappleGun: заряд Вис 100, UNCOMMON
+    public static final DeferredItem<Item> grappleGun = ConfigItems.ITEMS.registerItem("grappler", thaumcraft.common.items.tools.ItemGrappleGun::new,
+            new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
     public static final DeferredItem<Item> grappleGunTip = simple("grappler_head");
     public static final DeferredItem<Item> grappleGunSpool = simple("grappler_spool");
 

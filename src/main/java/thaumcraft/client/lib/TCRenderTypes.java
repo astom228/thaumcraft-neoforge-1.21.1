@@ -47,6 +47,16 @@ public final class TCRenderTypes extends RenderType {
         return ARCHITECT.apply(tex);
     }
 
+    private static final java.util.function.Function<ResourceLocation, RenderType> TUBE = net.minecraft.Util.memoize(tex -> create(
+            "thaumcraft_tube", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1024, false, true,
+            CompositeState.builder().setShaderState(new ShaderStateShard(net.minecraft.client.renderer.GameRenderer::getPositionTexColorShader)).setTextureState(new TextureStateShard(tex, false, false))
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY).setCullState(NO_CULL).createCompositeState(false)));
+
+    /** Трубки PolyCone (верёвка крюкомёта и т.п.): текстура, обычное смешивание, обе стороны. */
+    public static RenderType tube(ResourceLocation tex) {
+        return TUBE.apply(tex);
+    }
+
     private TCRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload,
                           Runnable setupState, Runnable clearState) {
         super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);

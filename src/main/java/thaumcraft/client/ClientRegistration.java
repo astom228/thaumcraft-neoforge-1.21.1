@@ -86,6 +86,7 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.FOCUS_PROJECTILE.get(), thaumcraft.client.renderers.entity.projectile.RenderNoProjectile::new);
         event.registerEntityRenderer(ConfigEntities.FOCUS_CLOUD.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ConfigEntities.FOCUS_MINE.get(), thaumcraft.client.renderers.entity.projectile.RenderFocusMine::new);
+        event.registerEntityRenderer(ConfigEntities.GRAPPLE.get(), thaumcraft.client.renderers.entity.projectile.RenderGrapple::new);
         event.registerEntityRenderer(ConfigEntities.SPELL_BAT.get(), thaumcraft.client.renderers.entity.mob.RenderSpellBat::new);
         event.registerBlockEntityRenderer(ConfigBlocks.CRUCIBLE_TILE.get(), TileCrucibleRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.WARDED_JAR_TILE.get(), TileJarRenderer::new);
@@ -119,6 +120,10 @@ public class ClientRegistration {
             net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.casterBasic.get(),
                     net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "focus"),
                     (stack, level, entity, seed) -> stack.getItem() instanceof thaumcraft.api.casters.ICaster c && c.getFocus(stack) != null ? 1.0F : 0.0F);
+            // крюкомёт: type 1 — заряжен (крюк в полёте или держит)
+            net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.grappleGun.get(),
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("type"),
+                    (stack, level, entity, seed) -> thaumcraft.common.items.tools.ItemGrappleGun.isLoaded(stack) ? 1.0F : 0.0F);
             // изначальная жемчужина: type 0 — жемчужина, 1 — узелок, 2 — пылинка
             net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.primordialPearl.get(),
                     net.minecraft.resources.ResourceLocation.withDefaultNamespace("type"),

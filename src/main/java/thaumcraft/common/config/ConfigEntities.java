@@ -37,6 +37,11 @@ public class ConfigEntities {
             () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityFocusMine>of(thaumcraft.common.entities.projectile.EntityFocusMine::new,
                     MobCategory.MISC).sized(0.15F, 0.15F).clientTrackingRange(4).updateInterval(20).build("focus_mine"));
 
+    // EntityRegistry.registerModEntity(…, "Grapple", …, 64, 20, true)
+    public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityGrapple>> GRAPPLE = ENTITIES.register("grapple",
+            () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityGrapple>of(thaumcraft.common.entities.projectile.EntityGrapple::new,
+                    MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(4).updateInterval(20).build("grapple"));
+
     // EntityRegistry.registerModEntity(…, "Spellbat", …, 64, 3, false, …)
     public static final Supplier<EntityType<thaumcraft.common.entities.monster.EntitySpellBat>> SPELL_BAT = ENTITIES.register("spellbat",
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.EntitySpellBat>of(thaumcraft.common.entities.monster.EntitySpellBat::new,
