@@ -46,7 +46,7 @@ public class PlayerEvents {
 
     /**
      * onFallDamage оригинала (LivingHurtEvent 1.12 — до брони, как LivingIncomingDamageEvent): сапоги странника (с зарядом и без)
-     * уменьшают урон от падения — f/2 − 1, меньше 1 — отмена. TODO этап 13.3: кольцо облаков — f/3 − 2.
+     * уменьшают урон от падения — f/2 − 1, меньше 1 — отмена; кольцо облаков — затем ещё f/3 − 2.
      * Здесь же — эффект удара по рунической защите (часть EntityEvents.entityHurt оригинала для игрока).
      */
     @SubscribeEvent
@@ -74,7 +74,58 @@ public class PlayerEvents {
                 }
                 event.setAmount(f);
             }
+            if (thaumcraft.common.lib.utils.BaubleUtils.isBaubleEquipped(player, thaumcraft.api.items.ItemsTC.ringCloud.get()) >= 0) {
+                float f = Math.max(0.0F, event.getAmount() / 3.0F - 2.0F);
+                if (f < 1.0F) {
+                    event.setCanceled(true);
+                    return;
+                }
+                event.setAmount(f);
+            }
         }
+    }
+
+    /** Повязка любопытства (pickupXP оригинала): половина опыта сферы (больше 1) — шанс знаний: 5%·d теории, иначе 20%·d наблюдения. */
+    @SubscribeEvent
+    public static void pickupXP(net.neoforged.neoforge.event.entity.player.PlayerXpEvent.PickupXp event) {
+        net.minecraft.world.entity.player.Player player = event.getEntity();
+        if (player.level().isClientSide || event.getOrb().value <= 1
+                || thaumcraft.common.lib.utils.BaubleUtils.isBaubleEquipped(player, thaumcraft.api.items.ItemsTC.bandCuriosity.get()) < 0) {
+            return;
+        }
+        int d = event.getOrb().value / 2;
+        event.getOrb().value -= d;
+        float r = player.getRandom().nextFloat();
+        IPlayerKnowledge.EnumKnowledgeType type = r < 0.05 * d ? IPlayerKnowledge.EnumKnowledgeType.THEORY
+                : (r < 0.2 * d ? IPlayerKnowledge.EnumKnowledgeType.OBSERVATION : null);
+        if (type != null) {
+            String[] cats = thaumcraft.api.research.ResearchCategories.researchCategories.keySet().toArray(new String[0]);
+            String cat = cats[player.getRandom().nextInt(cats.length)];
+            thaumcraft.api.ThaumcraftApi.internalMethods.addKnowledge(player, type, thaumcraft.api.research.ResearchCategories.getResearchCategory(cat), 1);
+        }
+    }
+
+    /** Оберег бессмертия (onDeath оригинала): как тотем — исчезает, здоровье 1, снимает эффекты, регенерация II 45 с, поглощение II 5 с. */
+    @SubscribeEvent
+    public static void onDeath(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        int slot = thaumcraft.common.lib.utils.BaubleUtils.isBaubleEquipped(player, thaumcraft.api.items.ItemsTC.charmUndying.get());
+        if (slot < 0) {
+            return;
+        }
+        net.neoforged.neoforge.items.IItemHandler baubles = thaumcraft.common.lib.utils.BaubleUtils.getBaubles(player);
+        ItemStack charm = baubles.getStackInSlot(slot).copy();
+        player.awardStat(net.minecraft.stats.Stats.ITEM_USED.get(net.minecraft.world.item.Items.TOTEM_OF_UNDYING));
+        net.minecraft.advancements.CriteriaTriggers.USED_TOTEM.trigger(player, charm);
+        baubles.extractItem(slot, 1, false);
+        player.setHealth(1.0F);
+        player.removeAllEffects();
+        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.REGENERATION, 900, 1));
+        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.ABSORPTION, 100, 1));
+        player.level().broadcastEntityEvent(player, (byte) 35);
+        event.setCanceled(true);
     }
 
     /** Сапоги странника с зарядом — прыжок выше (playerJumps оригинала). */

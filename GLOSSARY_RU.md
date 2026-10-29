@@ -154,6 +154,9 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Bauble (Mundane / Fancy Amulet, Ring, Belt) | Безделушка (Простой / Изящный амулет, кольцо, пояс) | |
 | Apprentice's Ring | Кольцо ученика | |
 | Vis Stone / Amulet of Vis | Камень Вис / Амулет Вис | |
+| Charm of Undying / Cloudstepper Ring / Headband of Curiosity | Оберег бессмертия / Кольцо облачного шага / Повязка любопытства | |
+| Verdant Heart Charm (Lifegiver / Sustainer) | Оберег зелёного сердца («Дарующий жизнь» / «Поддерживающий») | |
+| Voidseer's Pearl | Жемчужина провидца пустоты | |
 | Lesser Sapping (void metal) | Малое ослабление | |
 | Thaumium Fortress (armor) | Таумиумная крепость (доспех) | принято |
 | Primal Crusher | Первозданный сокрушитель | принято |

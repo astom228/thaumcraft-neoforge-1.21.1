@@ -110,13 +110,19 @@ public class ClientRegistration {
     public static void clientSetup(net.neoforged.fml.event.lifecycle.FMLClientSetupEvent event) {
         // очки откровения в слоте головы Curios
         top.theillusivec4.curios.api.client.CuriosRendererRegistry.register(thaumcraft.api.items.ItemsTC.goggles.get(),
-                thaumcraft.client.renderers.item.GogglesCurioRenderer::new);
+                () -> new thaumcraft.client.renderers.item.GogglesCurioRenderer(thaumcraft.client.renderers.item.GogglesCurioRenderer.GOGGLES));
+        top.theillusivec4.curios.api.client.CuriosRendererRegistry.register(thaumcraft.api.items.ItemsTC.bandCuriosity.get(),
+                () -> new thaumcraft.client.renderers.item.GogglesCurioRenderer(thaumcraft.client.renderers.item.GogglesCurioRenderer.CURIOSITY_BAND));
         event.enqueueWork(() -> {
             net.minecraft.resources.ResourceLocation linked = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "linked");
             // перчатка с фокусом (свойство focus оригинала); фокусы — этап 12
             net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.casterBasic.get(),
                     net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "focus"),
                     (stack, level, entity, seed) -> stack.getItem() instanceof thaumcraft.api.casters.ICaster c && c.getFocus(stack) != null ? 1.0F : 0.0F);
+            // оберег зелёного сердца: свойство type (0–2) выбирает модель
+            net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.charmVerdant.get(),
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("type"),
+                    (stack, level, entity, seed) -> thaumcraft.common.items.baubles.ItemVerdantCharm.getType(stack));
             for (var block : new net.minecraft.world.level.block.Block[]{thaumcraft.api.blocks.BlocksTC.mirror.get(), thaumcraft.api.blocks.BlocksTC.mirrorEssentia.get()}) {
                 net.minecraft.client.renderer.item.ItemProperties.register(block.asItem(), linked,
                         (stack, level, entity, seed) -> stack.has(thaumcraft.common.lib.TCDataComponents.MIRROR_LINK.get()) ? 1.0F : 0.0F);

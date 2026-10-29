@@ -64,6 +64,10 @@ public class TCDataComponents {
     public static final Supplier<DataComponentType<Integer>> TRAVELLER_ENERGY = COMPONENTS.registerComponentType("traveller_energy",
             b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    /** Вид оберега зелёного сердца: 0 — обычный, 1 — «Дарующий жизнь», 2 — «Поддерживающий» (в оригинале — NBT "type"). */
+    public static final Supplier<DataComponentType<Integer>> VERDANT_TYPE = COMPONENTS.registerComponentType("verdant_type",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     /** Пакет фокуса (в оригинале — NBT "package" у фокуса): формат FocusPackage.serialize. Значение не изменять — только заменять. */
     public static final Supplier<DataComponentType<net.minecraft.nbt.CompoundTag>> FOCUS_PACKAGE = COMPONENTS.registerComponentType("focus_package",
             b -> b.persistent(net.minecraft.nbt.CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));

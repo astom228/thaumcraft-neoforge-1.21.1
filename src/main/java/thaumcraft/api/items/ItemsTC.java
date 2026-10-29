@@ -187,6 +187,17 @@ public class ItemsTC {
     public static final DeferredItem<Item> amuletVis = ConfigItems.ITEMS.registerItem("vis_amulet",
             p -> new thaumcraft.common.items.baubles.ItemAmuletVis(true, p), new Item.Properties().stacksTo(1).rarity(Rarity.RARE));
 
+    // особые безделушки (RARE, не чинятся)
+    public static final DeferredItem<Item> charmUndying = rare("charm_undying", thaumcraft.common.items.baubles.ItemCharmUndying::new);
+    public static final DeferredItem<Item> ringCloud = rare("cloud_ring", thaumcraft.common.items.baubles.ItemCloudRing::new);
+    public static final DeferredItem<Item> bandCuriosity = rare("curiosity_band", thaumcraft.common.items.baubles.ItemCuriosityBand::new);
+    public static final DeferredItem<Item> charmVerdant = rare("verdant_charm", thaumcraft.common.items.baubles.ItemVerdantCharm::new);
+    public static final DeferredItem<Item> charmVoidseer = rare("voidseer_charm", thaumcraft.common.items.baubles.ItemVoidseerCharm::new);
+
+    private static DeferredItem<Item> rare(String name, java.util.function.Function<Item.Properties, Item> factory) {
+        return ConfigItems.ITEMS.registerItem(name, factory, new Item.Properties().stacksTo(1).rarity(Rarity.RARE));
+    }
+
     private static DeferredItem<Item> bauble(String name, int meta) {
         return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.baubles.ItemBaubles(meta, p),
                 new Item.Properties().stacksTo(1).rarity(meta >= 3 ? Rarity.UNCOMMON : Rarity.COMMON));

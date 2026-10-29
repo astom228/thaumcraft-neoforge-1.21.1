@@ -584,6 +584,14 @@
     "fancy_ring": "bs:baubles#ring_fancy",
     "fancy_belt": "bs:baubles#girdle_fancy",
     "vis_stone": "bs:amulet_vis#found",
-    "vis_amulet": "bs:amulet_vis#crafted"
+    "vis_amulet": "bs:amulet_vis#crafted",
+    "charm_undying": "model:charm_undying",
+    "cloud_ring": "model:cloud_ring",
+    "curiosity_band": "model:curiosity_band",
+    "verdant_charm": "model:verdant_charm",
+    "verdant_charm_0": "model:verdant_charm_0",
+    "verdant_charm_1": "model:verdant_charm_1",
+    "verdant_charm_2": "model:verdant_charm_2",
+    "voidseer_charm": "model:voidseer_charm"
   }
 }

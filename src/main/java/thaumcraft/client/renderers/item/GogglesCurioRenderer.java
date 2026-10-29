@@ -22,7 +22,14 @@ import top.theillusivec4.curios.api.client.ICurioRenderer;
  * Baubles по yaw/pitch головы и сдвиги Helper.translateToHeadLevel / translateToFace).
  */
 public class GogglesCurioRenderer implements ICurioRenderer {
-    private static final ResourceLocation TEX = ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "textures/items/goggles_bauble.png");
+    public static final ResourceLocation GOGGLES = ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "textures/items/goggles_bauble.png");
+    public static final ResourceLocation CURIOSITY_BAND = ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "textures/items/curiosity_band_worn.png");
+    private final ResourceLocation tex;
+
+    /** Тот же рендер у повязки любопытства (onPlayerBaubleRender ItemCuriosityBand — те же сдвиги, своя текстура). */
+    public GogglesCurioRenderer(ResourceLocation tex) {
+        this.tex = tex;
+    }
 
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack pose,
@@ -39,7 +46,7 @@ public class GogglesCurioRenderer implements ICurioRenderer {
         pose.mulPose(Axis.XP.rotationDegrees(180.0F));
         pose.scale(0.55F, 0.55F, 0.55F);
         pose.translate(-0.5, -0.5, 0.0);
-        UtilsFX.renderTextureIn3D(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(TEX)), 0.0F, 0.0F, 1.0F, 1.0F, 16, 16, 0.1F, light);
+        UtilsFX.renderTextureIn3D(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(this.tex)), 0.0F, 0.0F, 1.0F, 1.0F, 16, 16, 0.1F, light);
         pose.popPose();
     }
 }

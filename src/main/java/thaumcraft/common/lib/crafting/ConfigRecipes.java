@@ -141,8 +141,33 @@ public class ConfigRecipes {
                 new AspectList().add(Aspect.AURA, 50).add(Aspect.ENERGY, 100).add(Aspect.VOID, 50), new ItemStack(ItemsTC.amuletMundane.get()),
                 new ItemStack(ItemsTC.visResonator.get()), ThaumcraftApiHelper.makeCrystal(Aspect.AIR), ThaumcraftApiHelper.makeCrystal(Aspect.FIRE),
                 ThaumcraftApiHelper.makeCrystal(Aspect.WATER), ThaumcraftApiHelper.makeCrystal(Aspect.EARTH), ThaumcraftApiHelper.makeCrystal(Aspect.ORDER)));
-        // TODO этап 13: стихийные инструменты, доспехи и маски «Таумиумной крепости»,
-        //  VerdantHeart (3), CLOUDRING, CuriosityBand, CHARMUNDYING
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("VerdantHeart"), new InfusionRecipe("VERDANTCHARMS", new ItemStack(ItemsTC.charmVerdant.get()), 5,
+                new AspectList().add(Aspect.LIFE, 60).add(Aspect.ORDER, 30).add(Aspect.PLANT, 60), new ItemStack(ItemsTC.amuletFancy.get()),
+                new ItemStack(ItemsTC.nuggetQuartz.get()), ThaumcraftApiHelper.makeCrystal(Aspect.LIFE), new ItemStack(Items.MILK_BUCKET),
+                ThaumcraftApiHelper.makeCrystal(Aspect.PLANT)));
+        // варианты: результат — тот же оберег с type 1 / 2 (Object[]{"type", NBTTagByte} оригинала → компонент)
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("VerdantHeartLife"), new InfusionRecipe("VERDANTCHARMS",
+                new Object[] {thaumcraft.common.lib.TCDataComponents.VERDANT_TYPE.get(), 1}, 5,
+                new AspectList().add(Aspect.LIFE, 80).add(Aspect.MAN, 80), new ItemStack(ItemsTC.charmVerdant.get()), new ItemStack(Items.GOLDEN_APPLE),
+                ThaumcraftApiHelper.makeCrystal(Aspect.LIFE),
+                net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, net.minecraft.world.item.alchemy.Potions.STRONG_HEALING),
+                ThaumcraftApiHelper.makeCrystal(Aspect.MAN)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("VerdantHeartSustain"), new InfusionRecipe("VERDANTCHARMS",
+                new Object[] {thaumcraft.common.lib.TCDataComponents.VERDANT_TYPE.get(), 2}, 5,
+                new AspectList().add(Aspect.DESIRE, 80).add(Aspect.AIR, 80), new ItemStack(ItemsTC.charmVerdant.get()), new ItemStack(ItemsTC.tripleMeatTreat.get()),
+                ThaumcraftApiHelper.makeCrystal(Aspect.DESIRE),
+                net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, net.minecraft.world.item.alchemy.Potions.STRONG_REGENERATION),
+                ThaumcraftApiHelper.makeCrystal(Aspect.AIR)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("CLOUDRING"), new InfusionRecipe("CLOUDRING", new ItemStack(ItemsTC.ringCloud.get()), 1,
+                new AspectList().add(Aspect.AIR, 50), new ItemStack(ItemsTC.ringMundane.get()), ThaumcraftApiHelper.makeCrystal(Aspect.AIR),
+                new ItemStack(Items.FEATHER)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("CuriosityBand"), new InfusionRecipe("CURIOSITYBAND", new ItemStack(ItemsTC.bandCuriosity.get()), 5,
+                new AspectList().add(Aspect.MIND, 150).add(Aspect.VOID, 50).add(Aspect.TRAP, 100), new ItemStack(ItemsTC.girdleFancy.get()),
+                new ItemStack(Items.EMERALD), new ItemStack(Items.WRITABLE_BOOK), new ItemStack(Items.EMERALD), new ItemStack(Items.WRITABLE_BOOK),
+                new ItemStack(Items.EMERALD), new ItemStack(Items.WRITABLE_BOOK), new ItemStack(Items.EMERALD), new ItemStack(Items.WRITABLE_BOOK)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("CHARMUNDYING"), new InfusionRecipe("CHARMUNDYING", new ItemStack(ItemsTC.charmUndying.get()), 2,
+                new AspectList().add(Aspect.LIFE, 25), new ItemStack(Items.TOTEM_OF_UNDYING), TCTags.Items.PLATES_BRASS));
+        // TODO этап 13: стихийные инструменты, доспехи и маски «Таумиумной крепости»
         ThaumcraftApi.addInfusionCraftingRecipe(tc("Mirror"), new InfusionRecipe("MIRROR", new ItemStack(BlocksTC.mirror.get()), 1,
                 new AspectList().add(Aspect.MOTION, 25).add(Aspect.DARKNESS, 25).add(Aspect.EXCHANGE, 25), new ItemStack(ItemsTC.mirroredGlass.get()),
                 Tags.Items.INGOTS_GOLD, Tags.Items.INGOTS_GOLD, Tags.Items.INGOTS_GOLD, new ItemStack(Items.ENDER_PEARL)));

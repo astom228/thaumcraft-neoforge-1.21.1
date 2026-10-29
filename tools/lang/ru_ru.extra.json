@@ -707,5 +707,13 @@
   "item.thaumcraft.fancy_belt": "Изящный пояс",
   "item.thaumcraft.vis_stone": "Камень Вис",
   "item.thaumcraft.vis_amulet": "Амулет Вис",
-  "item.amulet_vis.text": "Заряжает броню, безделушки и предметы на панели быстрого доступа."
+  "item.amulet_vis.text": "Заряжает броню, безделушки и предметы на панели быстрого доступа.",
+  "item.thaumcraft.charm_undying": "Оберег бессмертия",
+  "item.thaumcraft.cloud_ring": "Кольцо облачного шага",
+  "item.thaumcraft.curiosity_band": "Повязка любопытства",
+  "item.thaumcraft.verdant_charm": "Оберег зелёного сердца",
+  "item.verdant_charm.life.text": "Дарующий жизнь",
+  "item.verdant_charm.sustain.text": "Поддерживающий",
+  "item.thaumcraft.voidseer_charm": "Жемчужина провидца пустоты",
+  "item.voidseer_charm.text": "Вы вглядываетесь в чернильную тьму... и готовы поклясться, что оттуда на вас кто-то смотрит..."
 }
