@@ -137,6 +137,10 @@ public interface IFXDispatcher {
     default void slimyBubble(double x, double y, double z, float scale, float alpha, float r, float g, float b) {
     }
 
+    /** Струя пара распылителя зелий (drawVentParticles2). */
+    default void drawVentParticles2(double x, double y, double z, double x2, double y2, double z2, int color, float scale) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

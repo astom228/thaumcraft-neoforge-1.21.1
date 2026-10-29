@@ -570,6 +570,9 @@
     },
     "spa": {
       "src": "spa"
+    },
+    "potion_sprayer": {
+      "src": "potion_sprayer"
     }
   },
   "items": {

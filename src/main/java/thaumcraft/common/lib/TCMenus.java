@@ -24,6 +24,8 @@ public class TCMenus {
             () -> IMenuTypeExtension.create(ContainerSmelter::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerSpa>> SPA = MENUS.register("spa",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerSpa::new));
+    public static final Supplier<MenuType<thaumcraft.common.container.ContainerPotionSprayer>> POTION_SPRAYER = MENUS.register("potion_sprayer",
+            () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerPotionSprayer::new));
     public static final Supplier<MenuType<ContainerHandMirror>> HAND_MIRROR = MENUS.register("hand_mirror",
             () -> IMenuTypeExtension.create(ContainerHandMirror::new));
     public static final Supplier<MenuType<ContainerThaumatorium>> THAUMATORIUM = MENUS.register("thaumatorium",

@@ -822,5 +822,6 @@
   "death.attack.dissolve.player": "%1$s растворился в бою с %2$s",
   "block.thaumcraft.spa": "Магическая купель",
   "text.spa.mix.true": "Смешивать с добавкой",
-  "text.spa.mix.false": "Только жидкость"
+  "text.spa.mix.false": "Только жидкость",
+  "block.thaumcraft.potion_sprayer": "Распылитель зелий"
 }

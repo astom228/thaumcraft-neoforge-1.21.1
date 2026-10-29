@@ -209,6 +209,26 @@ public class FXDispatcher implements IFXDispatcher {
         ParticleEngine.addEffect(this.getWorld(), ef);
     }
 
+    @Override
+    public void drawVentParticles2(double x, double y, double z, double x2, double y2, double z2, int color, float scale) {
+        thaumcraft.client.fx.particles.FXVent2 fb = new thaumcraft.client.fx.particles.FXVent2(this.getWorld(), x, y, z, x2, y2, z2, color);
+        fb.setAlphaF(0.4F);
+        fb.setScale(scale);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+        if (this.getWorld().random.nextInt(6) < 2) {
+            FXGeneric g = new FXGeneric(this.getWorld(), x, y, z, x2 / 2.0, y2 / 2.0, z2 / 2.0);
+            g.setMaxAge(10 + this.getWorld().random.nextInt(4));
+            g.setRBGColorF(1.0F, 0.7F, 0.2F);
+            g.setAlphaF(0.9F);
+            g.setLoop(true);
+            g.setParticles(320, 16, 1);
+            g.setScale(0.25F + this.getWorld().random.nextFloat() * 0.1F);
+            g.setLayer(0);
+            g.setRotationSpeed(0.0F);
+            ParticleEngine.addEffect(this.getWorld(), g);
+        }
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
