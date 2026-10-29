@@ -5,8 +5,6 @@ dioptra: нет BlocksTC.dioptra
 automatedcrossbow: нет crossbow_turret (ItemsTC.turretPlacer meta 0)
 advancedcrossbow: нет advanced_crossbow_turret (ItemsTC.turretPlacer meta 1)
 patterncrafter: нет BlocksTC.patternCrafter
-visbattery: нет BlocksTC.visBattery
-visgenerator: нет BlocksTC.visGenerator
 stabilizer: нет BlocksTC.stabilizer
 condenser: нет BlocksTC.condenser
 condenserlattice: нет BlocksTC.condenserlattice

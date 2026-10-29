@@ -577,6 +577,12 @@
     "recharge_pedestal": {
       "src": "recharge_pedestal",
       "renderType": "minecraft:cutout"
+    },
+    "vis_generator": {
+      "src": "vis_generator"
+    },
+    "vis_battery": {
+      "src": "vis_battery"
     }
   },
   "items": {

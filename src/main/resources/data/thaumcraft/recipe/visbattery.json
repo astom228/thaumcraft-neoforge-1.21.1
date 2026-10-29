@@ -1,0 +1,29 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "VISBATTERY",
+  "vis": 50,
+  "crystals": {
+    "aer": 2,
+    "terra": 2,
+    "aqua": 2,
+    "ignis": 2,
+    "ordo": 2,
+    "perditio": 2
+  },
+  "key": {
+    "R": {
+      "item": "thaumcraft:vis_resonator"
+    },
+    "S": {
+      "item": "thaumcraft:arcane_stone_slab"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SRS",
+    "SSS"
+  ],
+  "result": {
+    "id": "thaumcraft:vis_battery"
+  }
+}

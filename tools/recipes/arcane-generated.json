@@ -75,5 +75,7 @@
   "mindclockwork.json",
   "grappleguntip.json",
   "grapplegunspool.json",
-  "grapplegun.json"
+  "grapplegun.json",
+  "visbattery.json",
+  "visgenerator.json"
 ]

@@ -234,6 +234,13 @@ public class BlocksTC {
     // Пьедестал подзарядки (BlockRechargePedestal): Material.ROCK (прочность 2.0, сопротивление 12), звук камня
     public static final DeferredBlock<Block> rechargePedestal = register("recharge_pedestal", () -> new thaumcraft.common.blocks.devices.BlockRechargePedestal(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion()));
+    // Вис-генератор (BlockVisGenerator): Material.WOOD (BlockTCDevice: прочность 2.0, сопротивление 12), звук дерева
+    public static final DeferredBlock<Block> visGenerator = register("vis_generator", () -> new thaumcraft.common.blocks.devices.BlockVisGenerator(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+    // Вис-батарея (BlockVisBattery): Material.ROCK, твёрдость 0.5 → сопротивление 2.5, свет = заряд
+    public static final DeferredBlock<Block> visBattery = register("vis_battery", () -> new thaumcraft.common.blocks.devices.BlockVisBattery(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.5F, 2.5F).sound(SoundType.STONE)
+                    .lightLevel(st -> st.getValue(thaumcraft.common.blocks.devices.BlockVisBattery.CHARGE))));
     // Голодный сундук (BlockHungryChest): Material.WOOD, твёрдость 2.5 → сопротивление 12.5, рисуется блок-сущностью
     public static final DeferredBlock<Block> hungryChest = register("hungry_chest", () -> new thaumcraft.common.blocks.devices.BlockHungryChest(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F, 12.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));

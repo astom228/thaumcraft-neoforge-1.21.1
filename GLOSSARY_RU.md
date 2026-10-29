@@ -153,6 +153,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Arcane Spa | Магическая купель | принято |
 | Potion Sprayer | Распылитель зелий | принято |
 | Recharge Pedestal | Пьедестал подзарядки | принято |
+| Vis Battery / Vis Generator | Вис-батарея / Генератор на Вис | принято |
 | Arcane Ear / Levitator / Lamp | Магическое ухо / левитатор / лампа | принято |
 | Dioptra | Диоптр | принято |
 | Portable Hole / Dimensional Tear | Переносная дыра / Пространственный разрыв | принято |
