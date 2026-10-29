@@ -17,7 +17,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 /**
  * Оберег зелёного сердца (порт ItemVerdantCharm): слот оберега, заряд Вис до 200. Раз в секунду за заряд снимает иссушение (20),
- * яд (10), заразный выброс (5, этап 15); «Дарующий жизнь» (тип 1) лечит 1 ед. за 5; «Поддерживающий» (тип 2) восполняет воздух
+ * яд (10), отравление скверной (5); «Дарующий жизнь» (тип 1) лечит 1 ед. за 5; «Поддерживающий» (тип 2) восполняет воздух
  * и сытость за 1. Тип — компонент thaumcraft:verdant_type (NBT "type" оригинала), модель — свойство type.
  */
 public class ItemVerdantCharm extends Item implements ICurioItem, IRechargable, thaumcraft.common.items.ICreativeVariants {
@@ -53,7 +53,10 @@ public class ItemVerdantCharm extends Item implements ICurioItem, IRechargable, 
             p.removeEffect(MobEffects.POISON);
             return;
         }
-        // TODO этап 15: PotionFluxTaint — снять за 5 заряда
+        if (p.hasEffect(thaumcraft.common.config.ConfigPotions.FLUX_TAINT) && RechargeHelper.consumeCharge(stack, p, 5)) {
+            p.removeEffect(thaumcraft.common.config.ConfigPotions.FLUX_TAINT);
+            return;
+        }
         int type = getType(stack);
         if (type == 1 && p.getHealth() < p.getMaxHealth() && RechargeHelper.consumeCharge(stack, p, 5)) {
             p.heal(1.0F);

@@ -157,6 +157,8 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Arcane Ear / Levitator / Lamp | Магическое ухо / левитатор / лампа | принято |
 | (Thaumic) Dioptra | Таумическая диоптра (как в оригинальном переводе) | принято |
 | Arcane Pattern Crafter | Магический шаблонный сборщик | принято |
+| Flux Phage / Unnatural Hunger / Deadly Gaze | Выбросный фаг / Неестественный голод / Смертоносный взгляд | принято |
+| Blurred Vision / Sun Scorned / Thaumorrhea | Размытое зрение / Отвергнутый солнцем / Тауморея | принято |
 | Portable Hole / Dimensional Tear | Переносная дыра / Пространственный разрыв | принято |
 | Magical Forest | Магический лес | принято (биом) |
 | Eerie | Зловещие земли | принято (биом) |

@@ -24,8 +24,8 @@ public class CasterManager {
     static final Map<Integer, Long> cooldownClient = new HashMap<>();
 
     /**
-     * Сумма скидок аксессуаров (Baubles → Curios) и брони, в долях; «Истощение Вис» — минус 10% за уровень.
-     * TODO этап 15: «Заразное истощение Вис» (PotionInfectiousVisExhaust) — тот же штраф, берётся больший уровень.
+     * Сумма скидок аксессуаров (Baubles → Curios) и брони, в долях; «Лихорадка Выброса» и «Выбросный фаг» — минус 10% за уровень
+     * (берётся больший из двух).
      */
     public static float getTotalVisDiscount(Player player) {
         int total = 0;
@@ -48,8 +48,11 @@ public class CasterManager {
             }
         }
         MobEffectInstance exhaust = player.getEffect(ConfigPotions.VIS_EXHAUST);
-        if (exhaust != null) {
-            total -= (exhaust.getAmplifier() + 1) * 10;
+        MobEffectInstance infectious = player.getEffect(ConfigPotions.INFECTIOUS_VIS_EXHAUST);
+        if (exhaust != null || infectious != null) {
+            int level1 = exhaust != null ? exhaust.getAmplifier() : 0;
+            int level2 = infectious != null ? infectious.getAmplifier() : 0;
+            total -= (Math.max(level1, level2) + 1) * 10;
         }
         return total / 100.0F;
     }

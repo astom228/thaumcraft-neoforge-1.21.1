@@ -83,6 +83,8 @@ public class ClientRegistration {
     /** Радиальное меню фокусов — слой поверх интерфейса. */
     @SubscribeEvent
     public static void registerGuiLayers(net.neoforged.neoforge.client.event.RegisterGuiLayersEvent event) {
+        event.registerAbove(net.neoforged.neoforge.client.gui.VanillaGuiLayers.CAMERA_OVERLAYS,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "warp_vignette"), thaumcraft.client.lib.events.WarpVignette::render);
         event.registerAboveAll(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "foci_radial"),
                 thaumcraft.client.lib.events.WandRenderingHandler::renderRadialLayer);
     }

@@ -41,6 +41,10 @@ public class PlayerEvents {
             if (player.tickCount % 200 == 0) {
                 ConfigResearch.checkPeriodicStuff(player);
             }
+            // handleWarp оригинала (часть): смертоносный взгляд раз в секунду
+            if (player.tickCount % 20 == 0 && player.hasEffect(thaumcraft.common.config.ConfigPotions.DEATH_GAZE)) {
+                WarpEvents.checkDeathGaze(player);
+            }
         }
     }
 
@@ -129,6 +133,33 @@ public class PlayerEvents {
     }
 
     /** Сапоги странника с зарядом — прыжок выше (playerJumps оригинала). */
+    /**
+     * finishedUsingItem оригинала: при неестественном голоде гнилая плоть и мозг зомби ослабляют его (уровень −1, −30 с),
+     * обычная еда — только сообщение.
+     */
+    @SubscribeEvent
+    public static void finishedUsingItem(net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent.Finish event) {
+        var e = event.getEntity();
+        if (e.level().isClientSide || !e.hasEffect(thaumcraft.common.config.ConfigPotions.UNNATURAL_HUNGER)) {
+            return;
+        }
+        net.minecraft.world.item.ItemStack item = event.getItem();
+        if (item.is(net.minecraft.world.item.Items.ROTTEN_FLESH) || item.is(thaumcraft.api.items.ItemsTC.brain.get())) {
+            net.minecraft.world.effect.MobEffectInstance pe = e.getEffect(thaumcraft.common.config.ConfigPotions.UNNATURAL_HUNGER);
+            int amp = pe.getAmplifier() - 1;
+            int duration = pe.getDuration() - 600;
+            e.removeEffect(thaumcraft.common.config.ConfigPotions.UNNATURAL_HUNGER);
+            if (duration > 0 && amp >= 0) {
+                e.addEffect(new net.minecraft.world.effect.MobEffectInstance(thaumcraft.common.config.ConfigPotions.UNNATURAL_HUNGER, duration, amp, true, false));
+            }
+            e.sendSystemMessage(net.minecraft.network.chat.Component.translatable("warp.text.hunger.2")
+                    .withStyle(net.minecraft.ChatFormatting.DARK_GREEN, net.minecraft.ChatFormatting.ITALIC));
+        } else if (item.has(net.minecraft.core.component.DataComponents.FOOD)) {
+            e.sendSystemMessage(net.minecraft.network.chat.Component.translatable("warp.text.hunger.1")
+                    .withStyle(net.minecraft.ChatFormatting.DARK_RED, net.minecraft.ChatFormatting.ITALIC));
+        }
+    }
+
     @SubscribeEvent
     public static void playerJumps(net.neoforged.neoforge.event.entity.living.LivingEvent.LivingJumpEvent event) {
         if (event.getEntity() instanceof net.minecraft.world.entity.player.Player player) {

@@ -113,5 +113,11 @@
   "block.thaumcraft.infernal_furnace": "Infernal Furnace",
   "effect.thaumcraft.warp_ward": "Warp Ward",
   "item.thaumcraft.purifying_fluid_bucket": "Purifying Fluid Bucket",
-  "item.thaumcraft.liquid_death_bucket": "Liquid Death Bucket"
+  "item.thaumcraft.liquid_death_bucket": "Liquid Death Bucket",
+  "effect.thaumcraft.infectious_vis_exhaust": "Flux Phage",
+  "effect.thaumcraft.unnatural_hunger": "Unnatural Hunger",
+  "effect.thaumcraft.death_gaze": "Deadly Gaze",
+  "effect.thaumcraft.blurred_vision": "Blurred Vision",
+  "effect.thaumcraft.sun_scorned": "Sun Scorned",
+  "effect.thaumcraft.thaumarhia": "Thaumorrhea"
 }
