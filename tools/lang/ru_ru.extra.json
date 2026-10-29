@@ -742,5 +742,14 @@
   "item.thaumcraft.crimson_cult_boots": "Сапоги Багрового культа",
   "item.fortress_helm.mask.0": "Ухмыляющийся дьявол",
   "item.fortress_helm.mask.1": "Злой призрак",
-  "item.fortress_helm.mask.2": "Пьющий изверг"
+  "item.fortress_helm.mask.2": "Пьющий изверг",
+  "item.thaumcraft.primordial_pearl.pearl": "Изначальная жемчужина",
+  "item.thaumcraft.primordial_pearl.nodule": "Изначальный узелок",
+  "item.thaumcraft.primordial_pearl.mote": "Изначальная пылинка",
+  "item.thaumcraft.pech_wand": "Жезл пехов",
+  "item.thaumcraft.common_loot_bag": "Обычное сокровище",
+  "item.thaumcraft.uncommon_loot_bag": "Необычное сокровище",
+  "item.thaumcraft.rare_loot_bag": "Редкое сокровище",
+  "tc.lootbag": "Нажмите, чтобы открыть, или сохраните для обмена.",
+  "not.pechwand": "Вы пока не можете постичь, как это устроено."
 }

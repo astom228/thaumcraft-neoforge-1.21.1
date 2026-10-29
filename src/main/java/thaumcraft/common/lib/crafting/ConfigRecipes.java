@@ -128,7 +128,11 @@ public class ConfigRecipes {
         ThaumcraftApi.addInfusionCraftingRecipe(tc("focus_2"), new InfusionRecipe("FOCUSADVANCED@1", new ItemStack(ItemsTC.focus2.get()), 3,
                 new AspectList().add(Aspect.MAGIC, 25).add(Aspect.ORDER, 50), new ItemStack(ItemsTC.focus1.get()),
                 new ItemStack(ItemsTC.quicksilver.get()), Tags.Items.GEMS_DIAMOND, new ItemStack(ItemsTC.quicksilver.get()), new ItemStack(Items.ENDER_PEARL)));
-        // TODO: focus_3 — вместе с изначальной жемчужиной (ItemsTC.primordialPearl): MAGIC 25, ORDER 50, VOID 100, нестабильность 5
+        // жемчужина — любая стадия (Ingredient.fromItem); после наполнения возвращается с повреждением +1 (getCraftingRemainingItem)
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("focus_3"), new InfusionRecipe("FOCUSGREATER@1", new ItemStack(ItemsTC.focus3.get()), 5,
+                new AspectList().add(Aspect.MAGIC, 25).add(Aspect.ORDER, 50).add(Aspect.VOID, 100), new ItemStack(ItemsTC.focus2.get()),
+                new ItemStack(ItemsTC.quicksilver.get()), net.minecraft.world.item.crafting.Ingredient.of(ItemsTC.primordialPearl.get()),
+                new ItemStack(ItemsTC.quicksilver.get()), new ItemStack(Items.NETHER_STAR)));
         ThaumcraftApi.addInfusionCraftingRecipe(tc("JarBrain"), new InfusionRecipe("JARBRAIN", new ItemStack(BlocksTC.jarBrain.get()), 4,
                 new AspectList().add(Aspect.MIND, 25).add(Aspect.SENSES, 25).add(Aspect.UNDEAD, 25), new ItemStack(BlocksTC.jarNormal.get()),
                 new ItemStack(ItemsTC.brain.get()), new ItemStack(Items.SPIDER_EYE), new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.SPIDER_EYE)));

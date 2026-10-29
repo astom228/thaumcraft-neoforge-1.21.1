@@ -1,6 +1,5 @@
 # Магические рецепты, ожидающие предметов (tools/recipes/convert-arcane.js)
 activatorrail: нет BlocksTC.activatorRail
-sanitychecker: нет ItemsTC.sanityChecker
 rechargepedestal: нет BlocksTC.rechargePedestal
 sealblank: нет ItemsTC.seals
 arcanespa: нет BlocksTC.spa
@@ -29,7 +28,6 @@ arcaneear: нет BlocksTC.arcaneEar
 matrixcost: нет ItemsTC.alumentum
 dioptra: нет BlocksTC.dioptra
 hungrychest: нет BlocksTC.hungryChest
-advalchemyconstruct: нет ItemsTC.primordialPearl
 potionsprayer: нет BlocksTC.potionSprayer
 smelteraux: нет BlocksTC.bellows
 bellows: нет BlocksTC.bellows

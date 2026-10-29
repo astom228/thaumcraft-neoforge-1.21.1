@@ -209,6 +209,22 @@ public class ItemsTC {
     public static final DeferredItem<Item> charmVerdant = rare("verdant_charm", thaumcraft.common.items.baubles.ItemVerdantCharm::new);
     public static final DeferredItem<Item> charmVoidseer = rare("voidseer_charm", thaumcraft.common.items.baubles.ItemVoidseerCharm::new);
 
+    // реликты и прочее: изначальная жемчужина (прочность 8), жезл пехов, мешки с добычей (по 16), счётчик рассудка
+    public static final DeferredItem<Item> primordialPearl = ConfigItems.ITEMS.registerItem("primordial_pearl", thaumcraft.common.items.curios.ItemPrimordialPearl::new,
+            new Item.Properties().durability(8).rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> pechWand = ConfigItems.ITEMS.registerItem("pech_wand", thaumcraft.common.items.curios.ItemPechWand::new,
+            new Item.Properties().rarity(Rarity.RARE));
+    public static final DeferredItem<Item> lootBagCommon = lootBag("common_loot_bag", 0, Rarity.COMMON);
+    public static final DeferredItem<Item> lootBagUncommon = lootBag("uncommon_loot_bag", 1, Rarity.UNCOMMON);
+    public static final DeferredItem<Item> lootBagRare = lootBag("rare_loot_bag", 2, Rarity.RARE);
+    // ItemSanityChecker: показ рассудка (Искажения) на экране — HudHandler, этап 15
+    public static final DeferredItem<Item> sanityChecker = ConfigItems.ITEMS.registerSimpleItem("sanity_checker",
+            new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
+
+    private static DeferredItem<Item> lootBag(String name, int rarity, Rarity r) {
+        return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.curios.ItemLootBag(rarity, p), new Item.Properties().stacksTo(16).rarity(r));
+    }
+
     private static DeferredItem<Item> rare(String name, java.util.function.Function<Item.Properties, Item> factory) {
         return ConfigItems.ITEMS.registerItem(name, factory, new Item.Properties().stacksTo(1).rarity(Rarity.RARE));
     }

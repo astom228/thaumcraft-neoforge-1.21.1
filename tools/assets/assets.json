@@ -615,6 +615,15 @@
     "crimson_praetor_helmet": "model:crimson_praetor_helm",
     "crimson_praetor_chestplate": "model:crimson_praetor_chest",
     "crimson_praetor_greaves": "model:crimson_praetor_legs",
-    "crimson_cult_boots": "model:crimson_boots"
+    "crimson_cult_boots": "model:crimson_boots",
+    "primordial_pearl": "model:primordial_pearl",
+    "primordial_pearl_0": "model:primordial_pearl_0",
+    "primordial_pearl_1": "model:primordial_pearl_1",
+    "primordial_pearl_2": "model:primordial_pearl_2",
+    "pech_wand": "model:pech_wand",
+    "sanity_checker": "model:sanity_checker",
+    "common_loot_bag": "bs:loot_bag#common",
+    "uncommon_loot_bag": "bs:loot_bag#uncommon",
+    "rare_loot_bag": "bs:loot_bag#rare"
   }
 }

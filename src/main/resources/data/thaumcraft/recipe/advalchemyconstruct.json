@@ -1,0 +1,28 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "ESSENTIASMELTERVOID@1",
+  "vis": 200,
+  "crystals": {
+    "terra": 1,
+    "ignis": 1
+  },
+  "key": {
+    "A": {
+      "item": "thaumcraft:alchemical_construct"
+    },
+    "V": {
+      "tag": "c:plates/void"
+    },
+    "P": {
+      "item": "thaumcraft:primordial_pearl"
+    }
+  },
+  "pattern": [
+    "VAV",
+    "APA",
+    "VAV"
+  ],
+  "result": {
+    "id": "thaumcraft:advanced_alchemical_construct"
+  }
+}

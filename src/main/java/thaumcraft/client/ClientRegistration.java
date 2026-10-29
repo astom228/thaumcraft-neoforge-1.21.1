@@ -119,6 +119,10 @@ public class ClientRegistration {
             net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.casterBasic.get(),
                     net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "focus"),
                     (stack, level, entity, seed) -> stack.getItem() instanceof thaumcraft.api.casters.ICaster c && c.getFocus(stack) != null ? 1.0F : 0.0F);
+            // изначальная жемчужина: type 0 — жемчужина, 1 — узелок, 2 — пылинка
+            net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.primordialPearl.get(),
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("type"),
+                    (stack, level, entity, seed) -> thaumcraft.common.items.curios.ItemPrimordialPearl.getStage(stack));
             // оберег зелёного сердца: свойство type (0–2) выбирает модель
             net.minecraft.client.renderer.item.ItemProperties.register(thaumcraft.api.items.ItemsTC.charmVerdant.get(),
                     net.minecraft.resources.ResourceLocation.withDefaultNamespace("type"),

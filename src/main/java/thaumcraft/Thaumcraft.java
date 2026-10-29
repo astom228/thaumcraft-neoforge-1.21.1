@@ -70,6 +70,8 @@ public class Thaumcraft {
         event.enqueueWork(thaumcraft.common.lib.utils.Utils::initSpecialMining);
         // роба тауматурга отмывается в котле с водой, как кожаная броня (onItemUseFirst оригинала)
         event.enqueueWork(ConfigItems::registerCauldron);
+        // ModConfig.postInitLoot оригинала: содержимое мешков с добычей
+        event.enqueueWork(thaumcraft.common.config.ConfigLoot::postInitLoot);
     }
 
     /** postInit оригинала: загрузка JSON исследований после того, как все моды зарегистрировали категории и файлы. */

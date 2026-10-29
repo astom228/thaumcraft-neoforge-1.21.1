@@ -119,4 +119,69 @@ public final class Utils {
     public static double magn(double[] a) {
         return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
     }
+
+    /** Предмет из мешка с добычей (generateLoot): с шансом 2.5%·редкость — снаряжение, иначе — по таблице редкости; книги зачаровываются. */
+    public static ItemStack generateLoot(net.minecraft.world.level.Level world, int rarity, RandomSource rand) {
+        ItemStack is;
+        if (rarity > 0 && rand.nextFloat() < 0.025F * rarity) {
+            is = genGear(world, rarity, rand);
+            if (is.isEmpty()) {
+                is = generateLoot(world, rarity, rand);
+            }
+        } else {
+            is = WeightedRandomLoot.pick(switch (rarity) {
+                case 1 -> WeightedRandomLoot.lootBagUncommon;
+                case 2 -> WeightedRandomLoot.lootBagRare;
+                default -> WeightedRandomLoot.lootBagCommon;
+            }, rand);
+        }
+        is = is.copy();
+        if (is.is(Items.BOOK)) {
+            is = net.minecraft.world.item.enchantment.EnchantmentHelper.enchantItem(rand, is, (int) (5.0F + rarity * 0.75F * rand.nextInt(18)),
+                    world.registryAccess(), java.util.Optional.empty());
+        }
+        return is;
+    }
+
+    private static ItemStack genGear(net.minecraft.world.level.Level world, int rarity, RandomSource rand) {
+        int quality = rand.nextInt(2);
+        if (rand.nextFloat() < 0.2F) {
+            quality++;
+        }
+        if (rand.nextFloat() < 0.15F) {
+            quality++;
+        }
+        if (rand.nextFloat() < 0.1F) {
+            quality++;
+        }
+        if (rand.nextFloat() < 0.095F) {
+            quality++;
+        }
+        Item item = getGearItemForSlot(rand.nextInt(5), quality);
+        if (item == null) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack is = new ItemStack(item);
+        is.setDamageValue(rand.nextInt(1 + is.getMaxDamage() / 6));
+        if (rand.nextInt(4) < rarity) {
+            is = net.minecraft.world.item.enchantment.EnchantmentHelper.enchantItem(rand, is, (int) (5.0F + rarity * 0.75F * rand.nextInt(18)),
+                    world.registryAccess(), java.util.Optional.empty());
+        }
+        return is;
+    }
+
+    /** Снаряжение по слоту (0 — оружие, 1–4 — броня) и качеству 0–6; в оригинале — switch без break: при отсутствии — следующий слот. */
+    private static Item getGearItemForSlot(int slot, int quality) {
+        Item[][] table = {
+                {Items.IRON_AXE, Items.IRON_SWORD, Items.GOLDEN_AXE, Items.GOLDEN_SWORD, ItemsTC.thaumiumSword.get(), Items.DIAMOND_SWORD, ItemsTC.voidSword.get()},
+                {Items.LEATHER_BOOTS, Items.GOLDEN_BOOTS, Items.CHAINMAIL_BOOTS, Items.IRON_BOOTS, ItemsTC.thaumiumBoots.get(), Items.DIAMOND_BOOTS,
+                        ItemsTC.voidBoots.get()},
+                {Items.LEATHER_LEGGINGS, Items.GOLDEN_LEGGINGS, Items.CHAINMAIL_LEGGINGS, Items.IRON_LEGGINGS, ItemsTC.thaumiumLegs.get(),
+                        Items.DIAMOND_LEGGINGS, ItemsTC.voidLegs.get()},
+                {Items.LEATHER_CHESTPLATE, Items.GOLDEN_CHESTPLATE, Items.CHAINMAIL_CHESTPLATE, Items.IRON_CHESTPLATE, ItemsTC.thaumiumChest.get(),
+                        Items.DIAMOND_CHESTPLATE, ItemsTC.voidChest.get()},
+                {Items.LEATHER_HELMET, Items.GOLDEN_HELMET, Items.CHAINMAIL_HELMET, Items.IRON_HELMET, ItemsTC.thaumiumHelm.get(), Items.DIAMOND_HELMET,
+                        ItemsTC.voidHelm.get()}};
+        return quality >= 0 && quality < 7 ? table[slot][quality] : null;
+    }
 }

@@ -282,4 +282,22 @@ public class ThaumcraftApi {
             return this;
         }
     }
+
+    /**
+     * Добавить предмет в мешки с добычей (addLootBagItem): weight — вес, bagTypes — 0 обычный, 1 необычный, 2 редкий;
+     * без типов — во все три.
+     */
+    public static void addLootBagItem(net.minecraft.world.item.ItemStack item, int weight, int... bagTypes) {
+        if (bagTypes == null || bagTypes.length == 0) {
+            bagTypes = new int[] {0, 1, 2};
+        }
+        for (int rarity : bagTypes) {
+            java.util.List<thaumcraft.common.lib.utils.WeightedRandomLoot> list = switch (rarity) {
+                case 1 -> thaumcraft.common.lib.utils.WeightedRandomLoot.lootBagUncommon;
+                case 2 -> thaumcraft.common.lib.utils.WeightedRandomLoot.lootBagRare;
+                default -> thaumcraft.common.lib.utils.WeightedRandomLoot.lootBagCommon;
+            };
+            list.add(new thaumcraft.common.lib.utils.WeightedRandomLoot(item, weight));
+        }
+    }
 }
