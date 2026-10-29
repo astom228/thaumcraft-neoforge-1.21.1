@@ -108,5 +108,6 @@
   "key.thaumcraft.change_focus": "Change Caster Focus",
   "key.thaumcraft.misc_toggle": "Misc Caster Toggle",
   "entity.thaumcraft.alumentum": "Alumentum",
-  "entity.thaumcraft.grapple": "Grapple"
+  "entity.thaumcraft.grapple": "Grapple",
+  "block.thaumcraft.growth_lamp": "Lamp of Growth"
 }

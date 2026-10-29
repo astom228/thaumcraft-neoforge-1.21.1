@@ -126,6 +126,9 @@ public interface IFXDispatcher {
     default void drawAlumentum(float x, float y, float z, float vx, float vy, float vz, float r, float g, float b, float alpha, float scale) {
     }
 
+    default void drawLevitatorParticles(double x, double y, double z, double x2, double y2, double z2) {
+    }
+
     default void smokeSpiral(double x, double y, double z, float rad, int start, int miny, int color) {
     }
 

@@ -173,6 +173,21 @@ public class FXDispatcher implements IFXDispatcher {
     }
 
     @Override
+    public void drawLevitatorParticles(double x, double y, double z, double x2, double y2, double z2) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, x2, y2, z2);
+        fb.setMaxAge(200 + this.getWorld().random.nextInt(100));
+        fb.setRBGColorF(0.5F, 0.5F, 0.2F);
+        fb.setAlphaF(0.3F, 0.0F);
+        fb.setGridSize(16);
+        fb.setParticles(56, 1, 1);
+        fb.setScale(2.0F, 5.0F);
+        fb.setLayer(0);
+        fb.setSlowDown(1.0);
+        fb.setRotationSpeed(this.getWorld().random.nextFloat(), this.getWorld().random.nextBoolean() ? -1.0F : 1.0F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    @Override
     public void smokeSpiral(double x, double y, double z, float rad, int start, int miny, int color) {
         thaumcraft.client.fx.particles.FXSmokeSpiral fx = new thaumcraft.client.fx.particles.FXSmokeSpiral(this.getWorld(), x, y, z, rad, start, miny);
         Color c = new Color(color);

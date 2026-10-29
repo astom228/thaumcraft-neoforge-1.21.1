@@ -3,9 +3,6 @@ activatorrail: нет BlocksTC.activatorRail
 rechargepedestal: нет BlocksTC.rechargePedestal
 sealblank: нет ItemsTC.seals
 arcanespa: нет BlocksTC.spa
-arcanelamp: нет BlocksTC.lampArcane
-levitator: нет BlocksTC.levitator
-arcaneear: нет BlocksTC.arcaneEar
 dioptra: нет BlocksTC.dioptra
 hungrychest: нет BlocksTC.hungryChest
 potionsprayer: нет BlocksTC.potionSprayer

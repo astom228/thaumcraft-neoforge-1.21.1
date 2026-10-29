@@ -49,6 +49,16 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.misc.TileBarrierStone::new, BlocksTC.pavingStoneBarrier.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileRedstoneRelay>> REDSTONE_RELAY_TILE = TILES.register("redstone_relay",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileRedstoneRelay::new, BlocksTC.redstoneRelay.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileLampArcane>> LAMP_ARCANE_TILE = TILES.register("arcane_lamp",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileLampArcane::new, BlocksTC.lampArcane.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileLampGrowth>> LAMP_GROWTH_TILE = TILES.register("growth_lamp",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileLampGrowth::new, BlocksTC.lampGrowth.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileLampFertility>> LAMP_FERTILITY_TILE = TILES.register("fertility_lamp",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileLampFertility::new, BlocksTC.lampFertility.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileArcaneEar>> ARCANE_EAR_TILE = TILES.register("arcane_ear",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileArcaneEar::new, BlocksTC.arcaneEar.get(), BlocksTC.arcaneEarToggle.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileLevitator>> LEVITATOR_TILE = TILES.register("levitator",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileLevitator::new, BlocksTC.levitator.get()).build(null));
     public static final Supplier<BlockEntityType<TileNitor>> NITOR_TILE = TILES.register("nitor",
             () -> BlockEntityType.Builder.of(TileNitor::new, BlocksTC.nitor.values().stream().map(DeferredBlock::get).toArray(Block[]::new)).build(null));
 

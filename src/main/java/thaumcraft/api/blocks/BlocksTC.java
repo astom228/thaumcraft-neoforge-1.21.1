@@ -198,6 +198,26 @@ public class BlocksTC {
     public static final DeferredBlock<Block> barrier = ConfigBlocks.BLOCKS.register("barrier", () -> new thaumcraft.common.blocks.misc.BlockBarrier(
             BlockBehaviour.Properties.of().replaceable().noOcclusion().noLootTable().strength(-1.0F, 0.0F).pushReaction(PushReaction.DESTROY)
                     .isViewBlocking((st, l, p) -> false).isSuffocating((st, l, p) -> false)));
+    // Лампы (BlockLamp): Material.IRON, твёрдость 1 → сопротивление 5, звук металла; свет 15, когда включена
+    public static final DeferredBlock<Block> lampArcane = register("arcane_lamp", () -> new thaumcraft.common.blocks.devices.BlockLamp(thaumcraft.common.blocks.devices.BlockLamp.Kind.ARCANE, lampProps()));
+    public static final DeferredBlock<Block> lampGrowth = register("growth_lamp", () -> new thaumcraft.common.blocks.devices.BlockLamp(thaumcraft.common.blocks.devices.BlockLamp.Kind.GROWTH, lampProps()));
+    public static final DeferredBlock<Block> lampFertility = register("fertility_lamp", () -> new thaumcraft.common.blocks.devices.BlockLamp(thaumcraft.common.blocks.devices.BlockLamp.Kind.FERTILITY, lampProps()));
+    // Магическое ухо (BlockArcaneEar): Material.WOOD, твёрдость 1, звук дерева
+    public static final DeferredBlock<Block> arcaneEar = register("arcane_ear", () -> new thaumcraft.common.blocks.devices.BlockArcaneEar(false, earProps()));
+    public static final DeferredBlock<Block> arcaneEarToggle = register("arcane_ear_toggle", () -> new thaumcraft.common.blocks.devices.BlockArcaneEar(true, earProps()));
+    // Левитатор (BlockLevitator): Material.WOOD, твёрдость по умолчанию BlockTC — 1.5 (сопротивление 7.5), звук дерева
+    public static final DeferredBlock<Block> levitator = register("levitator", () -> new thaumcraft.common.blocks.devices.BlockLevitator(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.5F, 7.5F).sound(SoundType.WOOD).noOcclusion()));
+
+    private static BlockBehaviour.Properties lampProps() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 5.0F).sound(SoundType.METAL).noOcclusion()
+                .lightLevel(st -> st.getValue(thaumcraft.common.blocks.devices.BlockTCDeviceFacing.ENABLED) ? 15 : 0);
+    }
+
+    private static BlockBehaviour.Properties earProps() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.0F, 5.0F).sound(SoundType.WOOD).noOcclusion();
+    }
+
     // Редстоун-реле (BlockRedstoneRelay): Material.CIRCUITS, твёрдость 0, звук дерева
     public static final DeferredBlock<Block> redstoneRelay = register("redstone_relay", () -> new thaumcraft.common.blocks.devices.BlockRedstoneRelay(
             BlockBehaviour.Properties.of().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));

@@ -64,6 +64,8 @@ public class PacketHandler {
                 (msg, ctx) -> ClientPacketHandlers.handleBlockArc(msg));
         registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXFocusPartImpact.TYPE,
                 thaumcraft.common.lib.network.fx.PacketFXFocusPartImpact.STREAM_CODEC, (msg, ctx) -> ClientPacketHandlers.handleFocusPartImpact(msg));
+        registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXBlockMist.TYPE, thaumcraft.common.lib.network.fx.PacketFXBlockMist.STREAM_CODEC,
+                (msg, ctx) -> thaumcraft.common.lib.fx.IFXDispatcher.get().drawBlockMistParticles(msg.pos(), msg.color()));
         registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXShield.TYPE, thaumcraft.common.lib.network.fx.PacketFXShield.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleShield(msg));
         registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXZap.TYPE, thaumcraft.common.lib.network.fx.PacketFXZap.STREAM_CODEC,

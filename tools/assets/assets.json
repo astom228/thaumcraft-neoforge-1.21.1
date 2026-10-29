@@ -532,6 +532,15 @@
         "enabled": "powered"
       },
       "renderType": "minecraft:cutout"
+    },
+    "arcane_ear": {
+      "src": "arcane_ear"
+    },
+    "arcane_ear_toggle": {
+      "src": "arcane_ear_toggle"
+    },
+    "levitator": {
+      "src": "levitator"
     }
   },
   "items": {

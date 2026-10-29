@@ -98,6 +98,8 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Banner / Crimson Cult Banner | Знамя / Знамя Багрового культа | |
 | Paving Stone of Travel / Barrier Stone / Warding Aura | Мостовой камень странника / Барьерный камень / Защитная аура | |
 | Redstone Relay | Редстоун-реле | |
+| Arcane Lamp / Lamp of Growth / Lamp of Fertility | Магическая лампа / Лампа роста / Лампа плодородия | |
+| Arcane Ear / Arcane Levitator | Магическое ухо / Магический левитатор | |
 | Native … Cluster | Самородный кластер (железа, золота…) | принято |
 | Rare Earths | Редкие земли | принято |
 | Quartz Sliver | Осколок кварца | принято |

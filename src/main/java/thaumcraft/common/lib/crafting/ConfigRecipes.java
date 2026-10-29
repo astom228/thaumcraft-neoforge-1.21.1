@@ -239,7 +239,16 @@ public class ConfigRecipes {
             }
             ThaumcraftApi.addFakeCraftingRecipe(tc("RunicArmorFake" + a), new InfusionRunicAugmentRecipe(in));
         }
-        // TODO этап 13: MindBiothaumic; этап 14: ArcaneBore, LampGrowth, LampFertility; этапы 13–16: CausalityCollapser (алюментум)
+        // Items.DYE 15 — костная мука
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("LampGrowth"), new InfusionRecipe("LAMPGROWTH", new ItemStack(BlocksTC.lampGrowth.get()), 4,
+                new AspectList().add(Aspect.PLANT, 20).add(Aspect.LIGHT, 15).add(Aspect.LIFE, 15).add(Aspect.TOOL, 15), new ItemStack(BlocksTC.lampArcane.get()),
+                new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.BONE_MEAL), ThaumcraftApiHelper.makeCrystal(Aspect.EARTH), new ItemStack(Items.GOLD_INGOT),
+                new ItemStack(Items.BONE_MEAL), ThaumcraftApiHelper.makeCrystal(Aspect.EARTH)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("LampFertility"), new InfusionRecipe("LAMPFERTILITY", new ItemStack(BlocksTC.lampFertility.get()), 4,
+                new AspectList().add(Aspect.BEAST, 20).add(Aspect.LIGHT, 15).add(Aspect.LIFE, 15).add(Aspect.DESIRE, 15), new ItemStack(BlocksTC.lampArcane.get()),
+                new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.WHEAT), ThaumcraftApiHelper.makeCrystal(Aspect.FIRE), new ItemStack(Items.GOLD_INGOT),
+                new ItemStack(Items.CARROT), ThaumcraftApiHelper.makeCrystal(Aspect.FIRE)));
+        // TODO этап 13: MindBiothaumic; этап 14: ArcaneBore; этапы 13–16: CausalityCollapser (алюментум)
     }
 
     private static void mask(String key, int mask, AspectList aspects, net.minecraft.world.item.Item dye, ItemStack c3, ItemStack c4) {

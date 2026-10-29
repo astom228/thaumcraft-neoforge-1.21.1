@@ -792,5 +792,12 @@
   "item.thaumcraft.alumentum": "Алюментум",
   "block.thaumcraft.barrier": "Защитная аура",
   "entity.thaumcraft.alumentum": "Алюментум",
-  "entity.thaumcraft.grapple": "Крюк"
+  "entity.thaumcraft.grapple": "Крюк",
+  "block.thaumcraft.arcane_lamp": "Магическая лампа",
+  "block.thaumcraft.growth_lamp": "Лампа роста",
+  "block.thaumcraft.fertility_lamp": "Лампа плодородия",
+  "block.thaumcraft.arcane_ear": "Магическое ухо",
+  "block.thaumcraft.arcane_ear_toggle": "Магическое ухо (переключатель)",
+  "block.thaumcraft.levitator": "Магический левитатор",
+  "tc.levitator": "Дальность — %s блоков (%d Вис/мин)."
 }

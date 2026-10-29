@@ -46,7 +46,7 @@ public class RenderEventHandler {
     /**
      * blockHighlight оригинала (часть очков откровения) + убывание tagscale из renderLast. В очках над блоком под прицелом:
      * аспекты контейнера (IAspectContainer), стабильность (IStabilizable), нота нотного блока.
-     * TODO этап 14: нота магического уха (TileArcaneEar); реле редстоуна (TileRedstoneRelay) — In/Out.
+     * Ухо — нота; реле — «Out»/«In» над ручкой под прицелом (всегда, не только в очках).
      */
     @SubscribeEvent
     public static void blockHighlight(net.neoforged.neoforge.client.event.RenderLevelStageEvent event) {
@@ -54,6 +54,18 @@ public class RenderEventHandler {
             return;
         }
         Minecraft mc = Minecraft.getInstance();
+        if (mc.level != null && mc.getCameraEntity() instanceof Player player
+                && mc.hitResult instanceof net.minecraft.world.phys.BlockHitResult bh
+                && bh.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
+                && mc.level.getBlockEntity(bh.getBlockPos()) instanceof thaumcraft.common.tiles.devices.TileRedstoneRelay relay) {
+            int knob = thaumcraft.common.blocks.devices.BlockRedstoneRelay.knobAt(mc.level.getBlockState(bh.getBlockPos()), bh.getBlockPos(), bh.getLocation());
+            net.minecraft.core.BlockPos rp = bh.getBlockPos();
+            if (knob == 0) {
+                drawTextInAir(event.getPoseStack(), event.getCamera().getPosition(), rp.getX(), rp.getY() + 0.3, rp.getZ(), "Out: " + relay.getOut(), false);
+            } else if (knob == 1) {
+                drawTextInAir(event.getPoseStack(), event.getCamera().getPosition(), rp.getX(), rp.getY() + 0.3, rp.getZ(), "In: " + relay.getIn(), false);
+            }
+        }
         if (mc.level != null && mc.getCameraEntity() instanceof Player player
                 && mc.hitResult instanceof net.minecraft.world.phys.BlockHitResult bh
                 && bh.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
@@ -66,6 +78,9 @@ public class RenderEventHandler {
             net.minecraft.world.level.block.state.BlockState bs = mc.level.getBlockState(p);
             // в 1.12 нота читалась из TileEntityNote (с запросом PacketNote к серверу); в 1.21 она в состоянии блока
             int note = bs.getBlock() instanceof net.minecraft.world.level.block.NoteBlock ? bs.getValue(net.minecraft.world.level.block.NoteBlock.NOTE) : -1;
+            if (te instanceof thaumcraft.common.tiles.devices.TileArcaneEar ear) {
+                note = ear.note;
+            }
             if (note < 0 && te instanceof thaumcraft.api.aspects.IAspectContainer ac && ac.getAspects() != null && ac.getAspects().size() > 0) {
                 if (tagscale < 0.3F) {
                     tagscale = tagscale + (0.031F - tagscale / 10.0F);
