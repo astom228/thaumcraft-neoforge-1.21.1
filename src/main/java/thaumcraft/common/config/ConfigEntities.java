@@ -37,6 +37,11 @@ public class ConfigEntities {
             () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityFocusMine>of(thaumcraft.common.entities.projectile.EntityFocusMine::new,
                     MobCategory.MISC).sized(0.15F, 0.15F).clientTrackingRange(4).updateInterval(20).build("focus_mine"));
 
+    // EntityRegistry.registerModEntity(…, "Alumentum", …, 64, 20, true)
+    public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityAlumentum>> ALUMENTUM = ENTITIES.register("alumentum",
+            () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityAlumentum>of(thaumcraft.common.entities.projectile.EntityAlumentum::new,
+                    MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(20).build("alumentum"));
+
     // EntityRegistry.registerModEntity(…, "Grapple", …, 64, 20, true)
     public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityGrapple>> GRAPPLE = ENTITIES.register("grapple",
             () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityGrapple>of(thaumcraft.common.entities.projectile.EntityGrapple::new,

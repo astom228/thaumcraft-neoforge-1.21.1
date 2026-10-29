@@ -70,6 +70,8 @@ public class Thaumcraft {
         event.enqueueWork(thaumcraft.common.lib.utils.Utils::initSpecialMining);
         // роба тауматурга отмывается в котле с водой, как кожаная броня (onItemUseFirst оригинала)
         event.enqueueWork(ConfigItems::registerCauldron);
+        // BehaviorDispenseAlumetum: раздатчик бросает алюментум
+        event.enqueueWork(() -> net.minecraft.world.level.block.DispenserBlock.registerProjectileBehavior(thaumcraft.api.items.ItemsTC.alumentum.get()));
         // ModConfig.postInitLoot оригинала: содержимое мешков с добычей
         event.enqueueWork(thaumcraft.common.config.ConfigLoot::postInitLoot);
     }

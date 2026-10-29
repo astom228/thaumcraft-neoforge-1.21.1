@@ -106,5 +106,7 @@
   "entity.thaumcraft.focus_cloud": "Focus Cloud",
   "entity.thaumcraft.focus_mine": "Focus Mine",
   "key.thaumcraft.change_focus": "Change Caster Focus",
-  "key.thaumcraft.misc_toggle": "Misc Caster Toggle"
+  "key.thaumcraft.misc_toggle": "Misc Caster Toggle",
+  "entity.thaumcraft.alumentum": "Alumentum",
+  "entity.thaumcraft.grapple": "Grapple"
 }

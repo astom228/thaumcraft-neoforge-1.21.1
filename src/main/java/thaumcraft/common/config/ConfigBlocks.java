@@ -42,6 +42,13 @@ public class ConfigBlocks {
     public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Thaumcraft.MODID);
 
     @SuppressWarnings("DataFlowIssue")
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.misc.TileBanner>> BANNER_TILE = TILES.register("banner",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.misc.TileBanner::new, java.util.stream.Stream.concat(
+                    BlocksTC.banners.values().stream().map(DeferredBlock::get), java.util.stream.Stream.of(BlocksTC.bannerCrimsonCult.get())).toArray(Block[]::new)).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.misc.TileBarrierStone>> BARRIER_STONE_TILE = TILES.register("barrier_stone",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.misc.TileBarrierStone::new, BlocksTC.pavingStoneBarrier.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileRedstoneRelay>> REDSTONE_RELAY_TILE = TILES.register("redstone_relay",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileRedstoneRelay::new, BlocksTC.redstoneRelay.get()).build(null));
     public static final Supplier<BlockEntityType<TileNitor>> NITOR_TILE = TILES.register("nitor",
             () -> BlockEntityType.Builder.of(TileNitor::new, BlocksTC.nitor.values().stream().map(DeferredBlock::get).toArray(Block[]::new)).build(null));
 

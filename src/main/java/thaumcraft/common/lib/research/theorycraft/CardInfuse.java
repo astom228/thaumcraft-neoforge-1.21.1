@@ -18,14 +18,13 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 /**
  * «Наполнение»: тратит предмет из списка и фиал эссенции составного аспекта → наполнение по количеству аспектов предмета.
- * TODO: в начало списка вернуть алюментум (ItemsTC.alumentum), когда он появится.
  */
 public class CardInfuse extends TheorycraftCard {
     Aspect aspect;
     ItemStack stack = ItemStack.EMPTY;
 
     static ItemStack[] options() {
-        return new ItemStack[] {new ItemStack(BlocksTC.nitor.get(DyeColor.YELLOW).get()), new ItemStack(ItemsTC.amber.get()),
+        return new ItemStack[] {new ItemStack(ItemsTC.alumentum.get()), new ItemStack(BlocksTC.nitor.get(DyeColor.YELLOW).get()), new ItemStack(ItemsTC.amber.get()),
                 new ItemStack(ItemsTC.brain.get()), new ItemStack(ItemsTC.fabric.get()), new ItemStack(ItemsTC.salisMundus.get()), new ItemStack(ItemsTC.ingotThaumium.get()),
                 new ItemStack(ItemsTC.ingotBrass.get()), new ItemStack(ItemsTC.quicksilver.get()), new ItemStack(Items.GOLD_INGOT),
                 new ItemStack(Items.IRON_INGOT), new ItemStack(Items.DIAMOND), new ItemStack(Items.EMERALD), new ItemStack(Items.BLAZE_ROD),

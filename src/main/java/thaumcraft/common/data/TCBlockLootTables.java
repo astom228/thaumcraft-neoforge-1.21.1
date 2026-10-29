@@ -91,6 +91,15 @@ public class TCBlockLootTables extends BlockLootSubProvider {
                             .include(thaumcraft.common.lib.TCDataComponents.MIRROR_LINK.get()))))));
         }
 
+        // Знамёна: с нарисованным аспектом (getDrops оригинала с NBT "aspect")
+        for (Block bn : java.util.stream.Stream.concat(BlocksTC.banners.values().stream().map(h -> (Block) h.get()),
+                java.util.stream.Stream.of(BlocksTC.bannerCrimsonCult.get())).toList()) {
+            add(bn, b -> LootTable.lootTable().withPool(applyExplosionCondition(b, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+                    .add(LootItem.lootTableItem(b).apply(net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction
+                            .copyComponents(net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction.Source.BLOCK_ENTITY)
+                            .include(thaumcraft.common.lib.TCDataComponents.BANNER_ASPECT.get()))))));
+        }
+
         // Остальные блоки этапа роняют сами себя
         for (DeferredHolder<Block, ? extends Block> holder : ConfigBlocks.BLOCKS.getEntries()) {
             Block block = holder.get();

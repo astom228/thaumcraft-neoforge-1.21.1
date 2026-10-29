@@ -26,7 +26,7 @@ const BLOCKS = fieldIds('src/main/java/thaumcraft/api/blocks/BlocksTC.java');
 // ID, зарегистрированные картами по цвету (свечи, ниторы…) — "<цвет>_<имя>"
 const BLOCKS_SRC = fs.readFileSync(path.join(ROOT, 'src/main/java/thaumcraft/api/blocks/BlocksTC.java'), 'utf8');
 const COLOR_MAPS = {};
-for (const m of BLOCKS_SRC.matchAll(/(\w+)\.put\(dye, register\(dye\.getSerializedName\(\) \+ "(_[a-z_]+)"/g)) COLOR_MAPS[m[1]] = m[2];
+for (const m of BLOCKS_SRC.matchAll(/(\w+)\.put\(dye, register\w*\(dye\.getSerializedName\(\) \+ "(_[a-z_]+)"/g)) COLOR_MAPS[m[1]] = m[2];
 
 // Аспекты: поле Aspect.X -> тег
 const ASPECTS = {};

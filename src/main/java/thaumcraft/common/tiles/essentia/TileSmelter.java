@@ -150,7 +150,9 @@ public class TileSmelter extends TileThaumcraftInventory {
                     this.speedBoost = false;
                     ItemStack fuel = this.getStackInSlot(1);
                     if (!fuel.isEmpty()) {
-                        // TODO этап 13: алюментум (ItemsTC.alumentum) ускоряет плавильню — speedBoost = true
+                        if (fuel.is(thaumcraft.api.items.ItemsTC.alumentum.get())) {
+                            this.speedBoost = true;
+                        }
                         // В оригинале остаток топлива брался у уже пустого стака (ведро лавы пропадало) — DEVIATIONS 30
                         ItemStack remainder = fuel.getCraftingRemainingItem();
                         ItemStack copy = fuel.copy();

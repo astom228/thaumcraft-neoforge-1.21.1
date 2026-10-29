@@ -95,6 +95,9 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Alchemical Brass / Brass | Алхимическая латунь / латунь | принято |
 | Salis Mundus | Салис Мундус | принято |
 | Alumentum | Алюментум | принято |
+| Banner / Crimson Cult Banner | Знамя / Знамя Багрового культа | |
+| Paving Stone of Travel / Barrier Stone / Warding Aura | Мостовой камень странника / Барьерный камень / Защитная аура | |
+| Redstone Relay | Редстоун-реле | |
 | Native … Cluster | Самородный кластер (железа, золота…) | принято |
 | Rare Earths | Редкие земли | принято |
 | Quartz Sliver | Осколок кварца | принято |

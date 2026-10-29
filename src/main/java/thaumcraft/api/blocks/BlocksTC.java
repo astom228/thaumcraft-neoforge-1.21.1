@@ -173,7 +173,34 @@ public class BlocksTC {
                             .lightLevel(state -> 14).noOcclusion().pushReaction(PushReaction.DESTROY))));
         }
     }
-    // TODO этап 14: баннеры (BlockBannerTC) — в оригинале регистрируются между свечами и ниторами.
+    // Знамёна (BlockBannerTC): Material.WOOD, setHardness(1) → сопротивление 5, звук дерева; рисуются блок-сущностью
+    public static final Map<DyeColor, DeferredBlock<Block>> banners = new EnumMap<>(DyeColor.class);
+
+    static {
+        for (DyeColor dye : DyeColor.values()) {
+            banners.put(dye, registerWithItem(dye.getSerializedName() + "_banner", () -> new thaumcraft.common.blocks.basic.BlockBannerTC(dye, bannerProps(dye.getMapColor())),
+                    thaumcraft.common.blocks.basic.BlockBannerTCItem::new));
+        }
+    }
+    public static final DeferredBlock<Block> bannerCrimsonCult = registerWithItem("crimson_cult_banner",
+            () -> new thaumcraft.common.blocks.basic.BlockBannerTC(null, bannerProps(MapColor.COLOR_RED)), thaumcraft.common.blocks.basic.BlockBannerTCItem::new);
+
+    private static BlockBehaviour.Properties bannerProps(MapColor color) {
+        return BlockBehaviour.Properties.of().mapColor(color).strength(1.0F, 5.0F).sound(SoundType.WOOD).noCollission().noOcclusion().ignitedByLava();
+    }
+
+    // Мостовые камни (BlockPavingStone): Material.ROCK, твёрдость 2.5 → сопротивление 12.5, добываются без инструмента
+    public static final DeferredBlock<Block> pavingStoneTravel = register("travel_paving_stone",
+            () -> new thaumcraft.common.blocks.basic.BlockPavingStone(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.5F, 12.5F).sound(SoundType.STONE)));
+    public static final DeferredBlock<Block> pavingStoneBarrier = register("barrier_paving_stone",
+            () -> new thaumcraft.common.blocks.basic.BlockPavingStone(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.5F, 12.5F).sound(SoundType.STONE)));
+    // Барьер над барьерным камнем: невидим, без предмета и добычи
+    public static final DeferredBlock<Block> barrier = ConfigBlocks.BLOCKS.register("barrier", () -> new thaumcraft.common.blocks.misc.BlockBarrier(
+            BlockBehaviour.Properties.of().replaceable().noOcclusion().noLootTable().strength(-1.0F, 0.0F).pushReaction(PushReaction.DESTROY)
+                    .isViewBlocking((st, l, p) -> false).isSuffocating((st, l, p) -> false)));
+    // Редстоун-реле (BlockRedstoneRelay): Material.CIRCUITS, твёрдость 0, звук дерева
+    public static final DeferredBlock<Block> redstoneRelay = register("redstone_relay", () -> new thaumcraft.common.blocks.devices.BlockRedstoneRelay(
+            BlockBehaviour.Properties.of().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
 
     // Ниторы (BlockNitor): setHardness(0.1) → сопротивление 1.5, звук ткани, свет 15, без коллизии
     public static final Map<DyeColor, DeferredBlock<Block>> nitor = new EnumMap<>(DyeColor.class);

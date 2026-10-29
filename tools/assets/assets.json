@@ -447,6 +447,91 @@
     "eldritch_infusion_pillar": {
       "src": "pillar_eldritch",
       "itemModel": "obj:pillar_eldritch#inventory"
+    },
+    "white_banner": {
+      "src": "banner_white",
+      "itemModel": "model:banner"
+    },
+    "orange_banner": {
+      "src": "banner_orange",
+      "itemModel": "model:banner"
+    },
+    "magenta_banner": {
+      "src": "banner_magenta",
+      "itemModel": "model:banner"
+    },
+    "light_blue_banner": {
+      "src": "banner_lightblue",
+      "itemModel": "model:banner"
+    },
+    "yellow_banner": {
+      "src": "banner_yellow",
+      "itemModel": "model:banner"
+    },
+    "lime_banner": {
+      "src": "banner_lime",
+      "itemModel": "model:banner"
+    },
+    "pink_banner": {
+      "src": "banner_pink",
+      "itemModel": "model:banner"
+    },
+    "gray_banner": {
+      "src": "banner_gray",
+      "itemModel": "model:banner"
+    },
+    "light_gray_banner": {
+      "src": "banner_silver",
+      "itemModel": "model:banner"
+    },
+    "cyan_banner": {
+      "src": "banner_cyan",
+      "itemModel": "model:banner"
+    },
+    "purple_banner": {
+      "src": "banner_purple",
+      "itemModel": "model:banner"
+    },
+    "blue_banner": {
+      "src": "banner_blue",
+      "itemModel": "model:banner"
+    },
+    "brown_banner": {
+      "src": "banner_brown",
+      "itemModel": "model:banner"
+    },
+    "green_banner": {
+      "src": "banner_green",
+      "itemModel": "model:banner"
+    },
+    "red_banner": {
+      "src": "banner_red",
+      "itemModel": "model:banner"
+    },
+    "black_banner": {
+      "src": "banner_black",
+      "itemModel": "model:banner"
+    },
+    "crimson_cult_banner": {
+      "src": "banner_crimson_cult",
+      "itemModel": "model:banner_crimson_cult"
+    },
+    "travel_paving_stone": {
+      "src": "paving_stone_travel"
+    },
+    "barrier_paving_stone": {
+      "src": "paving_stone_barrier"
+    },
+    "barrier": {
+      "src": "barrier",
+      "item": false
+    },
+    "redstone_relay": {
+      "src": "redstone_relay",
+      "props": {
+        "enabled": "powered"
+      },
+      "renderType": "minecraft:cutout"
     }
   },
   "items": {
@@ -627,6 +712,7 @@
     "rare_loot_bag": "bs:loot_bag#rare",
     "grappler": "model:grapple_gun",
     "grapple_gun_1": "model:grapple_gun_1",
-    "grapple_gun_2": "model:grapple_gun_2"
+    "grapple_gun_2": "model:grapple_gun_2",
+    "alumentum": "model:alumentum"
   }
 }

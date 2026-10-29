@@ -1,0 +1,25 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "group": "thaumcraft:banners",
+  "research": "BASEINFUSION",
+  "vis": 10,
+  "key": {
+    "W": {
+      "item": "minecraft:magenta_wool"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "B": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": [
+    "WS",
+    "WS",
+    "WB"
+  ],
+  "result": {
+    "id": "thaumcraft:magenta_banner"
+  }
+}

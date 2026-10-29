@@ -1,0 +1,22 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "PAVINGSTONES",
+  "vis": 50,
+  "crystals": {
+    "ignis": 1,
+    "ordo": 1
+  },
+  "key": {
+    "S": {
+      "item": "thaumcraft:arcane_stone_bricks"
+    }
+  },
+  "pattern": [
+    "SS",
+    "SS"
+  ],
+  "result": {
+    "id": "thaumcraft:barrier_paving_stone",
+    "count": 4
+  }
+}

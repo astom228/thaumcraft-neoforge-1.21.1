@@ -87,8 +87,11 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.FOCUS_CLOUD.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ConfigEntities.FOCUS_MINE.get(), thaumcraft.client.renderers.entity.projectile.RenderFocusMine::new);
         event.registerEntityRenderer(ConfigEntities.GRAPPLE.get(), thaumcraft.client.renderers.entity.projectile.RenderGrapple::new);
+        // алюментум — без модели (RenderNoProjectile оригинала; след — частицы сущности)
+        event.registerEntityRenderer(ConfigEntities.ALUMENTUM.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ConfigEntities.SPELL_BAT.get(), thaumcraft.client.renderers.entity.mob.RenderSpellBat::new);
         event.registerBlockEntityRenderer(ConfigBlocks.CRUCIBLE_TILE.get(), TileCrucibleRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.BANNER_TILE.get(), thaumcraft.client.renderers.tile.TileBannerRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.WARDED_JAR_TILE.get(), TileJarRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.VOID_JAR_TILE.get(), TileJarRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.BRAIN_JAR_TILE.get(), TileJarRenderer::new);

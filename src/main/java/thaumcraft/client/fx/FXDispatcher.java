@@ -166,6 +166,13 @@ public class FXDispatcher implements IFXDispatcher {
     }
 
     @Override
+    public void drawAlumentum(float x, float y, float z, float vx, float vy, float vz, float r, float g, float b, float alpha, float scale) {
+        thaumcraft.client.fx.particles.FXFireMote glow = new thaumcraft.client.fx.particles.FXFireMote(this.getWorld(), x, y, z, vx, vy, vz, r, g, b, scale, 1);
+        glow.setAlphaF(alpha);
+        ParticleEngine.addEffect(this.getWorld(), glow);
+    }
+
+    @Override
     public void smokeSpiral(double x, double y, double z, float rad, int start, int miny, int color) {
         thaumcraft.client.fx.particles.FXSmokeSpiral fx = new thaumcraft.client.fx.particles.FXSmokeSpiral(this.getWorld(), x, y, z, rad, start, miny);
         Color c = new Color(color);

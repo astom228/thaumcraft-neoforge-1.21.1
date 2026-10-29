@@ -323,7 +323,15 @@ function writeItem(id, src) {
   if (om) return writeObjItem(id, om[1], om[2]);
   if (src.startsWith('model:')) {
     const model = readSrc(`models/item/${src.slice(6)}.json`);
+    if (model.parent === 'builtin/generated') model.parent = 'item/generated';
     if (model.parent) model.parent = model.parent.includes(':') ? model.parent : 'minecraft:' + model.parent;
+    // display 1.8–1.12 без руки (thirdperson/firstperson) -> правая рука 1.21 (левая зеркалится движком)
+    if (model.display) {
+      const D = { thirdperson: 'thirdperson_righthand', firstperson: 'firstperson_righthand' };
+      const out = {};
+      for (const [k, v] of Object.entries(model.display)) out[D[k] || k] = v;
+      model.display = out;
+    }
     // свойства предметов Thaumcraft в 1.12 регистрировались без пространства имён; в 1.21 — thaumcraft:<имя>
     const TC_PROPS = { focus: 'thaumcraft:focus' };
     for (const o of model.overrides || []) {

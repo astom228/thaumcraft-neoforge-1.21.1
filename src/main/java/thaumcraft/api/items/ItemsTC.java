@@ -35,6 +35,8 @@ import thaumcraft.common.items.tools.ItemThaumometer;
 public class ItemsTC {
     // --- ресурсы (ItemTCBase) ---
     public static final DeferredItem<Item> amber = simple("amber");
+    // ItemAlumentum: бросается, топливо 4800
+    public static final DeferredItem<Item> alumentum = ConfigItems.ITEMS.registerItem("alumentum", thaumcraft.common.items.consumables.ItemAlumentum::new);
     public static final DeferredItem<Item> quicksilver = simple("quicksilver");
     // ingot: thaumium, void, brass
     public static final DeferredItem<Item> ingotThaumium = simple("thaumium_ingot");

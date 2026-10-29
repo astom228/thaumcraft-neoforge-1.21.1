@@ -307,7 +307,9 @@ public class ConfigRecipes {
         }
         ThaumcraftApi.addCrucibleRecipe(id("nitor"), new CrucibleRecipe("UNLOCKALCHEMY@3", new ItemStack(BlocksTC.nitor.get(DyeColor.YELLOW).get()),
                 Tags.Items.DUSTS_GLOWSTONE, new AspectList().merge(Aspect.ENERGY, 10).merge(Aspect.FIRE, 10).merge(Aspect.LIGHT, 10)));
-        // TODO alumentum (ItemsTC.alumentum, катализатор — уголь и древесный уголь): ENERGY 10, FIRE 10, ENTROPY 5 — со своим предметом
+        // катализатор — уголь любого вида (Items.COAL, 32767: уголь и древесный уголь)
+        ThaumcraftApi.addCrucibleRecipe(id("alumentum"), new CrucibleRecipe("ALUMENTUM", new ItemStack(ItemsTC.alumentum.get()),
+                net.minecraft.tags.ItemTags.COALS, new AspectList().merge(Aspect.ENERGY, 10).merge(Aspect.FIRE, 10).merge(Aspect.ENTROPY, 5)));
         ThaumcraftApi.addCrucibleRecipe(id("brassingot"), new CrucibleRecipe("METALLURGY@1", new ItemStack(ItemsTC.ingotBrass.get()),
                 Tags.Items.INGOTS_IRON, new AspectList().merge(Aspect.TOOL, 5)));
         ThaumcraftApi.addCrucibleRecipe(id("thaumiumingot"), new CrucibleRecipe("METALLURGY@2", new ItemStack(ItemsTC.ingotThaumium.get()),

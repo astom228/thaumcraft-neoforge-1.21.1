@@ -69,6 +69,22 @@ public class ColorHandler {
                 ItemsTC.voidRobeHelm.get(), ItemsTC.voidRobeChest.get(), ItemsTC.voidRobeLegs.get());
         event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : 0xFF000000 | thaumcraft.common.items.armor.ItemRobeArmor.getColor(stack),
                 ItemsTC.clothChest.get(), ItemsTC.clothLegs.get(), ItemsTC.clothBoots.get());
+        // itemBannerColourHandler: 1 — цвет карты блока (ткань), 2 — цвет аспекта или ткани
+        java.util.List<net.minecraft.world.level.ItemLike> banners = new java.util.ArrayList<>();
+        BlocksTC.banners.values().forEach(b -> banners.add(b.get()));
+        banners.add(BlocksTC.bannerCrimsonCult.get());
+        event.register((stack, tintIndex) -> {
+            int map = 0xFF000000 | ((net.minecraft.world.item.BlockItem) stack.getItem()).getBlock().defaultMapColor().col;
+            if (tintIndex == 1) {
+                return map;
+            }
+            if (tintIndex == 2) {
+                String as = stack.get(thaumcraft.common.lib.TCDataComponents.BANNER_ASPECT.get());
+                thaumcraft.api.aspects.Aspect a = as == null ? null : thaumcraft.api.aspects.Aspect.getAspect(as);
+                return a != null ? 0xFF000000 | a.getColor() : map;
+            }
+            return -1;
+        }, banners.toArray(new net.minecraft.world.level.ItemLike[0]));
         // itemCasterColourHandler: у перчатки с фокусом слои 1+ — цвет фокуса
         event.register((stack, tintIndex) -> {
             thaumcraft.common.items.casters.ItemCaster item = (thaumcraft.common.items.casters.ItemCaster) stack.getItem();

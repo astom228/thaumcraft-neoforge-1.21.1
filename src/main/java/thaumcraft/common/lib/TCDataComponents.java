@@ -84,6 +84,10 @@ public class TCDataComponents {
     public static final Supplier<DataComponentType<Boolean>> GRAPPLE_LOADED = COMPONENTS.registerComponentType("grapple_loaded",
             b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
+    /** Аспект, нарисованный на знамени (в оригинале — NBT "aspect" у предмета знамени). */
+    public static final Supplier<DataComponentType<String>> BANNER_ASPECT = COMPONENTS.registerComponentType("banner_aspect",
+            b -> b.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
     /** Пакет фокуса (в оригинале — NBT "package" у фокуса): формат FocusPackage.serialize. Значение не изменять — только заменять. */
     public static final Supplier<DataComponentType<net.minecraft.nbt.CompoundTag>> FOCUS_PACKAGE = COMPONENTS.registerComponentType("focus_package",
             b -> b.persistent(net.minecraft.nbt.CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
