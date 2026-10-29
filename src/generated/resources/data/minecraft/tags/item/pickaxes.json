@@ -1,6 +1,8 @@
 {
   "values": [
     "thaumcraft:thaumium_pickaxe",
-    "thaumcraft:void_metal_pickaxe"
+    "thaumcraft:void_metal_pickaxe",
+    "thaumcraft:elemental_pickaxe",
+    "thaumcraft:primal_crusher"
   ]
 }

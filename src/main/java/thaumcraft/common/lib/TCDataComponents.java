@@ -68,6 +68,10 @@ public class TCDataComponents {
     public static final Supplier<DataComponentType<Integer>> VERDANT_TYPE = COMPONENTS.registerComponentType("verdant_type",
             b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    /** Ориентация квадрата лопаты Землекопа, 0–2 (в оригинале — NBT "or"). */
+    public static final Supplier<DataComponentType<Integer>> SHOVEL_ORIENTATION = COMPONENTS.registerComponentType("shovel_orientation",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     /** Пакет фокуса (в оригинале — NBT "package" у фокуса): формат FocusPackage.serialize. Значение не изменять — только заменять. */
     public static final Supplier<DataComponentType<net.minecraft.nbt.CompoundTag>> FOCUS_PACKAGE = COMPONENTS.registerComponentType("focus_package",
             b -> b.persistent(net.minecraft.nbt.CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));

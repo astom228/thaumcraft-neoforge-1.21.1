@@ -123,6 +123,12 @@ public interface IFXDispatcher {
     default void crucibleBubble(float x, float y, float z, float cr, float cg, float cb) {
     }
 
+    default void smokeSpiral(double x, double y, double z, float rad, int start, int miny, int color) {
+    }
+
+    default void drawBlockMistParticles(net.minecraft.core.BlockPos p, int c) {
+    }
+
     default void crucibleBoil(net.minecraft.core.BlockPos pos, float fluidHeight, thaumcraft.api.aspects.AspectList aspects, int j) {
     }
 

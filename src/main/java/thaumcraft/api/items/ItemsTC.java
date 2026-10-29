@@ -157,6 +157,21 @@ public class ItemsTC {
     public static final DeferredItem<Item> voidPick = tool("void_metal_pickaxe", p -> new thaumcraft.common.items.tools.ItemVoidPickaxe(ThaumcraftMaterials.TOOLMAT_VOID, p));
     public static final DeferredItem<Item> voidHoe = tool("void_metal_hoe", p -> new thaumcraft.common.items.tools.ItemVoidHoe(ThaumcraftMaterials.TOOLMAT_VOID, p));
 
+    // стихийные (TOOLMAT_ELEMENTAL, RARE)
+    public static final DeferredItem<Item> elementalAxe = rareTool("elemental_axe", p -> new thaumcraft.common.items.tools.ItemElementalAxe(ThaumcraftMaterials.TOOLMAT_ELEMENTAL, p));
+    public static final DeferredItem<Item> elementalSword = rareTool("elemental_sword", p -> new thaumcraft.common.items.tools.ItemElementalSword(ThaumcraftMaterials.TOOLMAT_ELEMENTAL, p));
+    public static final DeferredItem<Item> elementalShovel = rareTool("elemental_shovel", p -> new thaumcraft.common.items.tools.ItemElementalShovel(ThaumcraftMaterials.TOOLMAT_ELEMENTAL, p));
+    public static final DeferredItem<Item> elementalPick = rareTool("elemental_pickaxe", p -> new thaumcraft.common.items.tools.ItemElementalPickaxe(ThaumcraftMaterials.TOOLMAT_ELEMENTAL, p));
+    public static final DeferredItem<Item> elementalHoe = rareTool("elemental_hoe", p -> new thaumcraft.common.items.tools.ItemElementalHoe(ThaumcraftMaterials.TOOLMAT_ELEMENTAL, p));
+    // ItemPrimalCrusher (обычная редкость), ItemCrimsonBlade (EPIC)
+    public static final DeferredItem<Item> primalCrusher = tool("primal_crusher", thaumcraft.common.items.tools.ItemPrimalCrusher::new);
+    public static final DeferredItem<Item> crimsonBlade = ConfigItems.ITEMS.registerItem("crimson_blade", thaumcraft.common.items.tools.ItemCrimsonBlade::new,
+            new Item.Properties().rarity(Rarity.EPIC));
+
+    private static DeferredItem<Item> rareTool(String name, java.util.function.Function<Item.Properties, Item> factory) {
+        return ConfigItems.ITEMS.registerItem(name, factory, new Item.Properties().rarity(Rarity.RARE));
+    }
+
     // --- броня (ConfigItems.initItems: ThaumcraftMaterials.ARMORMAT_*; прочность — множитель оригинала) ---
     public static final DeferredItem<Item> thaumiumHelm = thaumiumArmor("thaumium_helmet", ArmorItem.Type.HELMET);
     public static final DeferredItem<Item> thaumiumChest = thaumiumArmor("thaumium_chestplate", ArmorItem.Type.CHESTPLATE);

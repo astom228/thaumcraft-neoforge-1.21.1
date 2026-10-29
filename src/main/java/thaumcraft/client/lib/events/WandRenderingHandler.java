@@ -281,6 +281,26 @@ public class WandRenderingHandler {
     // --- подсветка «Плана» -------------------------------------------------------------------------------------------
 
     @SubscribeEvent
+    // blockHighlight оригинала: предмет-архитектор с useBlockHighlight рисует свою подсветку вместо рамки блока
+    public static void blockHighlightArchitect(net.neoforged.neoforge.client.event.RenderHighlightEvent.Block event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (!(mc.getCameraEntity() instanceof Player player) || mc.level == null) {
+            return;
+        }
+        ItemStack stack = player.getMainHandItem().getItem() instanceof IArchitect ? player.getMainHandItem()
+                : (player.getOffhandItem().getItem() instanceof IArchitect ? player.getOffhandItem() : ItemStack.EMPTY);
+        if (stack.isEmpty() || !((IArchitect) stack.getItem()).useBlockHighlight(stack)) {
+            return;
+        }
+        HitResult target = ((IArchitect) stack.getItem()).getArchitectMOP(stack, player.level(), player);
+        if (target instanceof BlockHitResult bh && bh.getType() == HitResult.Type.BLOCK
+                && handleArchitectOverlay(stack, player, event.getPoseStack(), event.getCamera().getPosition(), player.tickCount, bh)) {
+            event.setCanceled(true);
+        }
+    }
+
+    /** То же для предметов без подсветки блока (план фокуса) — на этапе отрисовки мира. */
+    @SubscribeEvent
     public static void renderArchitect(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
             return;

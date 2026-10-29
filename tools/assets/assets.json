@@ -592,6 +592,13 @@
     "verdant_charm_0": "model:verdant_charm_0",
     "verdant_charm_1": "model:verdant_charm_1",
     "verdant_charm_2": "model:verdant_charm_2",
-    "voidseer_charm": "model:voidseer_charm"
+    "voidseer_charm": "model:voidseer_charm",
+    "elemental_axe": "model:elemental_axe",
+    "elemental_sword": "model:elemental_sword",
+    "elemental_shovel": "model:elemental_shovel",
+    "elemental_pickaxe": "model:elemental_pick",
+    "elemental_hoe": "model:elemental_hoe",
+    "primal_crusher": "model:primal_crusher",
+    "crimson_blade": "model:crimson_blade"
   }
 }

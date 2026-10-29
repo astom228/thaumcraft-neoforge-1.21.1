@@ -42,7 +42,7 @@ for (const suffix of Object.values(COLOR_MAPS)) {
 
 // Варианты metadata оригинала -> ID порта (ID_MAPPING.md); рецепт пишется, когда такой ID зарегистрирован
 const VARIANTS = {
-  'ItemsTC.nuggets': { 10: 'quartz_sliver' },
+  'ItemsTC.nuggets': { 9: 'quartz_sliver', 10: 'rare_earths' },
   'ItemsTC.modules': { 0: 'vision_module', 1: 'aggression_module' },
   'ItemsTC.mind': { 0: 'clockwork_mind', 1: 'biothaumic_mind' },
   'ItemsTC.filter': { 0: 'essentia_filter' },

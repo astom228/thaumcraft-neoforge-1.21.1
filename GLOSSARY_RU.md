@@ -157,7 +157,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Charm of Undying / Cloudstepper Ring / Headband of Curiosity | Оберег бессмертия / Кольцо облачного шага / Повязка любопытства | |
 | Verdant Heart Charm (Lifegiver / Sustainer) | Оберег зелёного сердца («Дарующий жизнь» / «Поддерживающий») | |
 | Voidseer's Pearl | Жемчужина провидца пустоты | |
-| Lesser Sapping (void metal) | Малое ослабление | |
+| Lesser / Greater Sapping | Малое / Великое ослабление | |
 | Thaumium Fortress (armor) | Таумиумная крепость (доспех) | принято |
 | Primal Crusher | Первозданный сокрушитель | принято |
 | Crimson Blade | Багровый клинок | принято |

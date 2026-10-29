@@ -20,7 +20,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
  * яд (10), заразный выброс (5, этап 15); «Дарующий жизнь» (тип 1) лечит 1 ед. за 5; «Поддерживающий» (тип 2) восполняет воздух
  * и сытость за 1. Тип — компонент thaumcraft:verdant_type (NBT "type" оригинала), модель — свойство type.
  */
-public class ItemVerdantCharm extends Item implements ICurioItem, IRechargable {
+public class ItemVerdantCharm extends Item implements ICurioItem, IRechargable, thaumcraft.common.items.ICreativeVariants {
     public ItemVerdantCharm(Properties props) {
         super(props);
     }
@@ -67,6 +67,17 @@ public class ItemVerdantCharm extends Item implements ICurioItem, IRechargable {
             if (p.canEat(false) && RechargeHelper.consumeCharge(stack, p, 1)) {
                 p.getFoodData().eat(1, 0.3F);
             }
+        }
+    }
+
+    @Override
+    public void addCreativeVariants(net.minecraft.world.item.CreativeModeTab.Output output) {
+        for (int t = 0; t < 3; t++) {
+            ItemStack s = new ItemStack(this);
+            if (t > 0) {
+                s.set(TCDataComponents.VERDANT_TYPE.get(), t);
+            }
+            output.accept(s);
         }
     }
 

@@ -46,11 +46,11 @@ public class TCItemTagsProvider extends ItemTagsProvider {
         tag(TCTags.Items.QUICKSILVER).add(quicksilver.get());
 
         // инструменты и броня: ванильные категории (зачаровываемость на столе, ремонт и т.п.)
-        tag(ItemTags.SWORDS).add(thaumiumSword.get(), voidSword.get());
-        tag(ItemTags.PICKAXES).add(thaumiumPick.get(), voidPick.get());
-        tag(ItemTags.AXES).add(thaumiumAxe.get(), voidAxe.get());
-        tag(ItemTags.SHOVELS).add(thaumiumShovel.get(), voidShovel.get());
-        tag(ItemTags.HOES).add(thaumiumHoe.get(), voidHoe.get());
+        tag(ItemTags.SWORDS).add(thaumiumSword.get(), voidSword.get(), elementalSword.get(), crimsonBlade.get());
+        tag(ItemTags.PICKAXES).add(thaumiumPick.get(), voidPick.get(), elementalPick.get(), primalCrusher.get());
+        tag(ItemTags.AXES).add(thaumiumAxe.get(), voidAxe.get(), elementalAxe.get());
+        tag(ItemTags.SHOVELS).add(thaumiumShovel.get(), voidShovel.get(), elementalShovel.get(), primalCrusher.get());
+        tag(ItemTags.HOES).add(thaumiumHoe.get(), voidHoe.get(), elementalHoe.get());
         tag(ItemTags.HEAD_ARMOR).add(thaumiumHelm.get(), voidHelm.get(), goggles.get());
         tag(ItemTags.CHEST_ARMOR).add(thaumiumChest.get(), voidChest.get(), clothChest.get());
         tag(ItemTags.LEG_ARMOR).add(thaumiumLegs.get(), voidLegs.get(), clothLegs.get());

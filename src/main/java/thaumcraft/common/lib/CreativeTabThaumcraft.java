@@ -27,6 +27,8 @@ public final class CreativeTabThaumcraft {
                     if (ModConfig.CONFIG_MISC.allowCheatSheet.get()) {
                         output.accept(item.get());
                     }
+                } else if (item.get() instanceof thaumcraft.common.items.ICreativeVariants variants) {
+                    variants.addCreativeVariants(output);
                 } else if (item.get() instanceof ItemGenericEssentiaContainer container) {
                     container.addCreativeVariants(output);
                 } else {

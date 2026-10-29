@@ -143,7 +143,7 @@ public class ConfigRecipes {
                 ThaumcraftApiHelper.makeCrystal(Aspect.WATER), ThaumcraftApiHelper.makeCrystal(Aspect.EARTH), ThaumcraftApiHelper.makeCrystal(Aspect.ORDER)));
         ThaumcraftApi.addInfusionCraftingRecipe(tc("VerdantHeart"), new InfusionRecipe("VERDANTCHARMS", new ItemStack(ItemsTC.charmVerdant.get()), 5,
                 new AspectList().add(Aspect.LIFE, 60).add(Aspect.ORDER, 30).add(Aspect.PLANT, 60), new ItemStack(ItemsTC.amuletFancy.get()),
-                new ItemStack(ItemsTC.nuggetQuartz.get()), ThaumcraftApiHelper.makeCrystal(Aspect.LIFE), new ItemStack(Items.MILK_BUCKET),
+                new ItemStack(ItemsTC.nuggetRareEarth.get()), ThaumcraftApiHelper.makeCrystal(Aspect.LIFE), new ItemStack(Items.MILK_BUCKET),
                 ThaumcraftApiHelper.makeCrystal(Aspect.PLANT)));
         // варианты: результат — тот же оберег с type 1 / 2 (Object[]{"type", NBTTagByte} оригинала → компонент)
         ThaumcraftApi.addInfusionCraftingRecipe(tc("VerdantHeartLife"), new InfusionRecipe("VERDANTCHARMS",
@@ -167,7 +167,18 @@ public class ConfigRecipes {
                 new ItemStack(Items.EMERALD), new ItemStack(Items.WRITABLE_BOOK), new ItemStack(Items.EMERALD), new ItemStack(Items.WRITABLE_BOOK)));
         ThaumcraftApi.addInfusionCraftingRecipe(tc("CHARMUNDYING"), new InfusionRecipe("CHARMUNDYING", new ItemStack(ItemsTC.charmUndying.get()), 2,
                 new AspectList().add(Aspect.LIFE, 25), new ItemStack(Items.TOTEM_OF_UNDYING), TCTags.Items.PLATES_BRASS));
-        // TODO этап 13: стихийные инструменты, доспехи и маски «Таумиумной крепости»
+        // стихийные инструменты: результат сразу с наполняющими зачарованиями; центр — таумиумный инструмент любой прочности
+        elemental("ElementalAxe", ItemsTC.elementalAxe.get(), new AspectList().add(Aspect.WATER, 60).add(Aspect.PLANT, 30), ItemsTC.thaumiumAxe.get(),
+                Aspect.WATER, Aspect.WATER, EnumInfusionEnchantment.COLLECTOR, 1, EnumInfusionEnchantment.BURROWING, 1);
+        elemental("ElementalPick", ItemsTC.elementalPick.get(), new AspectList().add(Aspect.FIRE, 30).add(Aspect.METAL, 30).add(Aspect.SENSES, 30),
+                ItemsTC.thaumiumPick.get(), Aspect.FIRE, Aspect.FIRE, EnumInfusionEnchantment.REFINING, 1, EnumInfusionEnchantment.SOUNDING, 2);
+        elemental("ElementalSword", ItemsTC.elementalSword.get(), new AspectList().add(Aspect.AIR, 30).add(Aspect.MOTION, 30).add(Aspect.AVERSION, 30),
+                ItemsTC.thaumiumSword.get(), Aspect.AIR, Aspect.AIR, EnumInfusionEnchantment.ARCING, 2, null, 0);
+        elemental("ElementalShovel", ItemsTC.elementalShovel.get(), new AspectList().add(Aspect.EARTH, 60).add(Aspect.CRAFT, 30),
+                ItemsTC.thaumiumShovel.get(), Aspect.EARTH, Aspect.EARTH, EnumInfusionEnchantment.DESTRUCTIVE, 1, null, 0);
+        elemental("ElementalHoe", ItemsTC.elementalHoe.get(), new AspectList().add(Aspect.ORDER, 30).add(Aspect.PLANT, 30).add(Aspect.ENTROPY, 30),
+                ItemsTC.thaumiumHoe.get(), Aspect.ORDER, Aspect.ENTROPY, null, 0, null, 0);
+        // TODO этап 13.4б: доспехи и маски «Таумиумной крепости»
         ThaumcraftApi.addInfusionCraftingRecipe(tc("Mirror"), new InfusionRecipe("MIRROR", new ItemStack(BlocksTC.mirror.get()), 1,
                 new AspectList().add(Aspect.MOTION, 25).add(Aspect.DARKNESS, 25).add(Aspect.EXCHANGE, 25), new ItemStack(ItemsTC.mirroredGlass.get()),
                 Tags.Items.INGOTS_GOLD, Tags.Items.INGOTS_GOLD, Tags.Items.INGOTS_GOLD, new ItemStack(Items.ENDER_PEARL)));
@@ -202,6 +213,20 @@ public class ConfigRecipes {
             ThaumcraftApi.addFakeCraftingRecipe(tc("RunicArmorFake" + a), new InfusionRunicAugmentRecipe(in));
         }
         // TODO этап 13: MindBiothaumic; этап 14: ArcaneBore, LampGrowth, LampFertility; этапы 13–16: CausalityCollapser (алюментум)
+    }
+
+    private static void elemental(String key, net.minecraft.world.item.Item out, AspectList aspects, net.minecraft.world.item.Item center, Aspect c1, Aspect c2,
+                                  EnumInfusionEnchantment e1, int l1, EnumInfusionEnchantment e2, int l2) {
+        ItemStack result = new ItemStack(out);
+        if (e1 != null) {
+            EnumInfusionEnchantment.addInfusionEnchantment(result, e1, l1);
+        }
+        if (e2 != null) {
+            EnumInfusionEnchantment.addInfusionEnchantment(result, e2, l2);
+        }
+        ThaumcraftApi.addInfusionCraftingRecipe(tc(key), new InfusionRecipe("ELEMENTALTOOLS", result, 1, aspects, new ItemStack(center),
+                ThaumcraftApiHelper.makeCrystal(c1), ThaumcraftApiHelper.makeCrystal(c2), new ItemStack(ItemsTC.nuggetRareEarth.get()),
+                new ItemStack(BlocksTC.plankGreatwood.get())));
     }
 
     private static void infusionEnchantment(String key, EnumInfusionEnchantment ench, AspectList aspects, net.minecraft.world.level.ItemLike item,

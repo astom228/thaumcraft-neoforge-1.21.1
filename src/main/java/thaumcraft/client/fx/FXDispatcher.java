@@ -166,6 +166,41 @@ public class FXDispatcher implements IFXDispatcher {
     }
 
     @Override
+    public void smokeSpiral(double x, double y, double z, float rad, int start, int miny, int color) {
+        thaumcraft.client.fx.particles.FXSmokeSpiral fx = new thaumcraft.client.fx.particles.FXSmokeSpiral(this.getWorld(), x, y, z, rad, start, miny);
+        Color c = new Color(color);
+        fx.setRBGColorF(c.getRed() / 255.0F, c.getGreen() / 255.0F, c.getBlue() / 255.0F);
+        ParticleEngine.addEffect(this.getWorld(), fx);
+    }
+
+    /** Туман над блоком (рост от мотыги стихий и т.п.): 8 клубов в границах формы блока. */
+    @Override
+    public void drawBlockMistParticles(net.minecraft.core.BlockPos p, int c) {
+        net.minecraft.world.phys.AABB bs = this.getWorld().getBlockState(p).getShape(this.getWorld(), p).isEmpty()
+                ? new net.minecraft.world.phys.AABB(0, 0, 0, 1, 1, 1) : this.getWorld().getBlockState(p).getShape(this.getWorld(), p).bounds();
+        Color color = new Color(c);
+        for (int a = 0; a < 8; a++) {
+            double x = p.getX() + bs.minX + this.getWorld().random.nextFloat() * (bs.maxX - bs.minX);
+            double y = p.getY() + bs.minY + this.getWorld().random.nextFloat() * (bs.maxY - bs.minY);
+            double z = p.getZ() + bs.minZ + this.getWorld().random.nextFloat() * (bs.maxZ - bs.minZ);
+            FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, this.getWorld().random.nextGaussian() * 0.01,
+                    this.getWorld().random.nextFloat() * 0.075, this.getWorld().random.nextGaussian() * 0.01);
+            fb.setMaxAge(50 + this.getWorld().random.nextInt(25));
+            fb.setRBGColorF(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F);
+            fb.setAlphaF(0.0F, 0.5F, 0.4F, 0.3F, 0.2F, 0.1F, 0.0F);
+            fb.setGridSize(16);
+            fb.setParticles(56, 1, 1);
+            fb.setScale(5.0F, 1.0F);
+            fb.setLayer(0);
+            fb.setSlowDown(1.0);
+            fb.setGravity(0.1F);
+            fb.setWind(0.001);
+            fb.setRotationSpeed(this.getWorld().random.nextFloat(), this.getWorld().random.nextBoolean() ? -1.0F : 1.0F);
+            ParticleEngine.addEffect(this.getWorld(), fb);
+        }
+    }
+
+    @Override
     public void drawNitorCore(double x, double y, double z, double x2, double y2, double z2) {
         FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, x2, y2, z2);
         fb.setMaxAge(10);

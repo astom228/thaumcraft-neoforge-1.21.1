@@ -1,6 +1,8 @@
 {
   "values": [
     "thaumcraft:thaumium_sword",
-    "thaumcraft:void_metal_sword"
+    "thaumcraft:void_metal_sword",
+    "thaumcraft:elemental_sword",
+    "thaumcraft:crimson_blade"
   ]
 }
