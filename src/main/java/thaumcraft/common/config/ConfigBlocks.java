@@ -75,6 +75,8 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileStabilizer::new, BlocksTC.stabilizer.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileCondenser>> CONDENSER_TILE = TILES.register("condenser",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileCondenser::new, BlocksTC.condenser.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.crafting.TilePatternCrafter>> PATTERN_CRAFTER_TILE = TILES.register("pattern_crafter",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.crafting.TilePatternCrafter::new, BlocksTC.patternCrafter.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileHungryChest>> HUNGRY_CHEST_TILE = TILES.register("hungry_chest",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileHungryChest::new, BlocksTC.hungryChest.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileInfernalFurnace>> INFERNAL_FURNACE_TILE = TILES.register("infernal_furnace",

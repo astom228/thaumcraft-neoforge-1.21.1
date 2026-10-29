@@ -121,6 +121,7 @@ public class ClientRegistration {
         event.registerBlockEntityRenderer(ConfigBlocks.BELLOWS_TILE.get(), thaumcraft.client.renderers.tile.TileBellowsRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.RECHARGE_PEDESTAL_TILE.get(), thaumcraft.client.renderers.tile.TileRechargePedestalRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.DIOPTRA_TILE.get(), thaumcraft.client.renderers.tile.TileDioptraRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.PATTERN_CRAFTER_TILE.get(), thaumcraft.client.renderers.tile.TilePatternCrafterRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.HUNGRY_CHEST_TILE.get(), thaumcraft.client.renderers.tile.TileHungryChestRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.BANNER_TILE.get(), thaumcraft.client.renderers.tile.TileBannerRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.WARDED_JAR_TILE.get(), TileJarRenderer::new);

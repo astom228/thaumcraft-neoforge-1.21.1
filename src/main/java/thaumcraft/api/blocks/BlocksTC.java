@@ -255,6 +255,9 @@ public class BlocksTC {
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 3.0F).sound(SoundType.METAL).noOcclusion().lightLevel(st -> 4)));
     public static final DeferredBlock<Block> condenserlatticeDirty = register("clogged_condenser_lattice", () -> new thaumcraft.common.blocks.devices.BlockCondenserLattice(true,
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 3.0F).sound(SoundType.METAL).noOcclusion()));
+    // Шаблонный крафтер (BlockPatternCrafter): Material.IRON (прочность 2.0, сопротивление 12), звук металла
+    public static final DeferredBlock<Block> patternCrafter = register("pattern_crafter", () -> new thaumcraft.common.blocks.crafting.BlockPatternCrafter(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL).noOcclusion()));
     // Голодный сундук (BlockHungryChest): Material.WOOD, твёрдость 2.5 → сопротивление 12.5, рисуется блок-сущностью
     public static final DeferredBlock<Block> hungryChest = register("hungry_chest", () -> new thaumcraft.common.blocks.devices.BlockHungryChest(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F, 12.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));

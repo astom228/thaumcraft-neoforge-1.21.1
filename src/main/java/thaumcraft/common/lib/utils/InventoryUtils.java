@@ -176,4 +176,29 @@ public class InventoryUtils {
             }
         }
     }
+
+    /**
+     * removeStackFrom оригинала: забирает из инвентаря до stack.getCount() предметов, равных stack (тот же предмет и компоненты;
+     * фильтр BASEORE по словарю руд 1.12 не переносится — см. DECISIONS 119). Возвращает забранное (или пустой стак).
+     */
+    public static ItemStack removeStackFrom(net.neoforged.neoforge.items.IItemHandler inventory, ItemStack stack, boolean simulate) {
+        int amount = stack.getCount();
+        int removed = 0;
+        if (inventory != null) {
+            for (int a = 0; a < inventory.getSlots(); a++) {
+                ItemStack in = inventory.getStackInSlot(a);
+                if (!in.isEmpty() && ItemStack.isSameItemSameComponents(stack, in)) {
+                    int n = Math.min(amount - removed, in.getCount());
+                    ItemStack es = inventory.extractItem(a, n, simulate);
+                    if (!es.isEmpty()) {
+                        removed += es.getCount();
+                    }
+                }
+                if (removed >= amount) {
+                    break;
+                }
+            }
+        }
+        return removed == 0 ? ItemStack.EMPTY : stack.copyWithCount(removed);
+    }
 }
