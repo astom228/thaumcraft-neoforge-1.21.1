@@ -2,9 +2,7 @@
 activatorrail: нет BlocksTC.activatorRail
 rechargepedestal: нет BlocksTC.rechargePedestal
 sealblank: нет ItemsTC.seals
-arcanespa: нет BlocksTC.spa
 dioptra: нет BlocksTC.dioptra
-hungrychest: нет BlocksTC.hungryChest
 potionsprayer: нет BlocksTC.potionSprayer
 automatedcrossbow: нет crossbow_turret (ItemsTC.turretPlacer meta 0)
 advancedcrossbow: нет advanced_crossbow_turret (ItemsTC.turretPlacer meta 1)

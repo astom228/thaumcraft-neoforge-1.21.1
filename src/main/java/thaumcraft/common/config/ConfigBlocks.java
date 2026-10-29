@@ -61,6 +61,8 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileLevitator::new, BlocksTC.levitator.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileBellows>> BELLOWS_TILE = TILES.register("bellows",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileBellows::new, BlocksTC.bellows.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileSpa>> SPA_TILE = TILES.register("spa",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileSpa::new, BlocksTC.spa.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileHungryChest>> HUNGRY_CHEST_TILE = TILES.register("hungry_chest",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileHungryChest::new, BlocksTC.hungryChest.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileInfernalFurnace>> INFERNAL_FURNACE_TILE = TILES.register("infernal_furnace",
@@ -128,6 +130,8 @@ public class ConfigBlocks {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RESEARCH_TABLE_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SMELTER_TILE.get(), TileSmelter::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SPA_TILE.get(), thaumcraft.common.tiles.devices.TileSpa::itemCapability);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, SPA_TILE.get(), thaumcraft.common.tiles.devices.TileSpa::fluidCapability);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, HUNGRY_CHEST_TILE.get(), (chest, side) -> new net.neoforged.neoforge.items.wrapper.InvWrapper(chest));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, INFERNAL_FURNACE_TILE.get(), thaumcraft.common.tiles.devices.TileInfernalFurnace::capability);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MIRROR_TILE.get(), (tile, side) -> tile.getItemHandler());

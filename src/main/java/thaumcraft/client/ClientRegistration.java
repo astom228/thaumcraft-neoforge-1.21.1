@@ -92,6 +92,7 @@ public class ClientRegistration {
         event.register(TCMenus.RESEARCH_TABLE.get(), GuiResearchTable::new);
         event.register(TCMenus.ARCANE_WORKBENCH.get(), GuiArcaneWorkbench::new);
         event.register(TCMenus.SMELTER.get(), thaumcraft.client.gui.GuiSmelter::new);
+        event.register(TCMenus.SPA.get(), thaumcraft.client.gui.GuiSpa::new);
         event.register(TCMenus.HAND_MIRROR.get(), thaumcraft.client.gui.GuiHandMirror::new);
         event.register(TCMenus.THAUMATORIUM.get(), thaumcraft.client.gui.GuiThaumatorium::new);
         event.register(TCMenus.FOCAL_MANIPULATOR.get(), thaumcraft.client.gui.GuiFocalManipulator::new);

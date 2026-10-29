@@ -819,5 +819,8 @@
   "item.thaumcraft.liquid_death_bucket": "Ведро жидкой смерти",
   "item.thaumcraft.bath_salts": "Очищающие соли для ванн",
   "death.attack.dissolve": "%1$s растворился",
-  "death.attack.dissolve.player": "%1$s растворился в бою с %2$s"
+  "death.attack.dissolve.player": "%1$s растворился в бою с %2$s",
+  "block.thaumcraft.spa": "Магическая купель",
+  "text.spa.mix.true": "Смешивать с добавкой",
+  "text.spa.mix.false": "Только жидкость"
 }

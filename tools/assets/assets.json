@@ -567,6 +567,9 @@
       "ignore": [
         "facing"
       ]
+    },
+    "spa": {
+      "src": "spa"
     }
   },
   "items": {

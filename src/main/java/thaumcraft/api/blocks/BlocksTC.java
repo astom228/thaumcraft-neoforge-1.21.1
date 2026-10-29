@@ -225,6 +225,9 @@ public class BlocksTC {
     public static final DeferredBlock<Block> liquidDeath = ConfigBlocks.BLOCKS.register("liquid_death",
             () -> new thaumcraft.common.blocks.misc.BlockFluidDeath(thaumcraft.common.config.ConfigFluids.DEATH.get(),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PURPLE)));
+    // Магическая купель (BlockSpa): Material.ROCK (BlockTCDevice: прочность 2.0, сопротивление 12), звук камня
+    public static final DeferredBlock<Block> spa = register("spa", () -> new thaumcraft.common.blocks.devices.BlockSpa(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE)));
     // Голодный сундук (BlockHungryChest): Material.WOOD, твёрдость 2.5 → сопротивление 12.5, рисуется блок-сущностью
     public static final DeferredBlock<Block> hungryChest = register("hungry_chest", () -> new thaumcraft.common.blocks.devices.BlockHungryChest(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F, 12.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
