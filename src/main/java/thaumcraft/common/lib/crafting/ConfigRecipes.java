@@ -178,7 +178,30 @@ public class ConfigRecipes {
                 ItemsTC.thaumiumShovel.get(), Aspect.EARTH, Aspect.EARTH, EnumInfusionEnchantment.DESTRUCTIVE, 1, null, 0);
         elemental("ElementalHoe", ItemsTC.elementalHoe.get(), new AspectList().add(Aspect.ORDER, 30).add(Aspect.PLANT, 30).add(Aspect.ENTROPY, 30),
                 ItemsTC.thaumiumHoe.get(), Aspect.ORDER, Aspect.ENTROPY, null, 0, null, 0);
-        // TODO этап 13.4б: доспехи и маски «Таумиумной крепости»
+        // «Таумиумная крепость»: центр — таумиумная броня любой прочности; маски и очки — компонент шлема (Object[] оригинала)
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("ThaumiumFortressHelm"), new InfusionRecipe("ARMORFORTRESS", new ItemStack(ItemsTC.fortressHelm.get()), 3,
+                new AspectList().add(Aspect.METAL, 50).add(Aspect.PROTECT, 20).add(Aspect.ENERGY, 25), new ItemStack(ItemsTC.thaumiumHelm.get()),
+                TCTags.Items.PLATES_THAUMIUM, TCTags.Items.PLATES_THAUMIUM, new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.GOLD_INGOT),
+                new ItemStack(Items.EMERALD)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("ThaumiumFortressChest"), new InfusionRecipe("ARMORFORTRESS", new ItemStack(ItemsTC.fortressChest.get()), 3,
+                new AspectList().add(Aspect.METAL, 50).add(Aspect.PROTECT, 30).add(Aspect.ENERGY, 25), new ItemStack(ItemsTC.thaumiumChest.get()),
+                TCTags.Items.PLATES_THAUMIUM, TCTags.Items.PLATES_THAUMIUM, TCTags.Items.PLATES_THAUMIUM, TCTags.Items.PLATES_THAUMIUM,
+                new ItemStack(Items.GOLD_INGOT), Tags.Items.LEATHERS));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("ThaumiumFortressLegs"), new InfusionRecipe("ARMORFORTRESS", new ItemStack(ItemsTC.fortressLegs.get()), 3,
+                new AspectList().add(Aspect.METAL, 50).add(Aspect.PROTECT, 25).add(Aspect.ENERGY, 25), new ItemStack(ItemsTC.thaumiumLegs.get()),
+                TCTags.Items.PLATES_THAUMIUM, TCTags.Items.PLATES_THAUMIUM, TCTags.Items.PLATES_THAUMIUM, new ItemStack(Items.GOLD_INGOT),
+                Tags.Items.LEATHERS));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("HelmGoggles"), new InfusionRecipe("FORTRESSMASK",
+                new Object[] {thaumcraft.common.lib.TCDataComponents.FORTRESS_GOGGLES.get(), true}, 5,
+                new AspectList().add(Aspect.SENSES, 40).add(Aspect.AURA, 20).add(Aspect.PROTECT, 20), new ItemStack(ItemsTC.fortressHelm.get()),
+                new ItemStack(Items.SLIME_BALL), new ItemStack(ItemsTC.goggles.get())));
+        // Items.DYE 0 / 15 / 1 (чернила / костная мука / красный краситель 1.12) → чернильный мешок / костная мука / красный краситель
+        mask("MaskGrinningDevil", 0, new AspectList().add(Aspect.MIND, 80).add(Aspect.LIFE, 80).add(Aspect.PROTECT, 20), Items.INK_SAC,
+                new ItemStack(BlocksTC.shimmerleaf.get()), new ItemStack(ItemsTC.brain.get()));
+        mask("MaskAngryGhost", 1, new AspectList().add(Aspect.ENTROPY, 80).add(Aspect.DEATH, 80).add(Aspect.PROTECT, 20), Items.BONE_MEAL,
+                new ItemStack(Items.POISONOUS_POTATO), new ItemStack(Items.WITHER_SKELETON_SKULL));
+        mask("MaskSippingFiend", 2, new AspectList().add(Aspect.UNDEAD, 80).add(Aspect.LIFE, 80).add(Aspect.PROTECT, 20), Items.RED_DYE,
+                new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.MILK_BUCKET));
         ThaumcraftApi.addInfusionCraftingRecipe(tc("Mirror"), new InfusionRecipe("MIRROR", new ItemStack(BlocksTC.mirror.get()), 1,
                 new AspectList().add(Aspect.MOTION, 25).add(Aspect.DARKNESS, 25).add(Aspect.EXCHANGE, 25), new ItemStack(ItemsTC.mirroredGlass.get()),
                 Tags.Items.INGOTS_GOLD, Tags.Items.INGOTS_GOLD, Tags.Items.INGOTS_GOLD, new ItemStack(Items.ENDER_PEARL)));
@@ -213,6 +236,12 @@ public class ConfigRecipes {
             ThaumcraftApi.addFakeCraftingRecipe(tc("RunicArmorFake" + a), new InfusionRunicAugmentRecipe(in));
         }
         // TODO этап 13: MindBiothaumic; этап 14: ArcaneBore, LampGrowth, LampFertility; этапы 13–16: CausalityCollapser (алюментум)
+    }
+
+    private static void mask(String key, int mask, AspectList aspects, net.minecraft.world.item.Item dye, ItemStack c3, ItemStack c4) {
+        ThaumcraftApi.addInfusionCraftingRecipe(tc(key), new InfusionRecipe("FORTRESSMASK",
+                new Object[] {thaumcraft.common.lib.TCDataComponents.FORTRESS_MASK.get(), mask}, 8, aspects, new ItemStack(ItemsTC.fortressHelm.get()),
+                new ItemStack(dye), TCTags.Items.PLATES_IRON, Tags.Items.LEATHERS, c3, c4, TCTags.Items.PLATES_IRON));
     }
 
     private static void elemental(String key, net.minecraft.world.item.Item out, AspectList aspects, net.minecraft.world.item.Item center, Aspect c1, Aspect c2,

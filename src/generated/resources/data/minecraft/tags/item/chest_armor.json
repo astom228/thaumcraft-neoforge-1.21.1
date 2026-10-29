@@ -2,6 +2,11 @@
   "values": [
     "thaumcraft:thaumium_chestplate",
     "thaumcraft:void_metal_chestplate",
-    "thaumcraft:thaumaturge_robe"
+    "thaumcraft:thaumaturge_robe",
+    "thaumcraft:fortress_cuirass",
+    "thaumcraft:void_thaumaturge_robe",
+    "thaumcraft:crimson_cult_chestplate",
+    "thaumcraft:crimson_cult_robe",
+    "thaumcraft:crimson_praetor_chestplate"
   ]
 }

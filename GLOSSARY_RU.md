@@ -159,6 +159,8 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Voidseer's Pearl | Жемчужина провидца пустоты | |
 | Lesser / Greater Sapping | Малое / Великое ослабление | |
 | Thaumium Fortress (armor) | Таумиумная крепость (доспех) | принято |
+| Fortress masks: Grinning Devil / Angry Ghost / Sipping Fiend | Ухмыляющийся дьявол / Злой призрак / Пьющий изверг | |
+| Void Thaumaturge Hood / Robe / Leggings | Пустотный капюшон / Пустотная мантия / Пустотные поножи тауматурга | |
 | Primal Crusher | Первозданный сокрушитель | принято |
 | Crimson Blade | Багровый клинок | принято |
 | Elemental tools (of the Stream, Core…) | Топор Потока, Кирка Ядра, Лопата Землекопа, Меч Зефира, Мотыга Роста | принято |

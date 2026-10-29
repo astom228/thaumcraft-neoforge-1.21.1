@@ -2,6 +2,11 @@
   "values": [
     "thaumcraft:thaumium_helmet",
     "thaumcraft:void_metal_helmet",
-    "thaumcraft:goggles"
+    "thaumcraft:goggles",
+    "thaumcraft:fortress_helmet",
+    "thaumcraft:void_thaumaturge_hood",
+    "thaumcraft:crimson_cult_helmet",
+    "thaumcraft:crimson_cult_hood",
+    "thaumcraft:crimson_praetor_helmet"
   ]
 }

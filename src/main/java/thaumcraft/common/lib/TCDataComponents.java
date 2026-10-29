@@ -72,6 +72,14 @@ public class TCDataComponents {
     public static final Supplier<DataComponentType<Integer>> SHOVEL_ORIENTATION = COMPONENTS.registerComponentType("shovel_orientation",
             b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    /** Маска шлема «Таумиумной крепости»: 0–2 (в оригинале — NBT "mask"). */
+    public static final Supplier<DataComponentType<Integer>> FORTRESS_MASK = COMPONENTS.registerComponentType("fortress_mask",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    /** Очки откровения в шлеме «Таумиумной крепости» (в оригинале — NBT "goggles"). */
+    public static final Supplier<DataComponentType<Boolean>> FORTRESS_GOGGLES = COMPONENTS.registerComponentType("fortress_goggles",
+            b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+
     /** Пакет фокуса (в оригинале — NBT "package" у фокуса): формат FocusPackage.serialize. Значение не изменять — только заменять. */
     public static final Supplier<DataComponentType<net.minecraft.nbt.CompoundTag>> FOCUS_PACKAGE = COMPONENTS.registerComponentType("focus_package",
             b -> b.persistent(net.minecraft.nbt.CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));

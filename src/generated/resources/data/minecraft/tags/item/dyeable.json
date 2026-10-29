@@ -2,6 +2,9 @@
   "values": [
     "thaumcraft:thaumaturge_robe",
     "thaumcraft:thaumaturge_leggings",
-    "thaumcraft:thaumaturge_boots"
+    "thaumcraft:thaumaturge_boots",
+    "thaumcraft:void_thaumaturge_hood",
+    "thaumcraft:void_thaumaturge_robe",
+    "thaumcraft:void_thaumaturge_leggings"
   ]
 }

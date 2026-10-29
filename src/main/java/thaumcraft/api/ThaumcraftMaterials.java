@@ -52,9 +52,17 @@ public class ThaumcraftMaterials {
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> ARMORMAT_VOID = armor("void", new int[] {3, 6, 8, 3}, 10,
             SoundEvents.ARMOR_EQUIP_CHAIN, 1.0F, () -> Ingredient.of(ItemsTC.ingotVoid.get()), false);
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> ARMORMAT_VOIDROBE = armor("voidrobe", new int[] {4, 7, 9, 4}, 10,
-            SoundEvents.ARMOR_EQUIP_LEATHER, 2.0F, () -> Ingredient.EMPTY, true);
+            SoundEvents.ARMOR_EQUIP_LEATHER, 2.0F, () -> Ingredient.of(ItemsTC.ingotVoid.get()), true);
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> ARMORMAT_FORTRESS = armor("fortress", new int[] {3, 6, 7, 3}, 25,
             SoundEvents.ARMOR_EQUIP_IRON, 3.0F, () -> Ingredient.EMPTY, false);
+
+    /**
+     * Доспех «Таумиумной крепости»: в 1.12 — ISpecialArmor (поглощение защита/25 и т.д., а прочность материала не учитывалась —
+     * вместо неё +1 к стойкости за каждую часть). Здесь — обычная броня с теми же числами защиты и стойкостью 1 на часть
+     * (DECISIONS 107); ARMORMAT_FORTRESS со стойкостью 3 — у брони претора культа (обычная броня и в оригинале).
+     */
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> ARMORMAT_FORTRESS_SPECIAL = armor("fortress_special", new int[] {3, 6, 7, 3}, 25,
+            SoundEvents.ARMOR_EQUIP_IRON, 1.0F, () -> Ingredient.of(ItemsTC.ingotThaumium.get()), false);
 
     /** reduction — {ботинки, поножи, нагрудник, шлем}, как в EnumHelper.addArmorMaterial 1.12; layered — второй слой "_overlay" (роба). */
     private static DeferredHolder<ArmorMaterial, ArmorMaterial> armor(String name, int[] reduction, int enchantability, Holder<SoundEvent> sound,

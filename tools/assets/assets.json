@@ -599,6 +599,22 @@
     "elemental_pickaxe": "model:elemental_pick",
     "elemental_hoe": "model:elemental_hoe",
     "primal_crusher": "model:primal_crusher",
-    "crimson_blade": "model:crimson_blade"
+    "crimson_blade": "model:crimson_blade",
+    "fortress_helmet": "model:fortress_helm",
+    "fortress_cuirass": "model:fortress_chest",
+    "fortress_thigh_guards": "model:fortress_legs",
+    "void_thaumaturge_hood": "model:void_robe_helm",
+    "void_thaumaturge_robe": "model:void_robe_chest",
+    "void_thaumaturge_leggings": "model:void_robe_legs",
+    "crimson_cult_helmet": "model:crimson_plate_helm",
+    "crimson_cult_chestplate": "model:crimson_plate_chest",
+    "crimson_cult_greaves": "model:crimson_plate_legs",
+    "crimson_cult_hood": "model:crimson_robe_helm",
+    "crimson_cult_robe": "model:crimson_robe_chest",
+    "crimson_cult_leggings": "model:crimson_robe_legs",
+    "crimson_praetor_helmet": "model:crimson_praetor_helm",
+    "crimson_praetor_chestplate": "model:crimson_praetor_chest",
+    "crimson_praetor_greaves": "model:crimson_praetor_legs",
+    "crimson_cult_boots": "model:crimson_boots"
   }
 }

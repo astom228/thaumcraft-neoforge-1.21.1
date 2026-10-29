@@ -218,6 +218,43 @@ public class ItemsTC {
                 new Item.Properties().stacksTo(1).rarity(meta >= 3 ? Rarity.UNCOMMON : Rarity.COMMON));
     }
 
+    // «Таумиумная крепость» (RARE), пустотная роба (EPIC), броня культа (UNCOMMON, претор — RARE)
+    public static final DeferredItem<Item> fortressHelm = fortress("fortress_helmet", ArmorItem.Type.HELMET);
+    public static final DeferredItem<Item> fortressChest = fortress("fortress_cuirass", ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<Item> fortressLegs = fortress("fortress_thigh_guards", ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<Item> voidRobeHelm = voidRobe("void_thaumaturge_hood", ArmorItem.Type.HELMET);
+    public static final DeferredItem<Item> voidRobeChest = voidRobe("void_thaumaturge_robe", ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<Item> voidRobeLegs = voidRobe("void_thaumaturge_leggings", ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<Item> crimsonPlateHelm = cultist("crimson_cult_helmet", thaumcraft.common.items.armor.ItemCultistArmor.Kind.PLATE, ArmorItem.Type.HELMET);
+    public static final DeferredItem<Item> crimsonPlateChest = cultist("crimson_cult_chestplate", thaumcraft.common.items.armor.ItemCultistArmor.Kind.PLATE, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<Item> crimsonPlateLegs = cultist("crimson_cult_greaves", thaumcraft.common.items.armor.ItemCultistArmor.Kind.PLATE, ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<Item> crimsonBoots = cultist("crimson_cult_boots", thaumcraft.common.items.armor.ItemCultistArmor.Kind.BOOTS, ArmorItem.Type.BOOTS);
+    public static final DeferredItem<Item> crimsonRobeHelm = cultist("crimson_cult_hood", thaumcraft.common.items.armor.ItemCultistArmor.Kind.ROBE, ArmorItem.Type.HELMET);
+    public static final DeferredItem<Item> crimsonRobeChest = cultist("crimson_cult_robe", thaumcraft.common.items.armor.ItemCultistArmor.Kind.ROBE, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<Item> crimsonRobeLegs = cultist("crimson_cult_leggings", thaumcraft.common.items.armor.ItemCultistArmor.Kind.ROBE, ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<Item> crimsonPraetorHelm = cultist("crimson_praetor_helmet", thaumcraft.common.items.armor.ItemCultistArmor.Kind.LEADER, ArmorItem.Type.HELMET);
+    public static final DeferredItem<Item> crimsonPraetorChest = cultist("crimson_praetor_chestplate", thaumcraft.common.items.armor.ItemCultistArmor.Kind.LEADER, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<Item> crimsonPraetorLegs = cultist("crimson_praetor_greaves", thaumcraft.common.items.armor.ItemCultistArmor.Kind.LEADER, ArmorItem.Type.LEGGINGS);
+
+    private static DeferredItem<Item> fortress(String name, ArmorItem.Type type) {
+        return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.armor.ItemFortressArmor(ThaumcraftMaterials.ARMORMAT_FORTRESS_SPECIAL, type, p),
+                new Item.Properties().durability(type.getDurability(ThaumcraftMaterials.DURABILITY_FORTRESS)).rarity(Rarity.RARE));
+    }
+
+    private static DeferredItem<Item> voidRobe(String name, ArmorItem.Type type) {
+        return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.armor.ItemVoidRobeArmor(ThaumcraftMaterials.ARMORMAT_VOIDROBE, type, p),
+                new Item.Properties().durability(type.getDurability(ThaumcraftMaterials.DURABILITY_VOIDROBE)).rarity(Rarity.EPIC));
+    }
+
+    /** Латы, роба и ботинки — железо (ArmorMaterial.IRON 1.12, множитель прочности 15), претор — материал FORTRESS (40). */
+    private static DeferredItem<Item> cultist(String name, thaumcraft.common.items.armor.ItemCultistArmor.Kind kind, ArmorItem.Type type) {
+        boolean leader = kind == thaumcraft.common.items.armor.ItemCultistArmor.Kind.LEADER;
+        return ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.items.armor.ItemCultistArmor(kind,
+                        leader ? ThaumcraftMaterials.ARMORMAT_FORTRESS : net.minecraft.world.item.ArmorMaterials.IRON, type, p),
+                new Item.Properties().durability(type.getDurability(leader ? ThaumcraftMaterials.DURABILITY_FORTRESS : 15))
+                        .rarity(leader ? Rarity.RARE : Rarity.UNCOMMON));
+    }
+
     private static DeferredItem<Item> tool(String name, java.util.function.Function<Item.Properties, Item> factory) {
         return ConfigItems.ITEMS.registerItem(name, factory);
     }
