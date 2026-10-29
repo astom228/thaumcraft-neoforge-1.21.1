@@ -71,6 +71,10 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileVisGenerator::new, BlocksTC.visGenerator.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileDioptra>> DIOPTRA_TILE = TILES.register("dioptra",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileDioptra::new, BlocksTC.dioptra.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileStabilizer>> STABILIZER_TILE = TILES.register("stabilizer",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileStabilizer::new, BlocksTC.stabilizer.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileCondenser>> CONDENSER_TILE = TILES.register("condenser",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileCondenser::new, BlocksTC.condenser.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileHungryChest>> HUNGRY_CHEST_TILE = TILES.register("hungry_chest",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileHungryChest::new, BlocksTC.hungryChest.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileInfernalFurnace>> INFERNAL_FURNACE_TILE = TILES.register("infernal_furnace",
@@ -142,6 +146,7 @@ public class ConfigBlocks {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, SPA_TILE.get(), thaumcraft.common.tiles.devices.TileSpa::fluidCapability);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RECHARGE_PEDESTAL_TILE.get(), (t, side) -> t.getItemHandler());
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, VIS_GENERATOR_TILE.get(), thaumcraft.common.tiles.devices.TileVisGenerator::capability);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, STABILIZER_TILE.get(), thaumcraft.common.tiles.devices.TileStabilizer::capability);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, HUNGRY_CHEST_TILE.get(), (chest, side) -> new net.neoforged.neoforge.items.wrapper.InvWrapper(chest));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, INFERNAL_FURNACE_TILE.get(), thaumcraft.common.tiles.devices.TileInfernalFurnace::capability);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MIRROR_TILE.get(), (tile, side) -> tile.getItemHandler());

@@ -229,6 +229,21 @@ public class FXDispatcher implements IFXDispatcher {
         }
     }
 
+    @Override
+    public void drawStabilizerParticles(double x, double y, double z, double x2, double y2, double z2, int life) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, x2, y2, z2);
+        fb.setMaxAge(life + this.getWorld().random.nextInt(life));
+        fb.setRBGColorF(0.5F, 0.2F, 0.5F);
+        fb.setAlphaF(0.3F, 0.0F);
+        fb.setGridSize(16);
+        fb.setParticles(72 + this.getWorld().random.nextInt(4), 1, 1);
+        fb.setScale(1.0F, 10.0F);
+        fb.setLayer(0);
+        fb.setSlowDown(1.01);
+        fb.setRotationSpeed(this.getWorld().random.nextFloat(), this.getWorld().random.nextBoolean() ? -1.0F : 1.0F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
@@ -413,6 +428,7 @@ public class FXDispatcher implements IFXDispatcher {
         }
     }
 
+    @Override
     public void drawCurlyWisp(double x, double y, double z, double vx, double vy, double vz, float scale, float r, float g, float b, float a,
                               Direction side, int seed, int layer, int delay) {
         ClientLevel w = this.getWorld();

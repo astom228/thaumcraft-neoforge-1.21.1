@@ -1,0 +1,7 @@
+{
+  "parent": "thaumcraft:block/condenser",
+  "textures": {
+    "side": "thaumcraft:blocks/condenser_off"
+  },
+  "render_type": "minecraft:cutout"
+}

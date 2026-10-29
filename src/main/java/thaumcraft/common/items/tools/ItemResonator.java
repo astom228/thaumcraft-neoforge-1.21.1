@@ -67,7 +67,10 @@ public class ItemResonator extends Item {
         }
         player.sendSystemMessage(Component.translatable("tc.resonator2", "" + et.getSuctionAmount(side), s));
         world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.SHIELD_BLOCK, SoundSource.BLOCKS, 0.5F, 1.9F + world.random.nextFloat() * 0.1F);
-        // TODO этап 14: конденсатор (TileCondenser) — tc.condenser1 / tc.condenser2
+        if (tile instanceof thaumcraft.common.tiles.devices.TileCondenser cond) {
+            player.sendSystemMessage(Component.translatable("tc.condenser1", "" + cond.cost));
+            player.sendSystemMessage(Component.translatable("tc.condenser2", "" + cond.interval, "" + cond.interval / 20));
+        }
         return InteractionResult.SUCCESS;
     }
 }

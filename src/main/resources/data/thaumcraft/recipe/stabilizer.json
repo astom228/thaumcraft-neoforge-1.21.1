@@ -1,0 +1,35 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "INFUSIONSTABLE",
+  "vis": 200,
+  "crystals": {
+    "terra": 1,
+    "aqua": 1,
+    "perditio": 1
+  },
+  "key": {
+    "Q": {
+      "tag": "c:gems/quartz"
+    },
+    "B": {
+      "tag": "c:plates/brass"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "M": {
+      "item": "thaumcraft:complex_arcane_mechanism"
+    },
+    "R": {
+      "tag": "c:storage_blocks/redstone"
+    }
+  },
+  "pattern": [
+    "QIQ",
+    "BMB",
+    "BRB"
+  ],
+  "result": {
+    "id": "thaumcraft:stabilizer"
+  }
+}

@@ -586,6 +586,23 @@
     },
     "dioptra": {
       "src": "dioptra"
+    },
+    "stabilizer": {
+      "src": "stabilizer"
+    },
+    "condenser": {
+      "src": "condenser",
+      "renderType": "minecraft:cutout"
+    },
+    "condenser_lattice": {
+      "src": "condenser_lattice",
+      "itemModel": "model:condenser_lattice",
+      "renderType": "minecraft:cutout"
+    },
+    "clogged_condenser_lattice": {
+      "src": "condenser_lattice_dirty",
+      "itemModel": "model:condenser_lattice_dirty",
+      "renderType": "minecraft:cutout"
     }
   },
   "items": {

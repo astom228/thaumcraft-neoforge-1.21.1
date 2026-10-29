@@ -244,6 +244,17 @@ public class BlocksTC {
     // Диоптра (BlockDioptra): Material.ROCK (BlockTCDevice: прочность 2.0, сопротивление 12), звук камня
     public static final DeferredBlock<Block> dioptra = register("dioptra", () -> new thaumcraft.common.blocks.devices.BlockDioptra(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion()));
+    // Стабилизатор (BlockStabilizer): Material.ROCK (прочность 2.0, сопротивление 12), звук камня
+    public static final DeferredBlock<Block> stabilizer = register("stabilizer", () -> new thaumcraft.common.blocks.devices.BlockStabilizer(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion()));
+    // Конденсатор Выброса (BlockCondenser): Material.IRON (прочность 2.0, сопротивление 12), звук металла
+    public static final DeferredBlock<Block> condenser = register("condenser", () -> new thaumcraft.common.blocks.devices.BlockCondenser(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL).noOcclusion()));
+    // Решётки конденсатора (BlockCondenserLattice): Material.IRON, твёрдость 0.5, сопротивление 3, чистая светится (0.33 → 4)
+    public static final DeferredBlock<Block> condenserlattice = register("condenser_lattice", () -> new thaumcraft.common.blocks.devices.BlockCondenserLattice(false,
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 3.0F).sound(SoundType.METAL).noOcclusion().lightLevel(st -> 4)));
+    public static final DeferredBlock<Block> condenserlatticeDirty = register("clogged_condenser_lattice", () -> new thaumcraft.common.blocks.devices.BlockCondenserLattice(true,
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 3.0F).sound(SoundType.METAL).noOcclusion()));
     // Голодный сундук (BlockHungryChest): Material.WOOD, твёрдость 2.5 → сопротивление 12.5, рисуется блок-сущностью
     public static final DeferredBlock<Block> hungryChest = register("hungry_chest", () -> new thaumcraft.common.blocks.devices.BlockHungryChest(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F, 12.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));

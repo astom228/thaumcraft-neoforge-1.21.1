@@ -78,5 +78,8 @@
   "grapplegunspool.json",
   "grapplegun.json",
   "visbattery.json",
-  "visgenerator.json"
+  "visgenerator.json",
+  "stabilizer.json",
+  "condenser.json",
+  "condenserlattice.json"
 ]

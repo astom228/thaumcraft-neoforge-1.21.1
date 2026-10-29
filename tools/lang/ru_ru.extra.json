@@ -827,5 +827,11 @@
   "block.thaumcraft.recharge_pedestal": "Пьедестал подзарядки",
   "block.thaumcraft.vis_battery": "Вис-батарея",
   "block.thaumcraft.vis_generator": "Генератор на Вис",
-  "block.thaumcraft.dioptra": "Таумическая диоптра"
+  "block.thaumcraft.dioptra": "Таумическая диоптра",
+  "block.thaumcraft.stabilizer": "Стабилизатор",
+  "block.thaumcraft.condenser": "Конденсатор Выброса",
+  "block.thaumcraft.condenser_lattice": "Решётка конденсатора Выброса",
+  "block.thaumcraft.clogged_condenser_lattice": "Засорённая решётка конденсатора Выброса",
+  "tc.condenser1": "§dРасход: %1$s эссенции§0",
+  "tc.condenser2": "§dВремя: %1$s тиков (%2$s с)§0"
 }

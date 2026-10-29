@@ -141,6 +141,15 @@ public interface IFXDispatcher {
     default void drawVentParticles2(double x, double y, double z, double x2, double y2, double z2, int color, float scale) {
     }
 
+    /** Дымка стабилизатора (drawStabilizerParticles). */
+    default void drawStabilizerParticles(double x, double y, double z, double x2, double y2, double z2, int life) {
+    }
+
+    /** Завиток (drawCurlyWisp). */
+    default void drawCurlyWisp(double x, double y, double z, double vx, double vy, double vz, float scale, float r, float g, float b, float a,
+                               net.minecraft.core.Direction side, int seed, int layer, int delay) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

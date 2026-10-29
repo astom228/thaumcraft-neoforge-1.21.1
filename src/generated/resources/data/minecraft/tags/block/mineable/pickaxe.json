@@ -58,6 +58,10 @@
     "thaumcraft:recharge_pedestal",
     "thaumcraft:vis_battery",
     "thaumcraft:dioptra",
+    "thaumcraft:stabilizer",
+    "thaumcraft:condenser",
+    "thaumcraft:condenser_lattice",
+    "thaumcraft:clogged_condenser_lattice",
     "thaumcraft:placeholder_brick",
     "thaumcraft:placeholder_obsidian"
   ]
