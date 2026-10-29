@@ -6,8 +6,6 @@ arcanespa: нет BlocksTC.spa
 dioptra: нет BlocksTC.dioptra
 hungrychest: нет BlocksTC.hungryChest
 potionsprayer: нет BlocksTC.potionSprayer
-smelteraux: нет BlocksTC.bellows
-bellows: нет BlocksTC.bellows
 automatedcrossbow: нет crossbow_turret (ItemsTC.turretPlacer meta 0)
 advancedcrossbow: нет advanced_crossbow_turret (ItemsTC.turretPlacer meta 1)
 patterncrafter: нет BlocksTC.patternCrafter

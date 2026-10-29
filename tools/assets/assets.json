@@ -541,6 +541,13 @@
     },
     "levitator": {
       "src": "levitator"
+    },
+    "bellows": {
+      "src": "bellows",
+      "ignore": [
+        "enabled",
+        "facing"
+      ]
     }
   },
   "items": {

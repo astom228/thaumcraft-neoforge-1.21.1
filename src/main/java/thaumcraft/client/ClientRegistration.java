@@ -91,6 +91,7 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.ALUMENTUM.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ConfigEntities.SPELL_BAT.get(), thaumcraft.client.renderers.entity.mob.RenderSpellBat::new);
         event.registerBlockEntityRenderer(ConfigBlocks.CRUCIBLE_TILE.get(), TileCrucibleRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.BELLOWS_TILE.get(), thaumcraft.client.renderers.tile.TileBellowsRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.BANNER_TILE.get(), thaumcraft.client.renderers.tile.TileBannerRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.WARDED_JAR_TILE.get(), TileJarRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.VOID_JAR_TILE.get(), TileJarRenderer::new);

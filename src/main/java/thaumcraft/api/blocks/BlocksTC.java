@@ -318,7 +318,9 @@ public class BlocksTC {
     // Центрифуга (BlockTCDevice: прочность 2.0, сопротивление 20 → 12, Material.WOOD; добывается без инструмента)
     public static final DeferredBlock<Block> centrifuge = register("centrifuge", () -> new BlockCentrifuge(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 12.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
-    // TODO этап 14: bellows (мехи)
+    // Мехи (BlockBellows): Material.WOOD, твёрдость 1 → сопротивление 5, звук дерева; рисуются блок-сущностью
+    public static final DeferredBlock<Block> bellows = register("bellows", () -> new thaumcraft.common.blocks.devices.BlockBellows(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.0F, 5.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
     // Плавильни (BlockTCDevice: прочность 2.0, сопротивление 12, Material.IRON; добываются без инструмента)
     public static final DeferredBlock<Block> smelterBasic = register("essentia_smeltery", () -> new BlockSmelter(smelter()));
     public static final DeferredBlock<Block> smelterThaumium = register("thaumium_essentia_smeltery", () -> new BlockSmelter(smelter()));

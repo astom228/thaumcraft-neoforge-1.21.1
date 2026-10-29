@@ -799,5 +799,6 @@
   "block.thaumcraft.arcane_ear": "Магическое ухо",
   "block.thaumcraft.arcane_ear_toggle": "Магическое ухо (переключатель)",
   "block.thaumcraft.levitator": "Магический левитатор",
-  "tc.levitator": "Дальность — %s блоков (%d Вис/мин)."
+  "tc.levitator": "Дальность — %s блоков (%d Вис/мин).",
+  "block.thaumcraft.bellows": "Магические мехи"
 }

@@ -1,0 +1,27 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "BELLOWS",
+  "vis": 25,
+  "crystals": {
+    "aer": 1
+  },
+  "key": {
+    "W": {
+      "tag": "minecraft:planks"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "L": {
+      "tag": "c:leathers"
+    }
+  },
+  "pattern": [
+    "WW ",
+    "LLI",
+    "WW "
+  ],
+  "result": {
+    "id": "thaumcraft:bellows"
+  }
+}

@@ -59,6 +59,8 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileArcaneEar::new, BlocksTC.arcaneEar.get(), BlocksTC.arcaneEarToggle.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileLevitator>> LEVITATOR_TILE = TILES.register("levitator",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileLevitator::new, BlocksTC.levitator.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileBellows>> BELLOWS_TILE = TILES.register("bellows",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileBellows::new, BlocksTC.bellows.get()).build(null));
     public static final Supplier<BlockEntityType<TileNitor>> NITOR_TILE = TILES.register("nitor",
             () -> BlockEntityType.Builder.of(TileNitor::new, BlocksTC.nitor.values().stream().map(DeferredBlock::get).toArray(Block[]::new)).build(null));
 

@@ -200,9 +200,16 @@ public class TileSmelter extends TileThaumcraftInventory {
         return false;
     }
 
-    /** Мехи по бокам, кроме лицевой стороны. TODO этап 14: TileBellows.getBellows — пока мехов нет, их 0. */
+    /** Мехи по бокам и сзади (кроме лицевой стороны). */
     public void checkNeighbours() {
-        this.bellows = 0;
+        net.minecraft.core.Direction f = this.getBlockState().getValue(thaumcraft.common.blocks.essentia.BlockSmelter.FACING);
+        java.util.List<net.minecraft.core.Direction> faces = new java.util.ArrayList<>();
+        for (net.minecraft.core.Direction d : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+            if (d != f) {
+                faces.add(d);
+            }
+        }
+        this.bellows = thaumcraft.common.tiles.devices.TileBellows.getBellows(this.level, this.worldPosition, faces.toArray(new net.minecraft.core.Direction[0]));
     }
 
     private int getSmelterType() {

@@ -1,0 +1,37 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "IMPROVEDSMELTING",
+  "vis": 100,
+  "crystals": {
+    "aer": 1,
+    "terra": 1
+  },
+  "key": {
+    "W": {
+      "item": "thaumcraft:greatwood_planks"
+    },
+    "B": {
+      "item": "thaumcraft:bellows"
+    },
+    "R": {
+      "tag": "c:plates/brass"
+    },
+    "T": {
+      "item": "thaumcraft:filtered_essentia_tube"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    },
+    "G": {
+      "item": "thaumcraft:alchemical_construct"
+    }
+  },
+  "pattern": [
+    "WTW",
+    "RGR",
+    "IBI"
+  ],
+  "result": {
+    "id": "thaumcraft:auxiliary_slurry_pump"
+  }
+}
