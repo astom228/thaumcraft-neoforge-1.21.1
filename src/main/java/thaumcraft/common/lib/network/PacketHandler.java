@@ -32,6 +32,8 @@ public class PacketHandler {
                 (msg, ctx) -> ClientPacketHandlers.handleSyncWarp(msg));
         registrar.playToClient(PacketSyncKnowledge.TYPE, PacketSyncKnowledge.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleSyncKnowledge(msg));
+        registrar.playToClient(thaumcraft.common.lib.network.misc.PacketMiscEvent.TYPE, thaumcraft.common.lib.network.misc.PacketMiscEvent.STREAM_CODEC,
+                (msg, ctx) -> thaumcraft.client.lib.events.WarpFog.handle(msg));
         registrar.playToClient(PacketAuraToClient.TYPE, PacketAuraToClient.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleAura(msg));
         registrar.playToClient(PacketSyncKnowledgeDelta.TYPE, PacketSyncKnowledgeDelta.STREAM_CODEC,

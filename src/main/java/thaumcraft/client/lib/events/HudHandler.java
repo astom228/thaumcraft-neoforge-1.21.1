@@ -56,9 +56,9 @@ public class HudHandler {
             ItemStack handStack = player.getMainHandItem();
             boolean rT = false;
             boolean rC = false;
+            boolean rS = false;
             for (int a = 0; a < 2; a++) {
                 if (!handStack.isEmpty()) {
-                    // TODO: проверка рассудка — с предметом (ItemSanityChecker)
                     if (!rC && handStack.getItem() instanceof thaumcraft.api.casters.ICaster) {
                         renderCastingWandHud(mc, pose, renderTickTime, player, handStack, hh);
                         RenderSystem.setShaderTexture(0, HUD);
@@ -66,12 +66,54 @@ public class HudHandler {
                     } else if (!rT && handStack.getItem() instanceof ItemThaumometer) {
                         renderThaumometerHud(mc, pose, renderTickTime, player);
                         rT = true;
+                    } else if (!rS && handStack.is(thaumcraft.api.items.ItemsTC.sanityChecker.get())) {
+                        renderSanityHud(pose, player);
+                        rS = true;
                     }
                 }
                 handStack = player.getOffhandItem();
             }
         }
         RenderSystem.disableBlend();
+    }
+
+    /**
+     * Счётчик рассудка: столбик Искажения (временное — розовое, обычное — лиловое, постоянное — тёмно-лиловое) из 100,
+     * рамка; при 100 и больше — значок сверху. Аргументы drawTexturedQuad — как в оригинале.
+     */
+    static void renderSanityHud(PoseStack pose, Player player) {
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        UtilsFX.drawTexturedQuad(pose, 1.0F, 1.0F, 152.0F, 0.0F, 20.0F, 76.0F, -90.0F);
+        var w = thaumcraft.api.capabilities.ThaumcraftCapabilities.getWarp(player);
+        int p = w.get(thaumcraft.api.capabilities.IPlayerWarp.EnumWarpType.PERMANENT);
+        int s = w.get(thaumcraft.api.capabilities.IPlayerWarp.EnumWarpType.NORMAL);
+        int t = w.get(thaumcraft.api.capabilities.IPlayerWarp.EnumWarpType.TEMPORARY);
+        float tw = p + s + t;
+        float mod = 1.0F;
+        if (tw > 100.0F) {
+            mod = 100.0F / tw;
+            tw = 100.0F;
+        }
+        int gap = (int) ((100.0F - tw) / 100.0F * 48.0F);
+        int wt = (int) (t / 100.0F * 48.0F * mod);
+        int ws = (int) (s / 100.0F * 48.0F * mod);
+        if (t > 0) {
+            RenderSystem.setShaderColor(1.0F, 0.5F, 1.0F, 1.0F);
+            UtilsFX.drawTexturedQuad(pose, 7.0F, 21 + gap, 200.0F, gap, 8.0F, wt + gap, -90.0F);
+        }
+        if (s > 0) {
+            RenderSystem.setShaderColor(0.75F, 0.0F, 0.75F, 1.0F);
+            UtilsFX.drawTexturedQuad(pose, 7.0F, 21 + wt + gap, 200.0F, wt + gap, 8.0F, wt + ws + gap, -90.0F);
+        }
+        if (p > 0) {
+            RenderSystem.setShaderColor(0.5F, 0.0F, 0.5F, 1.0F);
+            UtilsFX.drawTexturedQuad(pose, 7.0F, 21 + wt + ws + gap, 200.0F, wt + ws + gap, 8.0F, 48.0F, -90.0F);
+        }
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        UtilsFX.drawTexturedQuad(pose, 1.0F, 1.0F, 176.0F, 0.0F, 20.0F, 76.0F, -90.0F);
+        if (tw >= 100.0F) {
+            UtilsFX.drawTexturedQuad(pose, 1.0F, 1.0F, 216.0F, 0.0F, 20.0F, 16.0F, -90.0F);
+        }
     }
 
     /** Шкалы Вис и Выброса в чанке (aura 525 = полная шкала), база — метка; с Shift — числа. */

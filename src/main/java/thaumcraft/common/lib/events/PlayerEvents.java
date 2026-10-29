@@ -41,7 +41,11 @@ public class PlayerEvents {
             if (player.tickCount % 200 == 0) {
                 ConfigResearch.checkPeriodicStuff(player);
             }
-            // handleWarp оригинала (часть): смертоносный взгляд раз в секунду
+            // handleWarp оригинала: событие Искажения раз в 2000 тиков, смертоносный взгляд — раз в секунду
+            if (!thaumcraft.common.config.ModConfig.CONFIG_MISC.wussMode.get() && player.tickCount > 0 && player.tickCount % 2000 == 0
+                    && !player.hasEffect(thaumcraft.common.config.ConfigPotions.WARP_WARD)) {
+                WarpEvents.checkWarpEvent(player);
+            }
             if (player.tickCount % 20 == 0 && player.hasEffect(thaumcraft.common.config.ConfigPotions.DEATH_GAZE)) {
                 WarpEvents.checkDeathGaze(player);
             }

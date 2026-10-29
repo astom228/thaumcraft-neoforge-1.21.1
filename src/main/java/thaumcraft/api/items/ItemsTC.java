@@ -231,7 +231,9 @@ public class ItemsTC {
     public static final DeferredItem<Item> lootBagCommon = lootBag("common_loot_bag", 0, Rarity.COMMON);
     public static final DeferredItem<Item> lootBagUncommon = lootBag("uncommon_loot_bag", 1, Rarity.UNCOMMON);
     public static final DeferredItem<Item> lootBagRare = lootBag("rare_loot_bag", 2, Rarity.RARE);
-    // ItemSanityChecker: показ рассудка (Искажения) на экране — HudHandler, этап 15
+    // ItemSanitySoap: мыться 5 с — снимает временное и часть обычного Искажения
+    public static final DeferredItem<Item> sanitySoap = ConfigItems.ITEMS.registerItem("sanity_soap", thaumcraft.common.items.consumables.ItemSanitySoap::new);
+    // ItemSanityChecker: шкала рассудка (Искажения) на экране — HudHandler
     public static final DeferredItem<Item> sanityChecker = ConfigItems.ITEMS.registerSimpleItem("sanity_checker",
             new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 
