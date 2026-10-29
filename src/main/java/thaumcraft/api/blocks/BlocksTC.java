@@ -218,6 +218,24 @@ public class BlocksTC {
         return BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.0F, 5.0F).sound(SoundType.WOOD).noOcclusion();
     }
 
+    // Голодный сундук (BlockHungryChest): Material.WOOD, твёрдость 2.5 → сопротивление 12.5, рисуется блок-сущностью
+    public static final DeferredBlock<Block> hungryChest = register("hungry_chest", () -> new thaumcraft.common.blocks.devices.BlockHungryChest(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F, 12.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+    // Адская печь (BlockInfernalFurnace): Material.ROCK, свет 0.9 → 14, без предмета и добычи (собирается солью мира)
+    public static final DeferredBlock<Block> infernalFurnace = ConfigBlocks.BLOCKS.register("infernal_furnace",
+            () -> new thaumcraft.common.blocks.devices.BlockInfernalFurnace(BlockBehaviour.Properties.of().mapColor(MapColor.NETHER)
+                    .strength(1.5F, 7.5F).sound(SoundType.STONE).lightLevel(st -> 14).noOcclusion().noLootTable().pushReaction(PushReaction.BLOCK)));
+    // Заполнители многоблоков (BlockPlaceholder): твёрдость 2.5, невидимы, роняют исходный блок; без предметов
+    public static final DeferredBlock<Block> placeholderNetherbrick = ConfigBlocks.BLOCKS.register("placeholder_brick",
+            () -> new thaumcraft.common.blocks.misc.BlockPlaceholder(placeholderProps()));
+    public static final DeferredBlock<Block> placeholderObsidian = ConfigBlocks.BLOCKS.register("placeholder_obsidian",
+            () -> new thaumcraft.common.blocks.misc.BlockPlaceholder(placeholderProps()));
+
+    private static BlockBehaviour.Properties placeholderProps() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.5F, 12.5F).sound(SoundType.STONE).noOcclusion()
+                .pushReaction(PushReaction.BLOCK);
+    }
+
     // Редстоун-реле (BlockRedstoneRelay): Material.CIRCUITS, твёрдость 0, звук дерева
     public static final DeferredBlock<Block> redstoneRelay = register("redstone_relay", () -> new thaumcraft.common.blocks.devices.BlockRedstoneRelay(
             BlockBehaviour.Properties.of().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));

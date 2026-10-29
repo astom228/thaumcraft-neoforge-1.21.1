@@ -232,10 +232,9 @@ public class TileTubeBuffer extends TileTube implements IAspectContainer {
         }
     }
 
-    /** TileBellows.getBellows — мехи со всех сторон; мехи — этап 14. */
+    /** TileBellows.getBellows — мехи со всех сторон. */
     public void getBellows() {
-        // TODO этап 14: this.bellows = TileBellows.getBellows(this.level, this.worldPosition, Direction.values());
-        this.bellows = 0;
+        this.bellows = thaumcraft.common.tiles.devices.TileBellows.getBellows(this.level, this.worldPosition, Direction.values());
     }
 
     @Override

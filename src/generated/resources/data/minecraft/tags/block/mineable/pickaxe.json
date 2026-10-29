@@ -51,6 +51,9 @@
     "thaumcraft:eldritch_pedestal",
     "thaumcraft:infusion_pillar",
     "thaumcraft:ancient_infusion_pillar",
-    "thaumcraft:eldritch_infusion_pillar"
+    "thaumcraft:eldritch_infusion_pillar",
+    "thaumcraft:infernal_furnace",
+    "thaumcraft:placeholder_brick",
+    "thaumcraft:placeholder_obsidian"
   ]
 }

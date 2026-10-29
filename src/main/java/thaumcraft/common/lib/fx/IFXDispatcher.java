@@ -129,6 +129,9 @@ public interface IFXDispatcher {
     default void drawLevitatorParticles(double x, double y, double z, double x2, double y2, double z2) {
     }
 
+    default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
+    }
+
     default void smokeSpiral(double x, double y, double z, float rad, int start, int miny, int color) {
     }
 

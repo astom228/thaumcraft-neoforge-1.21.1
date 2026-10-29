@@ -66,6 +66,7 @@ public class Thaumcraft {
         event.enqueueWork(ConfigRecipes::initializeFakeRecipes);
         event.enqueueWork(ConfigRecipes::initializeAlchemyRecipes);
         event.enqueueWork(ConfigRecipes::initializeInfusionRecipes);
+        event.enqueueWork(ConfigRecipes::initializeSmeltingBonus);
         // самородные кластеры для «Очистки» (initMisc / modCompatibility оригинала)
         event.enqueueWork(thaumcraft.common.lib.utils.Utils::initSpecialMining);
         // роба тауматурга отмывается в котле с водой, как кожаная броня (onItemUseFirst оригинала)

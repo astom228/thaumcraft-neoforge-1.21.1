@@ -548,6 +548,25 @@
         "enabled",
         "facing"
       ]
+    },
+    "infernal_furnace": {
+      "src": "infernal_furnace",
+      "item": false,
+      "renderType": "minecraft:cutout_mipped"
+    },
+    "placeholder_brick": {
+      "src": "placeholder_brick",
+      "item": false
+    },
+    "placeholder_obsidian": {
+      "src": "placeholder_obsidian",
+      "item": false
+    },
+    "hungry_chest": {
+      "src": "hungry_chest",
+      "ignore": [
+        "facing"
+      ]
     }
   },
   "items": {

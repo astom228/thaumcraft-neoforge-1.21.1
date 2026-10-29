@@ -149,6 +149,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Arcane Bore | Магический бур | принято |
 | Automated Crossbow | Автоматический арбалет | принято |
 | Hungry Chest | Голодный сундук | принято |
+| Infernal Furnace | Адская печь | принято |
 | Arcane Ear / Levitator / Lamp | Магическое ухо / левитатор / лампа | принято |
 | Dioptra | Диоптр | принято |
 | Portable Hole / Dimensional Tear | Переносная дыра / Пространственный разрыв | принято |

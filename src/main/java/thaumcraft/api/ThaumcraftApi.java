@@ -300,4 +300,30 @@ public class ThaumcraftApi {
             list.add(new thaumcraft.common.lib.utils.WeightedRandomLoot(item, weight));
         }
     }
+
+    /**
+     * Бонус плавки адской печи: in — предмет (Item / ItemStack) или тег предметов (OreDictionary-имя оригинала); out выпадает
+     * с шансом chance за каждые мехи + 1.
+     */
+    public record SmeltBonus(Object in, net.minecraft.world.item.ItemStack out, float chance) {
+        public boolean matches(net.minecraft.world.item.ItemStack stack) {
+            if (this.in instanceof net.minecraft.tags.TagKey<?> tag) {
+                @SuppressWarnings("unchecked")
+                net.minecraft.tags.TagKey<net.minecraft.world.item.Item> t = (net.minecraft.tags.TagKey<net.minecraft.world.item.Item>) tag;
+                return stack.is(t);
+            }
+            if (this.in instanceof net.minecraft.world.item.ItemStack is) {
+                return stack.is(is.getItem());
+            }
+            return this.in instanceof net.minecraft.world.level.ItemLike il && stack.is(il.asItem());
+        }
+    }
+
+    public static void addSmeltingBonus(Object in, net.minecraft.world.item.ItemStack out, float chance) {
+        thaumcraft.api.internal.CommonInternals.smeltingBonus.add(new SmeltBonus(in, out, chance));
+    }
+
+    public static void addSmeltingBonus(Object in, net.minecraft.world.item.ItemStack out) {
+        addSmeltingBonus(in, out, 0.33F);
+    }
 }

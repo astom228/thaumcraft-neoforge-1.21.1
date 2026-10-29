@@ -61,6 +61,10 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileLevitator::new, BlocksTC.levitator.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileBellows>> BELLOWS_TILE = TILES.register("bellows",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileBellows::new, BlocksTC.bellows.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileHungryChest>> HUNGRY_CHEST_TILE = TILES.register("hungry_chest",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileHungryChest::new, BlocksTC.hungryChest.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileInfernalFurnace>> INFERNAL_FURNACE_TILE = TILES.register("infernal_furnace",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileInfernalFurnace::new, BlocksTC.infernalFurnace.get()).build(null));
     public static final Supplier<BlockEntityType<TileNitor>> NITOR_TILE = TILES.register("nitor",
             () -> BlockEntityType.Builder.of(TileNitor::new, BlocksTC.nitor.values().stream().map(DeferredBlock::get).toArray(Block[]::new)).build(null));
 
@@ -124,6 +128,8 @@ public class ConfigBlocks {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RESEARCH_TABLE_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SMELTER_TILE.get(), TileSmelter::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, HUNGRY_CHEST_TILE.get(), (chest, side) -> new net.neoforged.neoforge.items.wrapper.InvWrapper(chest));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, INFERNAL_FURNACE_TILE.get(), thaumcraft.common.tiles.devices.TileInfernalFurnace::capability);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MIRROR_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, THAUMATORIUM_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, PEDESTAL_TILE.get(), (tile, side) -> tile.getItemHandler());

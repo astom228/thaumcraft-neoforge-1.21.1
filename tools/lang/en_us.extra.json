@@ -109,5 +109,6 @@
   "key.thaumcraft.misc_toggle": "Misc Caster Toggle",
   "entity.thaumcraft.alumentum": "Alumentum",
   "entity.thaumcraft.grapple": "Grapple",
-  "block.thaumcraft.growth_lamp": "Lamp of Growth"
+  "block.thaumcraft.growth_lamp": "Lamp of Growth",
+  "block.thaumcraft.infernal_furnace": "Infernal Furnace"
 }

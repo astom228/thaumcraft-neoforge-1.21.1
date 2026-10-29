@@ -125,7 +125,7 @@ public class DustTriggerMultiblock implements IDustTrigger {
         if (world.isClientSide) {
             return;
         }
-        // TODO этап 14: в оригинале здесь для любой структуры вызывалось событие «создан предмет» с адской печью
+        // в оригинале здесь для любой структуры вызывалось событие «создан предмет» с адской печью — побочное, без последствий
         BlockPos p2 = pos.offset(placement.xOffset, placement.yOffset, placement.zOffset);
         for (int y = 0; y < this.ySize; y++) {
             Matrix matrix = new Matrix(this.blueprint[y]);

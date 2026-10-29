@@ -73,7 +73,18 @@ public class ConfigRecipes {
                 new ItemStack(BlocksTC.arcaneWorkbench.get())));
         // в 1.12 котёл с водой — тот же блок (уровень — свойство); в 1.21 у наполненных котлов свои блоки — тег minecraft:cauldrons
         IDustTrigger.registerDustTrigger(new DustTriggerOre("UNLOCKALCHEMY@1", BlockTags.CAULDRONS, new ItemStack(BlocksTC.crucible.get())));
-        // TODO многоблочные — этапы 14 (адская печь), 18 (пресс големов)
+        // Адская печь: кирпич и обсидиан → невидимые заполнители, лава → печь (окно — к решётке), решётка убирается
+        Part NB = new Part(Blocks.NETHER_BRICKS, BlocksTC.placeholderNetherbrick.get().defaultBlockState());
+        Part OB = new Part(Blocks.OBSIDIAN, BlocksTC.placeholderObsidian.get().defaultBlockState());
+        Part IB = new Part(Blocks.IRON_BARS, "AIR");
+        Part LA = new Part(net.minecraft.tags.FluidTags.LAVA, BlocksTC.infernalFurnace.get(), true);
+        Part[][][] infernalFurnaceBlueprint = new Part[][][] {
+                {{NB, OB, NB}, {OB, null, OB}, {NB, OB, NB}}, {{NB, OB, NB}, {OB, LA, OB}, {NB, IB, NB}}, {{NB, OB, NB}, {OB, OB, OB}, {NB, OB, NB}}};
+        IDustTrigger.registerDustTrigger(new DustTriggerMultiblock("INFERNALFURNACE", infernalFurnaceBlueprint));
+        ThaumcraftApi.addMultiblockRecipeToCatalog(ResourceLocation.fromNamespaceAndPath("thaumcraft", "infernalfurnace"),
+                new ThaumcraftApi.BluePrint("INFERNALFURNACE", infernalFurnaceBlueprint, new ItemStack(Blocks.NETHER_BRICKS, 12),
+                        new ItemStack(Blocks.OBSIDIAN, 12), new ItemStack(Blocks.IRON_BARS), new ItemStack(Items.LAVA_BUCKET)));
+        // TODO этап 18: пресс големов
         infusionAltar("INFUSION", "infusionaltar", BlocksTC.stoneArcane.get(), BlocksTC.pillarArcane.get(), BlocksTC.pedestalArcane.get());
         infusionAltar("INFUSIONANCIENT", "infusionaltarancient", BlocksTC.stoneAncient.get(), BlocksTC.pillarAncient.get(), BlocksTC.pedestalAncient.get());
         infusionAltar("INFUSIONELDRITCH", "infusionaltareldritch", BlocksTC.stoneEldritchTile.get(), BlocksTC.pillarEldritch.get(),
@@ -255,6 +266,54 @@ public class ConfigRecipes {
         ThaumcraftApi.addInfusionCraftingRecipe(tc(key), new InfusionRecipe("FORTRESSMASK",
                 new Object[] {thaumcraft.common.lib.TCDataComponents.FORTRESS_MASK.get(), mask}, 8, aspects, new ItemStack(ItemsTC.fortressHelm.get()),
                 new ItemStack(dye), TCTags.Items.PLATES_IRON, Tags.Items.LEATHERS, c3, c4, TCTags.Items.PLATES_IRON));
+    }
+
+    /** Бонусы плавки адской печи (конец initializeNormalRecipes оригинала); OreDictionary → теги c:. Вызывается при запуске. */
+    public static void initializeSmeltingBonus() {
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_GOLD, new ItemStack(Items.GOLD_NUGGET));
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_IRON, new ItemStack(Items.IRON_NUGGET));
+        ThaumcraftApi.addSmeltingBonus(TCTags.Items.ORES_CINNABAR, new ItemStack(ItemsTC.nuggetQuicksilver.get()));
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_COPPER, new ItemStack(ItemsTC.nuggetCopper.get()));
+        ThaumcraftApi.addSmeltingBonus(cTag("ores/tin"), new ItemStack(ItemsTC.nuggetTin.get()));
+        ThaumcraftApi.addSmeltingBonus(cTag("ores/silver"), new ItemStack(ItemsTC.nuggetSilver.get()));
+        ThaumcraftApi.addSmeltingBonus(cTag("ores/lead"), new ItemStack(ItemsTC.nuggetLead.get()));
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_QUARTZ, new ItemStack(ItemsTC.nuggetQuartz.get()));
+        ThaumcraftApi.addSmeltingBonus(ItemsTC.clusterIron.get(), new ItemStack(Items.IRON_NUGGET));
+        ThaumcraftApi.addSmeltingBonus(ItemsTC.clusterGold.get(), new ItemStack(Items.GOLD_NUGGET));
+        ThaumcraftApi.addSmeltingBonus(ItemsTC.clusterCinnabar.get(), new ItemStack(ItemsTC.nuggetQuicksilver.get()));
+        ThaumcraftApi.addSmeltingBonus(ItemsTC.clusterCopper.get(), new ItemStack(ItemsTC.nuggetCopper.get()));
+        ThaumcraftApi.addSmeltingBonus(ItemsTC.clusterTin.get(), new ItemStack(ItemsTC.nuggetTin.get()));
+        ThaumcraftApi.addSmeltingBonus(ItemsTC.clusterSilver.get(), new ItemStack(ItemsTC.nuggetSilver.get()));
+        ThaumcraftApi.addSmeltingBonus(ItemsTC.clusterLead.get(), new ItemStack(ItemsTC.nuggetLead.get()));
+        ThaumcraftApi.addSmeltingBonus(ItemsTC.clusterQuartz.get(), new ItemStack(ItemsTC.nuggetQuartz.get()));
+        ThaumcraftApi.addSmeltingBonus(Items.BEEF, new ItemStack(ItemsTC.chunkBeef.get()));
+        ThaumcraftApi.addSmeltingBonus(Items.CHICKEN, new ItemStack(ItemsTC.chunkChicken.get()));
+        ThaumcraftApi.addSmeltingBonus(Items.PORKCHOP, new ItemStack(ItemsTC.chunkPork.get()));
+        ThaumcraftApi.addSmeltingBonus(net.minecraft.tags.ItemTags.FISHES, new ItemStack(ItemsTC.chunkFish.get()));
+        ThaumcraftApi.addSmeltingBonus(Items.RABBIT, new ItemStack(ItemsTC.chunkRabbit.get()));
+        ThaumcraftApi.addSmeltingBonus(Items.MUTTON, new ItemStack(ItemsTC.chunkMutton.get()));
+        ItemStack re = new ItemStack(ItemsTC.nuggetRareEarth.get());
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_DIAMOND, re, 0.025F);
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_REDSTONE, re, 0.01F);
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_LAPIS, re, 0.01F);
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_EMERALD, re, 0.025F);
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_GOLD, re, 0.02F);
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_IRON, re, 0.01F);
+        ThaumcraftApi.addSmeltingBonus(TCTags.Items.ORES_CINNABAR, re, 0.025F);
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_COPPER, re, 0.01F);
+        ThaumcraftApi.addSmeltingBonus(cTag("ores/tin"), re, 0.01F);
+        ThaumcraftApi.addSmeltingBonus(cTag("ores/silver"), re, 0.02F);
+        ThaumcraftApi.addSmeltingBonus(cTag("ores/lead"), re, 0.01F);
+        ThaumcraftApi.addSmeltingBonus(Tags.Items.ORES_QUARTZ, re, 0.01F);
+        for (net.minecraft.world.item.Item c : new net.minecraft.world.item.Item[] {ItemsTC.clusterIron.get(), ItemsTC.clusterGold.get(),
+                ItemsTC.clusterCopper.get(), ItemsTC.clusterTin.get(), ItemsTC.clusterSilver.get(), ItemsTC.clusterLead.get(),
+                ItemsTC.clusterCinnabar.get(), ItemsTC.clusterQuartz.get()}) {
+            ThaumcraftApi.addSmeltingBonus(c, re, 0.02F);
+        }
+    }
+
+    private static net.minecraft.tags.TagKey<net.minecraft.world.item.Item> cTag(String path) {
+        return net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));
     }
 
     private static void elemental(String key, net.minecraft.world.item.Item out, AspectList aspects, net.minecraft.world.item.Item center, Aspect c1, Aspect c2,

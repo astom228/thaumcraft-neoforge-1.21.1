@@ -31,6 +31,8 @@ public class CommonInternals {
     /** Файлы JSON исследований (ThaumcraftApi.registerResearchLocation); порядок регистрации сохраняется. */
     public static final Map<String, ResourceLocation> jsonLocs = Collections.synchronizedMap(new LinkedHashMap<>());
     public static final ArrayList<ThaumcraftApi.EntityTags> scanEntities = new ArrayList<>();
+    /** Бонусы плавки адской печи (ThaumcraftApi.addSmeltingBonus); заполняются при запуске. */
+    public static final java.util.List<ThaumcraftApi.SmeltBonus> smeltingBonus = new java.util.concurrent.CopyOnWriteArrayList<>();
     /**
      * Каталог рецептов Thaumcraft (тигель, наполнение, многоблочные схемы); заполняется при загрузке кодом на обеих сторонах.
      * В оригинале HashMap — в порте порядок регистрации сохраняется (выбор среди равных рецептов не зависит от хешей).

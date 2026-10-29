@@ -17,7 +17,18 @@ const OUT = path.join(root, 'src/main/resources/assets/thaumcraft');
 const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json'), 'utf8'));
 
 const readSrc = (rel) => JSON.parse(fs.readFileSync(path.join(SRC, rel), 'utf8'));
+// Ванильные текстуры 1.12 без пространства имён ("blocks/x") -> minecraft:block/<имя 1.21>
+const VANILLA_TEX = { lava_still: 'lava_still', fire_layer_0: 'fire_0', fire_layer_1: 'fire_1', nether_brick: 'nether_bricks', obsidian: 'obsidian', stone_slab_top: 'smooth_stone' };
+function fixVanillaTextures(obj) {
+  if (!obj || !obj.textures) return;
+  for (const [k, v] of Object.entries(obj.textures)) {
+    const m = typeof v === 'string' && v.match(/^(?:minecraft:)?blocks\/(.+)$/);
+    if (m) obj.textures[k] = 'minecraft:block/' + (VANILLA_TEX[m[1]] || m[1]);
+  }
+}
+
 const write = (rel, obj) => {
+  if (rel.startsWith('models/')) fixVanillaTextures(obj);
   const f = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(f), { recursive: true });
   fs.writeFileSync(f, JSON.stringify(obj, null, 2) + '\n');

@@ -17,6 +17,10 @@
     {
       "type": "single",
       "resource": "thaumcraft:entity/armor/caster_advanced"
+    },
+    {
+      "type": "single",
+      "resource": "thaumcraft:models/chesthungry"
     }
   ]
 }

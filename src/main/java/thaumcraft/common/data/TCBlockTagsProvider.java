@@ -35,12 +35,13 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
                 essentiaTransportInput.get(), essentiaTransportOutput.get(),
                 thaumatorium.get(), thaumatoriumTop.get(), brainBox.get(),
                 infusionMatrix.get(), pedestalArcane.get(), pedestalAncient.get(), pedestalEldritch.get(), pillarArcane.get(), pillarAncient.get(),
-                pillarEldritch.get());
+                pillarEldritch.get(), infernalFurnace.get(), placeholderNetherbrick.get(), placeholderObsidian.get());
         tag(BlockTags.NEEDS_STONE_TOOL).add(oreAmber.get());
         tag(BlockTags.NEEDS_IRON_TOOL).add(oreCinnabar.get());
         tag(BlockTags.MINEABLE_WITH_AXE).add(plankGreatwood.get(), plankSilverwood.get(), stairsGreatwood.get(), stairsSilverwood.get(),
                 slabGreatwood.get(), slabSilverwood.get(), tableWood.get(), researchTable.get(),
-                arcaneWorkbench.get(), arcaneWorkbenchCharger.get(), centrifuge.get(), alembic.get());
+                arcaneWorkbench.get(), arcaneWorkbenchCharger.get(), centrifuge.get(), alembic.get(),
+                bellows.get(), hungryChest.get());
 
         // isBeaconBase = true: BlockStoneTC, BlockMetalTC, BlockTranslucent
         tag(BlockTags.BEACON_BASE_BLOCKS).add(stoneArcane.get(), stoneArcaneBrick.get(), stoneAncient.get(), stoneAncientTile.get(),

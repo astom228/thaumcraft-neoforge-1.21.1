@@ -100,6 +100,10 @@ public class TCBlockLootTables extends BlockLootSubProvider {
                             .include(thaumcraft.common.lib.TCDataComponents.BANNER_ASPECT.get()))))));
         }
 
+        // Заполнители адской печи роняют исходные блоки (getItemDropped оригинала)
+        add(BlocksTC.placeholderNetherbrick.get(), b -> createSingleItemTable(net.minecraft.world.level.block.Blocks.NETHER_BRICKS));
+        add(BlocksTC.placeholderObsidian.get(), b -> createSingleItemTable(net.minecraft.world.level.block.Blocks.OBSIDIAN));
+
         // Остальные блоки этапа роняют сами себя
         for (DeferredHolder<Block, ? extends Block> holder : ConfigBlocks.BLOCKS.getEntries()) {
             Block block = holder.get();

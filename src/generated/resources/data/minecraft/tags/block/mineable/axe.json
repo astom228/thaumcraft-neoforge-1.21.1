@@ -11,6 +11,8 @@
     "thaumcraft:arcane_workbench",
     "thaumcraft:arcane_workbench_charger",
     "thaumcraft:centrifuge",
-    "thaumcraft:alembic"
+    "thaumcraft:alembic",
+    "thaumcraft:bellows",
+    "thaumcraft:hungry_chest"
   ]
 }

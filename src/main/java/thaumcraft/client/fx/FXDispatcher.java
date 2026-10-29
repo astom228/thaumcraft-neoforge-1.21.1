@@ -187,6 +187,16 @@ public class FXDispatcher implements IFXDispatcher {
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
 
+    /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
+    @Override
+    public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
+        var r = this.getWorld().random;
+        float qx = facingX == 0 ? (r.nextFloat() - r.nextFloat()) * 0.5F : facingX * r.nextFloat();
+        float qz = facingZ == 0 ? (r.nextFloat() - r.nextFloat()) * 0.5F : facingZ * r.nextFloat();
+        this.getWorld().addParticle(net.minecraft.core.particles.ParticleTypes.LAVA, x + 0.5F + (r.nextFloat() - r.nextFloat()) * 0.3F + facingX,
+                y + 0.3F, z + 0.5F + (r.nextFloat() - r.nextFloat()) * 0.3F + facingZ, 0.15F * qx, 0.2F * r.nextFloat(), 0.15F * qz);
+    }
+
     @Override
     public void smokeSpiral(double x, double y, double z, float rad, int start, int miny, int color) {
         thaumcraft.client.fx.particles.FXSmokeSpiral fx = new thaumcraft.client.fx.particles.FXSmokeSpiral(this.getWorld(), x, y, z, rad, start, miny);
