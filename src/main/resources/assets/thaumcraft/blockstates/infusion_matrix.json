@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "thaumcraft:block/infusion_matrix"
+      "model": "thaumcraft:block/infusion_matrix_v"
     }
   }
 }

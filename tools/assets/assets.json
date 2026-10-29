@@ -583,6 +583,9 @@
     },
     "vis_battery": {
       "src": "vis_battery"
+    },
+    "dioptra": {
+      "src": "dioptra"
     }
   },
   "items": {

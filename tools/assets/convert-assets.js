@@ -104,7 +104,9 @@ function toVariant(id, entry, models, renderType) {
   if (entry.textures && Object.keys(entry.textures).length) {
     const key = JSON.stringify([ref, entry.textures]);
     if (!models.has(key)) {
-      const name = models.size === 0 ? id : `${id}_${models.size}`;
+      // имя не должно совпасть с копируемой моделью оригинала (иначе копия перезапишет сгенерированную)
+      const base = ref === `thaumcraft:block/${id}` ? `${id}_v` : id;
+      const name = models.size === 0 ? base : `${base}_${models.size}`;
       models.set(key, `thaumcraft:block/${name}`);
       const model = { parent: ref, textures: entry.textures };
       if (renderType) model.render_type = renderType;

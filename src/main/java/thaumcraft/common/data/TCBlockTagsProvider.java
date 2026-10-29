@@ -35,7 +35,7 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
                 essentiaTransportInput.get(), essentiaTransportOutput.get(),
                 thaumatorium.get(), thaumatoriumTop.get(), brainBox.get(),
                 infusionMatrix.get(), pedestalArcane.get(), pedestalAncient.get(), pedestalEldritch.get(), pillarArcane.get(), pillarAncient.get(),
-                pillarEldritch.get(), infernalFurnace.get(), spa.get(), potionSprayer.get(), rechargePedestal.get(), visBattery.get(), placeholderNetherbrick.get(), placeholderObsidian.get());
+                pillarEldritch.get(), infernalFurnace.get(), spa.get(), potionSprayer.get(), rechargePedestal.get(), visBattery.get(), dioptra.get(), placeholderNetherbrick.get(), placeholderObsidian.get());
         tag(BlockTags.NEEDS_STONE_TOOL).add(oreAmber.get());
         tag(BlockTags.NEEDS_IRON_TOOL).add(oreCinnabar.get());
         tag(BlockTags.MINEABLE_WITH_AXE).add(plankGreatwood.get(), plankSilverwood.get(), stairsGreatwood.get(), stairsSilverwood.get(),

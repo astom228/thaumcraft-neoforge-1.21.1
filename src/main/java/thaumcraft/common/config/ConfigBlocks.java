@@ -69,6 +69,8 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileRechargePedestal::new, BlocksTC.rechargePedestal.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileVisGenerator>> VIS_GENERATOR_TILE = TILES.register("vis_generator",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileVisGenerator::new, BlocksTC.visGenerator.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileDioptra>> DIOPTRA_TILE = TILES.register("dioptra",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileDioptra::new, BlocksTC.dioptra.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileHungryChest>> HUNGRY_CHEST_TILE = TILES.register("hungry_chest",
             () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.devices.TileHungryChest::new, BlocksTC.hungryChest.get()).build(null));
     public static final Supplier<BlockEntityType<thaumcraft.common.tiles.devices.TileInfernalFurnace>> INFERNAL_FURNACE_TILE = TILES.register("infernal_furnace",

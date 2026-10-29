@@ -241,6 +241,9 @@ public class BlocksTC {
     public static final DeferredBlock<Block> visBattery = register("vis_battery", () -> new thaumcraft.common.blocks.devices.BlockVisBattery(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.5F, 2.5F).sound(SoundType.STONE)
                     .lightLevel(st -> st.getValue(thaumcraft.common.blocks.devices.BlockVisBattery.CHARGE))));
+    // Диоптра (BlockDioptra): Material.ROCK (BlockTCDevice: прочность 2.0, сопротивление 12), звук камня
+    public static final DeferredBlock<Block> dioptra = register("dioptra", () -> new thaumcraft.common.blocks.devices.BlockDioptra(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 12.0F).sound(SoundType.STONE).noOcclusion()));
     // Голодный сундук (BlockHungryChest): Material.WOOD, твёрдость 2.5 → сопротивление 12.5, рисуется блок-сущностью
     public static final DeferredBlock<Block> hungryChest = register("hungry_chest", () -> new thaumcraft.common.blocks.devices.BlockHungryChest(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F, 12.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));

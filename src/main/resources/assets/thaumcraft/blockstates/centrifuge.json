@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "thaumcraft:block/centrifuge"
+      "model": "thaumcraft:block/centrifuge_v"
     }
   }
 }

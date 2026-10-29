@@ -1,5 +1,5 @@
 {
-  "parent": "thaumcraft:block/bellows",
+  "parent": "thaumcraft:block/bellows_v",
   "display": {
     "gui": {
       "rotation": [

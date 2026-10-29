@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "enabled=false": {
+      "model": "thaumcraft:block/dioptra_v"
+    },
+    "enabled=true": {
+      "model": "thaumcraft:block/dioptra_v_1"
+    }
+  }
+}

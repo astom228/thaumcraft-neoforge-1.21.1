@@ -57,6 +57,17 @@ public final class TCRenderTypes extends RenderType {
         return TUBE.apply(tex);
     }
 
+    private static final java.util.function.Function<ResourceLocation, RenderType> GLOW = net.minecraft.Util.memoize(tex -> create(
+            "thaumcraft_glow", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1024, false, true,
+            CompositeState.builder().setShaderState(new ShaderStateShard(net.minecraft.client.renderer.GameRenderer::getPositionColorTexLightmapShader))
+                    .setTextureState(new TextureStateShard(tex, false, false)).setTransparencyState(LIGHTNING_TRANSPARENCY).setLightmapState(LIGHTMAP)
+                    .setCullState(NO_CULL).createCompositeState(false)));
+
+    /** Текстура × цвет вершины × карта освещения, аддитивно (SRC_ALPHA, ONE), обе стороны: сетка и стенки диоптры. */
+    public static RenderType glow(ResourceLocation tex) {
+        return GLOW.apply(tex);
+    }
+
     private TCRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload,
                           Runnable setupState, Runnable clearState) {
         super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);

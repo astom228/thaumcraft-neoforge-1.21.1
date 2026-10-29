@@ -826,5 +826,6 @@
   "block.thaumcraft.potion_sprayer": "Распылитель зелий",
   "block.thaumcraft.recharge_pedestal": "Пьедестал подзарядки",
   "block.thaumcraft.vis_battery": "Вис-батарея",
-  "block.thaumcraft.vis_generator": "Генератор на Вис"
+  "block.thaumcraft.vis_generator": "Генератор на Вис",
+  "block.thaumcraft.dioptra": "Таумическая диоптра"
 }

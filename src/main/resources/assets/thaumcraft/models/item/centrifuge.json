@@ -1,5 +1,5 @@
 {
-  "parent": "thaumcraft:block/centrifuge",
+  "parent": "thaumcraft:block/centrifuge_v",
   "display": {
     "gui": {
       "rotation": [
