@@ -152,5 +152,8 @@
   "entity.thaumcraft.cultistleader": "Crimson Praetor",
   "entity.thaumcraft.cultistleader.custom": "Praetor %s the %s",
   "entity.thaumcraft.cultistportalgreater": "Greater Crimson Portal",
-  "entity.thaumcraft.cultistportallesser": "Lesser Crimson Portal"
+  "entity.thaumcraft.cultistportallesser": "Lesser Crimson Portal",
+  "entity.thaumcraft.pech": "Pech Forager",
+  "entity.thaumcraft.pech.1": "Pech Mage",
+  "entity.thaumcraft.pech.2": "Pech Stalker"
 }

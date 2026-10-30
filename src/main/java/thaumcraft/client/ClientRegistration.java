@@ -100,6 +100,7 @@ public class ClientRegistration {
         event.register(TCMenus.THAUMATORIUM.get(), thaumcraft.client.gui.GuiThaumatorium::new);
         event.register(TCMenus.FOCAL_MANIPULATOR.get(), thaumcraft.client.gui.GuiFocalManipulator::new);
         event.register(TCMenus.FOCUS_POUCH.get(), thaumcraft.client.gui.GuiFocusPouch::new);
+        event.register(TCMenus.PECH.get(), thaumcraft.client.gui.GuiPech::new);
     }
 
     /** Магические рецепты не входят в ванильную книгу рецептов; без категории клиент пишет предупреждение на каждый рецепт. */
@@ -153,6 +154,7 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.CULTIST_LEADER.get(), thaumcraft.client.renderers.entity.mob.RenderCultist::leader);
         event.registerEntityRenderer(ConfigEntities.CULTIST_PORTAL_LESSER.get(), thaumcraft.client.renderers.entity.construct.RenderCultistPortal::lesser);
         event.registerEntityRenderer(ConfigEntities.CULTIST_PORTAL_GREATER.get(), thaumcraft.client.renderers.entity.construct.RenderCultistPortal::greater);
+        event.registerEntityRenderer(ConfigEntities.PECH.get(), thaumcraft.client.renderers.entity.mob.RenderPech::new);
         event.registerEntityRenderer(ConfigEntities.WISP.get(), thaumcraft.client.renderers.entity.mob.RenderWisp::new);
         event.registerEntityRenderer(ConfigEntities.FLUX_RIFT.get(), thaumcraft.client.renderers.entity.RenderFluxRift::new);
         event.registerEntityRenderer(ConfigEntities.TAINT_SEED.get(), thaumcraft.client.renderers.entity.mob.RenderTaintSeed::new);

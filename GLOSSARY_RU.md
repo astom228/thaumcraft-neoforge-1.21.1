@@ -145,6 +145,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Crimson Knight / Cleric | Багровый рыцарь / клирик | |
 | Lesser / Greater Crimson Portal | Малый / Большой багровый портал | |
 | Pech | Пех | принято |
+| Pech Forager / Mage / Stalker | Пех-собиратель / Пех-маг / Пех-следопыт | |
 | Wisp | Огонёк | принято |
 | Fire Bat | Огненная летучая мышь | принято |
 | Mind Spider | Паук разума | принято |

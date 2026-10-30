@@ -972,5 +972,8 @@
   "entity.thaumcraft.cultistleader": "Багровый претор",
   "entity.thaumcraft.cultistleader.custom": "Претор %s %s",
   "entity.thaumcraft.cultistportalgreater": "Большой багровый портал",
-  "entity.thaumcraft.cultistportallesser": "Малый багровый портал"
+  "entity.thaumcraft.cultistportallesser": "Малый багровый портал",
+  "entity.thaumcraft.pech": "Пех-собиратель",
+  "entity.thaumcraft.pech.1": "Пех-маг",
+  "entity.thaumcraft.pech.2": "Пех-следопыт"
 }

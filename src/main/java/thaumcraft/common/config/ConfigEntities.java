@@ -140,6 +140,10 @@ public class ConfigEntities {
     public static final Supplier<EntityType<thaumcraft.common.entities.monster.boss.EntityCultistPortalGreater>> CULTIST_PORTAL_GREATER = ENTITIES.register("cultistportalgreater",
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.boss.EntityCultistPortalGreater>of(thaumcraft.common.entities.monster.boss.EntityCultistPortalGreater::new, MobCategory.MONSTER).sized(1.5F, 3F)
                     .fireImmune().clientTrackingRange(8).updateInterval(3).build("cultistportalgreater"));
+    // EntityRegistry.registerModEntity(…, "Pech", …, 64, 3, true); глаза — 0.66 роста
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.EntityPech>> PECH = ENTITIES.register("pech",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.EntityPech>of(thaumcraft.common.entities.monster.EntityPech::new, MobCategory.MONSTER).sized(0.6F, 1.8F)
+                    .eyeHeight(1.188F).clientTrackingRange(8).updateInterval(3).build("pech"));
     // EntityRegistry.registerModEntity(…, "FluxRift", …, 64, 20, false); рамка — по точкам разлома
     public static final Supplier<EntityType<thaumcraft.common.entities.EntityFluxRift>> FLUX_RIFT = ENTITIES.register("flux_rift",
             () -> EntityType.Builder.<thaumcraft.common.entities.EntityFluxRift>of(thaumcraft.common.entities.EntityFluxRift::new, MobCategory.MISC)
@@ -223,6 +227,7 @@ public class ConfigEntities {
         event.put(CULTIST_LEADER.get(), thaumcraft.common.entities.monster.boss.EntityCultistLeader.createAttributes().build());
         event.put(CULTIST_PORTAL_LESSER.get(), thaumcraft.common.entities.monster.cult.EntityCultistPortalLesser.createAttributes().build());
         event.put(CULTIST_PORTAL_GREATER.get(), thaumcraft.common.entities.monster.boss.EntityCultistPortalGreater.createAttributes().build());
+        event.put(PECH.get(), thaumcraft.common.entities.monster.EntityPech.createAttributes().build());
         event.put(WISP.get(), thaumcraft.common.entities.monster.EntityWisp.createAttributes().build());
         event.put(TAINT_SEED.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeed.createAttributes().build());
         event.put(TAINT_SEED_PRIME.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime.createAttributes().build());
