@@ -214,4 +214,106 @@ public class EntityUtils {
         }
         return false;
     }
+    private static net.minecraft.resources.ResourceLocation rl(String p) {
+        return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(thaumcraft.Thaumcraft.MODID, p);
+    }
+
+    private static final net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation ADD = net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
+    public static final net.minecraft.world.entity.ai.attributes.AttributeModifier CHAMPION_HEALTH = new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("champion_health"), 100.0, ADD);
+    public static final net.minecraft.world.entity.ai.attributes.AttributeModifier CHAMPION_DAMAGE = new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("champion_damage"), 2.0,
+            net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final net.minecraft.world.entity.ai.attributes.AttributeModifier BOLDBUFF = new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("bold_speed"), 0.3,
+            net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+    public static final net.minecraft.world.entity.ai.attributes.AttributeModifier MIGHTYBUFF = new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("mighty_damage"), 2.0,
+            net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    /** Здоровье боссов за каждого лишнего игрока; 5 и 6 — один и тот же id, как одинаковый UUID в оригинале. */
+    public static final net.minecraft.world.entity.ai.attributes.AttributeModifier[] HPBUFF = {
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("health_buff_1"), 50.0, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("health_buff_2"), 50.0, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("health_buff_3"), 50.0, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("health_buff_4"), 50.0, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("health_buff_5"), 50.0, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("health_buff_5"), 25.0, ADD)};
+    public static final net.minecraft.world.entity.ai.attributes.AttributeModifier[] DMGBUFF = {
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("damage_buff_1"), 0.5, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("damage_buff_2"), 0.5, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("damage_buff_3"), 0.5, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("damage_buff_4"), 0.5, ADD),
+            new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("damage_buff_5"), 0.5, ADD)};
+
+    /** Снять и заново наложить постоянный модификатор (removeModifier + applyModifier оригинала). */
+    public static void reapply(net.minecraft.world.entity.ai.attributes.AttributeInstance ai, net.minecraft.world.entity.ai.attributes.AttributeModifier mod) {
+        if (ai != null) {
+            ai.removeModifier(mod.id());
+            ai.addPermanentModifier(mod);
+        }
+    }
+
+    /**
+     * Сделать чемпионом со случайным модификатором (криперы — только «Смелый»): +100 здоровья, урон ×3, название
+     * с модификатором; боссы получают своё имя (generateName). persist — не исчезать вдали.
+     */
+    public static void makeChampion(net.minecraft.world.entity.monster.Monster entity, boolean persist) {
+        var modai = entity.getAttribute(thaumcraft.api.ThaumcraftApiHelper.CHAMPION_MOD);
+        if (modai == null || modai.getValue() > -2.0) {
+            return;
+        }
+        int type = entity.getRandom().nextInt(thaumcraft.common.entities.monster.mods.ChampionModifier.mods.length);
+        if (entity instanceof net.minecraft.world.entity.monster.Creeper) {
+            type = 0;
+        }
+        reapply(modai, thaumcraft.common.entities.monster.mods.ChampionModifier.mods[type].attributeMod);
+        if (!(entity instanceof thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss boss)) {
+            reapply(entity.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH), CHAMPION_HEALTH);
+            reapply(entity.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE), CHAMPION_DAMAGE);
+            entity.heal(25.0F);
+            entity.setCustomName(thaumcraft.common.entities.monster.mods.ChampionModifier.mods[type].getModName().copy().append(" ").append(entity.getName()));
+        } else {
+            boss.generateName();
+        }
+        if (persist) {
+            entity.setPersistenceRequired();
+        }
+        switch (type) {
+            case 0 -> reapply(entity.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED), BOLDBUFF);
+            case 3 -> reapply(entity.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE), MIGHTYBUFF);
+            case 5 -> {
+                int bh = (int) entity.getAttributeBaseValue(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH) / 2;
+                entity.setAbsorptionAmount(entity.getAbsorptionAmount() + bh);
+            }
+            default -> {
+            }
+        }
+    }
+
+    /** Заразить (модификатор 13): существо, почти убитое заражением Выбросом; +25 здоровья, +0.5 урона. Чемпионов не трогает. */
+    public static void makeTainted(net.minecraft.world.entity.LivingEntity target) {
+        var modai = target.getAttribute(thaumcraft.api.ThaumcraftApiHelper.CHAMPION_MOD);
+        if (modai == null || modai.getValue() > -1.0) {
+            return;
+        }
+        if (modai.getValue() == -1.0) {
+            reapply(modai, thaumcraft.common.entities.monster.mods.ChampionModifier.ATTRIBUTE_MINUS_ONE);
+        }
+        reapply(modai, thaumcraft.common.entities.monster.mods.ChampionModifier.mods[13].attributeMod);
+        if (!(target instanceof thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss boss)) {
+            reapply(target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH), HPBUFF[5]);
+            reapply(target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE), DMGBUFF[0]);
+            target.heal(25.0F);
+        } else {
+            boss.generateName();
+        }
+    }
+
+    /** Особый предмет (не горит, парит), падающий из существа с высоты dropheight. */
+    public static net.minecraft.world.entity.item.ItemEntity entityDropSpecialItem(Entity entity, net.minecraft.world.item.ItemStack stack, float dropheight) {
+        if (stack.isEmpty() || entity.level().isClientSide) {
+            return null;
+        }
+        var item = new thaumcraft.common.entities.EntitySpecialItem(entity.level(), entity.getX(), entity.getY() + dropheight, entity.getZ(), stack);
+        item.setDefaultPickUpDelay();
+        item.setDeltaMovement(0.0, 0.1F, 0.0);
+        entity.level().addFreshEntity(item);
+        return item;
+    }
 }

@@ -69,6 +69,11 @@ public interface IFXDispatcher {
     }
 
     /** Обобщённая частица по параметрам GenPart (drawGenericParticles). */
+    /** Короткая форма drawGenericParticles оригинала (сетка 64, замедление и начальный поворот — по умолчанию). */
+    default void drawGenericParticles(double x, double y, double z, double mx, double my, double mz, float r, float g, float b, float alpha, boolean loop,
+            int start, int num, int inc, int age, int delay, float scale, float rot, int layer) {
+    }
+
     default void drawGenericParticles(double x, double y, double z, double mx, double my, double mz, GenPart part) {
     }
 

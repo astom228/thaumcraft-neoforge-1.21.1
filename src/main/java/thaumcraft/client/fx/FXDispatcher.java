@@ -865,6 +865,21 @@ public class FXDispatcher implements IFXDispatcher {
     }
 
     @Override
+    public void drawGenericParticles(double x, double y, double z, double mx, double my, double mz, float r, float g, float b, float alpha, boolean loop,
+            int start, int num, int inc, int age, int delay, float scale, float rot, int layer) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, mx, my, mz);
+        fb.setMaxAge(age);
+        fb.setRBGColorF(r, g, b);
+        fb.setAlphaF(alpha);
+        fb.setLoop(loop);
+        fb.setParticles(start, num, inc);
+        fb.setScale(scale);
+        fb.setLayer(layer);
+        fb.setRotationSpeed(rot);
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, delay);
+    }
+
+    @Override
     public void drawGenericParticles(double x, double y, double z, double mx, double my, double mz, thaumcraft.common.lib.fx.GenPart part) {
         FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, mx, my, mz);
         fb.setMaxAge(part.age);

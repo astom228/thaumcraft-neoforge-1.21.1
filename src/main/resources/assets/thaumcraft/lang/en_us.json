@@ -1,4 +1,6 @@
 {
+  "attribute.name.thaumcraft.mob_mod": "Champion modifier",
+  "attribute.name.thaumcraft.mob_mod_taint": "Tainted modifier",
   "block.thaumcraft.advanced_alchemical_construct": "Advanced Alchemical Construct",
   "block.thaumcraft.aer_crystal": "Air Crystal",
   "block.thaumcraft.alchemical_construct": "Alchemical Construct",
@@ -294,6 +296,7 @@
   "champion.mod.mighty": "Mighty",
   "champion.mod.sickly": "Sickly",
   "champion.mod.spine": "Spined",
+  "champion.mod.tainted": "Tainted",
   "champion.mod.undying": "Undying",
   "champion.mod.vampiric": "Vampiric",
   "champion.mod.venomous": "Venomous",

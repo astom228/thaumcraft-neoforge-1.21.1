@@ -126,6 +126,48 @@ public class ConfigEntities {
                     thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(4)
                     .updateInterval(20).build("taint_seed_prime"));
 
+    /**
+     * Виды, которые могут стать чемпионами, и надбавка к шансу (championWhiteList IMC оригинала; проверка по классу —
+     * подклассы тоже, как isAssignableFrom). Только для чтения после загрузки класса.
+     */
+    public static final java.util.Map<Class<?>, Integer> championModWhitelist = java.util.Map.of(
+            net.minecraft.world.entity.monster.Zombie.class, 0,
+            net.minecraft.world.entity.monster.Spider.class, 0,
+            net.minecraft.world.entity.monster.Blaze.class, 0,
+            net.minecraft.world.entity.monster.EnderMan.class, 0,
+            net.minecraft.world.entity.monster.Skeleton.class, 0,
+            net.minecraft.world.entity.monster.Witch.class, 1,
+            thaumcraft.common.entities.monster.EntityEldritchCrab.class, 0,
+            thaumcraft.common.entities.monster.tainted.EntityTaintacle.class, 2,
+            thaumcraft.common.entities.monster.EntityInhabitedZombie.class, 3);
+
+    public static final DeferredRegister<net.minecraft.world.entity.ai.attributes.Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Thaumcraft.MODID);
+    /** ThaumcraftApiHelper.CHAMPION_MOD: −2 — не проверялся, −1 — обычный, 0–13 — модификатор чемпиона; синхронизируется с клиентом. */
+    public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.entity.ai.attributes.Attribute, net.minecraft.world.entity.ai.attributes.Attribute> CHAMPION_MOD =
+            ATTRIBUTES.register("mob_mod", () -> new net.minecraft.world.entity.ai.attributes.RangedAttribute("attribute.name.thaumcraft.mob_mod", -2.0, -2.0, 100.0).setSyncable(true));
+    /** ChampionModTainted.TAINTED_MOD: 1 — поведение заражённого существа уже заменено. */
+    public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.entity.ai.attributes.Attribute, net.minecraft.world.entity.ai.attributes.Attribute> TAINTED_MOD =
+            ATTRIBUTES.register("mob_mod_taint", () -> new net.minecraft.world.entity.ai.attributes.RangedAttribute("attribute.name.thaumcraft.mob_mod_taint", 0.0, 0.0, 1.0));
+
+    /**
+     * entityConstuct оригинала: атрибуты чемпиона добавлялись каждому EntityCreature при создании. В 1.21 набор атрибутов
+     * задаётся типу, поэтому они добавляются всем живым типам (проверка «существо ли это» — в коде событий). Урон атаки
+     * добавляется тем, у кого его нет: makeTainted регистрировал его мирным существам.
+     */
+    public static void modifyAttributes(net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent event) {
+        for (EntityType<? extends net.minecraft.world.entity.LivingEntity> type : event.getTypes()) {
+            if (!event.has(type, CHAMPION_MOD)) {
+                event.add(type, CHAMPION_MOD);
+            }
+            if (!event.has(type, TAINTED_MOD)) {
+                event.add(type, TAINTED_MOD);
+            }
+            if (!event.has(type, net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)) {
+                event.add(type, net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE, 4.0);
+            }
+        }
+    }
+
     /** Атрибуты живых сущностей (applyEntityAttributes оригинала). */
     public static void registerAttributes(net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent event) {
         event.put(SPELL_BAT.get(), thaumcraft.common.entities.monster.EntitySpellBat.createAttributes().build());

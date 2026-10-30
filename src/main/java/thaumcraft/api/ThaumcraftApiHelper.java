@@ -22,6 +22,17 @@ import thaumcraft.api.items.ItemsTC;
 
 /** Порт ThaumcraftApiHelper (методы добавляются по этапам). */
 public class ThaumcraftApiHelper {
+    /** Модификатор чемпиона (tc.mobmod оригинала): −2 — не проверялся, −1 — обычный, 0–13 — номер модификатора. */
+    public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.entity.ai.attributes.Attribute, net.minecraft.world.entity.ai.attributes.Attribute> CHAMPION_MOD =
+            net.neoforged.neoforge.registries.DeferredHolder.create(net.minecraft.core.registries.Registries.ATTRIBUTE,
+                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumcraft", "mob_mod"));
+
+    /** Значение модификатора чемпиона; null — у существа нет атрибута. */
+    public static Integer getChampionMod(net.minecraft.world.entity.LivingEntity e) {
+        var a = e.getAttribute(CHAMPION_MOD);
+        return a == null ? null : (int) a.getValue();
+    }
+
     /**
      * Все предметы тега (в оригинале — предметы OreDictionary, с раскрытием metadata 32767).
      * Теги должны быть уже загружены (вызывается при построении таблицы аспектов).

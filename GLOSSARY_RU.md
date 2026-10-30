@@ -148,6 +148,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Mind Spider | Паук разума | принято |
 | Eldritch Guardian / Warden / Golem | Потусторонний страж / надзиратель / голем | принято |
 | Champion (моб) | Чемпион | принято |
+| Champion modifiers: Bold / Spined / Armored / Mighty / Grim / Warded / Warped / Undying / Fiery / Sickly / Venomous / Vampiric / Infested / Tainted | Смелый / Шипастый / Бронированный / Могучий / Мрачный / Защищённый / Искажённый / Неумирающий / Огненный / Хворый / Ядовитый / Вампирский / Кишащий / Заражённый | мужской род (стоят перед именем существа) |
 | Arcane Bore | Магический бур | принято |
 | Automated Crossbow | Автоматический арбалет | принято |
 | Hungry Chest | Голодный сундук | принято |

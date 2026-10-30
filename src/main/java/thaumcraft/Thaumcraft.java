@@ -39,6 +39,7 @@ public class Thaumcraft {
         thaumcraft.api.ThaumcraftMaterials.ARMOR_MATERIALS.register(modEventBus);
         ConfigItems.ITEMS.register(modEventBus);
         ConfigEntities.ENTITIES.register(modEventBus);
+        ConfigEntities.ATTRIBUTES.register(modEventBus);
         SoundsTC.SOUNDS.register(modEventBus);
         CreativeTabThaumcraft.TABS.register(modEventBus);
         ConfigRecipes.SERIALIZERS.register(modEventBus);
@@ -52,6 +53,7 @@ public class Thaumcraft {
         modEventBus.addListener(this::loadComplete);
         modEventBus.addListener(ConfigBlocks::registerCapabilities);
         modEventBus.addListener(ConfigEntities::registerAttributes);
+        modEventBus.addListener(ConfigEntities::modifyAttributes);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, ModConfig.CLIENT_SPEC);
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_SPEC);
     }

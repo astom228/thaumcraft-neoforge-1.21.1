@@ -26,6 +26,21 @@ public final class TCRenderTypes extends RenderType {
             CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER).setTextureState(new TextureStateShard(tex, false, false))
                     .setTransparencyState(LIGHTNING_TRANSPARENCY).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).createCompositeState(true)));
 
+    /**
+     * Волокна заражения поверх модели (LayerTainted): текстура со сдвигом через матрицу текстуры (масштаб 8×4, смещение u, v),
+     * обычное смешивание. Шейдер — energy_swirl (единственный сущностный с TextureMat), поэтому без освещения.
+     * Сдвиг меняется каждый кадр — тип создаётся заново, как у ванильного energySwirl.
+     */
+    public static RenderType taintFibres(ResourceLocation tex, float u, float v) {
+        return create("thaumcraft_taint_fibres", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, true,
+                CompositeState.builder().setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER).setTextureState(new TextureStateShard(tex, false, false))
+                        .setTexturingState(new TexturingStateShard("thaumcraft_taint_texturing",
+                                () -> com.mojang.blaze3d.systems.RenderSystem.setTextureMatrix(new org.joml.Matrix4f().scale(8.0F, 4.0F, 4.0F).translate(u, v, 0.0F)),
+                                com.mojang.blaze3d.systems.RenderSystem::resetTextureMatrix))
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
+                        .createCompositeState(false));
+    }
+
     /** Модель с текстурой, аддитивно (glBlendFunc(SRC_ALPHA, ONE)) — свечение кубиков рунической матрицы. */
     public static RenderType additiveEntity(ResourceLocation tex) {
         return ADDITIVE_ENTITY.apply(tex);

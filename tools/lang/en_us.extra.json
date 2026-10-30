@@ -137,5 +137,8 @@
   "entity.thaumcraft.eldritchcrab": "Eldritch Crab",
   "entity.thaumcraft.inhabitedzombie": "Shambling Husk",
   "entity.thaumcraft.eldritchguardian": "Eldritch Guardian",
-  "entity.thaumcraft.eldritchorb": "Eldritch Orb"
+  "entity.thaumcraft.eldritchorb": "Eldritch Orb",
+  "champion.mod.tainted": "Tainted",
+  "attribute.name.thaumcraft.mob_mod": "Champion modifier",
+  "attribute.name.thaumcraft.mob_mod_taint": "Tainted modifier"
 }

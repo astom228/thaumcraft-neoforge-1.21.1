@@ -108,6 +108,17 @@ public class ClientRegistration {
         event.registerRecipeCategoryFinder(ConfigRecipes.ARCANE_CRAFTING.get(), recipe -> RecipeBookCategories.UNKNOWN);
     }
 
+    /** Слой волокон заражения (заражённые чемпионы) — всем рендерам живых существ. */
+    @SubscribeEvent
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void addLayers(EntityRenderersEvent.AddLayers event) {
+        for (var type : event.getEntityTypes()) {
+            if (event.getRenderer(type) instanceof net.minecraft.client.renderer.entity.LivingEntityRenderer lr) {
+                lr.addLayer(new thaumcraft.client.renderers.entity.layers.LayerTainted(lr));
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ConfigEntities.SPECIAL_ITEM.get(), ItemEntityRenderer::new);

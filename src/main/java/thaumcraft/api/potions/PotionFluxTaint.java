@@ -8,7 +8,7 @@ import thaumcraft.api.damagesource.DamageSourceThaumcraft;
 
 /**
  * «Отравление скверной» (порт PotionFluxTaint): раз в 40 &gt;&gt; уровень тиков — 1 урона скверной (мимо брони) всем, кроме нежити.
- * TODO этапы 15–16: заражённые существа (ITaintedMob) и чемпионы-«заражённые» (CHAMPION_MOD = 13) вместо урона лечатся.
+ * Заражённые существа (ITaintedMob) и заражённые чемпионы (CHAMPION_MOD = 13) вместо урона лечатся.
  */
 public class PotionFluxTaint extends MobEffect {
 
@@ -18,6 +18,11 @@ public class PotionFluxTaint extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity target, int strength) {
+        Integer cai = thaumcraft.api.ThaumcraftApiHelper.getChampionMod(target);
+        if (target instanceof thaumcraft.api.entities.ITaintedMob || cai != null && cai == 13) {
+            target.heal(1.0F);
+            return true;
+        }
         if (!target.isInvertedHealAndHarm() && !(target instanceof Player)) {
             target.hurt(DamageSourceThaumcraft.taint(target.level()), 1.0F);
         } else if (!target.isInvertedHealAndHarm() && (target.getMaxHealth() > 1.0F || target instanceof Player)) {
