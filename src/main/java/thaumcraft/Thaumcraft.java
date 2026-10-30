@@ -40,6 +40,7 @@ public class Thaumcraft {
         ConfigItems.ITEMS.register(modEventBus);
         thaumcraft.common.items.SpawnEggs.EGGS.register(modEventBus);
         thaumcraft.common.world.MobSpawns.SERIALIZERS.register(modEventBus);
+        thaumcraft.common.world.features.TCFeatures.FEATURES.register(modEventBus);
         ConfigEntities.ENTITIES.register(modEventBus);
         ConfigEntities.ATTRIBUTES.register(modEventBus);
         SoundsTC.SOUNDS.register(modEventBus);

@@ -18,7 +18,7 @@ mkdir -p run-server build
 result=1
 for ((i = 0; i < TIMEOUT; i++)); do
   if grep -qE 'Done \([0-9.]+s\)!' "$OUT"; then result=0; sleep "${CHECK_SERVER_LINGER:-0}"; break; fi
-  if grep -qE 'Crash report|BUILD FAILED|FAILURE:|Missing or unsupported mandatory dependencies|Exception in server tick loop|Failed to start the minecraft server' "$OUT"; then break; fi
+  if grep -qE 'Crash report|BUILD FAILED|FAILURE:|Missing or unsupported mandatory dependencies|Exception in server tick loop|Failed to start the minecraft server|Failed to load registries' "$OUT"; then break; fi
   sleep 1
 done
 
