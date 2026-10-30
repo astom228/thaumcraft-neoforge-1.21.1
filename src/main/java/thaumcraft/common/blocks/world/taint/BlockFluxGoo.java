@@ -27,7 +27,7 @@ import thaumcraft.common.lib.fx.IFXDispatcher;
  * (0–7, высота (LEVEL+1)/8) и переносом логики BlockFluidFinite: стекает вниз, выравнивается с соседями, объём сохраняется.
  * Сквозь неё можно пройти; замедляет и насылает «Лихорадку Выброса» (уровень LEVEL/3, без лечения молоком). На каждом тике
  * (случайном или запланированном) с шансом 1/4 тает на уровень, отдавая Выброс в ауру; последний уровень — Выброс или волокна
- * порчи. Слизни из слизи — этап 16.
+ * порчи.
  */
 public class BlockFluxGoo extends Block {
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, 7);
@@ -86,7 +86,18 @@ public class BlockFluxGoo extends Block {
     @Override
     protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
         int md = state.getValue(LEVEL);
-        // TODO этап 16: таумический слизень (EntityThaumicSlime) впитывает слизь и растёт
+        if (entity instanceof thaumcraft.common.entities.monster.EntityThaumicSlime slime) {
+            // таумический слизень впитывает слизь и растёт
+            if (!world.isClientSide && slime.getSize() < md && world.random.nextBoolean()) {
+                slime.setSize(slime.getSize() + 1, true);
+                if (md > 1) {
+                    world.setBlock(pos, state.setValue(LEVEL, md - 1), 2);
+                } else {
+                    world.removeBlock(pos, false);
+                }
+            }
+            return;
+        }
         float q = (md + 1) / (float) QUANTA;
         entity.setDeltaMovement(entity.getDeltaMovement().multiply(1.0F - q, 1.0, 1.0F - q));
         if (!world.isClientSide && entity instanceof LivingEntity le) {
@@ -105,11 +116,9 @@ public class BlockFluxGoo extends Block {
     protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource rand) {
         int meta = state.getValue(LEVEL);
         if (meta >= 2 && meta < 6 && world.isEmptyBlock(pos.above()) && rand.nextInt(50) == 0) {
-            // TODO этап 16: слизень размера 1 (EntityThaumicSlime) вместо слизи
-            this.flow(state, world, pos, rand);
+            this.becomeSlime(world, pos, 1);
         } else if (meta >= 6 && world.isEmptyBlock(pos.above()) && rand.nextInt(50) == 0) {
-            // TODO этап 16: слизень размера 2 (EntityThaumicSlime) вместо слизи
-            this.flow(state, world, pos, rand);
+            this.becomeSlime(world, pos, 2);
         } else if (rand.nextInt(4) == 0) {
             if (meta == 0) {
                 if (rand.nextBoolean()) {
@@ -124,6 +133,18 @@ public class BlockFluxGoo extends Block {
             }
         } else {
             this.flow(state, world, pos, rand);
+        }
+    }
+
+    /** Слизь превращается в таумического слизня размера size. */
+    private void becomeSlime(ServerLevel world, BlockPos pos, int size) {
+        world.removeBlock(pos, false);
+        var slime = thaumcraft.common.config.ConfigEntities.THAUMIC_SLIME.get().create(world);
+        if (slime != null) {
+            slime.moveTo(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0.0F, 0.0F);
+            slime.setSize(size, true);
+            world.addFreshEntity(slime);
+            slime.playSound(thaumcraft.common.lib.SoundsTC.gore.get(), 1.0F, 1.0F);
         }
     }
 

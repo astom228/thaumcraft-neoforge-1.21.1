@@ -121,6 +121,7 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.SPELL_BAT.get(), thaumcraft.client.renderers.entity.mob.RenderSpellBat::new);
         event.registerEntityRenderer(ConfigEntities.BOTTLE_TAINT.get(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
         event.registerEntityRenderer(ConfigEntities.FIRE_BAT.get(), thaumcraft.client.renderers.entity.mob.RenderFireBat::new);
+        event.registerEntityRenderer(ConfigEntities.THAUMIC_SLIME.get(), thaumcraft.client.renderers.entity.mob.RenderThaumicSlime::new);
         event.registerEntityRenderer(ConfigEntities.WISP.get(), thaumcraft.client.renderers.entity.mob.RenderWisp::new);
         event.registerEntityRenderer(ConfigEntities.FLUX_RIFT.get(), thaumcraft.client.renderers.entity.RenderFluxRift::new);
         event.registerEntityRenderer(ConfigEntities.TAINT_SEED.get(), thaumcraft.client.renderers.entity.mob.RenderTaintSeed::new);

@@ -176,6 +176,10 @@ public interface IFXDispatcher {
     default void drawWispParticles(double x, double y, double z, double x2, double y2, double z2, int color, int delay) {
     }
 
+    /** Фиолетовые осколки слизи вокруг слизня (slimeJumpFX). */
+    default void slimeJumpFX(net.minecraft.world.entity.Entity e, int i) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 
