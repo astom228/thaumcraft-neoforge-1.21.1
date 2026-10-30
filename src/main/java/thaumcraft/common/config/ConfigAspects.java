@@ -239,7 +239,18 @@ public class ConfigAspects {
         }
         String[] ids = ENTITY_NAMES.get(name);
         if (ids == null) {
-            // Существа Thaumcraft ("Thaumcraft.X") — переносятся на этапе 16
+            // существа Thaumcraft: «Thaumcraft.X» → thaumcraft:x (ID этапа 16; конструкты-големы — этап 18)
+            if (name.startsWith("Thaumcraft.")) {
+                String n = name.substring("Thaumcraft.".length());
+                String id = switch (n) {
+                    case "TaintSeed" -> "taint_seed";
+                    case "TaintSeedPrime" -> "taint_seed_prime";
+                    case "FluxRift" -> "flux_rift";
+                    default -> n.toLowerCase(java.util.Locale.ROOT);
+                };
+                ThaumcraftApi.registerEntityTag("thaumcraft:" + id, aspects, nbt);
+                return;
+            }
             ThaumcraftApi.registerEntityTag(name, aspects, nbt);
             return;
         }

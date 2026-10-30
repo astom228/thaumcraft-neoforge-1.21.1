@@ -117,8 +117,28 @@ public class ConfigResearch {
         for (Holder<MobEffect> pot : BuiltInRegistries.MOB_EFFECT.holders().toList()) {
             ScanningManager.addScannableThing(new ScanPotion(pot));
         }
-        // TODO этап 16: существа Thaumcraft (!Wisp, !ThaumSlime, !Firebat, !Pech, !BrainyZombie, !EldritchCrab, !CrimsonCultist,
-        //  !EldritchGuardian, !TaintCrawler, !Taintacle, !TaintSeed, !TaintSwarm, !FluxRift, f_golem, !ORMOB, !ORBOSS, f_BAT/f_FLY для них)
+        ScanningManager.addScannableThing(new ScanEntity("!Wisp", thaumcraft.common.entities.monster.EntityWisp.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!ThaumSlime", thaumcraft.common.entities.monster.EntityThaumicSlime.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!Firebat", thaumcraft.common.entities.monster.EntityFireBat.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!Pech", thaumcraft.common.entities.monster.EntityPech.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!BrainyZombie", thaumcraft.common.entities.monster.EntityBrainyZombie.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!EldritchCrab", thaumcraft.common.entities.monster.EntityEldritchCrab.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!EldritchCrab", thaumcraft.common.entities.monster.EntityInhabitedZombie.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!CrimsonCultist", thaumcraft.common.entities.monster.cult.EntityCultist.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!EldritchGuardian", thaumcraft.common.entities.monster.EntityEldritchGuardian.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!TaintCrawler", thaumcraft.common.entities.monster.tainted.EntityTaintCrawler.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!Taintacle", thaumcraft.common.entities.monster.tainted.EntityTaintacle.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!TaintSeed", thaumcraft.common.entities.monster.tainted.EntityTaintSeed.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!TaintSwarm", thaumcraft.common.entities.monster.tainted.EntityTaintSwarm.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!FluxRift", thaumcraft.common.entities.EntityFluxRift.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_golem", net.minecraft.world.entity.animal.AbstractGolem.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_BAT", thaumcraft.common.entities.monster.EntityFireBat.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_FLY", thaumcraft.common.entities.monster.EntityFireBat.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_FLY", thaumcraft.common.entities.monster.tainted.EntityTaintSwarm.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("f_FLY", thaumcraft.common.entities.monster.EntityWisp.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!ORMOB", thaumcraft.api.entities.IEldritchMob.class, true));
+        ScanningManager.addScannableThing(new ScanEntity("!ORBOSS", thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss.class, true));
+        // TODO этап 18: f_golem — собственные конструкты (EntityOwnedConstruct)
         ScanningManager.addScannableThing(new ScanEntity("f_SPIDER", Spider.class, true));
         ScanningManager.addScannableThing(new ScanEntity("f_BAT", Bat.class, true));
         ScanningManager.addScannableThing(new ScanEntity("f_FLY", Bat.class, true));
@@ -153,6 +173,7 @@ public class ConfigResearch {
         ScanningManager.addScannableThing(new ScanItem("f_TELEPORT", new ItemStack(Items.ENDER_PEARL)));
         ScanningManager.addScannableThing(new ScanEntity("f_TELEPORT", EnderMan.class, true));
         ScanningManager.addScannableThing(new ScanItem("f_BRAIN", new ItemStack(ItemsTC.brain.get())));
+        ScanningManager.addScannableThing(new ScanEntity("f_BRAIN", thaumcraft.common.entities.monster.EntityBrainyZombie.class, true));
         ScanningManager.addScannableThing(new ScanBlock("f_DISPENSER", Blocks.DISPENSER));
         ScanningManager.addScannableThing(new ScanItem("f_DISPENSER", new ItemStack(Blocks.DISPENSER)));
         ScanningManager.addScannableThing(new ScanItem("f_MATCLAY", new ItemStack(Items.CLAY_BALL)));
