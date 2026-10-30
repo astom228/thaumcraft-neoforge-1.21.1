@@ -40,9 +40,10 @@ import thaumcraft.common.lib.utils.EntityUtils;
 /**
  * Основа боссов (порт EntityThaumcraftBoss): полоса здоровья (фиолетовая, затемняет небо), дом в 24 блоках от места
  * появления, лечение 1 ед. раз в 1.5 с, неуязвимость пока идёт таймер появления, не тонет и не вязнет в паутине.
- * Урон больше 35 срезается до 35 и злит босса на 10 с (регенерация, сила и спешка). Учёт урона по атакующим
- * (aggro) и усиление за число игроков перенесены как в оригинале, включая его странности: смена цели фактически
- * не происходит, а «игроки» считаются по текущей цели.
+ * Урон больше 35 срезается до 35 и злит босса на 10 с (регенерация, сила и спешка). Босс помнит урон от каждого
+ * атакующего и раз в секунду переключается на того, кто нанёс заметно больше текущей цели (+25 и +10%); за каждого
+ * игрока сверх первого среди живых атакующих в 128 блоках — +50 здоровья и +0.5 урона (до 5). В оригинале этот учёт
+ * был сломан (DEVIATIONS 56).
  * Выпадение: изначальная жемчужина и редкий мешок с добычей.
  */
 public class EntityThaumcraftBoss extends Monster {
@@ -163,34 +164,34 @@ public class EntityThaumcraftBoss extends Monster {
         }
     }
 
-    /** Перенос оригинала как есть: newTarget берётся по id текущей цели, ld получает id существа, а не урон. */
+    /** Смена цели по накопленному урону и усиление за число игроков-атакующих (исправленный учёт оригинала). */
     private void updateAggro() {
         ArrayList<Integer> dl = new ArrayList<>();
         int players = 0;
         int hei = this.getTarget().getId();
         int ad = this.aggro.getOrDefault(hei, 0);
         int ld = ad;
-        Entity newTarget = null;
-        for (Integer ei : this.aggro.keySet()) {
-            int ca = this.aggro.get(ei);
-            if (ca > ad + 25 && ca > ad * 1.1 && ca > ld) {
-                newTarget = this.level().getEntity(hei);
-                if (newTarget != null && newTarget.isAlive() && !(this.distanceToSqr(newTarget) > 16384.0)) {
-                    hei = ei;
-                    ld = ei;
-                    if (newTarget instanceof Player) {
-                        players++;
-                    }
-                } else {
-                    dl.add(ei);
-                }
+        LivingEntity newTarget = null;
+        for (var en : this.aggro.entrySet()) {
+            Entity e = this.level().getEntity(en.getKey());
+            if (e == null || !e.isAlive() || this.distanceToSqr(e) > 16384.0) {
+                dl.add(en.getKey());
+                continue;
+            }
+            if (e instanceof Player) {
+                players++;
+            }
+            int ca = en.getValue();
+            if (ca > ad + 25 && ca > ad * 1.1 && ca > ld && e instanceof LivingEntity le) {
+                newTarget = le;
+                ld = ca;
             }
         }
         for (Integer ei : dl) {
             this.aggro.remove(ei);
         }
-        if (newTarget instanceof LivingEntity le && hei != this.getTarget().getId()) {
-            this.setTarget(le);
+        if (newTarget != null && newTarget.getId() != hei) {
+            this.setTarget(newTarget);
         }
         float om = this.getMaxHealth();
         var hp = this.getAttribute(Attributes.MAX_HEALTH);
