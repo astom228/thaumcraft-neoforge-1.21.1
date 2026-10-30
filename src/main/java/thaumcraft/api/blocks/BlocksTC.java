@@ -258,6 +258,34 @@ public class BlocksTC {
     // Шаблонный крафтер (BlockPatternCrafter): Material.IRON (прочность 2.0, сопротивление 12), звук металла
     public static final DeferredBlock<Block> patternCrafter = register("pattern_crafter", () -> new thaumcraft.common.blocks.crafting.BlockPatternCrafter(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0F, 12.0F).sound(SoundType.METAL).noOcclusion()));
+    // Порча (MaterialTaint: фиолетовая, не толкается поршнем; звук GORE). BlockTaint: твёрдость 10, сопротивление 60
+    public static final DeferredBlock<Block> taintSoil = register("taint_soil", () -> new thaumcraft.common.blocks.world.taint.BlockTaint(
+            thaumcraft.common.blocks.world.taint.BlockTaint.Kind.SOIL, taint(10.0F, 60.0F)));
+    public static final DeferredBlock<Block> taintRock = register("taint_rock", () -> new thaumcraft.common.blocks.world.taint.BlockTaint(
+            thaumcraft.common.blocks.world.taint.BlockTaint.Kind.ROCK, taint(10.0F, 60.0F)));
+    public static final DeferredBlock<Block> taintCrust = register("taint_crust", () -> new thaumcraft.common.blocks.world.taint.BlockTaint(
+            thaumcraft.common.blocks.world.taint.BlockTaint.Kind.CRUST, taint(10.0F, 60.0F)));
+    public static final DeferredBlock<Block> taintGeyser = register("taint_geyser", () -> new thaumcraft.common.blocks.world.taint.BlockTaint(
+            thaumcraft.common.blocks.world.taint.BlockTaint.Kind.GEYSER, taint(10.0F, 60.0F)));
+    // Волокна: твёрдость 1, горят; свет наростов; без добычи (кроме кристалла с нароста)
+    public static final DeferredBlock<Block> taintFibre = register("taint_fibre", () -> new thaumcraft.common.blocks.world.taint.BlockTaintFibre(
+            taint(1.0F, 1.0F).noOcclusion().noLootTable().ignitedByLava().replaceable()
+                    .lightLevel(thaumcraft.common.blocks.world.taint.BlockTaintFibre::lightOf)));
+    // Нарост: твёрдость 0.1, свет 0.625 → 9
+    public static final DeferredBlock<Block> taintFeature = register("taint_feature", () -> new thaumcraft.common.blocks.world.taint.BlockTaintFeature(
+            taint(0.1F, 0.1F).noOcclusion().lightLevel(st -> 9)));
+    // Заражённое бревно: твёрдость 3, сопротивление 60, горит
+    public static final DeferredBlock<Block> taintLog = register("taintwood_log", () -> new thaumcraft.common.blocks.world.taint.BlockTaintLog(
+            taint(3.0F, 60.0F).ignitedByLava()));
+    // Флюкс-слизь (BlockFluxGoo, конечная жидкость): твёрдость жидкости 100, без добычи
+    public static final DeferredBlock<Block> fluxGoo = register("flux_goo", () -> new thaumcraft.common.blocks.world.taint.BlockFluxGoo(
+            taint(100.0F, 100.0F).noOcclusion().noLootTable().noCollission().randomTicks()));
+
+    private static BlockBehaviour.Properties taint(float hardness, float resistance) {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(hardness, resistance).sound(thaumcraft.common.lib.SoundsTC.GORE)
+                .pushReaction(PushReaction.BLOCK);
+    }
+
     // Голодный сундук (BlockHungryChest): Material.WOOD, твёрдость 2.5 → сопротивление 12.5, рисуется блок-сущностью
     public static final DeferredBlock<Block> hungryChest = register("hungry_chest", () -> new thaumcraft.common.blocks.devices.BlockHungryChest(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F, 12.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava()));

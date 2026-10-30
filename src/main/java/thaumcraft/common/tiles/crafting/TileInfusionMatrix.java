@@ -534,8 +534,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IInteractWithC
                 ped.setChanged();
                 ped.syncTile(false);
                 if (type == 1 || type == 3) {
-                    // TODO этап 15: флюксовая слизь над пьедесталом (BlocksTC.fluxGoo); пока — её Выброс в ауру (DECISIONS 93, DEVIATIONS 35)
-                    AuraHelper.polluteAura(this.level, cc.above(), 7, true);
+                    this.level.setBlockAndUpdate(cc.above(), thaumcraft.api.blocks.BlocksTC.fluxGoo.get().defaultBlockState());
                     this.level.playSound(null, cc, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 0.3F, 1.0F);
                 } else if (type == 2 || type == 4) {
                     int a = 5 + this.level.random.nextInt(5);

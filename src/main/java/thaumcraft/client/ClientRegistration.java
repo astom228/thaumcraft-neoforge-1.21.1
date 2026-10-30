@@ -119,6 +119,8 @@ public class ClientRegistration {
         // алюментум — без модели (RenderNoProjectile оригинала; след — частицы сущности)
         event.registerEntityRenderer(ConfigEntities.ALUMENTUM.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ConfigEntities.SPELL_BAT.get(), thaumcraft.client.renderers.entity.mob.RenderSpellBat::new);
+        event.registerEntityRenderer(ConfigEntities.TAINT_SEED.get(), thaumcraft.client.renderers.entity.mob.RenderTaintSeed::new);
+        event.registerEntityRenderer(ConfigEntities.TAINT_SEED_PRIME.get(), thaumcraft.client.renderers.entity.mob.RenderTaintSeed::new);
         event.registerBlockEntityRenderer(ConfigBlocks.CRUCIBLE_TILE.get(), TileCrucibleRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.BELLOWS_TILE.get(), thaumcraft.client.renderers.tile.TileBellowsRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.RECHARGE_PEDESTAL_TILE.get(), thaumcraft.client.renderers.tile.TileRechargePedestalRenderer::new);

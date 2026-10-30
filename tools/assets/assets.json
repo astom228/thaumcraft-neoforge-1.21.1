@@ -606,6 +606,34 @@
     },
     "pattern_crafter": {
       "src": "pattern_crafter"
+    },
+    "taint_soil": {
+      "src": "taint_soil",
+      "renderType": "minecraft:cutout"
+    },
+    "taint_rock": {
+      "src": "taint_rock",
+      "renderType": "minecraft:cutout"
+    },
+    "taint_crust": {
+      "src": "taint_crust",
+      "renderType": "minecraft:cutout"
+    },
+    "taint_geyser": {
+      "src": "taint_geyser",
+      "renderType": "minecraft:cutout"
+    },
+    "taint_feature": {
+      "src": "taint_feature",
+      "renderType": "minecraft:cutout"
+    },
+    "taintwood_log": {
+      "src": "taint_log"
+    },
+    "taint_fibre": {
+      "src": "taint_fibre",
+      "itemModel": "model:taint_fibre",
+      "renderType": "minecraft:cutout"
     }
   },
   "items": {

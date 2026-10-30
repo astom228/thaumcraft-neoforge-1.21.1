@@ -44,6 +44,7 @@ public class ChunkEvents {
     public static void worldUnload(LevelEvent.Unload event) {
         if (event.getLevel() instanceof ServerLevel level) {
             AuraHandler.removeAuraWorld(level);
+            thaumcraft.common.blocks.world.taint.TaintHelper.clear(level);
         }
     }
 }

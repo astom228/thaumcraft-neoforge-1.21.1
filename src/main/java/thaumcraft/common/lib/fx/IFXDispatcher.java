@@ -150,6 +150,16 @@ public interface IFXDispatcher {
                                net.minecraft.core.Direction side, int seed, int layer, int delay) {
     }
 
+    /** Пузырёк над флюкс-слизью (BlockFluxGoo.randomDisplayTick). */
+    default void fluxGooFx(double x, double y, double z) {
+    }
+
+    default void drawTaintParticles(float x, float y, float z, float vx, float vy, float vz, float scale) {
+    }
+
+    default void drawLightningFlash(double x, double y, double z, float r, float g, float b, float alpha, float scale) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

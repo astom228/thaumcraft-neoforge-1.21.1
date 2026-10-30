@@ -244,6 +244,51 @@ public class FXDispatcher implements IFXDispatcher {
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
 
+    @Override
+    public void fluxGooFx(double x, double y, double z) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, 0.0, 0.0, 0.0);
+        fb.setMaxAge(2 + this.getWorld().random.nextInt(3));
+        fb.setScale(this.getWorld().random.nextFloat() * 0.3F + 0.2F);
+        fb.setRBGColorF(1.0F, 0.0F, 0.5F);
+        fb.setRandomMovementScale(0.001F, 0.001F, 0.001F);
+        fb.setGravity(-0.01F);
+        fb.setAlphaF(0.25F);
+        fb.setParticleTextureIndex(64);
+        fb.setFinalFrames(65, 66);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    @Override
+    public void drawTaintParticles(float x, float y, float z, float vx, float vy, float vz, float scale) {
+        var r = this.getWorld().random;
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, vx, vy, vz);
+        fb.setMaxAge(80 + r.nextInt(20));
+        fb.setRBGColorF(0.4F + r.nextFloat() * 0.2F, 0.1F + r.nextFloat() * 0.3F, 0.5F + r.nextFloat() * 0.2F);
+        fb.setAlphaF(0.75F, 0.0F);
+        fb.setGridSize(16);
+        fb.setParticles(57 + r.nextInt(3), 1, 1);
+        fb.setScale(scale, scale / 4.0F);
+        fb.setLayer(1);
+        fb.setSlowDown(0.975F);
+        fb.setGravity(0.2F);
+        fb.setRotationSpeed(r.nextFloat(), r.nextBoolean() ? -1.0F : 1.0F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    @Override
+    public void drawLightningFlash(double x, double y, double z, float r, float g, float b, float alpha, float scale) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, 0.0, 0.0, 0.0);
+        fb.setMaxAge(5 + this.getWorld().random.nextInt(5));
+        fb.setGridSize(16);
+        fb.setRBGColorF(r, g, b);
+        fb.setAlphaF(alpha, 0.0F);
+        fb.setParticles(108 + this.getWorld().random.nextInt(4), 1, 1);
+        fb.setScale(scale);
+        fb.setLayer(0);
+        fb.setRotationSpeed(this.getWorld().random.nextFloat(), 0.0F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {

@@ -13,7 +13,7 @@ public class PotionThaumarhia extends MobEffect {
     @Override
     public boolean applyEffectTick(LivingEntity target, int amp) {
         if (!target.level().isClientSide && target.getRandom().nextInt(15) == 0 && target.level().isEmptyBlock(target.blockPosition())) {
-            // TODO этап 15.3: флюкс-слизь (BlocksTC.fluxGoo)
+            target.level().setBlockAndUpdate(target.blockPosition(), thaumcraft.api.blocks.BlocksTC.fluxGoo.get().defaultBlockState());
         }
         return true;
     }

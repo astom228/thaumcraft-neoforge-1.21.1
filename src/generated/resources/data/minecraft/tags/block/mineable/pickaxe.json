@@ -63,6 +63,8 @@
     "thaumcraft:condenser_lattice",
     "thaumcraft:clogged_condenser_lattice",
     "thaumcraft:pattern_crafter",
+    "thaumcraft:taint_rock",
+    "thaumcraft:taint_geyser",
     "thaumcraft:placeholder_brick",
     "thaumcraft:placeholder_obsidian"
   ]

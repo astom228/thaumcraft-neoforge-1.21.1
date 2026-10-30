@@ -46,6 +46,7 @@ public final class ArmorModels {
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderTaintSeed.LAYER, thaumcraft.client.renderers.models.entity.ModelTaintSeed::create);
         event.registerLayerDefinition(ROBE_CHEST, () -> ModelRobe.createLayer(false));
         event.registerLayerDefinition(ROBE_LEGS, () -> ModelRobe.createLayer(true));
         event.registerLayerDefinition(FORTRESS_CHEST, () -> ModelFortressArmor.createLayer(false));

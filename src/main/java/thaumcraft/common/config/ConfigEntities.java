@@ -52,8 +52,20 @@ public class ConfigEntities {
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.EntitySpellBat>of(thaumcraft.common.entities.monster.EntitySpellBat::new,
                     MobCategory.MONSTER).sized(0.5F, 0.9F).clientTrackingRange(4).updateInterval(3).build("spellbat"));
 
+    // EntityRegistry.registerModEntity(…, "TaintSeed", …, 64, 20, false)
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.tainted.EntityTaintSeed>> TAINT_SEED = ENTITIES.register("taint_seed",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.tainted.EntityTaintSeed>of(thaumcraft.common.entities.monster.tainted.EntityTaintSeed::new,
+                    MobCategory.MONSTER).sized(1.5F, 1.25F).clientTrackingRange(4).updateInterval(20).build("taint_seed"));
+    // EntityRegistry.registerModEntity(…, "TaintSeedPrime", …, 64, 20, false)
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime>> TAINT_SEED_PRIME = ENTITIES.register("taint_seed_prime",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime>of(
+                    thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(4)
+                    .updateInterval(20).build("taint_seed_prime"));
+
     /** Атрибуты живых сущностей (applyEntityAttributes оригинала). */
     public static void registerAttributes(net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent event) {
         event.put(SPELL_BAT.get(), thaumcraft.common.entities.monster.EntitySpellBat.createAttributes().build());
+        event.put(TAINT_SEED.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeed.createAttributes().build());
+        event.put(TAINT_SEED_PRIME.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime.createAttributes().build());
     }
 }

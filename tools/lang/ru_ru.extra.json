@@ -906,5 +906,15 @@
   "warp.text.14": "На мгновение ваш разум проясняется.",
   "warp.text.15": "В животе вдруг очень странно урчит.",
   "warp.text.16": "Неподалёку слышится тихое пение.",
-  "item.thaumcraft.sanity_soap": "Очищающее мыло"
+  "item.thaumcraft.sanity_soap": "Очищающее мыло",
+  "entity.thaumcraft.taint_seed": "Семя порчи",
+  "entity.thaumcraft.taint_seed_prime": "Гигантское семя порчи",
+  "block.thaumcraft.flux_goo": "Флюкс-слизь",
+  "block.thaumcraft.taint_crust": "Корка порчи",
+  "block.thaumcraft.taint_feature": "Нарост порчи",
+  "block.thaumcraft.taint_fibre": "Волокна порчи",
+  "block.thaumcraft.taint_geyser": "Гейзер порчи",
+  "block.thaumcraft.taint_rock": "Заражённый камень",
+  "block.thaumcraft.taint_soil": "Заражённая почва",
+  "block.thaumcraft.taintwood_log": "Бревно заражённого дерева"
 }
