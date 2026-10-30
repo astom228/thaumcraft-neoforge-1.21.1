@@ -72,6 +72,8 @@ public class PacketHandler {
                 (msg, ctx) -> ClientPacketHandlers.handleShield(msg));
         registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXZap.TYPE, thaumcraft.common.lib.network.fx.PacketFXZap.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleZap(msg));
+        registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXSonic.TYPE, thaumcraft.common.lib.network.fx.PacketFXSonic.STREAM_CODEC,
+                (msg, ctx) -> ClientPacketHandlers.handleSonic(msg));
         registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXFocusEffect.TYPE, thaumcraft.common.lib.network.fx.PacketFXFocusEffect.STREAM_CODEC,
                 (msg, ctx) -> ClientPacketHandlers.handleFocusEffect(msg));
         registrar.playToClient(thaumcraft.common.lib.network.fx.PacketFXPollute.TYPE, thaumcraft.common.lib.network.fx.PacketFXPollute.STREAM_CODEC,

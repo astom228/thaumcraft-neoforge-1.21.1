@@ -158,6 +158,18 @@ public final class ClientPacketHandlers {
         thaumcraft.client.fx.ParticleEngine.addEffect(world, new thaumcraft.client.fx.other.FXShieldRunes(world, p, 8, yaw, pitch));
     }
 
+    /** PacketFXSonic: звуковая волна вопля потустороннего стража. */
+    public static void handleSonic(thaumcraft.common.lib.network.fx.PacketFXSonic msg) {
+        net.minecraft.client.multiplayer.ClientLevel world = Minecraft.getInstance().level;
+        if (world == null) {
+            return;
+        }
+        net.minecraft.world.entity.Entity p = world.getEntity(msg.source());
+        if (p != null) {
+            thaumcraft.client.fx.ParticleEngine.addEffect(world, new thaumcraft.client.fx.other.FXSonic(world, p, 10));
+        }
+    }
+
     public static void handleZap(thaumcraft.common.lib.network.fx.PacketFXZap msg) {
         if (Minecraft.getInstance().level == null) {
             return;

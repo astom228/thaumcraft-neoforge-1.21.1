@@ -100,6 +100,14 @@ public class ConfigEntities {
     public static final Supplier<EntityType<thaumcraft.common.entities.monster.EntityInhabitedZombie>> INHABITED_ZOMBIE = ENTITIES.register("inhabitedzombie",
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.EntityInhabitedZombie>of(thaumcraft.common.entities.monster.EntityInhabitedZombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F)
                     .eyeHeight(1.74F).passengerAttachments(2.0125F).ridingOffset(-0.7F).clientTrackingRange(8).build("inhabitedzombie"));
+    // EntityRegistry.registerModEntity(…, "EldritchGuardian", …, 64, 3, true)
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.EntityEldritchGuardian>> ELDRITCH_GUARDIAN = ENTITIES.register("eldritchguardian",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.EntityEldritchGuardian>of(thaumcraft.common.entities.monster.EntityEldritchGuardian::new, MobCategory.MONSTER).sized(0.8F, 2.25F)
+                    .eyeHeight(2.1F).clientTrackingRange(8).updateInterval(3).build("eldritchguardian"));
+    // EntityRegistry.registerModEntity(…, "EldritchOrb", …, 64, 20, true)
+    public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityEldritchOrb>> ELDRITCH_ORB = ENTITIES.register("eldritchorb",
+            () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityEldritchOrb>of(thaumcraft.common.entities.projectile.EntityEldritchOrb::new, MobCategory.MISC).sized(0.25F, 0.25F)
+                    .clientTrackingRange(4).updateInterval(20).build("eldritchorb"));
     // EntityRegistry.registerModEntity(…, "FluxRift", …, 64, 20, false); рамка — по точкам разлома
     public static final Supplier<EntityType<thaumcraft.common.entities.EntityFluxRift>> FLUX_RIFT = ENTITIES.register("flux_rift",
             () -> EntityType.Builder.<thaumcraft.common.entities.EntityFluxRift>of(thaumcraft.common.entities.EntityFluxRift::new, MobCategory.MISC)
@@ -132,6 +140,7 @@ public class ConfigEntities {
         event.put(TAINTACLE_SMALL.get(), thaumcraft.common.entities.monster.tainted.EntityTaintacleSmall.createAttributes().build());
         event.put(ELDRITCH_CRAB.get(), thaumcraft.common.entities.monster.EntityEldritchCrab.createAttributes().build());
         event.put(INHABITED_ZOMBIE.get(), thaumcraft.common.entities.monster.EntityInhabitedZombie.createAttributes().build());
+        event.put(ELDRITCH_GUARDIAN.get(), thaumcraft.common.entities.monster.EntityEldritchGuardian.createAttributes().build());
         event.put(WISP.get(), thaumcraft.common.entities.monster.EntityWisp.createAttributes().build());
         event.put(TAINT_SEED.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeed.createAttributes().build());
         event.put(TAINT_SEED_PRIME.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime.createAttributes().build());

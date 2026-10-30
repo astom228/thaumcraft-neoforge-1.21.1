@@ -135,5 +135,7 @@
   "entity.thaumcraft.taintacle": "Taintacle",
   "entity.thaumcraft.taintacletiny": "Tiny Taintacle",
   "entity.thaumcraft.eldritchcrab": "Eldritch Crab",
-  "entity.thaumcraft.inhabitedzombie": "Shambling Husk"
+  "entity.thaumcraft.inhabitedzombie": "Shambling Husk",
+  "entity.thaumcraft.eldritchguardian": "Eldritch Guardian",
+  "entity.thaumcraft.eldritchorb": "Eldritch Orb"
 }

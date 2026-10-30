@@ -401,6 +401,13 @@ public class FXDispatcher implements IFXDispatcher {
         }
     }
 
+    @Override
+    public void wispFXEG(double x, double y, double z, net.minecraft.world.entity.Entity target) {
+        for (int a = 0; a < 2; a++) {
+            ParticleEngine.addEffect(this.getWorld(), new thaumcraft.client.fx.particles.FXWispEG(this.getWorld(), x, y, z, target));
+        }
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {

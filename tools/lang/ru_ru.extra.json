@@ -937,5 +937,7 @@
   "entity.thaumcraft.taintacle": "Заражённое щупальце",
   "entity.thaumcraft.taintacletiny": "Заражённый усик",
   "entity.thaumcraft.eldritchcrab": "Потусторонний краб",
-  "entity.thaumcraft.inhabitedzombie": "Ходячая оболочка"
+  "entity.thaumcraft.inhabitedzombie": "Ходячая оболочка",
+  "entity.thaumcraft.eldritchguardian": "Потусторонний страж",
+  "entity.thaumcraft.eldritchorb": "Потусторонняя сфера"
 }

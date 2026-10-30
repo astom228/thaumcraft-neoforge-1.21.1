@@ -194,6 +194,10 @@ public interface IFXDispatcher {
     default void tentacleAriseFX(net.minecraft.world.entity.Entity e) {
     }
 
+    /** Тёмная дымка потустороннего стража (2 клочка). */
+    default void wispFXEG(double x, double y, double z, net.minecraft.world.entity.Entity target) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 
