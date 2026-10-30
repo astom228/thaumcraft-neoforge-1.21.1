@@ -52,6 +52,10 @@ public class ConfigEntities {
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.EntitySpellBat>of(thaumcraft.common.entities.monster.EntitySpellBat::new,
                     MobCategory.MONSTER).sized(0.5F, 0.9F).clientTrackingRange(4).updateInterval(3).build("spellbat"));
 
+    // EntityRegistry.registerModEntity(…, "Wisp", …, 64, 3, false)
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.EntityWisp>> WISP = ENTITIES.register("wisp",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.EntityWisp>of(thaumcraft.common.entities.monster.EntityWisp::new, MobCategory.MONSTER)
+                    .sized(0.9F, 0.9F).clientTrackingRange(4).updateInterval(3).build("wisp"));
     // EntityRegistry.registerModEntity(…, "FluxRift", …, 64, 20, false); рамка — по точкам разлома
     public static final Supplier<EntityType<thaumcraft.common.entities.EntityFluxRift>> FLUX_RIFT = ENTITIES.register("flux_rift",
             () -> EntityType.Builder.<thaumcraft.common.entities.EntityFluxRift>of(thaumcraft.common.entities.EntityFluxRift::new, MobCategory.MISC)
@@ -73,6 +77,7 @@ public class ConfigEntities {
     /** Атрибуты живых сущностей (applyEntityAttributes оригинала). */
     public static void registerAttributes(net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent event) {
         event.put(SPELL_BAT.get(), thaumcraft.common.entities.monster.EntitySpellBat.createAttributes().build());
+        event.put(WISP.get(), thaumcraft.common.entities.monster.EntityWisp.createAttributes().build());
         event.put(TAINT_SEED.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeed.createAttributes().build());
         event.put(TAINT_SEED_PRIME.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime.createAttributes().build());
     }

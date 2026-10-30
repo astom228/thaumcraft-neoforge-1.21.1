@@ -123,5 +123,6 @@
   "entity.thaumcraft.taint_seed": "Taint Seed",
   "entity.thaumcraft.taint_seed_prime": "Giant Taint Seed",
   "entity.thaumcraft.flux_rift": "Flux Rift",
-  "entity.thaumcraft.bottle_taint": "Bottle of Taint"
+  "entity.thaumcraft.bottle_taint": "Bottle of Taint",
+  "entity.thaumcraft.wisp": "Wisp"
 }

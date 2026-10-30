@@ -168,6 +168,14 @@ public interface IFXDispatcher {
     default void bottleTaintBreak(double x, double y, double z) {
     }
 
+    /** Вспышка (кадры 208–238 сетки 16). */
+    default void burst(double x, double y, double z, float size) {
+    }
+
+    /** Искорки огонька цвета color. */
+    default void drawWispParticles(double x, double y, double z, double x2, double y2, double z2, int color, int delay) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

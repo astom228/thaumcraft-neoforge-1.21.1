@@ -319,6 +319,31 @@ public class FXDispatcher implements IFXDispatcher {
                 r.nextFloat() * 0.1F + 0.9F, false);
     }
 
+    @Override
+    public void burst(double sx, double sy, double sz, float size) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), sx, sy, sz, 0.0, 0.0, 0.0);
+        fb.setMaxAge(31);
+        fb.setGridSize(16);
+        fb.setParticles(208, 31, 1);
+        fb.setScale(size);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    @Override
+    public void drawWispParticles(double x, double y, double z, double x2, double y2, double z2, int color, int a) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, x2, y2, z2);
+        fb.setMaxAge(10 + this.getWorld().random.nextInt(5));
+        fb.setRBGColorF((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F);
+        fb.setAlphaF(0.5F);
+        fb.setLoop(true);
+        fb.setGridSize(64);
+        fb.setParticles(264, 8, 1);
+        fb.setScale(1.0F + this.getWorld().random.nextFloat() * 0.25F, 0.05F);
+        fb.setWind(2.5E-4);
+        fb.setRandomMovementScale(0.0025F, 0.0F, 0.0025F);
+        ParticleEngine.addEffectWithDelay(this.getWorld(), fb, a);
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {

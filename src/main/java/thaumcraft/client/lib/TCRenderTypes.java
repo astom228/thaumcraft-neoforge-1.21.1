@@ -63,6 +63,17 @@ public final class TCRenderTypes extends RenderType {
                     .setTextureState(new TextureStateShard(tex, false, false)).setTransparencyState(LIGHTNING_TRANSPARENCY).setLightmapState(LIGHTMAP)
                     .setCullState(NO_CULL).createCompositeState(false)));
 
+    private static final java.util.function.Function<ResourceLocation, RenderType> GLOW_NO_DEPTH = net.minecraft.Util.memoize(tex -> create(
+            "thaumcraft_glow_no_depth", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, true,
+            CompositeState.builder().setShaderState(new ShaderStateShard(net.minecraft.client.renderer.GameRenderer::getPositionColorTexLightmapShader))
+                    .setTextureState(new TextureStateShard(tex, false, false)).setTransparencyState(LIGHTNING_TRANSPARENCY).setLightmapState(LIGHTMAP)
+                    .setCullState(NO_CULL).setWriteMaskState(COLOR_WRITE).createCompositeState(false)));
+
+    /** Как glow, но без записи глубины (renderFacingQuad оригинала: depthMask(false)) — огонёк. */
+    public static RenderType glowNoDepth(ResourceLocation tex) {
+        return GLOW_NO_DEPTH.apply(tex);
+    }
+
     /** Текстура × цвет вершины × карта освещения, аддитивно (SRC_ALPHA, ONE), обе стороны: сетка и стенки диоптры. */
     public static RenderType glow(ResourceLocation tex) {
         return GLOW.apply(tex);

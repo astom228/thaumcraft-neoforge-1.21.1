@@ -298,7 +298,17 @@ public class EntityFluxRift extends Entity implements IStabilizable {
         boolean didit = false;
         switch (ei[0]) {
             case 0 -> {
-                // TODO этап 16: огонёк (EntityWisp), иногда — огонёк Выброса
+                var wisp = ConfigEntities.WISP.get().create(w);
+                if (wisp != null) {
+                    wisp.moveTo(this.getX() + this.random.nextGaussian() * 5.0, this.getY() + this.random.nextGaussian() * 5.0,
+                            this.getZ() + this.random.nextGaussian() * 5.0, 0.0F, 0.0F);
+                    if (w.random.nextInt(5) == 0) {
+                        wisp.setWispType(thaumcraft.api.aspects.Aspect.FLUX.getTag());
+                    }
+                    if (w.addFreshEntity(wisp)) {
+                        didit = true;
+                    }
+                }
             }
             case 1 -> {
                 EntityTaintSeedPrime seed = ConfigEntities.TAINT_SEED_PRIME.get().create(w);
