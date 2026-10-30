@@ -1,5 +1,8 @@
 {
   "values": [
+    "thaumcraft:common_crate",
+    "thaumcraft:uncommon_crate",
+    "thaumcraft:rare_crate",
     "thaumcraft:greatwood_planks",
     "thaumcraft:silverwood_planks",
     "thaumcraft:greatwood_stairs",

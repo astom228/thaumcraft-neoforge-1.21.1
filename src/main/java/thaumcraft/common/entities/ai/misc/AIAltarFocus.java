@@ -6,8 +6,8 @@ import thaumcraft.common.entities.monster.cult.EntityCultistCleric;
 
 /**
  * Ритуал у алтаря (порт AIAltarFocus): клирик-ритуалист стоит у своего дома (алтаря) и ничего больше не делает; раз в
- * 2 с бросает ритуал, если ушёл дальше 4 блоков. Проверка, что дом — потусторонний алтарь (BlocksTC.eldritch),
- * появится с блоком на этапе 17.
+ * 2 с бросает ритуал, если ушёл дальше 4 блоков. Проверку «дом — потусторонний алтарь» (BlocksTC.eldritch) оригинал делал
+ * с незарегистрированным в BETA17 блоком (null) — ритуал всегда прерывался; здесь остаётся только расстояние (DECISIONS 135).
  */
 public class AIAltarFocus extends Goal {
     private final EntityCultistCleric entity;
@@ -31,7 +31,6 @@ public class AIAltarFocus extends Goal {
     public void tick() {
         if (this.entity.hasRestriction() && this.entity.tickCount % 40 == 0
                 && this.entity.getRestrictCenter().distToCenterSqr(this.entity.getX(), this.entity.getY(), this.entity.getZ()) > 16.0) {
-            // TODO этап 17: || блок дома не BlocksTC.eldritch
             this.entity.setIsRitualist(false);
         }
     }

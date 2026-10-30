@@ -255,7 +255,7 @@ public class EntityEvents {
         if (world.getDifficulty() == Difficulty.HARD) {
             c -= allow ? 2 : 0;
         }
-        // TODO этап 17: в Чужих землях (dimensionOuterId) c -= 3
+        // в оригинале ещё c -= 3 в измерении Внешних земель (dimensionOuterId) — в BETA17 его нет
         var bg = world.getBiome(mob.blockPosition());
         if (bg.is(Tags.Biomes.IS_SPOOKY) || bg.is(Tags.Biomes.IS_NETHER) || bg.is(Tags.Biomes.IS_END)) {
             c -= allow ? 2 : 1;

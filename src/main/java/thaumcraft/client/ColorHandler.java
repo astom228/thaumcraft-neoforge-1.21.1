@@ -29,6 +29,9 @@ public class ColorHandler {
             }
             return level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor();
         }, BlocksTC.leafGreatwood.get(), BlocksTC.leafSilverwood.get());
+        // Живая трава — цвет травы биома
+        event.register((state, level, pos, tintIndex) -> level != null && pos != null ? net.minecraft.client.renderer.BiomeColors.getAverageGrassColor(level, pos)
+                : net.minecraft.world.level.GrassColor.getDefaultColor(), BlocksTC.grassAmbient.get());
         // crystalColourHandler: вис-кристаллы — цвет аспекта
         for (DeferredBlock<Block> c : CRYSTALS()) {
             event.register((state, level, pos, tintIndex) -> ((BlockCrystal) state.getBlock()).aspect.getColor(), c.get());
@@ -44,6 +47,7 @@ public class ColorHandler {
         // В оригинале предмет берёт цвет блока без мира: базовый цвет листвы / белый
         event.register((stack, tintIndex) -> FoliageColor.getDefaultColor(), BlocksTC.leafGreatwood.get());
         event.register((stack, tintIndex) -> 0xFFFFFF, BlocksTC.leafSilverwood.get());
+        event.register((stack, tintIndex) -> 0xFF000000 | net.minecraft.world.level.GrassColor.getDefaultColor(), BlocksTC.grassAmbient.get());
         // itemEssentiaColourHandler: вис-кристалл окрашивается цветом первого аспекта
         event.register((stack, tintIndex) -> {
             AspectList al = ((ItemGenericEssentiaContainer) stack.getItem()).getAspects(stack);

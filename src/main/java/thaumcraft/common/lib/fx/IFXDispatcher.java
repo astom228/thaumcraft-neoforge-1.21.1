@@ -207,6 +207,10 @@ public interface IFXDispatcher {
     default void cultistSpawn(double x, double y, double z, double a, double b, double c) {
     }
 
+    /** Огоньки-пылинки над блоком (живая трава). */
+    default void drawWispyMotesOnBlock(net.minecraft.core.BlockPos pp, int age, float grav) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

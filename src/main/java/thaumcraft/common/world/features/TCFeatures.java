@@ -17,6 +17,12 @@ public final class TCFeatures {
     public static final Supplier<Feature<NoneFeatureConfiguration>> ORES = FEATURES.register("ores", () -> new FeatureOres(NoneFeatureConfiguration.CODEC));
     public static final Supplier<Feature<NoneFeatureConfiguration>> VEGETATION = FEATURES.register("vegetation",
             () -> new FeatureVegetation(NoneFeatureConfiguration.CODEC));
+    public static final Supplier<Feature<NoneFeatureConfiguration>> MAGICAL_FOREST = FEATURES.register("magical_forest",
+            () -> new FeatureMagicalForest(NoneFeatureConfiguration.CODEC, false));
+    public static final Supplier<Feature<NoneFeatureConfiguration>> MAGICAL_FOREST_POST = FEATURES.register("magical_forest_post",
+            () -> new FeatureMagicalForest(NoneFeatureConfiguration.CODEC, true));
+
+    public static final Supplier<Feature<NoneFeatureConfiguration>> SURFACE = FEATURES.register("surface", () -> new FeatureSurface(NoneFeatureConfiguration.CODEC));
 
     private TCFeatures() {
     }

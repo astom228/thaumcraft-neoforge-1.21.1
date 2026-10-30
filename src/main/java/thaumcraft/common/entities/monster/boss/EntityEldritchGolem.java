@@ -172,7 +172,9 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
                         this.getBoundingBox().minY + 0.1, this.getZ() + (this.random.nextFloat() - 0.5) * this.getBbWidth(), 4.0 * (this.random.nextFloat() - 0.5), 0.5,
                         (this.random.nextFloat() - 0.5) * 4.0);
             }
-            // TODO этап 17: урны и ящики с добычей (BlockLoot) под ногами разбиваются
+            if (!this.level().isClientSide && bs.getBlock() instanceof thaumcraft.common.blocks.world.BlockLoot) {
+                this.level().destroyBlock(this.blockPosition(), true);
+            }
         }
         if (!this.level().isClientSide) {
             BlockPos pos = this.blockPosition();

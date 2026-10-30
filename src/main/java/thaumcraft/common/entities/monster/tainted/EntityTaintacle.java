@@ -106,16 +106,21 @@ public class EntityTaintacle extends Monster implements ITaintedMob {
         }
     }
 
-    /** Малое щупальце под цель, если она стоит на скверне (в 1.12 — ещё в биоме Потустороннего, этап 17). */
+    /** Малое щупальце под цель, если она стоит на скверне или во Внешних землях (там ещё и прорастают волокна). */
     public static void spawnTentacles(Mob source, Entity entity) {
         Level w = source.level();
-        if (onTaint(w, entity.blockPosition())) {
+        boolean outer = w.getBiome(entity.blockPosition()).is(thaumcraft.common.world.biomes.BiomeHandler.ELDRITCH);
+        if (outer || onTaint(w, entity.blockPosition())) {
             EntityTaintacleSmall taintlet = ConfigEntities.TAINTACLE_SMALL.get().create(w);
             if (taintlet != null) {
                 taintlet.moveTo(entity.getX() + w.random.nextFloat() - w.random.nextFloat(), entity.getY(),
                         entity.getZ() + w.random.nextFloat() - w.random.nextFloat(), 0.0F, 0.0F);
                 w.addFreshEntity(taintlet);
                 source.playSound(SoundsTC.tentacle.get(), 1.0F, 1.0F);
+            }
+            BlockPos p = entity.blockPosition();
+            if (outer && w.isEmptyBlock(p) && thaumcraft.common.lib.utils.BlockUtils.isAdjacentToSolidBlock(w, p)) {
+                w.setBlockAndUpdate(p, thaumcraft.api.blocks.BlocksTC.taintFibre.get().defaultBlockState());
             }
         }
     }

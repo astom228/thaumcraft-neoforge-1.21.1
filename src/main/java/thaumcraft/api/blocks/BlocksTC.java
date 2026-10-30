@@ -133,6 +133,25 @@ public class BlocksTC {
     public static final DeferredBlock<Block> leafSilverwood = register("silverwood_leaves",
             () -> new BlockLeavesTC(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.COLOR_LIGHT_BLUE)));
     // Растения (BlockBush): прочность 0; свет setLightLevel(0.4/0.5/0.4) → 6/7/6
+    // Ящики и урны с добычей (BlockLoot): прочность 0.15, сопротивление 0; ящик — дерево, урна — камень со звуком урны
+    public static final DeferredBlock<Block> lootCrateCommon = register("common_crate", () -> new thaumcraft.common.blocks.world.BlockLoot(
+            thaumcraft.common.blocks.world.BlockLoot.LootType.COMMON, false, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(0.15F, 0.0F).sound(SoundType.WOOD).noOcclusion()));
+    public static final DeferredBlock<Block> lootCrateUncommon = register("uncommon_crate", () -> new thaumcraft.common.blocks.world.BlockLoot(
+            thaumcraft.common.blocks.world.BlockLoot.LootType.UNCOMMON, false, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(0.15F, 0.0F).sound(SoundType.WOOD).noOcclusion()));
+    public static final DeferredBlock<Block> lootCrateRare = register("rare_crate", () -> new thaumcraft.common.blocks.world.BlockLoot(
+            thaumcraft.common.blocks.world.BlockLoot.LootType.RARE, false, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(0.15F, 0.0F).sound(SoundType.WOOD).noOcclusion()));
+    public static final DeferredBlock<Block> lootUrnCommon = register("common_urn", () -> new thaumcraft.common.blocks.world.BlockLoot(
+            thaumcraft.common.blocks.world.BlockLoot.LootType.COMMON, true, BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.15F, 0.0F)
+                    .sound(thaumcraft.common.lib.SoundsTC.URN).noOcclusion()));
+    public static final DeferredBlock<Block> lootUrnUncommon = register("uncommon_urn", () -> new thaumcraft.common.blocks.world.BlockLoot(
+            thaumcraft.common.blocks.world.BlockLoot.LootType.UNCOMMON, true, BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.15F, 0.0F)
+                    .sound(thaumcraft.common.lib.SoundsTC.URN).noOcclusion()));
+    public static final DeferredBlock<Block> lootUrnRare = register("rare_urn", () -> new thaumcraft.common.blocks.world.BlockLoot(
+            thaumcraft.common.blocks.world.BlockLoot.LootType.RARE, true, BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.15F, 0.0F)
+                    .sound(thaumcraft.common.lib.SoundsTC.URN).noOcclusion()));
+    // Живая трава (BlockGrassAmbient): трава с прочностью 0.6 и звуком гравия (SoundType.GROUND 1.12)
+    public static final DeferredBlock<Block> grassAmbient = register("grass_ambient", () -> new thaumcraft.common.blocks.world.BlockGrassAmbient(
+            BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).strength(0.6F).sound(net.minecraft.world.level.block.SoundType.GRAVEL)));
     public static final DeferredBlock<Block> shimmerleaf = register("shimmerleaf", () -> new BlockPlantShimmerleaf(plant(6)));
     public static final DeferredBlock<Block> cinderpearl = register("cinderpearl", () -> new BlockPlantCinderpearl(plant(7)));
     public static final DeferredBlock<Block> vishroom = register("vishroom", () -> new BlockPlantVishroom(plant(6)));

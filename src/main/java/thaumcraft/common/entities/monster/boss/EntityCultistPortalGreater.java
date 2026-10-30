@@ -125,7 +125,9 @@ public class EntityCultistPortalGreater extends Monster {
                 if (this.stagecounter == 160 && this.stage == 0) {
                     this.placeBanners();
                 }
-                // TODO этап 17: на этапе 0 (счётчик 20–150, раз в 13 тиков) вокруг появляются ящики с добычей (lootCrate*)
+                if (this.stagecounter > 20 && this.stagecounter < 150 && this.stage == 0 && this.stagecounter % 13 == 0) {
+                    this.placeLootCrate();
+                }
             }
             if (this.stage < 12) {
                 this.heal(1.0F);
@@ -158,6 +160,22 @@ public class EntityCultistPortalGreater extends Monster {
                         new PacketFXBlockArc(bp, this, 0.5F + this.random.nextFloat() * 0.2F, 0.0F, 0.0F));
                 this.playSound(SoundsTC.wandfail.get(), 1.0F, 1.0F);
             }
+        }
+    }
+
+    /** На этапе 0 вокруг портала появляются ящики с добычей (обычный 80%, необычный 15%, редкий 5%). */
+    private void placeLootCrate() {
+        int a = (int) this.getX() + this.random.nextInt(5) - this.random.nextInt(5);
+        int b = (int) this.getZ() + this.random.nextInt(5) - this.random.nextInt(5);
+        BlockPos bp = new BlockPos(a, (int) this.getY(), b);
+        if (a != (int) this.getX() && b != (int) this.getZ() && this.level().isLoaded(bp) && this.level().isEmptyBlock(bp)) {
+            this.level().broadcastEntityEvent(this, (byte) 16);
+            float rr = this.level().random.nextFloat();
+            var bb = rr < 0.05F ? BlocksTC.lootCrateRare.get() : (rr < 0.2F ? BlocksTC.lootCrateUncommon.get() : BlocksTC.lootCrateCommon.get());
+            this.level().setBlockAndUpdate(bp, bb.defaultBlockState());
+            PacketDistributor.sendToPlayersNear((ServerLevel) this.level(), null, this.getX(), this.getY(), this.getZ(), 32.0,
+                    new PacketFXBlockArc(bp, this, 0.5F + this.random.nextFloat() * 0.2F, 0.0F, 0.0F));
+            this.playSound(SoundsTC.wandfail.get(), 1.0F, 1.0F);
         }
     }
 

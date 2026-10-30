@@ -660,7 +660,7 @@ public class EntityPech extends Monster implements RangedAttackMob {
         forArc.add(new Trade(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
         forArc.add(new Trade(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
         forArc.add(new Trade(3, new ItemStack(Items.GOLDEN_APPLE)));
-        // TODO этап 17: Око потустороннего (eldritchEye), ценность 4
+        // Око потустороннего (eldritchEye) в BETA17 не зарегистрировано — товар был пустым; не переносится (DECISIONS 135)
         forArc.add(new Trade(4, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)));
         forInv.add(new Trade(4, new ItemStack(Items.SPECTRAL_ARROW)));
         forArc.add(new Trade(5, new ItemStack(ItemsTC.ringApprentice.get())));

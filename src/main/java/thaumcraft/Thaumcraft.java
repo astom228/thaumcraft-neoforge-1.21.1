@@ -66,6 +66,8 @@ public class Thaumcraft {
     private void commonSetup(FMLCommonSetupEvent event) {
         // ConfigAspects.registerEntityAspects (в оригинале — postInit); не зависит от данных мира
         event.enqueueWork(ConfigAspects::initEntities);
+        // registerBiomes оригинала: Магический лес в Верхнем мире (регион TerraBlender)
+        event.enqueueWork(thaumcraft.common.world.biomes.TCRegion::register);
         // ConfigItems.initFoci (в оригинале — preInit): элементы фокусов, до чтения любых пакетов
         event.enqueueWork(ConfigItems::initFoci);
         // init оригинала: категории и файлы исследований (дополнения регистрируют свои там же)

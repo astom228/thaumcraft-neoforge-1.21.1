@@ -180,4 +180,15 @@ public class BlockUtils {
     public static boolean isPortableHoleBlackListed(net.minecraft.world.level.block.state.BlockState state) {
         return state.is(thaumcraft.common.lib.TCTags.Blocks.PORTABLE_HOLE_BLACKLIST);
     }
+
+    /** Есть ли рядом сплошная грань соседа, обращённая к pos. */
+    public static boolean isAdjacentToSolidBlock(net.minecraft.world.level.Level world, net.minecraft.core.BlockPos pos) {
+        for (net.minecraft.core.Direction face : net.minecraft.core.Direction.values()) {
+            net.minecraft.core.BlockPos n = pos.relative(face);
+            if (world.isLoaded(n) && world.getBlockState(n).isFaceSturdy(world, n, face.getOpposite())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

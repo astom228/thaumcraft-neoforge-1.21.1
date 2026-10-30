@@ -1,6 +1,9 @@
 {
   "attribute.name.thaumcraft.mob_mod": "Champion modifier",
   "attribute.name.thaumcraft.mob_mod_taint": "Tainted modifier",
+  "biome.thaumcraft.eerie": "Eerie",
+  "biome.thaumcraft.eldritch": "Outer Lands",
+  "biome.thaumcraft.magical_forest": "Magical Forest",
   "block.thaumcraft.advanced_alchemical_construct": "Advanced Alchemical Construct",
   "block.thaumcraft.aer_crystal": "Air Crystal",
   "block.thaumcraft.alchemical_construct": "Alchemical Construct",

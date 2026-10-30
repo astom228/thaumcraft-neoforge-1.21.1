@@ -36,7 +36,11 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
                 thaumatorium.get(), thaumatoriumTop.get(), brainBox.get(),
                 infusionMatrix.get(), pedestalArcane.get(), pedestalAncient.get(), pedestalEldritch.get(), pillarArcane.get(), pillarAncient.get(),
                 pillarEldritch.get(), infernalFurnace.get(), spa.get(), potionSprayer.get(), rechargePedestal.get(), visBattery.get(), dioptra.get(), stabilizer.get(), condenser.get(), condenserlattice.get(), condenserlatticeDirty.get(), patternCrafter.get(), taintRock.get(), taintGeyser.get(), placeholderNetherbrick.get(), placeholderObsidian.get());
-        tag(BlockTags.MINEABLE_WITH_SHOVEL).add(taintSoil.get(), taintCrust.get());
+        tag(BlockTags.MINEABLE_WITH_SHOVEL).add(taintSoil.get(), taintCrust.get(), grassAmbient.get());
+        // живая трава — почва для растений и деревьев, как трава
+        tag(BlockTags.DIRT).add(grassAmbient.get());
+        tag(BlockTags.MINEABLE_WITH_AXE).add(lootCrateCommon.get(), lootCrateUncommon.get(), lootCrateRare.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(lootUrnCommon.get(), lootUrnUncommon.get(), lootUrnRare.get());
         tag(BlockTags.NEEDS_STONE_TOOL).add(oreAmber.get());
         tag(BlockTags.NEEDS_IRON_TOOL).add(oreCinnabar.get());
         tag(BlockTags.MINEABLE_WITH_AXE).add(plankGreatwood.get(), plankSilverwood.get(), stairsGreatwood.get(), stairsSilverwood.get(),

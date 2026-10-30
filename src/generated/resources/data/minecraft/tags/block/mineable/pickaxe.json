@@ -66,6 +66,9 @@
     "thaumcraft:taint_rock",
     "thaumcraft:taint_geyser",
     "thaumcraft:placeholder_brick",
-    "thaumcraft:placeholder_obsidian"
+    "thaumcraft:placeholder_obsidian",
+    "thaumcraft:common_urn",
+    "thaumcraft:uncommon_urn",
+    "thaumcraft:rare_urn"
   ]
 }

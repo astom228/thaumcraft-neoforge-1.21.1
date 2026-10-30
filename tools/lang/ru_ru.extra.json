@@ -999,5 +999,15 @@
   "item.thaumcraft.taintacle_spawn_egg": "Яйцо призыва: Заражённое щупальце",
   "item.thaumcraft.taintswarm_spawn_egg": "Яйцо призыва: Заражённый рой",
   "item.thaumcraft.taint_seed_spawn_egg": "Яйцо призыва: Семя заражения",
-  "item.thaumcraft.taint_seed_prime_spawn_egg": "Яйцо призыва: Гигантское семя заражения"
+  "item.thaumcraft.taint_seed_prime_spawn_egg": "Яйцо призыва: Гигантское семя заражения",
+  "block.thaumcraft.grass_ambient": "Живая трава",
+  "biome.thaumcraft.magical_forest": "Магический лес",
+  "biome.thaumcraft.eerie": "Зловещие земли",
+  "biome.thaumcraft.eldritch": "Внешние земли",
+  "block.thaumcraft.common_crate": "Обычный ящик",
+  "block.thaumcraft.common_urn": "Обычная урна",
+  "block.thaumcraft.uncommon_crate": "Необычный ящик",
+  "block.thaumcraft.uncommon_urn": "Необычная урна",
+  "block.thaumcraft.rare_crate": "Редкий ящик",
+  "block.thaumcraft.rare_urn": "Редкая урна"
 }

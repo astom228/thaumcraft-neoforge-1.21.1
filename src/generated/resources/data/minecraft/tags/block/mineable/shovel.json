@@ -1,6 +1,7 @@
 {
   "values": [
     "thaumcraft:taint_soil",
-    "thaumcraft:taint_crust"
+    "thaumcraft:taint_crust",
+    "thaumcraft:grass_ambient"
   ]
 }

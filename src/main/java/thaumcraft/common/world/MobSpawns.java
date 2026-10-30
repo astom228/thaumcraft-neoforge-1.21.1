@@ -30,12 +30,13 @@ import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityPech;
 import thaumcraft.common.entities.monster.EntityWisp;
+import thaumcraft.common.world.biomes.BiomeHandler;
 
 /**
  * Естественное появление существ (postInitEntitySpawns оригинала). Модификатор биомов «thaumcraft:mob_spawns» читает
  * настройки allowSpawn* при загрузке мира: злобные зомби — во всех биомах Верхнего мира с монстрами (вес 10), пехи —
  * в волшебных биомах (10), огненные летучие мыши — в Незере (10, по 1–2) и 31 октября по всему Верхнему миру (5),
- * огоньки — в Незере (5). Биомы Thaumcraft (свои спавны стражей, щупалец, пехов) — этап 17.
+ * огоньки — в Незере (5); в Магическом лесу — пехи и огоньки (20, по 1–2), в Зловещих землях — злобные/яростные зомби, огоньки, стражи.
  */
 public final class MobSpawns {
     public static final DeferredRegister<MapCodec<? extends BiomeModifier>> SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS,
@@ -80,6 +81,27 @@ public final class MobSpawns {
             if (ModConfig.CONFIG_WORLD.allowSpawnWisp.get() && nether) {
                 spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ConfigEntities.WISP.get(), 5, 1, 1));
             }
+            // свои списки биомов Thaumcraft (конструкторы BiomeGenMagicalForest / BiomeGenEerie)
+            if (biome.is(BiomeHandler.MAGICAL_FOREST)) {
+                if (ModConfig.CONFIG_WORLD.allowSpawnPech.get()) {
+                    spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ConfigEntities.PECH.get(), 20, 1, 2));
+                }
+                if (ModConfig.CONFIG_WORLD.allowSpawnWisp.get()) {
+                    spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ConfigEntities.WISP.get(), 20, 1, 2));
+                }
+            }
+            if (biome.is(BiomeHandler.EERIE)) {
+                if (ModConfig.CONFIG_WORLD.allowSpawnAngryZombie.get()) {
+                    spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ConfigEntities.BRAINY_ZOMBIE.get(), 32, 1, 1));
+                    spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ConfigEntities.GIANT_BRAINY_ZOMBIE.get(), 8, 1, 1));
+                }
+                if (ModConfig.CONFIG_WORLD.allowSpawnWisp.get()) {
+                    spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ConfigEntities.WISP.get(), 3, 1, 1));
+                }
+                if (ModConfig.CONFIG_WORLD.allowSpawnElder.get()) {
+                    spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ConfigEntities.ELDRITCH_GUARDIAN.get(), 1, 1, 1));
+                }
+            }
         }
 
         @Override
@@ -92,6 +114,10 @@ public final class MobSpawns {
     public static void registerPlacements(RegisterSpawnPlacementsEvent event) {
         event.register(ConfigEntities.BRAINY_ZOMBIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ConfigEntities.GIANT_BRAINY_ZOMBIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ConfigEntities.INHABITED_ZOMBIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ConfigEntities.PECH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MobSpawns::checkPech,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ConfigEntities.FIRE_BAT.get(), SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MobSpawns::checkFireBat,
@@ -102,9 +128,10 @@ public final class MobSpawns {
                 EntityEldritchGuardian::checkGuardianSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
-    /** Пех: не больше 4 в 16 блоках, волшебный биом, только в Верхнем мире (биомы Thaumcraft — этап 17), правила монстров. */
+    /** Пех: не больше 4 в 16 блоках, волшебный биом; вне Верхнего мира — только Магический лес и Зловещие земли; правила монстров. */
     private static boolean checkPech(EntityType<EntityPech> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource rand) {
-        if (!level.getBiome(pos).is(Tags.Biomes.IS_MAGICAL) || level.getLevel().dimension() != Level.OVERWORLD) {
+        var biome = level.getBiome(pos);
+        if (!biome.is(Tags.Biomes.IS_MAGICAL) || level.getLevel().dimension() != Level.OVERWORLD && !biome.is(BiomeHandler.MAGICAL_FOREST) && !biome.is(BiomeHandler.EERIE)) {
             return false;
         }
         return level.getEntitiesOfClass(EntityPech.class, new AABB(pos).inflate(16.0)).size() < 4 && Monster.checkMonsterSpawnRules(type, level, reason, pos, rand);

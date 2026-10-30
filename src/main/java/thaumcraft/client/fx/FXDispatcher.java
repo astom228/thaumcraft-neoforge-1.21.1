@@ -134,6 +134,7 @@ public class FXDispatcher implements IFXDispatcher {
         ParticleEngine.addEffectWithDelay(this.getWorld(), fb, delay);
     }
 
+    @Override
     public void drawWispyMotesOnBlock(BlockPos pp, int age, float grav) {
         this.drawWispyMotes(pp.getX() + this.getWorld().random.nextFloat(), pp.getY(), pp.getZ() + this.getWorld().random.nextFloat(),
                 0.0, 0.0, 0.0, age,

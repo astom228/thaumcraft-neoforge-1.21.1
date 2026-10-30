@@ -12,6 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
@@ -55,6 +56,8 @@ public class TCBlockLootTables extends BlockLootSubProvider {
                         .apply(ApplyBonusCount.addOreBonusCount(fortune))))));
         add(BlocksTC.oreQuartz.get(), b -> createOreDrop(b, Items.QUARTZ));
         dropSelf(BlocksTC.oreCinnabar.get());
+        // Живая трава — как трава: с шёлковым касанием сама, иначе земля
+        add(BlocksTC.grassAmbient.get(), b -> createSingleItemTableWithSilkTouch(b, Blocks.DIRT));
 
         // Листва
         add(BlocksTC.leafGreatwood.get(), b -> leaves(b, BlocksTC.saplingGreatwood.get(), GREATWOOD_SAPLING, null, fortune));
@@ -68,6 +71,11 @@ public class TCBlockLootTables extends BlockLootSubProvider {
 
         // Пористый камень: дроп считается в BlockStonePorous.getDrops (как getDrops оригинала)
         add(BlocksTC.stonePorous.get(), noDrop());
+        // Ящики и урны: дроп считается в BlockLoot.getDrops (как getDrops оригинала)
+        for (Block b : new Block[]{BlocksTC.lootCrateCommon.get(), BlocksTC.lootCrateUncommon.get(), BlocksTC.lootCrateRare.get(),
+                BlocksTC.lootUrnCommon.get(), BlocksTC.lootUrnUncommon.get(), BlocksTC.lootUrnRare.get()}) {
+            add(b, noDrop());
+        }
         // Вис-кристаллы: дроп в BlockCrystal.getDrops (рост + 1 вис-кристаллов)
         for (var c : new Block[]{BlocksTC.crystalAir.get(), BlocksTC.crystalFire.get(), BlocksTC.crystalWater.get(), BlocksTC.crystalEarth.get(),
                 BlocksTC.crystalOrder.get(), BlocksTC.crystalEntropy.get(), BlocksTC.crystalTaint.get()}) {

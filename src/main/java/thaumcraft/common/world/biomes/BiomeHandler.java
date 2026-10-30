@@ -16,12 +16,15 @@ import thaumcraft.api.aspects.Aspect;
  * В 1.12 биомы описывались типами BiomeDictionary, в 1.21 — тегами c:is_*; соответствие задано в {@link Type}.
  */
 public class BiomeHandler {
-    /** Биом «Волшебный лес» (этап 17.3). */
+    /** Биом «Магический лес». */
     public static final net.minecraft.resources.ResourceKey<Biome> MAGICAL_FOREST = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BIOME,
             net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumcraft", "magical_forest"));
-    /** Биом «Жуткий» (этап 17.3). */
+    /** Биом «Зловещие земли». */
     public static final net.minecraft.resources.ResourceKey<Biome> EERIE = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BIOME,
             net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumcraft", "eerie"));
+    /** Биом «Внешние земли» (только регистрация, как в оригинале). */
+    public static final net.minecraft.resources.ResourceKey<Biome> ELDRITCH = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BIOME,
+            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumcraft", "eldritch"));
     /** Типы BiomeDictionary 1.12 и соответствующие им теги биомов 1.21. */
     public enum Type {
         HOT(Tags.Biomes.IS_HOT), COLD(Tags.Biomes.IS_COLD), SPARSE(Tags.Biomes.IS_SPARSE_VEGETATION), DENSE(Tags.Biomes.IS_DENSE_VEGETATION),
@@ -102,7 +105,7 @@ public class BiomeHandler {
         return 0.0F;
     }
 
-    /** registerBiomes оригинала (часть с таблицей; регистрация биомов Thaumcraft — этап 17). Порядок важен: DRY записан дважды. */
+    /** registerBiomes оригинала (часть с таблицей; сами биомы — JSON и TCRegion). Порядок важен: DRY записан дважды. */
     public static void registerBiomeInfo() {
         registerBiomeInfo(Type.WATER, 0.33F, Aspect.WATER, false, 0.0F);
         registerBiomeInfo(Type.OCEAN, 0.33F, Aspect.WATER, false, 0.0F);

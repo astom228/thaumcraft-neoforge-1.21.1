@@ -49,7 +49,7 @@ import thaumcraft.common.lib.network.misc.PacketMiscEvent;
  * Потусторонний страж (порт EntityEldritchGuardian): нежить в плаще из тёмной дымки, броня 4, магия наносит ему половину.
  * Издалека (8–24 блока) стреляет потусторонними сферами (90%) или вопит (10%): иссушение и временное Искажение. Вблизи
  * бьёт рукой. Рядом с ним у игроков сгущается туман (кроме лёгкой сложности). Не больше одного в 32 блоках.
- * Поглощение в Чужих землях — этап 17.
+ * Поглощение в измерении Внешних земель не переносится — в BETA17 его нет (DECISIONS 135).
  */
 public class EntityEldritchGuardian extends Monster implements RangedAttackMob, IEldritchMob, IArmLifting {
     public float armLiftL = 0.0F;

@@ -634,6 +634,24 @@
       "src": "taint_fibre",
       "itemModel": "model:taint_fibre",
       "renderType": "minecraft:cutout"
+    },
+    "common_crate": {
+      "src": "loot_crate_common"
+    },
+    "common_urn": {
+      "src": "loot_urn_common"
+    },
+    "uncommon_crate": {
+      "src": "loot_crate_uncommon"
+    },
+    "uncommon_urn": {
+      "src": "loot_urn_uncommon"
+    },
+    "rare_crate": {
+      "src": "loot_crate_rare"
+    },
+    "rare_urn": {
+      "src": "loot_urn_rare"
     }
   },
   "items": {

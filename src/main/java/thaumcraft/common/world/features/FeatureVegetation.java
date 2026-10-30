@@ -71,7 +71,7 @@ public class FeatureVegetation extends Feature<NoneFeatureConfiguration> {
 
     /**
      * Серебродрево: растёт, если биом «поддерживает» великое дерево (с половинным шансом), или в волшебном биоме кроме
-     * Волшебного леса, или на холмах берёзового леса (условие оригинала дословно; лесные холмы в 1.21 слиты с лесом).
+     * Магического леса, или на холмах берёзового леса (условие оригинала дословно; лесные холмы в 1.21 слиты с лесом).
      */
     public static boolean generateSilverwood(WorldGenLevel world, RandomSource random, ChunkPos chunk) {
         int x = chunk.getMinBlockX() + 8 + Mth.nextInt(random, -4, 4);
