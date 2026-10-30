@@ -90,8 +90,7 @@ public class FXShieldRunes extends Particle implements IEngineParticle, ICustomR
         float b = 1.0F;
         int frame = Math.min(15, (int) (14.0F * fade) + 1);
         ResourceLocation tex;
-        // TODO этап 16: кроме культистов (EntityCultist) — у них руны, как у игрока
-        if (this.target instanceof Monster) {
+        if (this.target instanceof Monster && !(this.target instanceof thaumcraft.common.entities.monster.cult.EntityCultist)) {
             tex = TEX1[frame - 1];
             b = 0.5F;
         } else {

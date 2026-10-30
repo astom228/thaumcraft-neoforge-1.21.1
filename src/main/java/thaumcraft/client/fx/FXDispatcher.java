@@ -408,6 +408,19 @@ public class FXDispatcher implements IFXDispatcher {
         }
     }
 
+    @Override
+    public void cultistSpawn(double x, double y, double z, double a, double b, double c) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, a, b, c);
+        fb.setMaxAge(10 + this.getWorld().random.nextInt(10));
+        fb.setRBGColorF(1.0F, 1.0F, 1.0F, 0.6F, 0.0F, 0.0F);
+        fb.setAlphaF(0.8F);
+        fb.setGridSize(16);
+        fb.setParticles(160, 6, 1);
+        fb.setScale(3.0F + this.getWorld().random.nextFloat() * 2.0F);
+        fb.setLayer(1);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {

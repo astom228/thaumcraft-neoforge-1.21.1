@@ -194,8 +194,31 @@ public class WarpEvents {
         }
     }
 
-    /** TODO этап 16: малый портал культистов (EntityCultistPortalLesser) в 7–24 блоках, сообщение warp.text.16 — при появлении. */
+    /** Малый портал культистов в 7–24 блоках на непрозрачной опоре (50 попыток); незагруженные чанки пропускаются. */
     private static void spawnPortal(ServerPlayer player) {
+        var level = player.serverLevel();
+        var eg = thaumcraft.common.config.ConfigEntities.CULTIST_PORTAL_LESSER.get().create(level);
+        if (eg == null) {
+            return;
+        }
+        var rand = player.getRandom();
+        int i = net.minecraft.util.Mth.floor(player.getX());
+        int j = net.minecraft.util.Mth.floor(player.getY());
+        int k = net.minecraft.util.Mth.floor(player.getZ());
+        for (int l = 0; l < 50; l++) {
+            int i1 = i + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+            int j1 = j + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+            int k1 = k + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+            net.minecraft.core.BlockPos below = new net.minecraft.core.BlockPos(i1, j1 - 1, k1);
+            eg.setPos(i1 + 0.5, j1 + 1.0, k1 + 0.5);
+            if (level.isLoaded(below) && level.getBlockState(below).isSolidRender(level, below) && level.isUnobstructed(eg) && level.noCollision(eg)
+                    && !level.containsAnyLiquid(eg.getBoundingBox())) {
+                eg.finalizeSpawn(level, level.getCurrentDifficultyAt(eg.blockPosition()), net.minecraft.world.entity.MobSpawnType.EVENT, null);
+                level.addFreshEntity(eg);
+                message(player, "warp.text.16");
+                break;
+            }
+        }
     }
 
     /** До min(50, warp) пауков разума в 7–24 блоках на твёрдой опоре; ненастоящие видны только этому игроку и безвредны. */

@@ -142,6 +142,8 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Purifying Fluid / Liquid Death | Очищающая жидкость / Жидкая смерть | принято |
 | Crimson Cult / Cultist | Багровый культ / культист | принято |
 | Crimson Praetor | Багровый претор | принято |
+| Crimson Knight / Cleric | Багровый рыцарь / клирик | |
+| Lesser / Greater Crimson Portal | Малый / Большой багровый портал | |
 | Pech | Пех | принято |
 | Wisp | Огонёк | принято |
 | Fire Bat | Огненная летучая мышь | принято |

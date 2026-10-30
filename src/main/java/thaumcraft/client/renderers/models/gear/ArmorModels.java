@@ -52,6 +52,7 @@ public final class ArmorModels {
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderEldritchCrab.LAYER, thaumcraft.client.renderers.models.entity.ModelEldritchCrabLayer::create);
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderEldritchGuardian.LAYER, thaumcraft.client.renderers.models.entity.ModelEldritchGuardianLayer::create);
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderEldritchGolem.LAYER, thaumcraft.client.renderers.models.entity.ModelEldritchGolemLayer::create);
+        event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderCultist.LAYER, thaumcraft.client.renderers.entity.mob.RenderCultist::createLayer);
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderTaintSeed.LAYER, thaumcraft.client.renderers.models.entity.ModelTaintSeed::create);
         event.registerLayerDefinition(ROBE_CHEST, () -> ModelRobe.createLayer(false));
         event.registerLayerDefinition(ROBE_LEGS, () -> ModelRobe.createLayer(true));

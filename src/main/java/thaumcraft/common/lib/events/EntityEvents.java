@@ -63,7 +63,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 /**
  * События сущностей (порт EntityEvents): соли для ванн, чемпионы (появление, эффекты, добыча), заражение Выбросом,
- * исследования от урона, мозги из зомби, кристаллы от растворения. Добыча культистов — с культом (этап 16.4).
+ * исследования от урона, мозги из зомби, «Багровый обряд» из культистов, кристаллы от растворения.
  */
 @EventBusSubscriber(modid = Thaumcraft.MODID)
 public class EntityEvents {
@@ -197,7 +197,16 @@ public class EntityEvents {
         if (entity instanceof Zombie && !(entity instanceof EntityBrainyZombie) && event.isRecentlyHit() && world.random.nextInt(10) - looting < 1) {
             event.getDrops().add(new ItemEntity(world, entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ(), new ItemStack(ItemsTC.brain.get())));
         }
-        // TODO этап 16.4: культисты — шанс выронить «Багровый обряд» (curio 6)
+        // культисты: «Багровый обряд» — 1/4, пока не изучен культ (!CrimsonCultist@2), потом 1/20; 1/50, если обряд уже с собой
+        if (entity instanceof thaumcraft.common.entities.monster.cult.EntityCultist && !fakeplayer && event.getSource().getEntity() instanceof Player p) {
+            int c = !ThaumcraftCapabilities.getKnowledge(p).isResearchKnown("!CrimsonCultist@2") ? 4 : 20;
+            if (p.getInventory().contains(new ItemStack(ItemsTC.curioRites.get()))) {
+                c = 50;
+            }
+            if (world.random.nextInt(c) == 0) {
+                event.getDrops().add(new ItemEntity(world, entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ(), new ItemStack(ItemsTC.curioRites.get())));
+            }
+        }
         if (event.getSource().is(DamageSourceThaumcraft.DISSOLVE)) {
             AspectList aspects = AspectHelper.getEntityAspects(entity);
             if (aspects != null && aspects.size() > 0) {

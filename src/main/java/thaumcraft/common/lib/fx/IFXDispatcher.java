@@ -203,6 +203,10 @@ public interface IFXDispatcher {
     default void wispFXEG(double x, double y, double z, net.minecraft.world.entity.Entity target) {
     }
 
+    /** Красная вспышка появления культиста. */
+    default void cultistSpawn(double x, double y, double z, double a, double b, double c) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

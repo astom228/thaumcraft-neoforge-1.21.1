@@ -124,6 +124,22 @@ public class ConfigEntities {
     public static final Supplier<EntityType<thaumcraft.common.entities.monster.boss.EntityTaintacleGiant>> TAINTACLE_GIANT = ENTITIES.register("taintaclegiant",
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.boss.EntityTaintacleGiant>of(thaumcraft.common.entities.monster.boss.EntityTaintacleGiant::new, MobCategory.MONSTER).sized(1.1F, 6.0F)
                     .clientTrackingRange(8).updateInterval(3).build("taintaclegiant"));
+    // Багровый культ: CultistKnight, CultistCleric, CultistLeader, CultistPortalLesser, CultistPortalGreater (64, 3, true)
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.cult.EntityCultistKnight>> CULTIST_KNIGHT = ENTITIES.register("cultistknight",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.cult.EntityCultistKnight>of(thaumcraft.common.entities.monster.cult.EntityCultistKnight::new, MobCategory.MONSTER).sized(0.6F, 1.8F)
+                    .eyeHeight(1.62F).clientTrackingRange(8).updateInterval(3).build("cultistknight"));
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.cult.EntityCultistCleric>> CULTIST_CLERIC = ENTITIES.register("cultistcleric",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.cult.EntityCultistCleric>of(thaumcraft.common.entities.monster.cult.EntityCultistCleric::new, MobCategory.MONSTER).sized(0.6F, 1.8F)
+                    .eyeHeight(1.62F).clientTrackingRange(8).updateInterval(3).build("cultistcleric"));
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.boss.EntityCultistLeader>> CULTIST_LEADER = ENTITIES.register("cultistleader",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.boss.EntityCultistLeader>of(thaumcraft.common.entities.monster.boss.EntityCultistLeader::new, MobCategory.MONSTER).sized(0.75F, 2.25F)
+                    .eyeHeight(2.03F).clientTrackingRange(8).updateInterval(3).build("cultistleader"));
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.cult.EntityCultistPortalLesser>> CULTIST_PORTAL_LESSER = ENTITIES.register("cultistportallesser",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.cult.EntityCultistPortalLesser>of(thaumcraft.common.entities.monster.cult.EntityCultistPortalLesser::new, MobCategory.MONSTER).sized(1.5F, 3F)
+                    .fireImmune().clientTrackingRange(8).updateInterval(3).build("cultistportallesser"));
+    public static final Supplier<EntityType<thaumcraft.common.entities.monster.boss.EntityCultistPortalGreater>> CULTIST_PORTAL_GREATER = ENTITIES.register("cultistportalgreater",
+            () -> EntityType.Builder.<thaumcraft.common.entities.monster.boss.EntityCultistPortalGreater>of(thaumcraft.common.entities.monster.boss.EntityCultistPortalGreater::new, MobCategory.MONSTER).sized(1.5F, 3F)
+                    .fireImmune().clientTrackingRange(8).updateInterval(3).build("cultistportalgreater"));
     // EntityRegistry.registerModEntity(…, "FluxRift", …, 64, 20, false); рамка — по точкам разлома
     public static final Supplier<EntityType<thaumcraft.common.entities.EntityFluxRift>> FLUX_RIFT = ENTITIES.register("flux_rift",
             () -> EntityType.Builder.<thaumcraft.common.entities.EntityFluxRift>of(thaumcraft.common.entities.EntityFluxRift::new, MobCategory.MISC)
@@ -202,6 +218,11 @@ public class ConfigEntities {
         event.put(ELDRITCH_GOLEM.get(), thaumcraft.common.entities.monster.boss.EntityEldritchGolem.createAttributes().build());
         event.put(ELDRITCH_WARDEN.get(), thaumcraft.common.entities.monster.boss.EntityEldritchWarden.createAttributes().build());
         event.put(TAINTACLE_GIANT.get(), thaumcraft.common.entities.monster.boss.EntityTaintacleGiant.createGiantAttributes().build());
+        event.put(CULTIST_KNIGHT.get(), thaumcraft.common.entities.monster.cult.EntityCultistKnight.createAttributes().build());
+        event.put(CULTIST_CLERIC.get(), thaumcraft.common.entities.monster.cult.EntityCultistCleric.createAttributes().build());
+        event.put(CULTIST_LEADER.get(), thaumcraft.common.entities.monster.boss.EntityCultistLeader.createAttributes().build());
+        event.put(CULTIST_PORTAL_LESSER.get(), thaumcraft.common.entities.monster.cult.EntityCultistPortalLesser.createAttributes().build());
+        event.put(CULTIST_PORTAL_GREATER.get(), thaumcraft.common.entities.monster.boss.EntityCultistPortalGreater.createAttributes().build());
         event.put(WISP.get(), thaumcraft.common.entities.monster.EntityWisp.createAttributes().build());
         event.put(TAINT_SEED.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeed.createAttributes().build());
         event.put(TAINT_SEED_PRIME.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime.createAttributes().build());

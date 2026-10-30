@@ -966,5 +966,11 @@
   "entity.thaumcraft.golemorb": "Электрическая сфера",
   "entity.thaumcraft.eldritchwarden": "Потусторонний надзиратель",
   "entity.thaumcraft.eldritchwarden.custom": "%s %s",
-  "entity.thaumcraft.taintaclegiant": "Гигантское заражённое щупальце"
+  "entity.thaumcraft.taintaclegiant": "Гигантское заражённое щупальце",
+  "entity.thaumcraft.cultistknight": "Багровый рыцарь",
+  "entity.thaumcraft.cultistcleric": "Багровый клирик",
+  "entity.thaumcraft.cultistleader": "Багровый претор",
+  "entity.thaumcraft.cultistleader.custom": "Претор %s %s",
+  "entity.thaumcraft.cultistportalgreater": "Большой багровый портал",
+  "entity.thaumcraft.cultistportallesser": "Малый багровый портал"
 }

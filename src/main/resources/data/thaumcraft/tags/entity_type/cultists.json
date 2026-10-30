@@ -1,4 +1,8 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "thaumcraft:cultistknight",
+    "thaumcraft:cultistcleric",
+    "thaumcraft:cultistleader"
+  ]
 }
