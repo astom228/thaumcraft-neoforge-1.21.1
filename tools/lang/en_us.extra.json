@@ -140,5 +140,8 @@
   "entity.thaumcraft.eldritchorb": "Eldritch Orb",
   "champion.mod.tainted": "Tainted",
   "attribute.name.thaumcraft.mob_mod": "Champion modifier",
-  "attribute.name.thaumcraft.mob_mod_taint": "Tainted modifier"
+  "attribute.name.thaumcraft.mob_mod_taint": "Tainted modifier",
+  "entity.thaumcraft.eldritchgolem": "Eldritch Construct",
+  "entity.thaumcraft.eldritchgolem.custom": "%s Eldritch Construct",
+  "entity.thaumcraft.golemorb": "Golem Orb"
 }

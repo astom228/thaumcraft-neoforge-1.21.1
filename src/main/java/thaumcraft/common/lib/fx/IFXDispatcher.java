@@ -233,6 +233,9 @@ public interface IFXDispatcher {
     default void drawVentParticles(double x, double y, double z, double x2, double y2, double z2, int color) {
     }
 
+    default void drawVentParticles(double x, double y, double z, double x2, double y2, double z2, int color, float scale) {
+    }
+
     /** Текущая реализация (на клиенте подставляется в ThaumcraftClient). */
     static IFXDispatcher get() {
         return Holder.instance;
