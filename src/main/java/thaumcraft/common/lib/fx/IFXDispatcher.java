@@ -160,6 +160,14 @@ public interface IFXDispatcher {
     default void drawLightningFlash(double x, double y, double z, float r, float g, float b, float alpha, float scale) {
     }
 
+    /** Брызги порчи от бутылки (taintsplosionFX). */
+    default void taintsplosionFX(net.minecraft.world.entity.Entity e) {
+    }
+
+    /** Осколки бутылки порчи и звук разбитого зелья. */
+    default void bottleTaintBreak(double x, double y, double z) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

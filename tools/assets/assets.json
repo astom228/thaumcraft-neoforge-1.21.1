@@ -817,6 +817,7 @@
     "grapple_gun_2": "model:grapple_gun_2",
     "alumentum": "model:alumentum",
     "bath_salts": "model:bath_salts",
-    "sanity_soap": "model:sanity_soap"
+    "sanity_soap": "model:sanity_soap",
+    "bottle_of_taint": "model:bottle_taint"
   }
 }

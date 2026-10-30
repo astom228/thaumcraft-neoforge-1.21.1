@@ -289,6 +289,36 @@ public class FXDispatcher implements IFXDispatcher {
         ParticleEngine.addEffect(this.getWorld(), fb);
     }
 
+    @Override
+    public void taintsplosionFX(net.minecraft.world.entity.Entity e) {
+        var r = this.getWorld().random;
+        thaumcraft.client.fx.particles.FXBreakingFade fx = new thaumcraft.client.fx.particles.FXBreakingFade(this.getWorld(), e.getX(),
+                e.getY() + r.nextFloat() * e.getBbHeight(), e.getZ(), new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.SLIME_BALL));
+        if (r.nextBoolean()) {
+            fx.setRBGColorF(0.6F, 0.0F, 0.3F);
+            fx.setAlphaF(0.4F);
+        } else {
+            fx.setRBGColorF(0.3F, 0.0F, 0.3F);
+            fx.setAlphaF(0.6F);
+        }
+        fx.setSpeed(Math.random() * 2.0 - 1.0, Math.random() * 2.0 - 1.0, Math.random() * 2.0 - 1.0);
+        fx.boom();
+        fx.setParticleMaxAge((int) (66.0F / (r.nextFloat() * 0.9F + 0.1F)));
+        net.minecraft.client.Minecraft.getInstance().particleEngine.add(fx);
+    }
+
+    @Override
+    public void bottleTaintBreak(double x, double y, double z) {
+        var r = this.getWorld().random;
+        var opt = new net.minecraft.core.particles.ItemParticleOption(net.minecraft.core.particles.ParticleTypes.ITEM,
+                new net.minecraft.world.item.ItemStack(thaumcraft.api.items.ItemsTC.bottleTaint.get()));
+        for (int k1 = 0; k1 < 8; k1++) {
+            this.getWorld().addParticle(opt, x, y, z, r.nextGaussian() * 0.15, r.nextDouble() * 0.2, r.nextGaussian() * 0.15);
+        }
+        this.getWorld().playLocalSound(x, y, z, net.minecraft.sounds.SoundEvents.SPLASH_POTION_BREAK, net.minecraft.sounds.SoundSource.NEUTRAL, 1.0F,
+                r.nextFloat() * 0.1F + 0.9F, false);
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {

@@ -401,7 +401,8 @@ public class ConfigRecipes {
         purification("lead", ItemsTC.clusterLead.get(), oreTag("lead"));
         ThaumcraftApi.addCrucibleRecipe(id("liquiddeath"), new CrucibleRecipe("LIQUIDDEATH", new ItemStack(ItemsTC.bucketDeath.get()),
                 new ItemStack(Items.BUCKET), new AspectList().add(Aspect.DEATH, 100).add(Aspect.ALCHEMY, 20).add(Aspect.ENTROPY, 50)));
-        // TODO этап 15.6: BottleTaint (из фиала Выброса): FLUX 30, WATER 30
+        ThaumcraftApi.addCrucibleRecipe(id("bottletaint"), new CrucibleRecipe("BOTTLETAINT", new ItemStack(ItemsTC.bottleTaint.get()),
+                thaumcraft.common.items.consumables.ItemPhial.makePhial(Aspect.FLUX, 10), new AspectList().add(Aspect.FLUX, 30).add(Aspect.WATER, 30)));
         ThaumcraftApi.addCrucibleRecipe(id("sanesoap"), new CrucibleRecipe("SANESOAP", new ItemStack(ItemsTC.sanitySoap.get()),
                 new ItemStack(BlocksTC.fleshBlock.get()), new AspectList().add(Aspect.MIND, 75).add(Aspect.ELDRITCH, 50).add(Aspect.ORDER, 75).add(Aspect.LIFE, 50)));
         ThaumcraftApi.addCrucibleRecipe(id("bathsalts"), new CrucibleRecipe("BATHSALTS", new ItemStack(ItemsTC.bathSalts.get()),

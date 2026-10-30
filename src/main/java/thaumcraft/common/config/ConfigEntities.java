@@ -56,6 +56,10 @@ public class ConfigEntities {
     public static final Supplier<EntityType<thaumcraft.common.entities.EntityFluxRift>> FLUX_RIFT = ENTITIES.register("flux_rift",
             () -> EntityType.Builder.<thaumcraft.common.entities.EntityFluxRift>of(thaumcraft.common.entities.EntityFluxRift::new, MobCategory.MISC)
                     .sized(2.0F, 2.0F).clientTrackingRange(4).updateInterval(20).fireImmune().build("flux_rift"));
+    // EntityRegistry.registerModEntity(…, "BottleTaint", …, 64, 10, true)
+    public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityBottleTaint>> BOTTLE_TAINT = ENTITIES.register("bottle_taint",
+            () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityBottleTaint>of(thaumcraft.common.entities.projectile.EntityBottleTaint::new,
+                    MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("bottle_taint"));
     // EntityRegistry.registerModEntity(…, "TaintSeed", …, 64, 20, false)
     public static final Supplier<EntityType<thaumcraft.common.entities.monster.tainted.EntityTaintSeed>> TAINT_SEED = ENTITIES.register("taint_seed",
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.tainted.EntityTaintSeed>of(thaumcraft.common.entities.monster.tainted.EntityTaintSeed::new,
