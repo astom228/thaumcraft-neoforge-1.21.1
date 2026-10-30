@@ -16,6 +16,12 @@ import thaumcraft.api.aspects.Aspect;
  * В 1.12 биомы описывались типами BiomeDictionary, в 1.21 — тегами c:is_*; соответствие задано в {@link Type}.
  */
 public class BiomeHandler {
+    /** Биом «Волшебный лес» (этап 17.3). */
+    public static final net.minecraft.resources.ResourceKey<Biome> MAGICAL_FOREST = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BIOME,
+            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumcraft", "magical_forest"));
+    /** Биом «Жуткий» (этап 17.3). */
+    public static final net.minecraft.resources.ResourceKey<Biome> EERIE = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BIOME,
+            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumcraft", "eerie"));
     /** Типы BiomeDictionary 1.12 и соответствующие им теги биомов 1.21. */
     public enum Type {
         HOT(Tags.Biomes.IS_HOT), COLD(Tags.Biomes.IS_COLD), SPARSE(Tags.Biomes.IS_SPARSE_VEGETATION), DENSE(Tags.Biomes.IS_DENSE_VEGETATION),

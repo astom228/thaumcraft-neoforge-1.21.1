@@ -63,8 +63,15 @@ public class BlockSaplingTC extends BushBlock implements BonemealableBlock {
     }
 
     public void generateTree(ServerLevel level, BlockPos pos, BlockState state, RandomSource random) {
-        // TODO этап 17: WorldGenGreatwoodTrees(true, false) / WorldGenSilverwoodTrees(true, 7, 4).
-        // Оригинал: ставит воздух, пытается сгенерировать дерево, при неудаче возвращает саженец.
+        // ставит воздух, пытается вырастить дерево, при неудаче возвращает саженец
+        level.setBlock(pos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 4);
+        var w = new thaumcraft.common.world.objects.TreeWriter(level, null);
+        boolean ok = this == thaumcraft.api.blocks.BlocksTC.saplingSilverwood.get()
+                ? new thaumcraft.common.world.objects.WorldGenSilverwoodTrees(true, 7, 4).generate(w, random, pos)
+                : new thaumcraft.common.world.objects.WorldGenGreatwoodTrees(true, false).generate(w, random, pos);
+        if (!ok) {
+            level.setBlock(pos, state, 4);
+        }
     }
 
     @Override

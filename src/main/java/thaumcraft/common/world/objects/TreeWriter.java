@@ -43,7 +43,8 @@ public class TreeWriter {
             return false;
         }
         if (this.center == null) {
-            return true;
+            // рост саженца: только загруженные чанки (без подгрузки ради расчётов)
+            return this.level.hasChunkAt(p);
         }
         return Math.abs((p.getX() >> 4) - this.center.x) <= 1 && Math.abs((p.getZ() >> 4) - this.center.z) <= 1;
     }
