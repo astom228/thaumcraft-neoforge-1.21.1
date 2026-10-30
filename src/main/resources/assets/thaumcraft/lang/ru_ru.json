@@ -330,6 +330,8 @@
   "entity.thaumcraft.eldritchgolem.custom": "%s потусторонний голем",
   "entity.thaumcraft.eldritchguardian": "Потусторонний страж",
   "entity.thaumcraft.eldritchorb": "Потусторонняя сфера",
+  "entity.thaumcraft.eldritchwarden": "Потусторонний надзиратель",
+  "entity.thaumcraft.eldritchwarden.custom": "%s %s",
   "entity.thaumcraft.firebat": "Огненная летучая мышь",
   "entity.thaumcraft.flux_rift": "Разлом Выброса",
   "entity.thaumcraft.focus_cloud": "Облако фокуса",

@@ -143,5 +143,7 @@
   "attribute.name.thaumcraft.mob_mod_taint": "Tainted modifier",
   "entity.thaumcraft.eldritchgolem": "Eldritch Construct",
   "entity.thaumcraft.eldritchgolem.custom": "%s Eldritch Construct",
-  "entity.thaumcraft.golemorb": "Golem Orb"
+  "entity.thaumcraft.golemorb": "Golem Orb",
+  "entity.thaumcraft.eldritchwarden": "Eldritch Warden",
+  "entity.thaumcraft.eldritchwarden.custom": "%s the %s"
 }

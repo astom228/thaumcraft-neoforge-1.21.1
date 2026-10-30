@@ -279,6 +279,8 @@ public class EntityUtils {
             case 3 -> reapply(entity.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE), MIGHTYBUFF);
             case 5 -> {
                 int bh = (int) entity.getAttributeBaseValue(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH) / 2;
+                // в 1.21 поглощение ограничено атрибутом MAX_ABSORPTION
+                reapply(entity.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_ABSORPTION), new net.minecraft.world.entity.ai.attributes.AttributeModifier(rl("warded_absorption"), bh, ADD));
                 entity.setAbsorptionAmount(entity.getAbsorptionAmount() + bh);
             }
             default -> {

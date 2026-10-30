@@ -963,5 +963,7 @@
   "tc.boss.enrage": "приходит в ярость от ваших мощных ударов.",
   "entity.thaumcraft.eldritchgolem": "Потусторонний голем",
   "entity.thaumcraft.eldritchgolem.custom": "%s потусторонний голем",
-  "entity.thaumcraft.golemorb": "Электрическая сфера"
+  "entity.thaumcraft.golemorb": "Электрическая сфера",
+  "entity.thaumcraft.eldritchwarden": "Потусторонний надзиратель",
+  "entity.thaumcraft.eldritchwarden.custom": "%s %s"
 }

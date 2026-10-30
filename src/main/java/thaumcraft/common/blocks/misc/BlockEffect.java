@@ -67,6 +67,14 @@ public class BlockEffect extends Block {
         }
     }
 
+    /** Запланированный тик (updateTick оригинала обрабатывал и его): сок надзирателя исчезает через 250–400 тиков. */
+    @Override
+    protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+        if (this != BlocksTC.effectGlimmer.get()) {
+            world.removeBlock(pos, false);
+        }
+    }
+
     @Override
     protected void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (this != BlocksTC.effectGlimmer.get()) {

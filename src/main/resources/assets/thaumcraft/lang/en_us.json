@@ -402,6 +402,8 @@
   "entity.thaumcraft.eldritchgolem.custom": "%s Eldritch Construct",
   "entity.thaumcraft.eldritchguardian": "Eldritch Guardian",
   "entity.thaumcraft.eldritchorb": "Eldritch Orb",
+  "entity.thaumcraft.eldritchwarden": "Eldritch Warden",
+  "entity.thaumcraft.eldritchwarden.custom": "%s the %s",
   "entity.thaumcraft.firebat": "Fire Bat",
   "entity.thaumcraft.flux_rift": "Flux Rift",
   "entity.thaumcraft.focus_cloud": "Focus Cloud",
