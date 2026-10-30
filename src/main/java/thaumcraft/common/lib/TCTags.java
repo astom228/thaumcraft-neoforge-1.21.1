@@ -11,6 +11,12 @@ import net.minecraft.world.level.block.Block;
  * Например, ingotThaumium → c:ingots/thaumium, nuggetVoid → c:nuggets/void, oreAmber → c:ores/amber.
  */
 public final class TCTags {
+    public static final class EntityTypes {
+        /** Культисты Багрового культа (цели потусторонних существ — EntityCultist оригинала). */
+        public static final TagKey<net.minecraft.world.entity.EntityType<?>> CULTISTS = TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumcraft", "cultists"));
+    }
+
     public static final class Blocks {
         public static final TagKey<Block> ORES_AMBER = c("ores/amber");
         /** Блоки, сквозь которые не проходит «Разлом» (portableHoleBlackList оригинала: кровати, поршни, двери, адская печь). */

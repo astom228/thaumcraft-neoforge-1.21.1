@@ -935,5 +935,7 @@
   "entity.thaumcraft.taintcrawler": "Заражённый ползун",
   "entity.thaumcraft.taintswarm": "Заражённый рой",
   "entity.thaumcraft.taintacle": "Заражённое щупальце",
-  "entity.thaumcraft.taintacletiny": "Заражённый усик"
+  "entity.thaumcraft.taintacletiny": "Заражённый усик",
+  "entity.thaumcraft.eldritchcrab": "Потусторонний краб",
+  "entity.thaumcraft.inhabitedzombie": "Ходячая оболочка"
 }
