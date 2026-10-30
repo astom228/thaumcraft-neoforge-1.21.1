@@ -145,5 +145,6 @@
   "entity.thaumcraft.eldritchgolem.custom": "%s Eldritch Construct",
   "entity.thaumcraft.golemorb": "Golem Orb",
   "entity.thaumcraft.eldritchwarden": "Eldritch Warden",
-  "entity.thaumcraft.eldritchwarden.custom": "%s the %s"
+  "entity.thaumcraft.eldritchwarden.custom": "%s the %s",
+  "entity.thaumcraft.taintaclegiant": "Giant Taintacle"
 }

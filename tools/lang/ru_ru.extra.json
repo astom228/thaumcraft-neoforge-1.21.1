@@ -965,5 +965,6 @@
   "entity.thaumcraft.eldritchgolem.custom": "%s потусторонний голем",
   "entity.thaumcraft.golemorb": "Электрическая сфера",
   "entity.thaumcraft.eldritchwarden": "Потусторонний надзиратель",
-  "entity.thaumcraft.eldritchwarden.custom": "%s %s"
+  "entity.thaumcraft.eldritchwarden.custom": "%s %s",
+  "entity.thaumcraft.taintaclegiant": "Гигантское заражённое щупальце"
 }
