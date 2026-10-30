@@ -54,9 +54,25 @@ public class ModelFireBat<T extends Entity> extends EntityModel<T> {
         return LayerDefinition.create(md, 64, 64).bakeRoot();
     }
 
-    /** Поза в полёте (render оригинала, ветка «не висит»). */
+    /** Поза: висит вниз головой (огненная летучая мышь на потолке) или в полёте (render оригинала). */
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (entity instanceof thaumcraft.common.entities.monster.EntityFireBat bat && bat.getIsBatHanging()) {
+            this.batHead.xRot = headPitch * Mth.DEG_TO_RAD;
+            this.batHead.yRot = (float) Math.PI - netHeadYaw * Mth.DEG_TO_RAD;
+            this.batHead.zRot = (float) Math.PI;
+            this.batHead.setPos(0.0F, -2.0F, 0.0F);
+            this.batRightWing.setPos(-3.0F, 0.0F, 3.0F);
+            this.batLeftWing.setPos(3.0F, 0.0F, 3.0F);
+            this.batBody.xRot = (float) Math.PI;
+            this.batRightWing.xRot = (float) (-Math.PI / 20);
+            this.batRightWing.yRot = (float) (-Math.PI * 2.0 / 5.0);
+            this.batOuterRightWing.yRot = -1.7278761F;
+            this.batLeftWing.xRot = this.batRightWing.xRot;
+            this.batLeftWing.yRot = -this.batRightWing.yRot;
+            this.batOuterLeftWing.yRot = -this.batOuterRightWing.yRot;
+            return;
+        }
         this.batHead.xRot = headPitch * Mth.DEG_TO_RAD;
         this.batHead.yRot = netHeadYaw * Mth.DEG_TO_RAD;
         this.batHead.zRot = 0.0F;
