@@ -158,6 +158,11 @@ public final class ClientPacketHandlers {
         thaumcraft.client.fx.ParticleEngine.addEffect(world, new thaumcraft.client.fx.other.FXShieldRunes(world, p, 8, yaw, pitch));
     }
 
+    /** PacketSealToClient: печать поставлена/изменена/снята. */
+    public static void handleSeal(thaumcraft.common.lib.network.misc.PacketSealToClient msg) {
+        thaumcraft.client.lib.ClientSeals.handle(msg.data());
+    }
+
     /** PacketFXSonic: звуковая волна вопля потустороннего стража. */
     public static void handleSonic(thaumcraft.common.lib.network.fx.PacketFXSonic msg) {
         net.minecraft.client.multiplayer.ClientLevel world = Minecraft.getInstance().level;

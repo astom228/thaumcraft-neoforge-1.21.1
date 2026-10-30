@@ -223,6 +223,23 @@ public class ItemsTC {
     public static final DeferredItem<Item> charmVerdant = rare("verdant_charm", thaumcraft.common.items.baubles.ItemVerdantCharm::new);
     public static final DeferredItem<Item> charmVoidseer = rare("voidseer_charm", thaumcraft.common.items.baubles.ItemVoidseerCharm::new);
 
+    // Управляющие печати (ItemSealPlacer; в 1.12 — seals с метой): чистая и 15 типов
+    public static final DeferredItem<Item> sealBlank = seal("blank_seal", null);
+    public static final DeferredItem<Item> sealCollect = seal("collect_seal", "thaumcraft:pickup");
+    public static final DeferredItem<Item> sealCollectAdvanced = seal("advanced_collect_seal", "thaumcraft:pickup_advanced");
+    public static final DeferredItem<Item> sealStore = seal("store_seal", "thaumcraft:fill");
+    public static final DeferredItem<Item> sealStoreAdvanced = seal("advanced_store_seal", "thaumcraft:fill_advanced");
+    public static final DeferredItem<Item> sealEmpty = seal("empty_seal", "thaumcraft:empty");
+    public static final DeferredItem<Item> sealEmptyAdvanced = seal("advanced_empty_seal", "thaumcraft:empty_advanced");
+    public static final DeferredItem<Item> sealHarvest = seal("harvest_seal", "thaumcraft:harvest");
+    public static final DeferredItem<Item> sealButcher = seal("butcher_seal", "thaumcraft:butcher");
+    public static final DeferredItem<Item> sealGuard = seal("guard_seal", "thaumcraft:guard");
+    public static final DeferredItem<Item> sealGuardAdvanced = seal("advanced_guard_seal", "thaumcraft:guard_advanced");
+    public static final DeferredItem<Item> sealLumber = seal("lumberjack_seal", "thaumcraft:lumber");
+    public static final DeferredItem<Item> sealBreaker = seal("breaker_seal", "thaumcraft:breaker");
+    public static final DeferredItem<Item> sealUse = seal("use_seal", "thaumcraft:use");
+    public static final DeferredItem<Item> sealProvide = seal("provide_seal", "thaumcraft:provider");
+    public static final DeferredItem<Item> sealStock = seal("stock_seal", "thaumcraft:stock");
     // реликты и прочее: изначальная жемчужина (прочность 8), жезл пехов, мешки с добычей (по 16), счётчик рассудка
     public static final DeferredItem<Item> primordialPearl = ConfigItems.ITEMS.registerItem("primordial_pearl", thaumcraft.common.items.curios.ItemPrimordialPearl::new,
             new Item.Properties().durability(8).rarity(Rarity.UNCOMMON));
@@ -310,6 +327,14 @@ public class ItemsTC {
 
     private static DeferredItem<Item> curio(String name, int type) {
         return ConfigItems.ITEMS.registerItem(name, p -> new ItemCurio(type, p));
+    }
+
+    private static DeferredItem<Item> seal(String name, String key) {
+        DeferredItem<Item> item = ConfigItems.ITEMS.registerItem(name, p -> new thaumcraft.common.entities.construct.golem.seals.ItemSealPlacer(key, p));
+        if (key != null) {
+            thaumcraft.common.entities.construct.golem.seals.ItemSealPlacer.bind(key, item);
+        }
+        return item;
     }
 
     private static DeferredItem<Item> simple(String name) {

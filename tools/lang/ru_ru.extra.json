@@ -1009,5 +1009,21 @@
   "block.thaumcraft.uncommon_crate": "Необычный ящик",
   "block.thaumcraft.uncommon_urn": "Необычная урна",
   "block.thaumcraft.rare_crate": "Редкий ящик",
-  "block.thaumcraft.rare_urn": "Редкая урна"
+  "block.thaumcraft.rare_urn": "Редкая урна",
+  "item.thaumcraft.blank_seal": "Чистая печать",
+  "item.thaumcraft.collect_seal": "Управляющая печать: сбор",
+  "item.thaumcraft.advanced_collect_seal": "Улучшенная управляющая печать: сбор",
+  "item.thaumcraft.store_seal": "Управляющая печать: хранение",
+  "item.thaumcraft.advanced_store_seal": "Улучшенная управляющая печать: хранение",
+  "item.thaumcraft.empty_seal": "Управляющая печать: опустошение",
+  "item.thaumcraft.advanced_empty_seal": "Улучшенная управляющая печать: опустошение",
+  "item.thaumcraft.harvest_seal": "Управляющая печать: урожай",
+  "item.thaumcraft.butcher_seal": "Управляющая печать: забой",
+  "item.thaumcraft.guard_seal": "Управляющая печать: охрана",
+  "item.thaumcraft.advanced_guard_seal": "Улучшенная управляющая печать: охрана",
+  "item.thaumcraft.lumberjack_seal": "Управляющая печать: лесоруб",
+  "item.thaumcraft.breaker_seal": "Управляющая печать: разрушение блоков",
+  "item.thaumcraft.use_seal": "Управляющая печать: использование",
+  "item.thaumcraft.provide_seal": "Управляющая печать: снабжение",
+  "item.thaumcraft.stock_seal": "Управляющая печать: запас"
 }

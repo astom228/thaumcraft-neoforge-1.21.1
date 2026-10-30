@@ -140,4 +140,29 @@ public class InternalMethodHandler implements IInternalMethodHandler {
     public boolean shouldPreserveAura(Level world, Player player, BlockPos pos) {
         return AuraHandler.shouldPreserveAura(world, player, pos);
     }
+
+    @Override
+    public void registerSeal(thaumcraft.api.golems.seals.ISeal seal) {
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(seal);
+    }
+
+    @Override
+    public thaumcraft.api.golems.seals.ISeal getSeal(String key) {
+        return thaumcraft.common.entities.construct.golem.seals.SealHandler.getSeal(key);
+    }
+
+    @Override
+    public thaumcraft.api.golems.seals.ISealEntity getSealEntity(net.minecraft.resources.ResourceKey<Level> dim, thaumcraft.api.golems.seals.SealPos pos) {
+        return thaumcraft.common.entities.construct.golem.seals.SealHandler.getSealEntity(dim, pos);
+    }
+
+    @Override
+    public void addGolemTask(net.minecraft.resources.ResourceKey<Level> dim, thaumcraft.api.golems.tasks.Task task) {
+        thaumcraft.common.entities.construct.golem.tasks.TaskHandler.addTask(dim, task);
+    }
+
+    @Override
+    public net.minecraft.world.item.ItemStack getSealStack(String key) {
+        return thaumcraft.common.entities.construct.golem.seals.ItemSealPlacer.getSealStack(key);
+    }
 }

@@ -44,4 +44,14 @@ public interface IInternalMethodHandler {
     void addFlux(Level world, BlockPos pos, float amount, boolean showEffect);
 
     boolean shouldPreserveAura(Level world, Player player, BlockPos pos);
+
+    void registerSeal(thaumcraft.api.golems.seals.ISeal seal);
+
+    thaumcraft.api.golems.seals.ISeal getSeal(String key);
+
+    thaumcraft.api.golems.seals.ISealEntity getSealEntity(net.minecraft.resources.ResourceKey<Level> dim, thaumcraft.api.golems.seals.SealPos pos);
+
+    void addGolemTask(net.minecraft.resources.ResourceKey<Level> dim, thaumcraft.api.golems.tasks.Task task);
+
+    net.minecraft.world.item.ItemStack getSealStack(String key);
 }

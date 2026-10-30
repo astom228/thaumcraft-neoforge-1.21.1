@@ -26,4 +26,7 @@ public class ThaumcraftAttachments {
     /** Аура чанка (в оригинале — NBT чанка "Thaumcraft": base, vis, flux). */
     public static final Supplier<AttachmentType<AuraChunk>> AURA = ATTACHMENTS.register("aura",
             () -> AttachmentType.serializable(AuraChunk::new).build());
+    /** Печати чанка (в оригинале — NBT чанка "Thaumcraft": seals): {seals: [...]}; источник правды — SealHandler, сюда — копия. */
+    public static final Supplier<AttachmentType<net.minecraft.nbt.CompoundTag>> SEALS = ATTACHMENTS.register("seals",
+            () -> AttachmentType.builder(() -> new net.minecraft.nbt.CompoundTag()).serialize(net.minecraft.nbt.CompoundTag.CODEC).build());
 }

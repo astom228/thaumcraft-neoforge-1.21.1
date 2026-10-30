@@ -70,6 +70,10 @@ public class ServerEvents {
         }
         tickBlockSwap(level);
         tickBlockBreak(level);
+        if (level.getGameTime() % 20 == 0) {
+            thaumcraft.common.entities.construct.golem.tasks.TaskHandler.clearSuspendedOrExpiredTasks(level);
+        }
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.tickSealEntities(level);
     }
 
     @SubscribeEvent

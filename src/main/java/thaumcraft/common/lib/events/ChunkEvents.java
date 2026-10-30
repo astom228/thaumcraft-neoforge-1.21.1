@@ -23,6 +23,7 @@ public class ChunkEvents {
                 AuraHandler.generateAura(level, chunk, level.random);
             }
             AuraHandler.addAuraChunk(level, chunk);
+            thaumcraft.common.entities.construct.golem.seals.SealHandler.readChunk(level, chunk);
         }
     }
 
@@ -30,6 +31,9 @@ public class ChunkEvents {
     public static void chunkUnload(ChunkEvent.Unload event) {
         if (event.getLevel() instanceof ServerLevel level) {
             AuraHandler.removeAuraChunk(level, event.getChunk().getPos());
+            if (event.getChunk() instanceof LevelChunk lc) {
+                thaumcraft.common.entities.construct.golem.seals.SealHandler.unloadChunk(level, lc);
+            }
         }
     }
 
@@ -45,6 +49,23 @@ public class ChunkEvents {
         if (event.getLevel() instanceof ServerLevel level) {
             AuraHandler.removeAuraWorld(level);
             thaumcraft.common.blocks.world.taint.TaintHelper.clear(level);
+            thaumcraft.common.entities.construct.golem.seals.SealHandler.clear(level);
+            thaumcraft.common.entities.construct.golem.tasks.TaskHandler.clear(level);
+            thaumcraft.api.golems.GolemHelper.provisionRequests.remove(level.dimension());
+        }
+    }
+
+    /** chunkWatch оригинала: игрок начал видеть чанк — прислать ему печати этого чанка. */
+    @SubscribeEvent
+    public static void chunkWatch(net.neoforged.neoforge.event.level.ChunkWatchEvent.Sent event) {
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.sendChunkTo(event.getPlayer(), event.getPos());
+    }
+
+    /** Сохранение мира: печати загруженных чанков → вложения чанков. */
+    @SubscribeEvent
+    public static void worldSave(LevelEvent.Save event) {
+        if (event.getLevel() instanceof ServerLevel level) {
+            thaumcraft.common.entities.construct.golem.seals.SealHandler.saveAll(level);
         }
     }
 }
