@@ -52,6 +52,10 @@ public class ConfigEntities {
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.EntitySpellBat>of(thaumcraft.common.entities.monster.EntitySpellBat::new,
                     MobCategory.MONSTER).sized(0.5F, 0.9F).clientTrackingRange(4).updateInterval(3).build("spellbat"));
 
+    // EntityRegistry.registerModEntity(…, "FluxRift", …, 64, 20, false); рамка — по точкам разлома
+    public static final Supplier<EntityType<thaumcraft.common.entities.EntityFluxRift>> FLUX_RIFT = ENTITIES.register("flux_rift",
+            () -> EntityType.Builder.<thaumcraft.common.entities.EntityFluxRift>of(thaumcraft.common.entities.EntityFluxRift::new, MobCategory.MISC)
+                    .sized(2.0F, 2.0F).clientTrackingRange(4).updateInterval(20).fireImmune().build("flux_rift"));
     // EntityRegistry.registerModEntity(…, "TaintSeed", …, 64, 20, false)
     public static final Supplier<EntityType<thaumcraft.common.entities.monster.tainted.EntityTaintSeed>> TAINT_SEED = ENTITIES.register("taint_seed",
             () -> EntityType.Builder.<thaumcraft.common.entities.monster.tainted.EntityTaintSeed>of(thaumcraft.common.entities.monster.tainted.EntityTaintSeed::new,

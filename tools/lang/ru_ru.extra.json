@@ -916,5 +916,9 @@
   "block.thaumcraft.taint_geyser": "Гейзер порчи",
   "block.thaumcraft.taint_rock": "Заражённый камень",
   "block.thaumcraft.taint_soil": "Заражённая почва",
-  "block.thaumcraft.taintwood_log": "Бревно заражённого дерева"
+  "block.thaumcraft.taintwood_log": "Бревно заражённого дерева",
+  "entity.thaumcraft.flux_rift": "Разлом Выброса",
+  "tc.fluxevent.1": "Аура рядом внезапно скручивается и искажается, и ваши мысли путаются.",
+  "tc.fluxevent.2": "Местная аура на миг становится нестабильной и мешает вашей магии.",
+  "tc.fluxevent.3": "Кажется, в местной ауре слишком много Выброса!"
 }

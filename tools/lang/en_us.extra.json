@@ -121,5 +121,6 @@
   "effect.thaumcraft.sun_scorned": "Sun Scorned",
   "effect.thaumcraft.thaumarhia": "Thaumorrhea",
   "entity.thaumcraft.taint_seed": "Taint Seed",
-  "entity.thaumcraft.taint_seed_prime": "Giant Taint Seed"
+  "entity.thaumcraft.taint_seed_prime": "Giant Taint Seed",
+  "entity.thaumcraft.flux_rift": "Flux Rift"
 }
