@@ -129,5 +129,7 @@
   "entity.thaumcraft.thaumslime": "Thaumic Slime",
   "entity.thaumcraft.mindspider": "Mind Spider",
   "entity.thaumcraft.brainyzombie": "Angry Zombie",
-  "entity.thaumcraft.giantbrainyzombie": "Furious Zombie"
+  "entity.thaumcraft.giantbrainyzombie": "Furious Zombie",
+  "entity.thaumcraft.taintcrawler": "Taint Crawler",
+  "entity.thaumcraft.taintswarm": "Taint Swarm"
 }

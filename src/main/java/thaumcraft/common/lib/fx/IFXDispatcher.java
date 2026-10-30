@@ -180,6 +180,16 @@ public interface IFXDispatcher {
     default void slimeJumpFX(net.minecraft.world.entity.Entity e, int i) {
     }
 
+    /** Мошка роя (FXSwarm) вокруг сущности; возвращает частицу (на сервере — null). */
+    default Object swarmParticleFX(net.minecraft.world.entity.Entity e, float speed, float turnSpeed, float gravity) {
+        return null;
+    }
+
+    /** Частица ещё жива (для списков частиц у сущностей). */
+    default boolean isParticleAlive(Object particle) {
+        return false;
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

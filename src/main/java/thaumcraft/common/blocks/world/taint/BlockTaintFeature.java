@@ -67,8 +67,15 @@ public class BlockTaintFeature extends Block implements ITaintBlock {
     @Override
     protected void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moving) {
         if (!world.isClientSide && !state.is(newState.getBlock())) {
-            // TODO этап 16: с шансом 1/3 — ползун порчи (EntityTaintCrawler) вместо Выброса
-            AuraHelper.polluteAura(world, pos, 1.0F, true);
+            if (world.random.nextFloat() < 0.333F) {
+                var e = thaumcraft.common.config.ConfigEntities.TAINT_CRAWLER.get().create(world);
+                if (e != null) {
+                    e.moveTo(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, world.random.nextInt(360), 0.0F);
+                    world.addFreshEntity(e);
+                }
+            } else {
+                AuraHelper.polluteAura(world, pos, 1.0F, true);
+            }
         }
         super.onRemove(state, world, pos, newState, moving);
     }

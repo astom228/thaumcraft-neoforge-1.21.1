@@ -359,6 +359,21 @@ public class FXDispatcher implements IFXDispatcher {
         net.minecraft.client.Minecraft.getInstance().particleEngine.add(fx);
     }
 
+    @Override
+    public Object swarmParticleFX(net.minecraft.world.entity.Entity e, float f1, float f2, float pg) {
+        var r = this.getWorld().random;
+        thaumcraft.client.fx.particles.FXSwarm fx = new thaumcraft.client.fx.particles.FXSwarm(this.getWorld(), e.getX() + (r.nextFloat() - r.nextFloat()) * 2.0F,
+                e.getY() + (r.nextFloat() - r.nextFloat()) * 2.0F, e.getZ() + (r.nextFloat() - r.nextFloat()) * 2.0F, e, 0.8F + r.nextFloat() * 0.2F,
+                r.nextFloat() * 0.4F, 1.0F - r.nextFloat() * 0.2F, f1, f2, pg);
+        ParticleEngine.addEffect(this.getWorld(), fx);
+        return fx;
+    }
+
+    @Override
+    public boolean isParticleAlive(Object particle) {
+        return particle instanceof net.minecraft.client.particle.Particle p && p.isAlive();
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {

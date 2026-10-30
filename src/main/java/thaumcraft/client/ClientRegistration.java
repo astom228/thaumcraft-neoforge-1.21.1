@@ -125,6 +125,8 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.MIND_SPIDER.get(), thaumcraft.client.renderers.entity.mob.RenderMindSpider::new);
         event.registerEntityRenderer(ConfigEntities.BRAINY_ZOMBIE.get(), thaumcraft.client.renderers.entity.mob.RenderBrainyZombie::new);
         event.registerEntityRenderer(ConfigEntities.GIANT_BRAINY_ZOMBIE.get(), thaumcraft.client.renderers.entity.mob.RenderBrainyZombie::new);
+        event.registerEntityRenderer(ConfigEntities.TAINT_CRAWLER.get(), thaumcraft.client.renderers.entity.mob.RenderTaintCrawler::new);
+        event.registerEntityRenderer(ConfigEntities.TAINT_SWARM.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ConfigEntities.WISP.get(), thaumcraft.client.renderers.entity.mob.RenderWisp::new);
         event.registerEntityRenderer(ConfigEntities.FLUX_RIFT.get(), thaumcraft.client.renderers.entity.RenderFluxRift::new);
         event.registerEntityRenderer(ConfigEntities.TAINT_SEED.get(), thaumcraft.client.renderers.entity.mob.RenderTaintSeed::new);

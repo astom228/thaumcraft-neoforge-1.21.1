@@ -82,8 +82,13 @@ public class BlockTaint extends Block implements ITaintBlock {
                 }
             }
         } else if (this.kind == Kind.GEYSER) {
-            if (world.random.nextFloat() < 0.2 && world.hasNearbyAlivePlayer(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 32.0)) {
-                // TODO этап 16: рой порчи (EntityTaintSwarm), если рядом его нет
+            if (world.random.nextFloat() < 0.2 && world.hasNearbyAlivePlayer(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 32.0)
+                    && world.getEntitiesOfClass(thaumcraft.common.entities.monster.tainted.EntityTaintSwarm.class, new net.minecraft.world.phys.AABB(pos).inflate(32.0)).isEmpty()) {
+                var e = thaumcraft.common.config.ConfigEntities.TAINT_SWARM.get().create(world);
+                if (e != null) {
+                    e.moveTo(pos.getX() + 0.5F, pos.getY() + 1.25F, pos.getZ() + 0.5F, world.random.nextInt(360), 0.0F);
+                    world.addFreshEntity(e);
+                }
             } else if (AuraHelper.getFlux(world, pos) < 2.0F) {
                 AuraHelper.polluteAura(world, pos, 0.25F, true);
             }

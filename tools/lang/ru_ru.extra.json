@@ -931,5 +931,7 @@
   "entity.thaumcraft.thaumslime": "Таум-слизень",
   "entity.thaumcraft.mindspider": "Паук разума",
   "entity.thaumcraft.brainyzombie": "Злобный зомби",
-  "entity.thaumcraft.giantbrainyzombie": "Яростный зомби"
+  "entity.thaumcraft.giantbrainyzombie": "Яростный зомби",
+  "entity.thaumcraft.taintcrawler": "Заражённый ползун",
+  "entity.thaumcraft.taintswarm": "Заражённый рой"
 }
