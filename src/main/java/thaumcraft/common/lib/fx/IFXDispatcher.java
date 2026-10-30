@@ -190,6 +190,10 @@ public interface IFXDispatcher {
         return false;
     }
 
+    /** Брызги и крошки земли, когда щупальце вырастает (tentacleAriseFX). */
+    default void tentacleAriseFX(net.minecraft.world.entity.Entity e) {
+    }
+
     default void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {
     }
 

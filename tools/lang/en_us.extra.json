@@ -131,5 +131,7 @@
   "entity.thaumcraft.brainyzombie": "Angry Zombie",
   "entity.thaumcraft.giantbrainyzombie": "Furious Zombie",
   "entity.thaumcraft.taintcrawler": "Taint Crawler",
-  "entity.thaumcraft.taintswarm": "Taint Swarm"
+  "entity.thaumcraft.taintswarm": "Taint Swarm",
+  "entity.thaumcraft.taintacle": "Taintacle",
+  "entity.thaumcraft.taintacletiny": "Tiny Taintacle"
 }

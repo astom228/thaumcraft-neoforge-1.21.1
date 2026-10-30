@@ -374,6 +374,33 @@ public class FXDispatcher implements IFXDispatcher {
         return particle instanceof net.minecraft.client.particle.Particle p && p.isAlive();
     }
 
+    @Override
+    public void tentacleAriseFX(net.minecraft.world.entity.Entity e) {
+        var r = this.getWorld().random;
+        float h = e.getBbHeight();
+        for (int j = 0; j < 2.0F * h; j++) {
+            float f = r.nextFloat() * (float) Math.PI * h;
+            float f1 = r.nextFloat() * 0.5F + 0.5F;
+            float f2 = net.minecraft.util.Mth.sin(f) * h * 0.25F * f1;
+            float f3 = net.minecraft.util.Mth.cos(f) * h * 0.25F * f1;
+            thaumcraft.client.fx.particles.FXBreakingFade fx = new thaumcraft.client.fx.particles.FXBreakingFade(this.getWorld(), e.getX() + f2, e.getY(),
+                    e.getZ() + f3, new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.SLIME_BALL));
+            fx.setRBGColorF(0.4F, 0.0F, 0.4F);
+            fx.setAlphaF(0.5F);
+            fx.setParticleMaxAge((int) (66.0F / (r.nextFloat() * 0.9F + 0.1F)));
+            net.minecraft.client.Minecraft.getInstance().particleEngine.add(fx);
+            var below = e.blockPosition().below();
+            if (!this.getWorld().isEmptyBlock(below)) {
+                f = r.nextFloat() * (float) Math.PI * h;
+                f1 = r.nextFloat() * 0.5F + 0.5F;
+                f2 = net.minecraft.util.Mth.sin(f) * h * 0.25F * f1;
+                f3 = net.minecraft.util.Mth.cos(f) * h * 0.25F * f1;
+                this.getWorld().addParticle(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK,
+                        this.getWorld().getBlockState(below)), e.getX() + f2, e.getY(), e.getZ() + f3, 0.0, 0.0, 0.0);
+            }
+        }
+    }
+
     /** Брызги лавы из окна адской печи (ParticleLava.Factory оригинала — скорость частица задаёт сама). */
     @Override
     public void furnaceLavaFx(int x, int y, int z, int facingX, int facingZ) {

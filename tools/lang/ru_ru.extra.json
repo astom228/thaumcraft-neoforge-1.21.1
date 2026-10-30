@@ -933,5 +933,7 @@
   "entity.thaumcraft.brainyzombie": "Злобный зомби",
   "entity.thaumcraft.giantbrainyzombie": "Яростный зомби",
   "entity.thaumcraft.taintcrawler": "Заражённый ползун",
-  "entity.thaumcraft.taintswarm": "Заражённый рой"
+  "entity.thaumcraft.taintswarm": "Заражённый рой",
+  "entity.thaumcraft.taintacle": "Заражённое щупальце",
+  "entity.thaumcraft.taintacletiny": "Заражённый усик"
 }

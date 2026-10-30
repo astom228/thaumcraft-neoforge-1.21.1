@@ -145,7 +145,7 @@ public class EntityTaintSeed extends Monster implements ITaintedMob {
             if (tickFlag) {
                 LivingEntity target = this.getTarget();
                 if (target != null && this.distanceToSqr(target) < this.getArea() * 256 && this.getSensing().hasLineOfSight(target)) {
-                    // TODO этап 16: малые щупальца порчи (EntityTaintacleSmall) у цели на порче
+                    EntityTaintacle.spawnTentacles(this, target);
                 }
                 for (LivingEntity elb : w.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(this.getArea() * 4), e -> e != this)) {
                     elb.addEffect(new MobEffectInstance(ConfigPotions.FLUX_TAINT, 100, this.getArea() - 1, false, true));
