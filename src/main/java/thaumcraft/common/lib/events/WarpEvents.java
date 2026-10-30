@@ -160,9 +160,38 @@ public class WarpEvents {
         PacketDistributor.sendToPlayer(player, new PacketMiscEvent(PacketMiscEvent.MIST_EVENT));
         if (guardian > 0) {
             guardian = Math.min(8, guardian);
-            // TODO этап 16: потусторонние стражи (EntityEldritchGuardian), guardian штук, в 7–24 блоках, цель — игрок
+            for (int a = 0; a < guardian; a++) {
+                spawnGuardian(player);
+            }
         }
         message(player, "warp.text.6");
+    }
+
+    /** Потусторонний страж в 7–24 блоках на твёрдой опоре (50 попыток), цель — игрок. Незагруженные чанки пропускаются. */
+    private static void spawnGuardian(ServerPlayer player) {
+        var level = player.serverLevel();
+        var eg = thaumcraft.common.config.ConfigEntities.ELDRITCH_GUARDIAN.get().create(level);
+        if (eg == null) {
+            return;
+        }
+        var rand = player.getRandom();
+        int i = net.minecraft.util.Mth.floor(player.getX());
+        int j = net.minecraft.util.Mth.floor(player.getY());
+        int k = net.minecraft.util.Mth.floor(player.getZ());
+        for (int l = 0; l < 50; l++) {
+            int x = i + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+            int y = j + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+            int z = k + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+            net.minecraft.core.BlockPos below = new net.minecraft.core.BlockPos(x, y - 1, z);
+            if (level.isLoaded(below) && level.getBlockState(below).isCollisionShapeFullBlock(level, below)) {
+                eg.setPos(x, y, z);
+                if (level.isUnobstructed(eg) && level.noCollision(eg) && !level.containsAnyLiquid(eg.getBoundingBox())) {
+                    eg.setTarget(player);
+                    level.addFreshEntity(eg);
+                    break;
+                }
+            }
+        }
     }
 
     /** TODO этап 16: малый портал культистов (EntityCultistPortalLesser) в 7–24 блоках, сообщение warp.text.16 — при появлении. */
