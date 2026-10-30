@@ -126,5 +126,8 @@
   "entity.thaumcraft.bottle_taint": "Bottle of Taint",
   "entity.thaumcraft.wisp": "Wisp",
   "entity.thaumcraft.firebat": "Fire Bat",
-  "entity.thaumcraft.thaumslime": "Thaumic Slime"
+  "entity.thaumcraft.thaumslime": "Thaumic Slime",
+  "entity.thaumcraft.mindspider": "Mind Spider",
+  "entity.thaumcraft.brainyzombie": "Angry Zombie",
+  "entity.thaumcraft.giantbrainyzombie": "Furious Zombie"
 }

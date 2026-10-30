@@ -928,5 +928,8 @@
   "research.SANESOAP.stage.2": "Эврика! Я составил рецепт средства, которое назвал Мылом рассудка (патент заявлен).<BR>Это мыло очищает плоть, но по-настоящему особенным его делает действие на душу. Оно с небольшим шансом снижает непостоянное Искажение и полностью снимает временное.<BR>Если мыться под «Защитой от Искажения» или стоя в очищающей жидкости, шансы растут.",
   "entity.thaumcraft.wisp": "Огонёк",
   "entity.thaumcraft.firebat": "Огненная летучая мышь",
-  "entity.thaumcraft.thaumslime": "Таум-слизень"
+  "entity.thaumcraft.thaumslime": "Таум-слизень",
+  "entity.thaumcraft.mindspider": "Паук разума",
+  "entity.thaumcraft.brainyzombie": "Злобный зомби",
+  "entity.thaumcraft.giantbrainyzombie": "Яростный зомби"
 }

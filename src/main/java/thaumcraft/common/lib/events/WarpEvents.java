@@ -169,8 +169,39 @@ public class WarpEvents {
     private static void spawnPortal(ServerPlayer player) {
     }
 
-    /** TODO этап 16: до min(50, warp) пауков разума (EntityMindSpider); ненастоящие видны только игроку и безвредны. */
+    /** До min(50, warp) пауков разума в 7–24 блоках на твёрдой опоре; ненастоящие видны только этому игроку и безвредны. */
     private static void suddenlySpiders(ServerPlayer player, int warp, boolean real) {
+        int spawns = Math.min(50, warp);
+        var rand = player.getRandom();
+        var level = player.serverLevel();
+        for (int a = 0; a < spawns; a++) {
+            var spider = thaumcraft.common.config.ConfigEntities.MIND_SPIDER.get().create(level);
+            if (spider == null) {
+                continue;
+            }
+            boolean success = false;
+            for (int l = 0; l < 50; l++) {
+                int x = net.minecraft.util.Mth.floor(player.getX()) + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+                int y = net.minecraft.util.Mth.floor(player.getY()) + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+                int z = net.minecraft.util.Mth.floor(player.getZ()) + net.minecraft.util.Mth.nextInt(rand, 7, 24) * net.minecraft.util.Mth.nextInt(rand, -1, 1);
+                net.minecraft.core.BlockPos below = new net.minecraft.core.BlockPos(x, y - 1, z);
+                if (level.isLoaded(below) && level.getBlockState(below).isCollisionShapeFullBlock(level, below)) {
+                    spider.setPos(x, y, z);
+                    if (level.noCollision(spider) && level.isUnobstructed(spider) && !level.containsAnyLiquid(spider.getBoundingBox())) {
+                        success = true;
+                        break;
+                    }
+                }
+            }
+            if (success) {
+                spider.setTarget(player);
+                if (!real) {
+                    spider.setViewer(player.getName().getString());
+                    spider.setHarmless(true);
+                }
+                level.addFreshEntity(spider);
+            }
+        }
         message(player, "warp.text.7");
     }
 
