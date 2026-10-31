@@ -189,6 +189,21 @@ public class FXDispatcher implements IFXDispatcher {
     }
 
     @Override
+    public void drawGolemFlyParticles(double x, double y, double z, double x2, double y2, double z2) {
+        FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, x2, y2, z2);
+        fb.setMaxAge(40 + this.getWorld().random.nextInt(20));
+        fb.setAlphaF(0.2F, 0.0F);
+        fb.setGridSize(8);
+        fb.setParticles(24, 1, 1);
+        fb.setScale(2.0F, 8.0F);
+        fb.setLayer(0);
+        fb.setSlowDown(1.0);
+        fb.setWind(0.001);
+        fb.setRotationSpeed(this.getWorld().random.nextFloat(), this.getWorld().random.nextBoolean() ? -1.0F : 1.0F);
+        ParticleEngine.addEffect(this.getWorld(), fb);
+    }
+
+    @Override
     public void purifyingFluidFx(double x, double y, double z) {
         FXGeneric fb = new FXGeneric(this.getWorld(), x, y, z, 0.0, 0.0, 0.0);
         fb.setMaxAge(10 + this.getWorld().random.nextInt(10));

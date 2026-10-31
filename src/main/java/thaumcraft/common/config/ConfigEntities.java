@@ -162,6 +162,16 @@ public class ConfigEntities {
                     thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(4)
                     .updateInterval(20).build("taint_seed_prime"));
 
+    // EntityRegistry.registerModEntity(…, "GolemDart", …, 64, 20, false)
+    public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityGolemDart>> GOLEM_DART = ENTITIES.register("golemdart",
+            () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityGolemDart>of(thaumcraft.common.entities.projectile.EntityGolemDart::new,
+                    MobCategory.MISC).sized(0.2F, 0.2F).clientTrackingRange(4).updateInterval(20).build("golemdart"));
+    // EntityRegistry.registerModEntity(…, "Golem", …, 64, 3, true); глаза — 0.7
+    public static final Supplier<EntityType<thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem>> GOLEM = ENTITIES.register("golem",
+            () -> EntityType.Builder.<thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem>of(
+                    thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem::new, MobCategory.MISC).sized(0.4F, 0.9F).eyeHeight(0.7F)
+                    .clientTrackingRange(4).updateInterval(3).build("golem"));
+
     /**
      * Виды, которые могут стать чемпионами, и надбавка к шансу (championWhiteList IMC оригинала; проверка по классу —
      * подклассы тоже, как isAssignableFrom). Только для чтения после загрузки класса.
@@ -230,6 +240,7 @@ public class ConfigEntities {
         event.put(PECH.get(), thaumcraft.common.entities.monster.EntityPech.createAttributes().build());
         event.put(WISP.get(), thaumcraft.common.entities.monster.EntityWisp.createAttributes().build());
         event.put(TAINT_SEED.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeed.createAttributes().build());
+        event.put(GOLEM.get(), thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem.createAttributes().build());
         event.put(TAINT_SEED_PRIME.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime.createAttributes().build());
     }
 }

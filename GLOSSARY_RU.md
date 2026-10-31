@@ -112,6 +112,11 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Control Seal | Управляющая печать | принято |
 | Golem Press | Пресс големов | принято |
 | Golemancer's Bell | Колокольчик големанта | принято |
+| Deft / Clumsy (golem trait) | Ловкий / Неуклюжий | принято |
+| Smart / Scout / Fighter / Hauler | Умный / Разведчик / Боец / Носильщик | принято |
+| Light / Heavy Frame | Лёгкая / Тяжёлая рама | принято |
+| Fine Manipulators / Dart Launchers | Тонкие манипуляторы / Дротикомёты | принято |
+| Uni-wheel / Levitation Module | Моноколесо / Модуль левитации | принято |
 | Focus / Focus Pouch | Фокус / Сумка для фокусов | принято |
 | Focal Manipulator | Фокусный манипулятор | принято |
 | Infusion Matrix / Runic Matrix | Руническая матрица | принято |
