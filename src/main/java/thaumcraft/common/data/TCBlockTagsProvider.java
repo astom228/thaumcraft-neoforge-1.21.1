@@ -35,7 +35,7 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
                 essentiaTransportInput.get(), essentiaTransportOutput.get(),
                 thaumatorium.get(), thaumatoriumTop.get(), brainBox.get(),
                 infusionMatrix.get(), pedestalArcane.get(), pedestalAncient.get(), pedestalEldritch.get(), pillarArcane.get(), pillarAncient.get(),
-                pillarEldritch.get(), infernalFurnace.get(), spa.get(), potionSprayer.get(), rechargePedestal.get(), visBattery.get(), dioptra.get(), stabilizer.get(), condenser.get(), condenserlattice.get(), condenserlatticeDirty.get(), patternCrafter.get(), taintRock.get(), taintGeyser.get(), placeholderNetherbrick.get(), placeholderObsidian.get());
+                pillarEldritch.get(), infernalFurnace.get(), spa.get(), potionSprayer.get(), rechargePedestal.get(), visBattery.get(), dioptra.get(), stabilizer.get(), condenser.get(), condenserlattice.get(), condenserlatticeDirty.get(), patternCrafter.get(), taintRock.get(), taintGeyser.get(), placeholderNetherbrick.get(), placeholderObsidian.get(), placeholderBars.get(), placeholderAnvil.get(), placeholderCauldron.get(), placeholderTable.get(), golemBuilder.get());
         tag(BlockTags.MINEABLE_WITH_SHOVEL).add(taintSoil.get(), taintCrust.get(), grassAmbient.get());
         // живая трава — почва для растений и деревьев, как трава
         tag(BlockTags.DIRT).add(grassAmbient.get());

@@ -54,6 +54,9 @@ public class PacketHandler {
                 (msg, ctx) -> thaumcraft.common.lib.network.misc.PacketFocusChangeToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToServer(thaumcraft.common.lib.network.misc.PacketItemKeyToServer.TYPE, thaumcraft.common.lib.network.misc.PacketItemKeyToServer.STREAM_CODEC,
                 (msg, ctx) -> thaumcraft.common.lib.network.misc.PacketItemKeyToServer.handle(msg, (ServerPlayer) ctx.player()));
+        registrar.playToServer(thaumcraft.common.lib.network.misc.PacketStartGolemCraftToServer.TYPE,
+                thaumcraft.common.lib.network.misc.PacketStartGolemCraftToServer.STREAM_CODEC,
+                (msg, ctx) -> thaumcraft.common.lib.network.misc.PacketStartGolemCraftToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToServer(PacketStartTheoryToServer.TYPE, PacketStartTheoryToServer.STREAM_CODEC,
                 (msg, ctx) -> PacketStartTheoryToServer.handle(msg, (ServerPlayer) ctx.player()));
         registrar.playToClient(PacketFXBlockBamf.TYPE, PacketFXBlockBamf.STREAM_CODEC,

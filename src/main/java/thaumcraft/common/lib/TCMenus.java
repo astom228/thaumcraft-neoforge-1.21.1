@@ -34,6 +34,8 @@ public class TCMenus {
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerFocalManipulator::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerFocusPouch>> FOCUS_POUCH = MENUS.register("focus_pouch",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerFocusPouch::new));
+    public static final Supplier<MenuType<thaumcraft.common.container.ContainerGolemBuilder>> GOLEM_BUILDER = MENUS.register("golem_press",
+            () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerGolemBuilder::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerPech>> PECH = MENUS.register("pech",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerPech::new));
 }

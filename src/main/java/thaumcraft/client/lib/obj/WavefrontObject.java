@@ -29,6 +29,11 @@ public class WavefrontObject {
     }
 
     public static WavefrontObject load(ResourceLocation res) {
+        return load(res, true);
+    }
+
+    /** flipV = false — текстурная v как в файле (рендер с перевёрнутой матрицей текстуры в оригинале, напр. пресс големов). */
+    public static WavefrontObject load(ResourceLocation res, boolean flipV) {
         WavefrontObject obj = new WavefrontObject();
         List<float[]> vs = new ArrayList<>();
         List<float[]> vts = new ArrayList<>();
@@ -44,7 +49,7 @@ public class WavefrontObject {
                     vs.add(new float[] {Float.parseFloat(t[1]), Float.parseFloat(t[2]), Float.parseFloat(t[3])});
                 } else if (line.startsWith("vt ")) {
                     String[] t = line.split(" ");
-                    vts.add(new float[] {Float.parseFloat(t[1]), 1.0F - Float.parseFloat(t[2])});
+                    vts.add(new float[] {Float.parseFloat(t[1]), flipV ? 1.0F - Float.parseFloat(t[2]) : Float.parseFloat(t[2])});
                 } else if (line.startsWith("vn ")) {
                     String[] t = line.split(" ");
                     vns.add(new float[] {Float.parseFloat(t[1]), Float.parseFloat(t[2]), Float.parseFloat(t[3])});

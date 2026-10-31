@@ -124,6 +124,8 @@ public class ConfigBlocks {
             () -> BlockEntityType.Builder.of(TileMirror::new, BlocksTC.mirror.get()).build(null));
     public static final Supplier<BlockEntityType<TileMirrorEssentia>> MIRROR_ESSENTIA_TILE = TILES.register("essentia_mirror",
             () -> BlockEntityType.Builder.of(TileMirrorEssentia::new, BlocksTC.mirrorEssentia.get()).build(null));
+    public static final Supplier<BlockEntityType<thaumcraft.common.tiles.crafting.TileGolemBuilder>> GOLEM_BUILDER_TILE = TILES.register("golem_press",
+            () -> BlockEntityType.Builder.of(thaumcraft.common.tiles.crafting.TileGolemBuilder::new, BlocksTC.golemBuilder.get()).build(null));
     public static final Supplier<BlockEntityType<TileThaumatorium>> THAUMATORIUM_TILE = TILES.register("thaumatorium",
             () -> BlockEntityType.Builder.of(TileThaumatorium::new, BlocksTC.thaumatorium.get()).build(null));
     public static final Supplier<BlockEntityType<TileThaumatoriumTop>> THAUMATORIUM_TOP_TILE = TILES.register("thaumatorium_top",
@@ -153,6 +155,7 @@ public class ConfigBlocks {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, INFERNAL_FURNACE_TILE.get(), thaumcraft.common.tiles.devices.TileInfernalFurnace::capability);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MIRROR_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, THAUMATORIUM_TILE.get(), (tile, side) -> tile.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, GOLEM_BUILDER_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, PEDESTAL_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, THAUMATORIUM_TOP_TILE.get(), (tile, side) -> tile.getItemHandler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, CRUCIBLE_TILE.get(), (tile, side) -> tile.tank);

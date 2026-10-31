@@ -318,6 +318,19 @@ public class BlocksTC {
     public static final DeferredBlock<Block> placeholderObsidian = ConfigBlocks.BLOCKS.register("placeholder_obsidian",
             () -> new thaumcraft.common.blocks.misc.BlockPlaceholder(placeholderProps()));
 
+    public static final DeferredBlock<Block> placeholderBars = ConfigBlocks.BLOCKS.register("placeholder_bars",
+            () -> new thaumcraft.common.blocks.misc.BlockPlaceholder(placeholderProps()));
+    public static final DeferredBlock<Block> placeholderAnvil = ConfigBlocks.BLOCKS.register("placeholder_anvil",
+            () -> new thaumcraft.common.blocks.misc.BlockPlaceholder(placeholderProps()));
+    public static final DeferredBlock<Block> placeholderCauldron = ConfigBlocks.BLOCKS.register("placeholder_cauldron",
+            () -> new thaumcraft.common.blocks.misc.BlockPlaceholder(placeholderProps()));
+    public static final DeferredBlock<Block> placeholderTable = ConfigBlocks.BLOCKS.register("placeholder_table",
+            () -> new thaumcraft.common.blocks.misc.BlockPlaceholder(placeholderProps()));
+    // Пресс големов (BlockGolemBuilder, BlockTCDevice: Material.ROCK, твёрдость 1.5): без предмета, роняет поршень
+    public static final DeferredBlock<Block> golemBuilder = ConfigBlocks.BLOCKS.register("golem_press",
+            () -> new thaumcraft.common.blocks.crafting.BlockGolemBuilder(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(1.5F, 7.5F)
+                    .sound(SoundType.STONE).noOcclusion().pushReaction(PushReaction.BLOCK)));
+
     private static BlockBehaviour.Properties placeholderProps() {
         return BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.5F, 12.5F).sound(SoundType.STONE).noOcclusion()
                 .pushReaction(PushReaction.BLOCK);

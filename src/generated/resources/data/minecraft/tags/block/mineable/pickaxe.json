@@ -67,6 +67,11 @@
     "thaumcraft:taint_geyser",
     "thaumcraft:placeholder_brick",
     "thaumcraft:placeholder_obsidian",
+    "thaumcraft:placeholder_bars",
+    "thaumcraft:placeholder_anvil",
+    "thaumcraft:placeholder_cauldron",
+    "thaumcraft:placeholder_table",
+    "thaumcraft:golem_press",
     "thaumcraft:common_urn",
     "thaumcraft:uncommon_urn",
     "thaumcraft:rare_urn"

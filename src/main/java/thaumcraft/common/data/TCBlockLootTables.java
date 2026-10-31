@@ -111,6 +111,11 @@ public class TCBlockLootTables extends BlockLootSubProvider {
         // Заполнители адской печи роняют исходные блоки (getItemDropped оригинала)
         add(BlocksTC.placeholderNetherbrick.get(), b -> createSingleItemTable(net.minecraft.world.level.block.Blocks.NETHER_BRICKS));
         add(BlocksTC.placeholderObsidian.get(), b -> createSingleItemTable(net.minecraft.world.level.block.Blocks.OBSIDIAN));
+        add(BlocksTC.placeholderBars.get(), b -> createSingleItemTable(net.minecraft.world.level.block.Blocks.IRON_BARS));
+        add(BlocksTC.placeholderAnvil.get(), b -> createSingleItemTable(net.minecraft.world.level.block.Blocks.ANVIL));
+        add(BlocksTC.placeholderCauldron.get(), b -> createSingleItemTable(net.minecraft.world.level.block.Blocks.CAULDRON));
+        add(BlocksTC.placeholderTable.get(), b -> createSingleItemTable(BlocksTC.tableStone.get()));
+        add(BlocksTC.golemBuilder.get(), b -> createSingleItemTable(net.minecraft.world.level.block.Blocks.PISTON));
 
         // Остальные блоки этапа роняют сами себя
         for (DeferredHolder<Block, ? extends Block> holder : ConfigBlocks.BLOCKS.getEntries()) {

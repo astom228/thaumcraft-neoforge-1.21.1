@@ -98,6 +98,7 @@ public class ClientRegistration {
         event.register(TCMenus.POTION_SPRAYER.get(), thaumcraft.client.gui.GuiPotionSprayer::new);
         event.register(TCMenus.HAND_MIRROR.get(), thaumcraft.client.gui.GuiHandMirror::new);
         event.register(TCMenus.THAUMATORIUM.get(), thaumcraft.client.gui.GuiThaumatorium::new);
+        event.register(TCMenus.GOLEM_BUILDER.get(), thaumcraft.client.gui.GuiGolemBuilder::new);
         event.register(TCMenus.FOCAL_MANIPULATOR.get(), thaumcraft.client.gui.GuiFocalManipulator::new);
         event.register(TCMenus.FOCUS_POUCH.get(), thaumcraft.client.gui.GuiFocusPouch::new);
         event.register(TCMenus.PECH.get(), thaumcraft.client.gui.GuiPech::new);
@@ -177,6 +178,7 @@ public class ClientRegistration {
         event.registerBlockEntityRenderer(ConfigBlocks.TUBE_BUFFER_TILE.get(), TileTubeRenderers.Buffer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.ALEMBIC_TILE.get(), thaumcraft.client.renderers.tile.TileAlembicRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.CENTRIFUGE_TILE.get(), thaumcraft.client.renderers.tile.TileCentrifugeRenderer::new);
+        event.registerBlockEntityRenderer(ConfigBlocks.GOLEM_BUILDER_TILE.get(), thaumcraft.client.renderers.tile.TileGolemBuilderRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.THAUMATORIUM_TILE.get(), thaumcraft.client.renderers.tile.TileThaumatoriumRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.INFUSION_MATRIX_TILE.get(), thaumcraft.client.renderers.tile.TileInfusionMatrixRenderer::new);
         event.registerBlockEntityRenderer(ConfigBlocks.HOLE_TILE.get(), thaumcraft.client.renderers.tile.TileHoleRenderer::new);

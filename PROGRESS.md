@@ -25,6 +25,10 @@
       големы разного состава живут и тикают, без флага спавна исчезают. DECISIONS 137, DEVIATIONS 60–62.
 - [x] 18.3 Отрисовка: RenderThaumcraftGolem (OBJ-детали, материалы, цвет флажка, анимации, несомый предмет), RenderDart,
       печати и их зоны при ISealDisplayer в руке (RenderEventHandler.drawSeals). Клиентом не проверено. DECISIONS 138.
+- [x] 18.4а Пресс големов: многоблок (соль мира, MINDCLOCKWORK), TileGolemBuilder (детали у игрока, Machina из труб),
+      окно (GuiGolemBuilder, GuiHoverButton, GuiScrollButton), PacketStartGolemCraftToServer с проверками, рендер пресса.
+      Сервером проверен разбор многоблока. DECISIONS 139, DEVIATIONS 63–65.
+- [ ] 18.4б Колокольчик големанта, окно настройки печатей (SealBaseContainer/GUI).
 
 ### Этап 17 — реализован (клиентом не проверен, КТ 8 часть Б — KT8_CHECKLIST.md)
 - [x] 17.1 Руды (киноварь, кварц, янтарь), вис-кристаллы, огнецвет — фичи thaumcraft:ores/vegetation. DECISIONS 131.

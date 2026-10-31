@@ -84,6 +84,19 @@ public class ConfigRecipes {
         ThaumcraftApi.addMultiblockRecipeToCatalog(ResourceLocation.fromNamespaceAndPath("thaumcraft", "infernalfurnace"),
                 new ThaumcraftApi.BluePrint("INFERNALFURNACE", infernalFurnaceBlueprint, new ItemStack(Blocks.NETHER_BRICKS, 12),
                         new ItemStack(Blocks.OBSIDIAN, 12), new ItemStack(Blocks.IRON_BARS), new ItemStack(Items.LAVA_BUCKET)));
+        // Пресс големов: решётка, котёл, наковальня, стол → заполнители, поршень (вверх) → пресс
+        Part GP1 = new Part(Blocks.IRON_BARS, BlocksTC.placeholderBars.get().defaultBlockState());
+        Part GP2 = new Part(Blocks.CAULDRON, BlocksTC.placeholderCauldron.get().defaultBlockState());
+        Part GP3 = new Part(Blocks.PISTON.defaultBlockState().setValue(net.minecraft.world.level.block.piston.PistonBaseBlock.FACING,
+                net.minecraft.core.Direction.UP), BlocksTC.golemBuilder.get());
+        Part GP4 = new Part(Blocks.ANVIL, BlocksTC.placeholderAnvil.get().defaultBlockState());
+        Part GP5 = new Part(BlocksTC.tableStone.get(), BlocksTC.placeholderTable.get().defaultBlockState());
+        Part[][][] golempressBlueprint = new Part[][][] {{{null, null}, {GP1, null}}, {{GP2, GP4}, {GP3, GP5}}};
+        IDustTrigger.registerDustTrigger(new DustTriggerMultiblock("MINDCLOCKWORK", golempressBlueprint));
+        ThaumcraftApi.addMultiblockRecipeToCatalog(ResourceLocation.fromNamespaceAndPath("thaumcraft", "golempress"),
+                new ThaumcraftApi.BluePrint("MINDCLOCKWORK", golempressBlueprint, new ItemStack(Blocks.IRON_BARS),
+                        new ItemStack(net.minecraft.world.item.Items.CAULDRON), new ItemStack(Blocks.PISTON), new ItemStack(Blocks.ANVIL),
+                        new ItemStack(BlocksTC.tableStone.get())));
         // TODO этап 18: пресс големов
         infusionAltar("INFUSION", "infusionaltar", BlocksTC.stoneArcane.get(), BlocksTC.pillarArcane.get(), BlocksTC.pedestalArcane.get());
         infusionAltar("INFUSIONANCIENT", "infusionaltarancient", BlocksTC.stoneAncient.get(), BlocksTC.pillarAncient.get(), BlocksTC.pedestalAncient.get());

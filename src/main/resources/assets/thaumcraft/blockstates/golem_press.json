@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "thaumcraft:block/golem_press"
+    },
+    "facing=south": {
+      "model": "thaumcraft:block/golem_press"
+    },
+    "facing=west": {
+      "model": "thaumcraft:block/golem_press"
+    },
+    "facing=east": {
+      "model": "thaumcraft:block/golem_press"
+    }
+  }
+}
