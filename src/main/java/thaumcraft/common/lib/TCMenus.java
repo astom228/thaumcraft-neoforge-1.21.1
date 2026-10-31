@@ -38,6 +38,8 @@ public class TCMenus {
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerGolemBuilder::new));
     public static final Supplier<MenuType<thaumcraft.common.entities.construct.golem.gui.SealBaseContainer>> SEAL = MENUS.register("seal",
             () -> IMenuTypeExtension.create(thaumcraft.common.entities.construct.golem.gui.SealBaseContainer::new));
+    public static final Supplier<MenuType<thaumcraft.common.container.ContainerLogistics>> LOGISTICS = MENUS.register("logistics",
+            () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerLogistics::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerPech>> PECH = MENUS.register("pech",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerPech::new));
 }

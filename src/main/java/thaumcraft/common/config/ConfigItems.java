@@ -55,6 +55,8 @@ public class ConfigItems {
         thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealLumber());
         thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealBreaker());
         thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealUse());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealProvide());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealStock());
     }
 
     public static void initFoci() {

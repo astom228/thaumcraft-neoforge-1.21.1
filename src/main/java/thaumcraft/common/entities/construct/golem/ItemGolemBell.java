@@ -28,7 +28,7 @@ import thaumcraft.common.lib.SoundsTC;
 /**
  * Колокольчик големанта (порт ItemGolemBell): ПКМ по печати (или по блоку, сквозь который видна печать, до 5 блоков) —
  * окно настройки, с Shift — снять печать (она выпадает). По голему (исследование GOLEMDIRECT) — «за мной»/«стой здесь».
- * Окно логистики (Shift в воздух, GOLEMLOGISTICS) — вместе с печатями снабжения (этап 18.5).
+ * С Shift (исследование GOLEMLOGISTICS) — окно логистики: по блоку — доставка к нему, в воздух — себе.
  * Снимать печать могут её владелец, его команда и операторы (в оригинале — кто угодно).
  */
 public class ItemGolemBell extends Item implements ISealDisplayer {
@@ -50,6 +50,10 @@ public class ItemGolemBell extends Item implements ISealDisplayer {
                 }
                 return InteractionResultHolder.fail(player.getItemInHand(hand));
             }
+            if (player.isShiftKeyDown() && thaumcraft.api.capabilities.ThaumcraftCapabilities.knowsResearch(player, "GOLEMLOGISTICS")) {
+                openLogistics((ServerPlayer) player, null, null);
+                return InteractionResultHolder.fail(player.getItemInHand(hand));
+            }
         }
         return super.use(world, player, hand);
     }
@@ -67,8 +71,18 @@ public class ItemGolemBell extends Item implements ISealDisplayer {
                 this.act((ServerPlayer) player, se);
                 return InteractionResult.SUCCESS;
             }
+            if (player.isShiftKeyDown() && thaumcraft.api.capabilities.ThaumcraftCapabilities.knowsResearch(player, "GOLEMLOGISTICS")) {
+                openLogistics((ServerPlayer) player, ctx.getClickedPos(), ctx.getClickedFace());
+                return InteractionResult.SUCCESS;
+            }
         }
         return InteractionResult.PASS;
+    }
+
+    /** Окно логистики: заказ доставки к блоку (target) или себе (null). */
+    private static void openLogistics(ServerPlayer player, BlockPos target, net.minecraft.core.Direction side) {
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inv, pl) -> new thaumcraft.common.container.ContainerLogistics(id, inv, target, side),
+                net.minecraft.network.chat.Component.translatable("item.thaumcraft.golem_bell")));
     }
 
     private void act(ServerPlayer player, ISealEntity se) {
