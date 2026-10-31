@@ -243,6 +243,9 @@ public class ItemsTC {
     // Голем в предмете (ItemGolemPlacer): состав и опыт — в данных предмета
     public static final DeferredItem<Item> golemPlacer = ConfigItems.ITEMS.registerItem("golem",
             thaumcraft.common.entities.construct.golem.ItemGolemPlacer::new, new Item.Properties().stacksTo(1));
+    // Колокольчик големанта (ItemGolemBell): настройка и снятие печатей, приказы голему
+    public static final DeferredItem<Item> golemBell = ConfigItems.ITEMS.registerItem("golem_bell",
+            thaumcraft.common.entities.construct.golem.ItemGolemBell::new, new Item.Properties().stacksTo(1));
     // реликты и прочее: изначальная жемчужина (прочность 8), жезл пехов, мешки с добычей (по 16), счётчик рассудка
     public static final DeferredItem<Item> primordialPearl = ConfigItems.ITEMS.registerItem("primordial_pearl", thaumcraft.common.items.curios.ItemPrimordialPearl::new,
             new Item.Properties().durability(8).rarity(Rarity.UNCOMMON));

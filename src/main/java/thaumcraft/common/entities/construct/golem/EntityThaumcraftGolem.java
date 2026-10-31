@@ -409,8 +409,7 @@ public class EntityThaumcraftGolem extends EntityOwnedConstruct implements IGole
     }
 
     /**
-     * Хозяин: с Shift — разобрать в предмет (с составом и опытом); краситель — окрасить. Колокольчик (следовать/стоять)
-     * добавляется вместе с самим колокольчиком.
+     * Хозяин: с Shift — разобрать в предмет (с составом и опытом); колокольчик — «за мной»/«стой»; краситель — окрасить.
      */
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -446,6 +445,10 @@ public class EntityThaumcraftGolem extends EntityOwnedConstruct implements IGole
 
     /** Колокольчик големанта + исследование GOLEMDIRECT: переключить «следовать за хозяином» / «стоять здесь». */
     protected boolean handleBell(Player player, ItemStack held) {
+        if (held.getItem() instanceof ItemGolemBell && thaumcraft.api.capabilities.ThaumcraftCapabilities.knowsResearch(player, "GOLEMDIRECT")) {
+            this.toggleFollow(player);
+            return true;
+        }
         return false;
     }
 

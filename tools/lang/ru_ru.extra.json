@@ -1144,5 +1144,21 @@
   "golem.trait.text.scout": "Голем видит дальше и может работать на большем удалении: в 48 блоках от дома вместо 32.",
   "golem.trait.text.smart": "Голем почти разумен: он лучше рассуждает и принимает решения.",
   "golem.trait.text.wheeled": "Голем передвигается на колесе. Это быстрее, но он не может прыгать и взбираться на крутые склоны.",
-  "block.thaumcraft.golem_press": "Пресс големов"
+  "block.thaumcraft.golem_press": "Пресс големов",
+  "button.turretfocus.1": "Цель: животные",
+  "button.turretfocus.2": "Цель: монстры",
+  "button.turretfocus.3": "Цель: игроки",
+  "button.turretfocus.4": "Цель: дружественные",
+  "button.category.0": "Приоритет и замок",
+  "button.category.1": "Фильтр",
+  "button.category.2": "Зона",
+  "button.category.3": "Настройки",
+  "button.category.4": "Требования",
+  "button.caption.x": "Восток / запад",
+  "button.caption.y": "Вверх / вниз",
+  "button.caption.z": "Север / юг",
+  "button.bl": "Чёрный список",
+  "button.wl": "Белый список",
+  "button.caption.required": "Нужно",
+  "button.caption.forbidden": "Запрещено"
 }
