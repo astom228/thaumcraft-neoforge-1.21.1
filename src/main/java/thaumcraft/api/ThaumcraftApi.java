@@ -326,4 +326,31 @@ public class ThaumcraftApi {
     public static void addSmeltingBonus(Object in, net.minecraft.world.item.ItemStack out) {
         addSmeltingBonus(in, out, 0.33F);
     }
+
+    // --- семена для пересадки (печать урожая) ---
+    private static final java.util.Map<net.minecraft.world.level.block.Block, ItemStack> seedList = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /** Явно задать семя растения-блока (registerSeed оригинала, для дополнений). */
+    public static void registerSeed(net.minecraft.world.level.block.Block block, ItemStack seed) {
+        seedList.put(block, seed);
+    }
+
+    /**
+     * Семя для блока растения. В оригинале список строился из всех IPlantable-предметов (их getPlant); в 1.21 —
+     * предмет, который ставит этот блок (Item.byBlock), если блок — посадка (куст, посев, стебель, тростник, адский
+     * нарост). Пусто — пересаживать нечем.
+     */
+    public static ItemStack getSeed(net.minecraft.world.level.block.Block block) {
+        ItemStack s = seedList.get(block);
+        if (s != null) {
+            return s;
+        }
+        if (block instanceof net.minecraft.world.level.block.BushBlock || block instanceof net.minecraft.world.level.block.SugarCaneBlock) {
+            Item item = Item.byBlock(block);
+            if (item != net.minecraft.world.item.Items.AIR) {
+                return new ItemStack(item);
+            }
+        }
+        return ItemStack.EMPTY;
+    }
 }

@@ -25,6 +25,12 @@ public final class CropUtils {
     private CropUtils() {
     }
 
+    /**
+     * Посевы, которые собирают щелчком, а не ломкой (clickableCrops оригинала; в TC — только через IMC): блок → спелое
+     * состояние проверяет isGrownCrop.
+     */
+    public static final Set<Block> clickableCrops = ConcurrentHashMap.newKeySet();
+
     public static void blacklistLamp(Block block) {
         lampBlacklist.add(block);
     }

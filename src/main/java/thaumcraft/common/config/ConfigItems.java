@@ -48,6 +48,12 @@ public class ConfigItems {
         thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealFillAdvanced());
         thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealEmpty());
         thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealEmptyAdvanced());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealHarvest());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealButcher());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealGuard());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealGuardAdvanced());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealLumber());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealBreaker());
     }
 
     public static void initFoci() {
