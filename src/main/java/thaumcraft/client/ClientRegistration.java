@@ -147,9 +147,9 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.ELDRITCH_ORB.get(), thaumcraft.client.renderers.entity.projectile.RenderEldritchOrb::new);
         event.registerEntityRenderer(ConfigEntities.ELDRITCH_GOLEM.get(), thaumcraft.client.renderers.entity.mob.RenderEldritchGolem::new);
         event.registerEntityRenderer(ConfigEntities.GOLEM_ORB.get(), thaumcraft.client.renderers.entity.projectile.RenderElectricOrb::new);
-        // голем и дротик: временно без модели (RenderThaumcraftGolem и RenderDart — этап 18.3)
-        event.registerEntityRenderer(ConfigEntities.GOLEM.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
-        event.registerEntityRenderer(ConfigEntities.GOLEM_DART.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+
+        event.registerEntityRenderer(ConfigEntities.GOLEM.get(), thaumcraft.client.renderers.entity.construct.RenderThaumcraftGolem::new);
+        event.registerEntityRenderer(ConfigEntities.GOLEM_DART.get(), thaumcraft.client.renderers.entity.projectile.RenderDart::new);
         event.registerEntityRenderer(ConfigEntities.ELDRITCH_WARDEN.get(), ctx -> new thaumcraft.client.renderers.entity.mob.RenderEldritchGuardian(ctx, 0.6F));
         event.registerEntityRenderer(ConfigEntities.TAINTACLE_GIANT.get(), thaumcraft.client.renderers.entity.mob.RenderTaintacle::giant);
         event.registerEntityRenderer(ConfigEntities.CULTIST_KNIGHT.get(), thaumcraft.client.renderers.entity.mob.RenderCultist::cultist);
