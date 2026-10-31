@@ -6,7 +6,6 @@ import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.golems.tasks.Task;
-import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem;
 import thaumcraft.common.entities.construct.golem.tasks.TaskHandler;
 
@@ -39,9 +38,7 @@ public class AIGotoBlock extends AIGoto {
                 this.targetBlock = this.getAdjacentSpace(ticket.getPos());
                 this.golem.setTask(ticket);
                 this.golem.getTask().setReserved(true);
-                if (ModConfig.CONFIG_GRAPHICS.showGolemEmotes.get()) {
-                    this.golem.level().broadcastEntityEvent(this.golem, (byte) 5);
-                }
+                this.golem.level().broadcastEntityEvent(this.golem, (byte) 5);
                 return true;
             }
         }

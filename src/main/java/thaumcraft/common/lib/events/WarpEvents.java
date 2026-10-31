@@ -19,7 +19,6 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.capabilities.IPlayerWarp;
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.common.config.ConfigPotions;
-import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.items.armor.ItemFortressArmor;
 import thaumcraft.common.lib.network.misc.PacketMiscEvent;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -58,16 +57,10 @@ public class WarpEvents {
             if (eff > 0) {
                 int amp = Math.min(3, warp / 15);
                 if (eff <= 4) {
-                    if (!ModConfig.CONFIG_GRAPHICS.nostress.get()) {
-                        // в 1.12 world.playSound(player, …) слышали все, кроме самого игрока; здесь — только он (DEVIATIONS 49)
-                        playTo(player, SoundEvents.CREEPER_PRIMED, player.getX(), player.getY(), player.getZ(), 1.0F, 0.5F);
-                    }
+                    // в 1.12 world.playSound(player, …) слышали все, кроме самого игрока; здесь — только он (DEVIATIONS 49)
+                    PacketDistributor.sendToPlayer(player, new PacketMiscEvent(PacketMiscEvent.WARP_SOUND_PRIMED));
                 } else if (eff <= 8) {
-                    if (!ModConfig.CONFIG_GRAPHICS.nostress.get()) {
-                        playTo(player, SoundEvents.GENERIC_EXPLODE.value(), player.getX() + (rand.nextFloat() - rand.nextFloat()) * 10.0F,
-                                player.getY() + (rand.nextFloat() - rand.nextFloat()) * 10.0F, player.getZ() + (rand.nextFloat() - rand.nextFloat()) * 10.0F,
-                                4.0F, (1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F) * 0.7F);
-                    }
+                    PacketDistributor.sendToPlayer(player, new PacketMiscEvent(PacketMiscEvent.WARP_SOUND_EXPLODE));
                 } else if (eff <= 12) {
                     message(player, "warp.text.11");
                 } else if (eff <= 16) {
@@ -147,11 +140,6 @@ public class WarpEvents {
     }
 
     /** Звук, который слышит только этот игрок. */
-    private static void playTo(ServerPlayer player, net.minecraft.sounds.SoundEvent sound, double x, double y, double z, float vol, float pitch) {
-        player.connection.send(new net.minecraft.network.protocol.game.ClientboundSoundPacket(Holder.direct(sound), SoundSource.AMBIENT, x, y, z, vol, pitch,
-                player.getRandom().nextLong()));
-    }
-
     private static void message(ServerPlayer player, String key) {
         player.displayClientMessage(Component.translatable(key).withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC), true);
     }

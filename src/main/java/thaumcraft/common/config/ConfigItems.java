@@ -40,6 +40,16 @@ public class ConfigItems {
     }
 
     /** Элементы фокусов (ConfigItems.initFoci оригинала): ключ, значок для манипулятора, цвет. Вызывается при запуске. */
+    /** Типы управляющих печатей (SealHandler.registerSeal в ConfigItems оригинала); порядок — как в оригинале. */
+    public static void initSeals() {
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealPickup());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealPickupAdvanced());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealFill());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealFillAdvanced());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealEmpty());
+        thaumcraft.common.entities.construct.golem.seals.SealHandler.registerSeal(new thaumcraft.common.entities.construct.golem.seals.SealEmptyAdvanced());
+    }
+
     public static void initFoci() {
         reg(thaumcraft.api.casters.FocusMediumRoot::new, "root", 10066329);
         reg(thaumcraft.common.items.casters.foci.FocusMediumTouch::new, "touch", 11371909);

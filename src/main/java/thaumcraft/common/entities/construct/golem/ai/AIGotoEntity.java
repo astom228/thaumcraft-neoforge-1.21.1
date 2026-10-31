@@ -4,7 +4,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import thaumcraft.api.golems.tasks.Task;
-import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem;
 import thaumcraft.common.entities.construct.golem.tasks.TaskHandler;
 
@@ -37,9 +36,7 @@ public class AIGotoEntity extends AIGoto {
                 this.golem.getTask().setReserved(true);
                 float hw = this.golem.getTask().getEntity().getBbWidth() / 2.0F;
                 this.minDist = 3.5 + hw * hw;
-                if (ModConfig.CONFIG_GRAPHICS.showGolemEmotes.get()) {
-                    this.golem.level().broadcastEntityEvent(this.golem, (byte) 5);
-                }
+                this.golem.level().broadcastEntityEvent(this.golem, (byte) 5);
                 return true;
             }
         }

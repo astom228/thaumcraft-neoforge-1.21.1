@@ -38,6 +38,20 @@ public final class WarpFog {
                             1.0F, 1.0F, false);
                 }
             }
+            case PacketMiscEvent.WARP_SOUND_PRIMED -> {
+                if (!ModConfig.CONFIG_GRAPHICS.nostress.get()) {
+                    mc.player.level().playLocalSound(mc.player.getX(), mc.player.getY(), mc.player.getZ(), net.minecraft.sounds.SoundEvents.CREEPER_PRIMED,
+                            SoundSource.AMBIENT, 1.0F, 0.5F, false);
+                }
+            }
+            case PacketMiscEvent.WARP_SOUND_EXPLODE -> {
+                if (!ModConfig.CONFIG_GRAPHICS.nostress.get()) {
+                    var r = mc.player.getRandom();
+                    mc.player.level().playLocalSound(mc.player.getX() + (r.nextFloat() - r.nextFloat()) * 10.0F, mc.player.getY() + (r.nextFloat() - r.nextFloat()) * 10.0F,
+                            mc.player.getZ() + (r.nextFloat() - r.nextFloat()) * 10.0F, net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE.value(), SoundSource.AMBIENT, 4.0F,
+                            (1.0F + (r.nextFloat() - r.nextFloat()) * 0.2F) * 0.7F, false);
+                }
+            }
             case PacketMiscEvent.MIST_EVENT -> {
                 fogFiddled = true;
                 fogDuration = 2400;

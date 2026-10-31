@@ -10,7 +10,6 @@ import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.golems.EnumGolemTrait;
 import thaumcraft.api.golems.seals.ISealEntity;
 import thaumcraft.api.golems.tasks.Task;
-import thaumcraft.common.config.ModConfig;
 import thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem;
 import thaumcraft.common.entities.construct.golem.seals.SealHandler;
 import thaumcraft.common.entities.construct.golem.tasks.TaskHandler;
@@ -112,7 +111,7 @@ public abstract class AIGoto extends Goal {
     public void stop() {
         Task task = this.golem.getTask();
         if (task != null) {
-            if (!task.isCompleted() && task.isReserved() && ModConfig.CONFIG_GRAPHICS.showGolemEmotes.get()) {
+            if (!task.isCompleted() && task.isReserved()) {
                 this.golem.level().broadcastEntityEvent(this.golem, (byte) 6);
             }
             if (task.isCompleted() && !task.isSuspended()) {

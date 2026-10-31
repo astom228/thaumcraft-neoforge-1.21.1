@@ -283,9 +283,19 @@ public class EntityThaumcraftGolem extends EntityOwnedConstruct implements IGole
         }
     }
 
-    /** Эмоции: 5 — взял задачу, 6 — не справился, 7 — (не используется), 8 — «стой», 9 — новый ранг. */
+    /**
+     * Эмоции: 5 — взял задачу, 6 — не справился, 7 — (не используется), 8 — «стой», 9 — новый ранг (со звуком). Настройка
+     * showGolemEmotes клиентская: сервер шлёт событие всегда, показывает ли его клиент — решает он (в оригинале сервер читал
+     * графическую настройку, на выделенном сервере 1.21 она недоступна).
+     */
     @Override
     public void handleEntityEvent(byte id) {
+        if (id >= 5 && id <= 9 && !ModConfig.CONFIG_GRAPHICS.showGolemEmotes.get()) {
+            return;
+        }
+        if (id == 9) {
+            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.PLAYER_LEVELUP, this.getSoundSource(), 0.25F, 1.0F, false);
+        }
         IFXDispatcher fx = IFXDispatcher.get();
         double y = this.getY() + this.getBbHeight() + 0.1;
         if (id == 5) {
@@ -460,14 +470,10 @@ public class EntityThaumcraftGolem extends EntityOwnedConstruct implements IGole
         this.setFollowingOwner(!this.isFollowingOwner());
         if (this.isFollowingOwner()) {
             player.displayClientMessage(Component.translatable("golem.follow", ""), true);
-            if (ModConfig.CONFIG_GRAPHICS.showGolemEmotes.get()) {
-                this.level().broadcastEntityEvent(this, (byte) 5);
-            }
+            this.level().broadcastEntityEvent(this, (byte) 5);
         } else {
             player.displayClientMessage(Component.translatable("golem.stay", ""), true);
-            if (ModConfig.CONFIG_GRAPHICS.showGolemEmotes.get()) {
-                this.level().broadcastEntityEvent(this, (byte) 8);
-            }
+            this.level().broadcastEntityEvent(this, (byte) 8);
             this.restrictTo(this.blockPosition(), 32);
         }
         this.updateEntityAttributes();
@@ -596,10 +602,7 @@ public class EntityThaumcraftGolem extends EntityOwnedConstruct implements IGole
                     IGolemProperties props = this.getProperties();
                     props.setRank(rank + 1);
                     this.setProperties(props);
-                    if (ModConfig.CONFIG_GRAPHICS.showGolemEmotes.get()) {
-                        this.level().broadcastEntityEvent(this, (byte) 9);
-                        this.playSound(SoundEvents.PLAYER_LEVELUP, 0.25F, 1.0F);
-                    }
+                    this.level().broadcastEntityEvent(this, (byte) 9);
                 }
             }
         }

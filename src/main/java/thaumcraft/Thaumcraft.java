@@ -70,6 +70,8 @@ public class Thaumcraft {
         event.enqueueWork(thaumcraft.common.world.biomes.TCRegion::register);
         // ConfigItems.initFoci (в оригинале — preInit): элементы фокусов, до чтения любых пакетов
         event.enqueueWork(ConfigItems::initFoci);
+        // типы управляющих печатей (до загрузки чанков с печатями)
+        event.enqueueWork(ConfigItems::initSeals);
         // статический блок GolemProperties: материалы и детали големов (до загрузки миров)
         event.enqueueWork(thaumcraft.common.entities.construct.golem.GolemProperties::init);
         // init оригинала: категории и файлы исследований (дополнения регистрируют свои там же)
