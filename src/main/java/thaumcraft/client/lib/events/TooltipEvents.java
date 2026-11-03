@@ -51,11 +51,12 @@ public class TooltipEvents {
         if (charge > 0) {
             event.getToolTip().add(Component.translatable("item.runic.charge").append(" +" + charge).withStyle(net.minecraft.ChatFormatting.GOLD));
         }
-        int warp = thaumcraft.common.lib.events.PlayerEvents.getFinalWarp(stack, event.getEntity());
+        // подсказки строятся и без игрока (поиск во вкладке творческого режима) — тогда Искажение и скидку не считаем
+        int warp = event.getEntity() == null ? 0 : thaumcraft.common.lib.events.PlayerEvents.getFinalWarp(stack, event.getEntity());
         if (warp > 0) {
             event.getToolTip().add(Component.translatable("item.warping").append(" " + warp).withStyle(net.minecraft.ChatFormatting.DARK_PURPLE));
         }
-        int al = thaumcraft.common.lib.events.PlayerEvents.getFinalDiscount(stack, event.getEntity());
+        int al = event.getEntity() == null ? 0 : thaumcraft.common.lib.events.PlayerEvents.getFinalDiscount(stack, event.getEntity());
         if (al > 0) {
             event.getToolTip().add(Component.translatable("tc.visdiscount").append(": " + al + "%").withStyle(net.minecraft.ChatFormatting.DARK_PURPLE));
         }
