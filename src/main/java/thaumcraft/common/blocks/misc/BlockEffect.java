@@ -17,6 +17,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thaumcraft.api.blocks.BlocksTC;
+import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.lib.SoundsTC;
 import thaumcraft.common.lib.events.ServerEvents;
 import thaumcraft.common.lib.fx.IFXDispatcher;
@@ -24,7 +25,7 @@ import thaumcraft.common.lib.fx.IFXDispatcher;
 /**
  * Невидимый блок-эффект (порт BlockEffect): «искры» (урон 1 и замедление, иногда гаснет), «гниль» (иссушение, замедление и
  * голод — от «Проклятия»), «мерцание» (просто свет 15). Искры и гниль исчезают при случайном тике. Заменяемый, проходимый.
- * TODO этап 15: гниль не действует на существ Потустороннего (IEldritchMob).
+ * Гниль не действует на существ Потустороннего (IEldritchMob), как в оригинале.
  */
 public class BlockEffect extends Block {
     public BlockEffect(Properties properties) {
@@ -58,7 +59,8 @@ public class BlockEffect extends Block {
             if (!world.isClientSide && world.random.nextInt(100) == 0) {
                 world.removeBlock(pos, false);
             }
-        } else if (this == BlocksTC.effectSap.get() && entity instanceof LivingEntity le && !le.hasEffect(MobEffects.WITHER)) {
+        } else if (this == BlocksTC.effectSap.get() && !(entity instanceof IEldritchMob)
+                && entity instanceof LivingEntity le && !le.hasEffect(MobEffects.WITHER)) {
             ServerEvents.addRunnableServer(world, () -> {
                 le.addEffect(new MobEffectInstance(MobEffects.WITHER, 40, 0, true, true));
                 le.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 1, true, true));

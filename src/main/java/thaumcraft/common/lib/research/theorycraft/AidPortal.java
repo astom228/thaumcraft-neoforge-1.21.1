@@ -3,8 +3,9 @@ package thaumcraft.common.lib.research.theorycraft;
 import net.minecraft.world.level.block.Blocks;
 import thaumcraft.api.research.theorycraft.ITheorycraftAid;
 import thaumcraft.api.research.theorycraft.TheorycraftCard;
+import thaumcraft.common.entities.monster.cult.EntityCultistPortalLesser;
 
-/** Портал рядом со столом: в Край, в Незер; малый портал культистов — этап 16. */
+/** Порт AidPortal: портал рядом со столом — в Край, в Незер или малый портал культистов. */
 public class AidPortal implements ITheorycraftAid {
     final Object portal;
 
@@ -26,6 +27,12 @@ public class AidPortal implements ITheorycraftAid {
     public static class AidPortalEnd extends AidPortal {
         public AidPortalEnd() {
             super(Blocks.END_PORTAL);
+        }
+    }
+
+    public static class AidPortalCrimson extends AidPortal {
+        public AidPortalCrimson() {
+            super(EntityCultistPortalLesser.class);
         }
     }
 

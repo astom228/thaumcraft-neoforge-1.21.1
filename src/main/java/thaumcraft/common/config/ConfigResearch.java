@@ -166,7 +166,7 @@ public class ConfigResearch {
         ScanningManager.addScannableThing(new ScanBlock("!PLANTCINDERPEARL", BlocksTC.cinderpearl.get()));
         ScanningManager.addScannableThing(new ScanBlock("!PLANTSHIMMERLEAF", BlocksTC.shimmerleaf.get()));
         ScanningManager.addScannableThing(new ScanBlock("!PLANTVISHROOM", BlocksTC.vishroom.get()));
-        // TODO: PRIMPEARL — вместе с изначальной жемчужиной
+        ScanningManager.addScannableThing(new ScanItem("PRIMPEARL", new ItemStack(ItemsTC.primordialPearl.get())));
         ScanningManager.addScannableThing(new ScanItem("!DRAGONBREATH", new ItemStack(Items.DRAGON_BREATH)));
         ScanningManager.addScannableThing(new ScanItem("!TOTEMUNDYING", new ItemStack(Items.TOTEM_OF_UNDYING)));
         ScanningManager.addScannableThing(new ScanBlock("f_TELEPORT", Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME));
@@ -201,10 +201,10 @@ public class ConfigResearch {
     private static void initTheorycraft() {
         TheorycraftManager.registerAid(new AidBookshelf());
         TheorycraftManager.registerAid(new AidBrainInAJar());
-        // TODO: AidPortalCrimson (этап 16), AidBasicEldritch — вместе с мистическим алтарём (BlocksTC.eldritch)
         TheorycraftManager.registerAid(new AidGlyphedStone());
         TheorycraftManager.registerAid(new AidPortal.AidPortalEnd());
         TheorycraftManager.registerAid(new AidPortal.AidPortalNether());
+        TheorycraftManager.registerAid(new AidPortal.AidPortalCrimson());
         TheorycraftManager.registerAid(new AidBasicAlchemy());
         TheorycraftManager.registerAid(new AidBasicArtifice());
         TheorycraftManager.registerAid(new AidBasicAuromancy());
