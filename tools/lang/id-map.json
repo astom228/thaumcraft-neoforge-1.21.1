@@ -224,6 +224,9 @@
   },
   "colorBlocks": ["nitor", "candle", "banner"],
   "drop": [
+    "^entity\\.[A-Z]", "^tile\\.empty\\.", "^fluid\\.flux_goo$", "^potion\\.soulshatter$",
+    "^death\\.attack\\.(swarm|tentacle)(\\.item)?$", "^item\\.(capacity|chargebonus)\\.text$", "^recipe\\.type\\.smelting$",
+    "^tc\\.(adv|break\\.fly|dioptra\\.[123]|markerchange|markerchangeany|taint_item_poison)$",
     "^item\\.thaumostatic_harness\\.", "^item\\.girdle_hover\\.", "^item\\.primal_charm\\.", "^item\\.eldritch_eye\\.",
     "^item\\.runed_tablet\\.", "^item\\.tainted\\.", "^tile\\.eldritch\\.", "^item\\.creative_placer\\."
   ]

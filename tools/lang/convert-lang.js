@@ -33,6 +33,9 @@ function loadLang(file) {
 }
 
 const drop = map.drop.map((r) => new RegExp(r));
+// В четырёх строках оригинала знак § повреждён в U+FFFD, но следующий символ цвета сохранился (DEVIATIONS 79).
+const brokenFormatting = new Set(['research.GOLEMDIRECT.stage.2', 'research.GOLEMFLYER.stage.2',
+  'research.SEALGUARD.stage.2', 'research.SEALUSE.stage.2']);
 
 // Старый ключ -> массив новых ключей (или null, если ключ удаляется)
 function renameKey(key) {
@@ -60,7 +63,7 @@ function convert(lang) {
     if (!keys) continue;
     for (const nk of keys) {
       if (out.has(nk) && out.get(nk) !== v) console.warn(`  ! конфликт ключа ${nk} (из ${k})`);
-      out.set(nk, v);
+      out.set(nk, brokenFormatting.has(k) ? v.replace(/\uFFFD([0-9a-fk-or])/gi, '§$1') : v);
     }
   }
   return out;
@@ -91,6 +94,29 @@ for (const m of [en, ru]) {
 // Проверки
 for (const k of ru.keys()) if (!en.has(k)) { console.error(`  ✗ ключ ru без en: ${k}`); errors++; }
 for (const k of Object.keys(enExtra)) if (!ru.has(k)) { console.error(`  ✗ новая строка без перевода на русский: ${k}`); errors++; }
+
+// Новые переводы страниц сохраняют команды книги, изображения, форматирование и подстановки английского текста.
+const markup = (s) => s.match(/<IMG>[\s\S]*?<\/IMG>|<[^>]+>|§[0-9a-fk-or]|%[0-9]*\$?[sdf]/gi) || [];
+for (const [k, v] of Object.entries(ruExtra)) {
+  if (k.startsWith('research.') && en.has(k) && JSON.stringify(markup(v)) !== JSON.stringify(markup(en.get(k)))) {
+    console.error(`  ✗ различается разметка страницы: ${k}`); errors++;
+  }
+}
+
+// Проверка самих JSON, а не только пар en/ru: в BETA17 встречаются ссылки на ключи, отсутствующие в обоих языках.
+const researchDir = path.join(root, 'src/main/resources/assets/thaumcraft/research');
+const researchKeys = new Set();
+function collectResearchKeys(value) {
+  if (typeof value === 'string' && value.startsWith('research.')) researchKeys.add(value);
+  else if (Array.isArray(value)) value.forEach(collectResearchKeys);
+  else if (value && typeof value === 'object') Object.values(value).forEach(collectResearchKeys);
+}
+for (const file of fs.readdirSync(researchDir).filter(f => f.endsWith('.json'))) {
+  collectResearchKeys(JSON.parse(fs.readFileSync(path.join(researchDir, file), 'utf8')));
+}
+for (const k of researchKeys) {
+  if (!en.has(k) || !ru.has(k)) { console.error(`  ✗ ключ исследования без en/ru: ${k}`); errors++; }
+}
 
 const sortObj = (m) => Object.fromEntries([...m.entries()].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)));
 fs.mkdirSync(outDir, { recursive: true });

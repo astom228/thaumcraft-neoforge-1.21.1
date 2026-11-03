@@ -211,5 +211,8 @@
   "tc.flux_sponge.tooltip.4": "if used while sneaking.",
   "tc.flux_sponge.creative": "Creative only",
   "tc.flux_sponge.drained": "%s flux drained from a 9x9 chunk area.",
-  "tc.flux_sponge.removed": "%s flux rifts removed."
+  "tc.flux_sponge.removed": "%s flux rifts removed.",
+  "research.BASEELDRITCH.title": "Eldritch",
+  "research.BASEELDRITCH.stage.1": "This research entry is unfinished.",
+  "research.BASEELDRITCH.stage.2": "This part of the research is unfinished in Thaumcraft 6.1.BETA17."
 }
