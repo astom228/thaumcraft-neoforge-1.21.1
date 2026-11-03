@@ -120,7 +120,6 @@ public class DebugRecipeDump {
                 result.put(holder.id().toString(), data);
             }
         }
-        Files.writeString(Path.of("../build/recipe-audit-actual.json"), new GsonBuilder().setPrettyPrinting().create().toJson(result));
         var sample = thaumcraft.api.ThaumcraftApiHelper.makeCrystal(thaumcraft.api.aspects.Aspect.AIR);
         var componentIngredient = thaumcraft.api.ThaumcraftApiHelper.getIngredient(sample);
         var named = sample.copy();
@@ -144,6 +143,9 @@ public class DebugRecipeDump {
             if (phial.matches(input, event.getServer().overworld()) != wanted) throw new IllegalStateException("[TC-RECIPE-DUMP] phial glass regression: " + glass);
         }
         Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: phials accept original glass and reject tinted glass");
+        auditAspects(event.getServer());
+        Files.writeString(Path.of("../build/recipe-audit-actual.json"), new GsonBuilder().setPrettyPrinting().create().toJson(result));
+        Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: all functional audits");
         Thaumcraft.log.info("[TC-RECIPE-DUMP] {} recipes exported", result.size());
     }
 
@@ -155,5 +157,56 @@ public class DebugRecipeDump {
 
     private static com.google.gson.JsonElement ingredient(net.minecraft.world.item.crafting.Ingredient value, net.minecraft.core.RegistryAccess registries) {
         return net.minecraft.world.item.crafting.Ingredient.CODEC.encodeStart(registries.createSerializationContext(com.mojang.serialization.JsonOps.INSTANCE), value).getOrThrow();
+    }
+
+    private static void auditAspects(net.minecraft.server.MinecraftServer server) {
+        var world = server.overworld();
+        var guardian = net.minecraft.world.entity.EntityType.GUARDIAN.create(world);
+        var elder = net.minecraft.world.entity.EntityType.ELDER_GUARDIAN.create(world);
+        requireAspect(thaumcraft.api.aspects.AspectHelper.getEntityAspects(guardian), thaumcraft.api.aspects.Aspect.ELDRITCH, 10, "guardian");
+        requireAspect(thaumcraft.api.aspects.AspectHelper.getEntityAspects(elder), thaumcraft.api.aspects.Aspect.ELDRITCH, 15, "elder guardian");
+        var creeper = net.minecraft.world.entity.EntityType.CREEPER.create(world);
+        var nbt = new net.minecraft.nbt.CompoundTag();
+        creeper.saveWithoutId(nbt);
+        nbt.putBoolean("powered", true);
+        creeper.load(nbt);
+        requireAspect(thaumcraft.api.aspects.AspectHelper.getEntityAspects(creeper), thaumcraft.api.aspects.Aspect.ENERGY, 15, "charged creeper");
+        var pech = thaumcraft.common.config.ConfigEntities.PECH.get().create(world);
+        var pechAspects = new thaumcraft.api.aspects.Aspect[] {thaumcraft.api.aspects.Aspect.DESIRE, thaumcraft.api.aspects.Aspect.AVERSION, thaumcraft.api.aspects.Aspect.MAGIC};
+        for (int type = 0; type < 3; type++) {
+            pech.setPechType(type);
+            requireAspect(thaumcraft.api.aspects.AspectHelper.getEntityAspects(pech), pechAspects[type], 5, "pech " + type);
+        }
+        var wisp = thaumcraft.common.config.ConfigEntities.WISP.get().create(world);
+        for (var aspect : thaumcraft.api.aspects.Aspect.aspects.values()) {
+            wisp.setWispType(aspect.getTag());
+            var expected = new AspectList().add(aspect, 5).add(thaumcraft.api.aspects.Aspect.AURA, 5).add(thaumcraft.api.aspects.Aspect.FLIGHT, 5);
+            if (!thaumcraft.api.aspects.AspectHelper.getEntityAspects(wisp).aspects.equals(expected.aspects)) throw new IllegalStateException("Wisp aspects: " + aspect.getTag());
+        }
+        var types = new net.minecraft.world.item.Item[] {net.minecraft.world.item.Items.POTION, net.minecraft.world.item.Items.TIPPED_ARROW,
+                net.minecraft.world.item.Items.SPLASH_POTION, net.minecraft.world.item.Items.LINGERING_POTION};
+        var additions = new thaumcraft.api.aspects.Aspect[] {thaumcraft.api.aspects.Aspect.WATER, thaumcraft.api.aspects.Aspect.AVERSION,
+                thaumcraft.api.aspects.Aspect.ENERGY, thaumcraft.api.aspects.Aspect.TRAP};
+        for (int pass = 0; pass < 2; pass++) {
+            for (int i = 0; i < types.length; i++) {
+                var potion = net.minecraft.world.item.alchemy.PotionContents.createItemStack(types[i], net.minecraft.world.item.alchemy.Potions.WATER);
+                var expected = new AspectList().add(thaumcraft.api.aspects.Aspect.WATER, 5).add(additions[i], 5);
+                if (!thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags(potion).aspects.equals(expected.aspects)) throw new IllegalStateException("Water potion aspects: " + i);
+            }
+            for (var color : net.minecraft.world.item.DyeColor.values()) {
+                var shield = new ItemStack(net.minecraft.world.item.Items.SHIELD);
+                shield.set(net.minecraft.core.component.DataComponents.BASE_COLOR, color);
+                var aspects = thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags(shield);
+                if (aspects == null || aspects.getAmount(thaumcraft.api.aspects.Aspect.PROTECT) < 20) throw new IllegalStateException("Shield aspects: " + color);
+            }
+            if (pass == 0) AspectRegistryEvents.build(net.neoforged.fml.LogicalSide.SERVER, server.getRecipeManager(), server.registryAccess());
+        }
+        if (thaumcraft.api.internal.CommonInternals.state(net.neoforged.fml.LogicalSide.SERVER).objectTags
+                == thaumcraft.api.internal.CommonInternals.state(net.neoforged.fml.LogicalSide.CLIENT).objectTags) throw new IllegalStateException("Aspect side isolation");
+        Thaumcraft.log.info("[TC-ASPECT-AUDIT] PASS: entity NBT, 37 wisp types, 4 water potion forms, 16 shield colors, rebuild and side isolation");
+    }
+
+    private static void requireAspect(AspectList list, thaumcraft.api.aspects.Aspect aspect, int amount, String label) {
+        if (list == null || list.getAmount(aspect) != amount) throw new IllegalStateException("Aspects for " + label);
     }
 }

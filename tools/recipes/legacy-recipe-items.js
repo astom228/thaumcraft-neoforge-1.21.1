@@ -14,6 +14,14 @@ const variants = {
   'ItemsTC.plates': ['brass_plate', 'iron_plate', 'thaumium_plate', 'void_metal_plate'],
   'ItemsTC.plate': ['brass_plate', 'iron_plate', 'thaumium_plate', 'void_metal_plate'],
   'ItemsTC.label': ['label', 'marked_label'],
+  'ItemsTC.phial': ['phial', 'essentia_phial'],
+  'ItemsTC.lootBag': ['common_loot_bag', 'uncommon_loot_bag', 'rare_loot_bag'],
+  'ItemsTC.thaumonomicon': ['thaumonomicon', 'cheaters_thaumonomicon'],
+  'ItemsTC.chunks': ['beef_chunk', 'chicken_chunk', 'pork_chunk', 'fish_chunk', 'rabbit_chunk', 'mutton_chunk'],
+  'ItemsTC.curio': ['arcane_curio', 'preserved_curio', 'ancient_curio', 'eldritch_curio', 'illuminating_curio', 'twisted_curio', 'crimson_rites'],
+  'ItemsTC.celestialNotes': ['celestial_notes_sun', 'celestial_notes_stars_1', 'celestial_notes_stars_2', 'celestial_notes_stars_3', 'celestial_notes_stars_4',
+    'celestial_notes_moon_1', 'celestial_notes_moon_2', 'celestial_notes_moon_3', 'celestial_notes_moon_4', 'celestial_notes_moon_5', 'celestial_notes_moon_6',
+    'celestial_notes_moon_7', 'celestial_notes_moon_8'],
 };
 const seals = { pickup: 'collect_seal', pickup_advanced: 'advanced_collect_seal', fill: 'store_seal', fill_advanced: 'advanced_store_seal',
   empty: 'empty_seal', empty_advanced: 'advanced_empty_seal', provider: 'provide_seal', stock: 'stock_seal', guard: 'guard_seal',
@@ -35,6 +43,7 @@ function stackOf(expression, context = {}) {
   if ((m = e.match(/^BlocksTC\.candles\.get\(EnumDyeColor\.(\w+)\)$/))) return { id: id(m[1].toLowerCase() + '_candle'), count: 1 };
   if ((m = e.match(/^BlocksTC\.(nitor|candles)\.get\(d\)$/)) && context.color) return { id: id(context.color + (m[1] === 'nitor' ? '_nitor' : '_candle')), count: 1 };
   if (e === 'FluidUtil.getFilledBucket(new FluidStack(ConfigBlocks.FluidDeath.instance, 1000))') return { id: id('liquid_death_bucket'), count: 1 };
+  if (e === 'FluidUtil.getFilledBucket(new FluidStack(ConfigBlocks.FluidPure.instance, 1000))') return { id: id('purifying_fluid_bucket'), count: 1 };
   if (/^\w+$/.test(e)) {
     const marker = new RegExp('ItemStack\\s+' + e + '\\s*=\\s*new ItemStack\\(').exec(P.read());
     if (marker) return stackOf('new ItemStack(' + P.balanced(P.read(), marker.index + marker[0].length - 1).inner + ')', context);

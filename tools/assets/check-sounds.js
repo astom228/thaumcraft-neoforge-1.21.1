@@ -34,6 +34,26 @@ for (const [name, event] of Object.entries(source)) {
   const renamed = name === 'runicshieldecharge' ? 'runicshieldcharge' : name;
   if (JSON.stringify(event) !== JSON.stringify(events[renamed])) errors.push('Changed sound definition: ' + name);
 }
+// Проверяем покрытие обращений к событиям, а не равенство числа вызовов:
+// при переносе обработчики объединены/перенесены, SoundType задаются в свойствах блоков.
+function usedEvents(directory) {
+  return new Set(walk(directory).filter(f => f.endsWith('.java')).flatMap(file =>
+    [...fs.readFileSync(file, 'utf8').matchAll(/SoundsTC\.([a-z][A-Za-z0-9_]*)\b/g)]
+      .map(m => m[1]).filter(name => registrations.includes(name))));
+}
+const sourceJava = path.join(root, 'reference/src-mcp/thaumcraft/thaumcraft');
+const usedOriginal = usedEvents(sourceJava);
+const usedCurrent = usedEvents(path.join(root, 'src/main/java/thaumcraft'));
+for (const name of usedOriginal) {
+  if (usedCurrent.has(name)) continue;
+  // В BETA17 crystal есть только в невызванном playSocketSound GuiFocalManipulator.
+  const gui = fs.readFileSync(path.join(sourceJava, 'client/gui/GuiFocalManipulator.java'), 'utf8');
+  const socketReferences = walk(sourceJava).filter(f => f.endsWith('.java')).reduce((n, file) =>
+    n + [...fs.readFileSync(file, 'utf8').matchAll(/\bplaySocketSound\s*\(/g)].length, 0);
+  if (name === 'crystal' && socketReferences === 1 && /SoundsTC\.crystal\b/.test(gui)) continue;
+  errors.push('Original sound event has no port usage: ' + name);
+}
 errors.forEach(e => console.error(e));
 console.log('Sounds:', registrations.length, 'events,', count, 'original audio files; errors:', errors.length);
+console.log('Java event coverage:', usedOriginal.size, 'original,', usedCurrent.size, 'port (crystal: unused original helper).');
 if (errors.length) process.exitCode = 1;
