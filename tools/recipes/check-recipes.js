@@ -137,6 +137,7 @@ for (const file of JSON.parse(fs.readFileSync(path.join(__dirname, 'arcane-gener
       ingredients: rows.flatMap(r => [...r].map(c => c === ' ' ? [] : json.key[c])) });
   } else Object.assign(data, { ingredientMode: 'unordered', ingredients: json.ingredients });
 }
+require('./normal-recipe-reference').addReference(expected, manual);
 fs.mkdirSync(path.join(root, 'build'), { recursive: true });
 fs.writeFileSync(path.join(root, 'build/recipe-audit-expected.json'), JSON.stringify(expected, null, 2) + '\n');
 fs.writeFileSync(path.join(root, 'build/recipe-audit-manual.txt'), manual.join('\n') + '\n');

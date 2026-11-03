@@ -92,6 +92,32 @@ public class DebugRecipeDump {
                     for (int height = 1; height <= 3; height++) if (arcane.canCraftInDimensions(3, height)) { data.put("height", height); break; }
                 } else data.put("ingredientMode", "unordered");
                 result.put(holder.id().toString(), data);
+            } else if (holder.id().getNamespace().equals("thaumcraft") &&
+                    (holder.value() instanceof net.minecraft.world.item.crafting.ShapedRecipe
+                     || holder.value() instanceof net.minecraft.world.item.crafting.ShapelessRecipe
+                     || holder.value() instanceof net.minecraft.world.item.crafting.AbstractCookingRecipe)) {
+                var recipe = holder.value();
+                Map<String, Object> data = new LinkedHashMap<>();
+                var output = recipe.getResultItem(event.getServer().registryAccess());
+                data.put("resultItem", net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(output.getItem()).toString());
+                data.put("count", output.getCount());
+                var resultAspects = output.get(thaumcraft.common.lib.TCDataComponents.ASPECTS.get());
+                if (resultAspects != null) data.put("resultAspects", aspects(resultAspects));
+                if (recipe instanceof net.minecraft.world.item.crafting.AbstractCookingRecipe cooking) {
+                    data.put("kind", "smelting");
+                    data.put("catalyst", ingredient(cooking.getIngredients().getFirst(), event.getServer().registryAccess()));
+                    data.put("experience", cooking.getExperience());
+                    data.put("cookingTime", cooking.getCookingTime());
+                } else {
+                    data.put("kind", "crafting");
+                    data.put("ingredients", recipe.getIngredients().stream().map(i -> ingredient(i, event.getServer().registryAccess())).toList());
+                    if (recipe instanceof net.minecraft.world.item.crafting.ShapedRecipe shaped) {
+                        data.put("ingredientMode", "shaped");
+                        data.put("width", shaped.getWidth());
+                        data.put("height", shaped.getHeight());
+                    } else data.put("ingredientMode", "unordered");
+                }
+                result.put(holder.id().toString(), data);
             }
         }
         Files.writeString(Path.of("../build/recipe-audit-actual.json"), new GsonBuilder().setPrettyPrinting().create().toJson(result));
@@ -107,6 +133,17 @@ public class DebugRecipeDump {
         wrongAmount.set(thaumcraft.common.lib.TCDataComponents.ASPECTS.get(), new AspectList().add(thaumcraft.api.aspects.Aspect.AIR, 2));
         if (componentIngredient.test(wrongAmount)) throw new IllegalStateException("[TC-RECIPE-DUMP] aspect amount regression");
         Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: named/lore crystal accepted, wrong aspect and amount rejected");
+        var phial = (net.minecraft.world.item.crafting.ShapedRecipe) event.getServer().getRecipeManager()
+                .byKey(net.minecraft.resources.ResourceLocation.parse("thaumcraft:phial")).orElseThrow().value();
+        for (var glass : java.util.List.of(net.minecraft.world.item.Items.GLASS, net.minecraft.world.item.Items.WHITE_STAINED_GLASS,
+                net.minecraft.world.item.Items.BLACK_STAINED_GLASS, net.minecraft.world.item.Items.TINTED_GLASS)) {
+            var input = net.minecraft.world.item.crafting.CraftingInput.of(3, 3, java.util.List.of(ItemStack.EMPTY,
+                    new ItemStack(net.minecraft.world.item.Items.CLAY_BALL), ItemStack.EMPTY, new ItemStack(glass), ItemStack.EMPTY,
+                    new ItemStack(glass), ItemStack.EMPTY, new ItemStack(glass), ItemStack.EMPTY));
+            boolean wanted = glass != net.minecraft.world.item.Items.TINTED_GLASS;
+            if (phial.matches(input, event.getServer().overworld()) != wanted) throw new IllegalStateException("[TC-RECIPE-DUMP] phial glass regression: " + glass);
+        }
+        Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: phials accept original glass and reject tinted glass");
         Thaumcraft.log.info("[TC-RECIPE-DUMP] {} recipes exported", result.size());
     }
 

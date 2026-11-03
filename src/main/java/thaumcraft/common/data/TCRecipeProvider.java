@@ -184,9 +184,13 @@ public class TCRecipeProvider extends RecipeProvider {
                 .requires(BlocksTC.arcaneEar.get()).requires(Items.LEVER)
                 .unlockedBy("has", has(BlocksTC.arcaneEar.get())).save(out, id("arcaneeartoggle"));
 
-        // фиалы: "blockGlass" — любое стекло
+        // Forge 1.12 "blockGlass": обычное стекло и 16 окрашенных вариантов; тонированного стекла в этом списке не было.
+        Ingredient phialGlass = Ingredient.of(java.util.stream.Stream.concat(java.util.stream.Stream.of("glass"),
+                java.util.Arrays.stream(DyeColor.values()).map(dye -> dye.getSerializedName() + "_stained_glass"))
+                .map(name -> new net.minecraft.world.item.ItemStack(net.minecraft.core.registries.BuiltInRegistries.ITEM.get(
+                        ResourceLocation.withDefaultNamespace(name)))));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, phial.get(), 8)
-                .pattern(" C ").pattern("G G").pattern(" G ").define('G', Tags.Items.GLASS_BLOCKS).define('C', Items.CLAY_BALL)
+                .pattern(" C ").pattern("G G").pattern(" G ").define('G', phialGlass).define('C', Items.CLAY_BALL)
                 .unlockedBy("has", has(Items.CLAY_BALL)).save(out, id("phial"));
 
         // --- ярлыки: чистый, с аспектом (чистый + фиал этого аспекта), снятие пометки ---
