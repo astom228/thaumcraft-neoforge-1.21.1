@@ -652,6 +652,10 @@
     },
     "rare_urn": {
       "src": "loot_urn_rare"
+    },
+    "arcane_activator_rail": {
+      "src": "activator_rail",
+      "item": false
     }
   },
   "items": {

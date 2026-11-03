@@ -191,5 +191,7 @@
   "block.thaumcraft.rare_crate": "Rare Crate",
   "block.thaumcraft.rare_urn": "Rare Urn",
   "entity.thaumcraft.golem": "Golem",
-  "entity.thaumcraft.golemdart": "Golem Dart"
+  "entity.thaumcraft.golemdart": "Golem Dart",
+  "entity.thaumcraft.turretbasic": "Automated Crossbow",
+  "entity.thaumcraft.turretadvanced": "Advanced Automated Crossbow"
 }

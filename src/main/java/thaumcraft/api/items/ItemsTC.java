@@ -246,6 +246,11 @@ public class ItemsTC {
     // Колокольчик големанта (ItemGolemBell): настройка и снятие печатей, приказы голему
     public static final DeferredItem<Item> golemBell = ConfigItems.ITEMS.registerItem("golem_bell",
             thaumcraft.common.entities.construct.golem.ItemGolemBell::new, new Item.Properties().stacksTo(1));
+    // Турели (ItemTurretPlacer; в 1.12 — turret с метой): арбалет и улучшенный арбалет
+    public static final DeferredItem<Item> turretBasic = ConfigItems.ITEMS.registerItem("crossbow_turret",
+            p -> new thaumcraft.common.entities.construct.ItemTurretPlacer(thaumcraft.common.entities.construct.ItemTurretPlacer.BASIC, p));
+    public static final DeferredItem<Item> turretAdvanced = ConfigItems.ITEMS.registerItem("advanced_crossbow_turret",
+            p -> new thaumcraft.common.entities.construct.ItemTurretPlacer(thaumcraft.common.entities.construct.ItemTurretPlacer.ADVANCED, p));
     // реликты и прочее: изначальная жемчужина (прочность 8), жезл пехов, мешки с добычей (по 16), счётчик рассудка
     public static final DeferredItem<Item> primordialPearl = ConfigItems.ITEMS.registerItem("primordial_pearl", thaumcraft.common.items.curios.ItemPrimordialPearl::new,
             new Item.Properties().durability(8).rarity(Rarity.UNCOMMON));

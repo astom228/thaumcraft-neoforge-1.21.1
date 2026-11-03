@@ -159,6 +159,8 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Champion modifiers: Bold / Spined / Armored / Mighty / Grim / Warded / Warped / Undying / Fiery / Sickly / Venomous / Vampiric / Infested / Tainted | Смелый / Шипастый / Бронированный / Могучий / Мрачный / Защищённый / Искажённый / Неумирающий / Огненный / Хворый / Ядовитый / Вампирский / Кишащий / Заражённый | мужской род (стоят перед именем существа) |
 | Arcane Bore | Магический бур | принято |
 | Automated Crossbow | Автоматический арбалет | принято |
+| Arcane Activator Rail | Магические рельсы активатора | принято |
+| Automated Crossbow | Автоматический арбалет | принято |
 | Hungry Chest | Голодный сундук | принято |
 | Infernal Furnace | Адская печь | принято |
 | Arcane Spa | Магическая купель | принято |

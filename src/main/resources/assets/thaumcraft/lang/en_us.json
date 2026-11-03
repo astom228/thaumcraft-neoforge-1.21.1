@@ -439,6 +439,8 @@
   "entity.thaumcraft.taintcrawler": "Taint Crawler",
   "entity.thaumcraft.taintswarm": "Taint Swarm",
   "entity.thaumcraft.thaumslime": "Thaumic Slime",
+  "entity.thaumcraft.turretadvanced": "Advanced Automated Crossbow",
+  "entity.thaumcraft.turretbasic": "Automated Crossbow",
   "entity.thaumcraft.wisp": "Wisp",
   "fail.crimsonrites": "This book contains nothing but crazed ravings.",
   "false.start": "This feels like it should work, but something is missing...",

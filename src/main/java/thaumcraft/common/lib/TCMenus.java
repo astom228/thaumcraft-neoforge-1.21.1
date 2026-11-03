@@ -40,6 +40,10 @@ public class TCMenus {
             () -> IMenuTypeExtension.create(thaumcraft.common.entities.construct.golem.gui.SealBaseContainer::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerLogistics>> LOGISTICS = MENUS.register("logistics",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerLogistics::new));
+    public static final Supplier<MenuType<thaumcraft.common.container.ContainerTurretBasic>> TURRET_BASIC = MENUS.register("turret_basic",
+            () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerTurretBasic::new));
+    public static final Supplier<MenuType<thaumcraft.common.container.ContainerTurretAdvanced>> TURRET_ADVANCED = MENUS.register("turret_advanced",
+            () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerTurretAdvanced::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerPech>> PECH = MENUS.register("pech",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerPech::new));
 }

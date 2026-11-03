@@ -162,6 +162,14 @@ public class ConfigEntities {
                     thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(4)
                     .updateInterval(20).build("taint_seed_prime"));
 
+    // EntityRegistry.registerModEntity(…, "TurretBasic" / "TurretAdvanced", …, 64, 3, true); глаза — 0.66 роста / 1.0
+    public static final Supplier<EntityType<thaumcraft.common.entities.construct.EntityTurretCrossbow>> TURRET_BASIC = ENTITIES.register("turretbasic",
+            () -> EntityType.Builder.<thaumcraft.common.entities.construct.EntityTurretCrossbow>of(thaumcraft.common.entities.construct.EntityTurretCrossbow::new,
+                    MobCategory.MISC).sized(0.95F, 1.25F).eyeHeight(0.825F).clientTrackingRange(4).updateInterval(3).build("turretbasic"));
+    public static final Supplier<EntityType<thaumcraft.common.entities.construct.EntityTurretCrossbowAdvanced>> TURRET_ADVANCED = ENTITIES.register("turretadvanced",
+            () -> EntityType.Builder.<thaumcraft.common.entities.construct.EntityTurretCrossbowAdvanced>of(
+                    thaumcraft.common.entities.construct.EntityTurretCrossbowAdvanced::new, MobCategory.MISC).sized(0.95F, 1.5F).eyeHeight(1.0F)
+                    .clientTrackingRange(4).updateInterval(3).build("turretadvanced"));
     // EntityRegistry.registerModEntity(…, "GolemDart", …, 64, 20, false)
     public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityGolemDart>> GOLEM_DART = ENTITIES.register("golemdart",
             () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityGolemDart>of(thaumcraft.common.entities.projectile.EntityGolemDart::new,
@@ -240,6 +248,8 @@ public class ConfigEntities {
         event.put(PECH.get(), thaumcraft.common.entities.monster.EntityPech.createAttributes().build());
         event.put(WISP.get(), thaumcraft.common.entities.monster.EntityWisp.createAttributes().build());
         event.put(TAINT_SEED.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeed.createAttributes().build());
+        event.put(TURRET_BASIC.get(), thaumcraft.common.entities.construct.EntityTurretCrossbow.createAttributes().build());
+        event.put(TURRET_ADVANCED.get(), thaumcraft.common.entities.construct.EntityTurretCrossbowAdvanced.createAttributes().build());
         event.put(GOLEM.get(), thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem.createAttributes().build());
         event.put(TAINT_SEED_PRIME.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime.createAttributes().build());
     }

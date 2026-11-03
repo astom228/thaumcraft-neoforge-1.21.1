@@ -1160,5 +1160,14 @@
   "button.bl": "Чёрный список",
   "button.wl": "Белый список",
   "button.caption.required": "Нужно",
-  "button.caption.forbidden": "Запрещено"
+  "button.caption.forbidden": "Запрещено",
+  "entity.thaumcraft.turretbasic": "Автоматический арбалет",
+  "entity.thaumcraft.turretadvanced": "Улучшенный автоматический арбалет",
+  "block.thaumcraft.arcane_activator_rail": "Магические рельсы активатора",
+  "item.thaumcraft.crossbow_turret": "Автоматический арбалет",
+  "item.thaumcraft.advanced_crossbow_turret": "Улучшенный автоматический арбалет",
+  "item.thaumcraft.arcane_bore": "Магический бур",
+  "button.up": "Прокрутить вверх",
+  "button.down": "Прокрутить вниз",
+  "turretfocus.range": "Дальность: %t блоков"
 }

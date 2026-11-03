@@ -56,6 +56,7 @@ public class TCBlockLootTables extends BlockLootSubProvider {
                         .apply(ApplyBonusCount.addOreBonusCount(fortune))))));
         add(BlocksTC.oreQuartz.get(), b -> createOreDrop(b, Items.QUARTZ));
         dropSelf(BlocksTC.oreCinnabar.get());
+        dropSelf(BlocksTC.activatorRail.get());
         // Живая трава — как трава: с шёлковым касанием сама, иначе земля
         add(BlocksTC.grassAmbient.get(), b -> createSingleItemTableWithSilkTouch(b, Blocks.DIRT));
 

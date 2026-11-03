@@ -39,6 +39,8 @@ public class TCBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_SHOVEL).add(taintSoil.get(), taintCrust.get(), grassAmbient.get());
         // живая трава — почва для растений и деревьев, как трава
         tag(BlockTags.DIRT).add(grassAmbient.get());
+        tag(BlockTags.RAILS).add(activatorRail.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(activatorRail.get());
         tag(BlockTags.MINEABLE_WITH_AXE).add(lootCrateCommon.get(), lootCrateUncommon.get(), lootCrateRare.get());
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(lootUrnCommon.get(), lootUrnUncommon.get(), lootUrnRare.get());
         tag(BlockTags.NEEDS_STONE_TOOL).add(oreAmber.get());

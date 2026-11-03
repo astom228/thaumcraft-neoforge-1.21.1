@@ -336,6 +336,11 @@ public class BlocksTC {
                 .pushReaction(PushReaction.BLOCK);
     }
 
+    // Магические рельсы активатора (BlockRailPowered без активатора, твёрдость 0.7): турель на вагонетке над включёнными
+    // рельсами отключается, над выключенными — включается
+    public static final DeferredBlock<Block> activatorRail = register("arcane_activator_rail",
+            () -> new net.minecraft.world.level.block.PoweredRailBlock(BlockBehaviour.Properties.of().noCollission().strength(0.7F).sound(SoundType.METAL)));
+
     // Редстоун-реле (BlockRedstoneRelay): Material.CIRCUITS, твёрдость 0, звук дерева
     public static final DeferredBlock<Block> redstoneRelay = register("redstone_relay", () -> new thaumcraft.common.blocks.devices.BlockRedstoneRelay(
             BlockBehaviour.Properties.of().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
