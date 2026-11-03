@@ -145,6 +145,7 @@ public class DebugRecipeDump {
         Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: phials accept original glass and reject tinted glass");
         auditAspects(event.getServer());
         auditServerGuards(event.getServer());
+        auditResearchPayments(event.getServer());
         Files.writeString(Path.of("../build/recipe-audit-actual.json"), new GsonBuilder().setPrettyPrinting().create().toJson(result));
         Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: all functional audits");
         Thaumcraft.log.info("[TC-RECIPE-DUMP] {} recipes exported", result.size());
@@ -241,6 +242,63 @@ public class DebugRecipeDump {
         mirror.doesContainerAccept(thaumcraft.api.aspects.Aspect.AIR);
         if (world.isLoaded(remote) || !mirror.linked) throw new IllegalStateException("Mirror probe loads chunk or breaks pending link");
         Thaumcraft.log.info("[TC-SERVER-AUDIT] PASS: logistics search/refresh coalescing, mirror probes leave remote chunk unloaded and link intact");
+    }
+
+    private static void auditResearchPayments(net.minecraft.server.MinecraftServer server) {
+        var player = net.neoforged.neoforge.common.util.FakePlayerFactory.get(server.overworld(),
+                new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "ResearchAudit"));
+        var category = thaumcraft.api.research.ResearchCategories.getResearchCategory("BASICS");
+        String key = "TC_AUDIT_PAYMENT";
+        var entry = new thaumcraft.api.research.ResearchEntry();
+        entry.setKey(key);
+        entry.setCategory("BASICS");
+        var stage = new thaumcraft.api.research.ResearchStage();
+        stage.setObtain(new ItemStack[] {new ItemStack(net.minecraft.world.item.Items.DIAMOND, 2)});
+        var second = new thaumcraft.api.research.ResearchStage();
+        second.setObtain(new ItemStack[] {new ItemStack(net.minecraft.world.item.Items.APPLE)});
+        entry.setStages(new thaumcraft.api.research.ResearchStage[] {stage, second});
+        if (category.research.putIfAbsent(key, entry) != null) throw new IllegalStateException("Audit research key exists");
+        try {
+            var knowledge = thaumcraft.api.capabilities.ThaumcraftCapabilities.getKnowledge(player);
+            knowledge.addResearch(key);
+            knowledge.setResearchStage(key, 1);
+            player.getInventory().items.set(0, new ItemStack(net.minecraft.world.item.Items.DIAMOND, 4));
+            var packet = new thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer(key, false);
+            stage.setCraft(new ItemStack[] {new ItemStack(net.minecraft.world.item.Items.STICK)});
+            stage.setCraftReference(new int[] {Integer.MAX_VALUE});
+            thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer.handle(packet, player);
+            requirePaymentUnchanged(player, key);
+            stage.setCraft(null);
+            stage.setResearch(new String[] {"TC_AUDIT_MISSING"});
+            thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer.handle(packet, player);
+            requirePaymentUnchanged(player, key);
+            stage.setResearch(null);
+            stage.setKnow(new thaumcraft.api.research.ResearchStage.Knowledge[] {
+                    new thaumcraft.api.research.ResearchStage.Knowledge(thaumcraft.api.capabilities.IPlayerKnowledge.EnumKnowledgeType.OBSERVATION, category, 1)});
+            thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer.handle(packet, player);
+            requirePaymentUnchanged(player, key);
+            stage.setKnow(null);
+            entry.setParents(new String[] {"TC_AUDIT_MISSING"});
+            thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer.handle(packet, player);
+            requirePaymentUnchanged(player, key);
+            entry.setParents(null);
+            thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer.handle(packet, player);
+            if (player.getInventory().items.get(0).getCount() != 2 || knowledge.getResearchStage(key) != 2) throw new IllegalStateException("Valid research payment/progress");
+            thaumcraft.common.lib.network.playerdata.PacketSyncProgressToServer.handle(packet, player);
+            if (player.getInventory().items.get(0).getCount() != 2 || knowledge.getResearchStage(key) != 2) throw new IllegalStateException("Repeated packet bypasses next-stage requirements");
+            if (thaumcraft.common.lib.research.ResearchManager.noFlags) throw new IllegalStateException("Research flag leaked");
+        } finally {
+            category.research.remove(key);
+            thaumcraft.common.lib.research.ResearchManager.syncList.remove(player.getUUID());
+        }
+        Thaumcraft.log.info("[TC-SERVER-AUDIT] PASS: failed craft/research/knowledge/parent checks preserve items; valid payment once; replay rejected");
+    }
+
+    private static void requirePaymentUnchanged(net.minecraft.server.level.ServerPlayer player, String key) {
+        if (player.getInventory().items.get(0).getCount() != 4
+                || thaumcraft.api.capabilities.ThaumcraftCapabilities.getKnowledge(player).getResearchStage(key) != 1) {
+            throw new IllegalStateException("Rejected research request changed inventory or stage");
+        }
     }
 
     private static void requireAspect(AspectList list, thaumcraft.api.aspects.Aspect aspect, int amount, String label) {

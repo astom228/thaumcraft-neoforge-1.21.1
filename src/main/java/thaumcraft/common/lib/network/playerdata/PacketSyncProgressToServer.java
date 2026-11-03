@@ -42,7 +42,9 @@ public record PacketSyncProgressToServer(String key, boolean first, boolean chec
 
     /** onMessage оригинала (главный поток сервера). */
     public static void handle(PacketSyncProgressToServer message, ServerPlayer player) {
-        if (player == null || ResearchCategories.getResearch(message.key) == null) {
+        if (player == null || ResearchCategories.getResearch(message.key) == null
+                || ThaumcraftCapabilities.getKnowledge(player).isResearchComplete(message.key)
+                || !ResearchManager.doesPlayerHaveRequisites(player, message.key)) {
             return;
         }
         if (message.first != ThaumcraftCapabilities.knowsResearch(player, message.key)) {
@@ -50,12 +52,13 @@ public record PacketSyncProgressToServer(String key, boolean first, boolean chec
             if (checks && !checkRequisites(player, message.key)) {
                 return;
             }
-            if (message.noFlags) {
-                ResearchManager.noFlags = true;
+            try {
+                ResearchManager.noFlags = message.noFlags;
+                ResearchManager.progressResearch(player, message.key);
+            } finally {
+                // Даже при исключении флаг не должен перейти к следующему запросу.
+                ResearchManager.noFlags = false;
             }
-            ResearchManager.progressResearch(player, message.key);
-            // флаг одноразовый: если продвижения не было, он не должен перейти к следующему вызову
-            ResearchManager.noFlags = false;
         }
     }
 
@@ -79,9 +82,6 @@ public record PacketSyncProgressToServer(String key, boolean first, boolean chec
                 if (!InventoryUtils.isPlayerCarryingAmount(player, itemStack, false)) {
                     return false;
                 }
-            }
-            for (ItemStack itemStack : o) {
-                InventoryUtils.consumePlayerItem(player, itemStack, true, false);
             }
         }
         ItemStack[] c = stage.getCraft();
@@ -107,9 +107,13 @@ public record PacketSyncProgressToServer(String key, boolean first, boolean chec
                     return false;
                 }
             }
-            for (ResearchStage.Knowledge value : k) {
-                ResearchManager.addKnowledge(player, value.type, value.category, -value.amount * value.type.getProgression());
-            }
+        }
+        // Все условия проверены до первого изменения инвентаря или знаний.
+        if (o != null) for (ItemStack itemStack : o) {
+            InventoryUtils.consumePlayerItem(player, itemStack, true, false);
+        }
+        if (k != null) for (ResearchStage.Knowledge value : k) {
+            ResearchManager.addKnowledge(player, value.type, value.category, -value.amount * value.type.getProgression());
         }
         return true;
     }
