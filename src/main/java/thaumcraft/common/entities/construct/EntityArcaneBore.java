@@ -279,6 +279,10 @@ public class EntityArcaneBore extends EntityOwnedConstruct {
         int x = this.digTargetPrev.getX();
         int z = this.digTargetPrev.getZ();
         int y = this.digTargetPrev.getY();
+        // луч — только до последнего загруженного блока: clip на сервере подгружал бы чанки (раздел 7)
+        while (digDepth > 0 && !this.level().isLoaded(new BlockPos(x + f.getStepX() * digDepth, y + f.getStepY() * digDepth, z + f.getStepZ() * digDepth))) {
+            digDepth--;
+        }
         BlockPos end = new BlockPos(x + f.getStepX() * digDepth, y + f.getStepY() * digDepth, z + f.getStepZ() * digDepth);
         BlockHitResult mop = this.level().clip(new ClipContext(Vec3.atCenterOf(this.digTargetPrev), Vec3.atCenterOf(end), ClipContext.Block.COLLIDER,
                 ClipContext.Fluid.NONE, this));
