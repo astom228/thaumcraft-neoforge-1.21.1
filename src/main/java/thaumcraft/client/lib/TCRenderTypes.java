@@ -94,22 +94,23 @@ public final class TCRenderTypes extends RenderType {
         return GLOW.apply(tex);
     }
 
-    private static final ResourceLocation END_SKY = ResourceLocation.withDefaultNamespace("textures/environment/end_sky.png");
     private static final ResourceLocation END_PORTAL = ResourceLocation.withDefaultNamespace("textures/entity/end_portal.png");
 
     private static RenderType rift(String name, TransparencyStateShard transparency, boolean depthWrite, boolean depthTest) {
-        CompositeState.CompositeStateBuilder b = CompositeState.builder().setShaderState(RENDERTYPE_END_PORTAL_SHADER)
-                .setTextureState(MultiTextureStateShard.builder().add(END_SKY, false, false).add(END_PORTAL, false, false).build())
+        CompositeState.CompositeStateBuilder b = CompositeState.builder()
+                .setShaderState(new ShaderStateShard(thaumcraft.client.lib.ender.ShaderHelper::getEndShader))
+                .setTextureState(new TextureStateShard(END_PORTAL, false, false))
                 .setTransparencyState(transparency).setCullState(NO_CULL).setWriteMaskState(depthWrite ? COLOR_DEPTH_WRITE : COLOR_WRITE);
         if (!depthTest) {
             b.setDepthTestState(NO_DEPTH_TEST);
         }
-        return create(name, DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS, 4096, false, false, b.createCompositeState(false));
+        return create(name, DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 4096, false, false, b.createCompositeState(false));
     }
 
     /**
-     * Разлом Выброса (RenderFluxRift + ShaderHelper.endShader): в 1.12 — свой шейдер звёздного неба Края; здесь — штатный шейдер
-     * end_portal. Три светящихся слоя — аддитивно, без записи глубины (первый с очками — сквозь стены), сердцевина — обычно.
+     * Разлом Выброса (RenderFluxRift + ShaderHelper.endShader): перенесённый шейдер звёздного неба оригинала.
+     * Три светящихся слоя — аддитивно, без записи глубины (первый с очками — сквозь стены), сердцевина — обычно.
+     * Формат с UV/цветом сохраняет обычную текстуру при disableShaders, как фиксированный конвейер оригинала.
      */
     public static final RenderType RIFT_GLOW = rift("thaumcraft_rift_glow", LIGHTNING_TRANSPARENCY, false, true);
     public static final RenderType RIFT_GLOW_XRAY = rift("thaumcraft_rift_glow_xray", LIGHTNING_TRANSPARENCY, false, false);

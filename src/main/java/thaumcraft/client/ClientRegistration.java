@@ -35,6 +35,9 @@ public class ClientRegistration {
         event.registerShader(new ShaderInstance(event.getResourceProvider(),
                 ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "particle"), DefaultVertexFormat.PARTICLE),
                 shader -> ParticleEngine.particleShader = shader);
+        event.registerShader(new ShaderInstance(event.getResourceProvider(),
+                ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "ender"), DefaultVertexFormat.POSITION_TEX_COLOR),
+                thaumcraft.client.lib.ender.ShaderHelper::setEndShader);
     }
 
     /** Цвет робы на теле без краски — 6961280 оригинала (а не цвет кожи по умолчанию). */
