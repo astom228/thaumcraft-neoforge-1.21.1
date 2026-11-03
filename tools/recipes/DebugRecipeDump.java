@@ -148,6 +148,7 @@ public class DebugRecipeDump {
         auditResearchPayments(event.getServer());
         auditLifecycle(event.getServer());
         auditInfusionPreviews();
+        auditTaskOrdering(event.getServer());
         Files.writeString(Path.of("../build/recipe-audit-actual.json"), new GsonBuilder().setPrettyPrinting().create().toJson(result));
         Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: all functional audits");
         Thaumcraft.log.info("[TC-RECIPE-DUMP] {} recipes exported", result.size());
@@ -243,7 +244,17 @@ public class DebugRecipeDump {
         if (mirror.doesContainerContainAmount(thaumcraft.api.aspects.Aspect.AIR, 1)) throw new IllegalStateException("Unloaded mirror reports available essentia");
         mirror.doesContainerAccept(thaumcraft.api.aspects.Aspect.AIR);
         if (world.isLoaded(remote) || !mirror.linked) throw new IllegalStateException("Mirror probe loads chunk or breaks pending link");
+        var rift = thaumcraft.common.config.ConfigEntities.FLUX_RIFT.get().create(world);
+        var spawn = world.getSharedSpawnPos();
+        rift.setPos(spawn.getX() + .5, spawn.getY() + 20, spawn.getZ() + .5);
+        rift.setRiftSeed(12345); rift.setRiftSize(6); rift.setRiftStability(100);
+        rift.points.clear();
+        var remotePoint = net.minecraft.world.phys.Vec3.atCenterOf(remote).subtract(rift.position());
+        rift.points.add(remotePoint); rift.points.add(remotePoint.add(1, 0, 0));
+        rift.tick();
+        if (world.isLoaded(remote)) throw new IllegalStateException("Rift collision ray loads unloaded chunk");
         Thaumcraft.log.info("[TC-SERVER-AUDIT] PASS: logistics search/refresh coalescing, mirror probes leave remote chunk unloaded and link intact");
+        Thaumcraft.log.info("[TC-SERVER-AUDIT] PASS: rift collision ray skips unloaded target chunk");
     }
 
     private static void auditResearchPayments(net.minecraft.server.MinecraftServer server) {
@@ -433,6 +444,34 @@ public class DebugRecipeDump {
         }
         if (ordinary != 41 || enchantments != 7 || runic != 7) throw new IllegalStateException("Missing infusion previews: " + ordinary + "/" + enchantments + "/" + runic);
         Thaumcraft.log.info("[TC-JEI-AUDIT] PASS: 41 ordinary, 7 enchantment, 7 runic-charge previews; reverse lookup and all enchantment levels; no random warp or input changes");
+    }
+
+    private static void auditTaskOrdering(net.minecraft.server.MinecraftServer server) {
+        var dimension = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION,
+                net.minecraft.resources.ResourceLocation.parse("thaumcraft:audit_sort"));
+        var map = thaumcraft.common.entities.construct.golem.tasks.TaskHandler.getTasks(dimension);
+        var entity = net.minecraft.world.entity.EntityType.ZOMBIE.create(server.overworld());
+        entity.setPos(5.5, 125, 5.5);
+        try {
+            for (int i = 0; i < 500; i++) {
+                var task = new thaumcraft.api.golems.tasks.Task(null, new net.minecraft.core.BlockPos(i % 25, 125, i / 25));
+                task.setPriority((byte) (i % 7 - 3));
+                thaumcraft.common.entities.construct.golem.tasks.TaskHandler.addTask(dimension, task);
+            }
+            java.util.List<thaumcraft.api.golems.tasks.Task> expected = new java.util.ArrayList<>();
+            for (var task : map.values()) {
+                double cost = task.getPos().distToCenterSqr(entity.getX(), entity.getY(), entity.getZ()) - task.getPriority() * 256;
+                int index = 0;
+                while (index < expected.size() && cost >= expected.get(index).getPos().distToCenterSqr(entity.getX(), entity.getY(), entity.getZ()) - expected.get(index).getPriority() * 256) index++;
+                expected.add(index, task);
+            }
+            var actual = thaumcraft.common.entities.construct.golem.tasks.TaskHandler.getBlockTasksSorted(dimension, null, entity);
+            if (!actual.equals(expected)) throw new IllegalStateException("Optimized task ordering changes priority/distance ties");
+            for (int i = 500; i < 2000; i++) thaumcraft.common.entities.construct.golem.tasks.TaskHandler.addTask(dimension,
+                    new thaumcraft.api.golems.tasks.Task(null, new net.minecraft.core.BlockPos(i, 125, i)));
+            if (map.size() > 1000) throw new IllegalStateException("Golem task limit exceeded");
+        } finally { map.clear(); }
+        Thaumcraft.log.info("[TC-SERVER-AUDIT] PASS: stable task ordering matches original; 1000-task limit respected");
     }
 
     private static void requireAspect(AspectList list, thaumcraft.api.aspects.Aspect aspect, int amount, String label) {

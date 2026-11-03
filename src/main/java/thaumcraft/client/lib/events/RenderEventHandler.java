@@ -203,6 +203,7 @@ public class RenderEventHandler {
         thaumcraft.client.lib.ClientSeals.clear();
         EssentiaSourceFXClient.clear();
         WarpFog.clear();
+        thaumcraft.client.fx.ParticleEngine.clearParticles();
     }
 
     /** С печатью или предметом ISealDisplayer в руке видны печати в 16 блоках и их зоны; крадучись — сквозь блоки. */

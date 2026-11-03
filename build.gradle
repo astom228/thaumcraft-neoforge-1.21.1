@@ -70,8 +70,13 @@ neoForge {
     runs {
         client {
             client()
+            if (providers.gradleProperty('tcStabilityClient').isPresent()) {
+                gameDirectory = project.file('build/stability-client')
+                programArguments.addAll '--quickPlayMultiplayer', '127.0.0.1:25566'
+                programArguments.addAll '--width', '1280', '--height', '720'
+            }
             // Ник первого клиента (КТ-СЕТЬ: сервер + два клиента)
-            programArguments.addAll "--username", "Player1"
+            programArguments.addAll "--username", providers.gradleProperty('tcStabilityClient').isPresent() ? 'StabilityAudit' : 'Player1'
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
@@ -87,7 +92,7 @@ neoForge {
         server {
             server()
             // Отдельная папка, чтобы сервер и клиент можно было запускать одновременно
-            gameDirectory = project.file("run-server")
+            gameDirectory = project.file(providers.gradleProperty('tcStabilityAudit').map(v -> "build/stability-${v}").getOrElse('run-server'))
             programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }

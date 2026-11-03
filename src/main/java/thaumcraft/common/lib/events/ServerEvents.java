@@ -40,6 +40,8 @@ import thaumcraft.common.lib.utils.InventoryUtils;
  */
 @EventBusSubscriber(modid = Thaumcraft.MODID)
 public class ServerEvents {
+    private static final int MAX_WORK_PER_TICK = 512;
+    private static final long MAX_WORK_NANOS = 4_000_000L;
     public static final Predicate<SwapperPredicate> DEFAULT_PREDICATE = p -> true;
     private static final Map<ResourceKey<Level>, Deque<RunnableEntry>> serverRunList = new ConcurrentHashMap<>();
     private static final Map<ResourceKey<Level>, Deque<VirtualSwapper>> swapList = new ConcurrentHashMap<>();
@@ -54,7 +56,9 @@ public class ServerEvents {
         if (rlist != null && !rlist.isEmpty()) {
             Deque<RunnableEntry> temp = new ArrayDeque<>();
             RunnableEntry current;
-            while ((current = rlist.poll()) != null) {
+            int remaining = Math.min(rlist.size(), MAX_WORK_PER_TICK);
+            long deadline = System.nanoTime() + MAX_WORK_NANOS;
+            while (remaining-- > 0 && System.nanoTime() < deadline && (current = rlist.poll()) != null) {
                 if (current.delay > 0) {
                     current.delay--;
                     temp.offer(current);
@@ -88,6 +92,15 @@ public class ServerEvents {
         thaumcraft.common.entities.projectile.EntityFocusCloud.clearServer();
     }
 
+    @SubscribeEvent
+    public static void worldUnload(net.neoforged.neoforge.event.level.LevelEvent.Unload event) {
+        if (event.getLevel() instanceof ServerLevel world) {
+            serverRunList.remove(world.dimension());
+            swapList.remove(world.dimension());
+            breakList.remove(world.dimension());
+        }
+    }
+
     private static void tickBlockSwap(ServerLevel world) {
         Deque<VirtualSwapper> queue = swapList.get(world.dimension());
         if (queue == null || queue.isEmpty()) {
@@ -95,7 +108,10 @@ public class ServerEvents {
         }
         Deque<VirtualSwapper> queue2 = new ArrayDeque<>();
         VirtualSwapper vs;
-        while ((vs = queue.poll()) != null) {
+        int remaining = Math.min(queue.size(), MAX_WORK_PER_TICK);
+        long deadline = System.nanoTime() + MAX_WORK_NANOS;
+        while (remaining-- > 0 && System.nanoTime() < deadline && (vs = queue.poll()) != null) {
+            if (!world.isLoaded(vs.pos)) continue;
             BlockState bs = world.getBlockState(vs.pos);
             boolean allow = bs.getDestroySpeed(world, vs.pos) >= 0.0F;
             if (vs.source != null && !vs.source.test(bs)) {
@@ -172,7 +188,7 @@ public class ServerEvents {
                             for (int yy = -1; yy <= 1; yy++) {
                                 for (int zz = -1; zz <= 1; zz++) {
                                     BlockPos np = vs.pos.offset(xx, yy, zz);
-                                    boolean m = vs.source != null && vs.source.test(world.getBlockState(np));
+                                    boolean m = world.isLoaded(np) && vs.source != null && vs.source.test(world.getBlockState(np));
                                     if ((xx != 0 || yy != 0 || zz != 0) && m && BlockUtils.isBlockExposed(world, np)) {
                                         queue2.offer(new VirtualSwapper(np, vs.source, vs.target, vs.targetState, vs.consumeTarget, vs.lifespan - 1, vs.player, vs.fx,
                                                 vs.fancy, vs.color, vs.pickup, vs.silk, vs.fortune, vs.allowSwap, vs.visCost));
@@ -274,7 +290,9 @@ public class ServerEvents {
         }
         Deque<BreakData> queue2 = new ArrayDeque<>();
         BreakData vs;
-        while ((vs = queue.poll()) != null) {
+        int remaining = Math.min(queue.size(), MAX_WORK_PER_TICK);
+        long deadline = System.nanoTime() + MAX_WORK_NANOS;
+        while (remaining-- > 0 && System.nanoTime() < deadline && (vs = queue.poll()) != null) {
             if (!world.isLoaded(vs.pos)) {
                 continue;
             }

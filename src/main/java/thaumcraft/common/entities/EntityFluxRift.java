@@ -173,8 +173,9 @@ public class EntityFluxRift extends Entity implements IStabilizable {
                 int pi = this.random.nextInt(this.points.size() - 1);
                 Vec3 v1 = this.points.get(pi).add(this.getX(), this.getY(), this.getZ());
                 Vec3 v2 = this.points.get(pi + 1).add(this.getX(), this.getY(), this.getZ());
-                BlockHitResult rt = w.clip(new ClipContext(v1, v2, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-                if (rt.getType() == HitResult.Type.BLOCK) {
+                BlockHitResult rt = w.hasChunksAt(BlockPos.containing(v1), BlockPos.containing(v2))
+                        ? w.clip(new ClipContext(v1, v2, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)) : null;
+                if (rt != null && rt.getType() == HitResult.Type.BLOCK) {
                     BlockPos p = rt.getBlockPos();
                     var bs = w.getBlockState(p);
                     if (w.isLoaded(p) && !bs.isAir() && bs.getDestroySpeed(w, p) >= 0.0F) {

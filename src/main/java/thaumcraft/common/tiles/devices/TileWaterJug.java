@@ -14,6 +14,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import thaumcraft.api.aura.AuraHelper;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.compat.BotaniaCompat;
 import thaumcraft.common.lib.fx.IFXDispatcher;
 import thaumcraft.common.tiles.TileThaumcraft;
 
@@ -118,10 +119,10 @@ public class TileWaterJug extends TileThaumcraft {
                 this.tcount--;
             }
         } else if (this.counter % 5 == 0) {
-            this.zone++;
+            this.zone = (this.zone + 1) % 75;
             BlockPos zp = this.zonePos(this.zone);
-            // TODO: алтарь лепестков Botania (IPetalApothecary) — когда будет совместимость с Botania (необязательная зависимость)
-            if (!zp.equals(this.worldPosition) && this.handlerAt(zp) != null && !this.handlers.contains(this.zone)) {
+            boolean apothecary = this.level.isLoaded(zp) && BotaniaCompat.isApothecary(this.level.getBlockEntity(zp));
+            if (!zp.equals(this.worldPosition) && (this.handlerAt(zp) != null || apothecary) && !this.handlers.contains(this.zone)) {
                 this.handlers.add(this.zone);
                 this.setChanged();
             }
@@ -129,6 +130,15 @@ public class TileWaterJug extends TileThaumcraft {
             while (i < this.handlers.size() && this.tank.getFluidAmount() >= 25) {
                 int zz = this.handlers.get(i);
                 BlockPos hp = this.zonePos(zz);
+                var target = this.level.isLoaded(hp) ? this.level.getBlockEntity(hp) : null;
+                if (BotaniaCompat.isApothecary(target)) {
+                    if (this.tank.getFluidAmount() >= 1000 && BotaniaCompat.fillEmpty(target)) {
+                        this.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                        this.level.blockEvent(this.getBlockPos(), this.getBlockState().getBlock(), 2, zz);
+                    }
+                    i++;
+                    continue;
+                }
                 IFluidHandler fh = hp.equals(this.worldPosition) ? null : this.handlerAt(hp);
                 if (fh != null) {
                     int q = fh.fill(new FluidStack(Fluids.WATER, 25), IFluidHandler.FluidAction.EXECUTE);
@@ -165,7 +175,7 @@ public class TileWaterJug extends TileThaumcraft {
 
     @Override
     public boolean triggerEvent(int i, int j) {
-        if (i == 1) {
+        if (i == 1 || i == 2) {
             if (this.level.isClientSide) {
                 this.zc = j;
                 this.tcount = 5;

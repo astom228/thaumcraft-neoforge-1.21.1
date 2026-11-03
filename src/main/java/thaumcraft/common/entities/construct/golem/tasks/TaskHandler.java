@@ -25,7 +25,7 @@ public class TaskHandler {
 
     public static void addTask(ResourceKey<Level> dim, Task ticket) {
         Map<Integer, Task> dc = getTasks(dim);
-        if (dc.size() > TASK_LIMIT) {
+        if (dc.size() >= TASK_LIMIT && !dc.containsKey(ticket.getId())) {
             Iterator<Task> i = dc.values().iterator();
             if (i.hasNext()) {
                 i.next();
@@ -45,7 +45,6 @@ public class TaskHandler {
 
     private static List<Task> sorted(ResourceKey<Level> dim, UUID uuid, Entity golem, byte type) {
         List<Task> out = new ArrayList<>();
-        outer:
         for (Task ticket : getTasks(dim).values()) {
             if (ticket.isReserved() || ticket.getType() != type || uuid != null && ticket.getGolemUUID() != null && !uuid.equals(ticket.getGolemUUID())) {
                 continue;
@@ -54,16 +53,9 @@ public class TaskHandler {
                 ticket.setSuspended(true);
                 continue;
             }
-            double d = ticket.getPos().distToCenterSqr(golem.getX(), golem.getY(), golem.getZ()) - ticket.getPriority() * 256;
-            for (int a = 0; a < out.size(); a++) {
-                double d1 = out.get(a).getPos().distToCenterSqr(golem.getX(), golem.getY(), golem.getZ()) - out.get(a).getPriority() * 256;
-                if (d < d1) {
-                    out.add(a, ticket);
-                    continue outer;
-                }
-            }
             out.add(ticket);
         }
+        out.sort(java.util.Comparator.comparingDouble(ticket -> ticket.getPos().distToCenterSqr(golem.getX(), golem.getY(), golem.getZ()) - ticket.getPriority() * 256));
         return out;
     }
 

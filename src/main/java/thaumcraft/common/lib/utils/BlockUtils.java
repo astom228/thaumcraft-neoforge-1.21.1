@@ -11,7 +11,7 @@ public class BlockUtils {
     public static boolean isBlockExposed(Level world, BlockPos pos) {
         for (Direction face : Direction.values()) {
             BlockPos p = pos.relative(face);
-            if (!world.getBlockState(p).isSolidRender(world, p)) {
+            if (world.isLoaded(p) && !world.getBlockState(p).isSolidRender(world, p)) {
                 return true;
             }
         }

@@ -270,19 +270,8 @@ public class EssentiaHandler {
             }
         }
         if (!sourceList.isEmpty()) {
-            List<BlockPos> sourceList2 = new ArrayList<>();
-            outer:
-            for (BlockPos wc : sourceList) {
-                double dist = wc.distSqr(origin);
-                for (int a = 0; a < sourceList2.size(); a++) {
-                    if (dist < sourceList2.get(a).distSqr(origin)) {
-                        sourceList2.add(a, wc);
-                        continue outer;
-                    }
-                }
-                sourceList2.add(wc);
-            }
-            sources.put(tileLoc, sourceList2);
+            sourceList.sort(java.util.Comparator.comparingDouble(p -> p.distSqr(origin)));
+            sources.put(tileLoc, sourceList);
         } else {
             sourcesDelay.put(tileLoc, System.currentTimeMillis() + DELAY);
         }

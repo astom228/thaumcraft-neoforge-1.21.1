@@ -10,6 +10,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +53,8 @@ public class ParticleEngine {
     @SuppressWarnings("unchecked")
     private static final Map<ResourceKey<Level>, List<Particle>>[] particles = new Map[]{
             new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>()};
-    private static final List<ParticleDelay> particlesDelayed = new ArrayList<>();
+    private static final Deque<ParticleDelay> particlesDelayed = new ArrayDeque<>();
+    private static boolean tickingParticles;
 
     private record ParticleDelay(Particle particle, ResourceKey<Level> dim, int[] delay) {
     }
@@ -70,21 +73,46 @@ public class ParticleEngine {
         if (mc.level == null) {
             return;
         }
+        if (dim != mc.level.dimension() || fx == null || layerOf(fx) < 0 || layerOf(fx) >= particles.length) return;
+        if (tickingParticles) {
+            queueDelayed(mc.level, fx, 0);
+            return;
+        }
         int ps = mc.options.particles().get().getId();
         if (mc.getFps() < 30) {
             ps++;
         }
         if (mc.level.random.nextInt(3) >= ps) {
             List<Particle> parts = particles[layerOf(fx)].computeIfAbsent(dim, k -> new ArrayList<>());
-            if (parts.size() >= getParticleLimit()) {
-                parts.remove(0);
+            int limit = getParticleLimit();
+            if (parts.size() >= limit) parts.subList(0, parts.size() - limit + 1).clear();
+            int total = 0;
+            for (var layer : particles) total += layer.getOrDefault(dim, List.of()).size();
+            // Общий предел дополняет исходный предел на слой, чтобы сочетание эффектов не умножало нагрузку в 6 раз.
+            while (total >= limit * 2) {
+                List<Particle> largest = parts;
+                for (var layer : particles) {
+                    var candidate = layer.get(dim);
+                    if (candidate != null && candidate.size() > largest.size()) largest = candidate;
+                }
+                int remove = Math.min(largest.size(), total - limit * 2 + 1);
+                if (remove == 0) break;
+                largest.subList(0, remove).clear();
+                total -= remove;
             }
             parts.add(fx);
         }
     }
 
     public static void addEffectWithDelay(Level world, Particle fx, int delay) {
-        particlesDelayed.add(new ParticleDelay(fx, world.dimension(), new int[]{delay}));
+        if (Minecraft.getInstance().level != world || fx == null) return;
+        queueDelayed(world, fx, delay);
+    }
+
+    private static void queueDelayed(Level world, Particle fx, int delay) {
+        int limit = getParticleLimit() * 2;
+        while (particlesDelayed.size() >= limit) particlesDelayed.removeFirst();
+        particlesDelayed.addLast(new ParticleDelay(fx, world.dimension(), new int[]{Math.max(0, delay)}));
     }
 
     private static int getParticleLimit() {
@@ -99,13 +127,16 @@ public class ParticleEngine {
         thaumcraft.client.lib.events.EssentiaSourceFXClient.clear();
         thaumcraft.client.lib.events.WarpFog.clear();
         thaumcraft.client.lib.ClientSeals.clear();
-        for (Map<ResourceKey<Level>, List<Particle>> layer : particles) {
-            layer.clear();
-        }
-        particlesDelayed.clear();
+        clearParticles();
         thaumcraft.client.lib.events.HudHandler.clear();
         thaumcraft.common.items.casters.CasterManager.clearClient();
         thaumcraft.client.lib.events.WandRenderingHandler.clear();
+    }
+
+    public static void clearParticles() {
+        for (Map<ResourceKey<Level>, List<Particle>> layer : particles) layer.clear();
+        particlesDelayed.clear();
+        tickingParticles = false;
     }
 
     @SubscribeEvent
@@ -126,26 +157,31 @@ public class ParticleEngine {
                 i.remove();
             }
         }
-        for (int layer = 0; layer < 6; layer++) {
-            List<Particle> parts = particles[layer].get(dim);
-            if (parts == null) {
-                continue;
-            }
-            for (int j = 0; j < parts.size(); j++) {
-                Particle p = parts.get(j);
-                try {
-                    if (p != null) {
-                        p.tick();
-                    }
-                } catch (Exception e) {
-                    if (p != null) {
-                        p.remove();
-                    }
+        tickingParticles = true;
+        try {
+            for (int layer = 0; layer < 6; layer++) {
+                List<Particle> parts = particles[layer].get(dim);
+                if (parts == null) {
+                    continue;
                 }
-                if (p == null || !p.isAlive()) {
-                    parts.remove(j--);
+                int retained = 0;
+                for (int j = 0; j < parts.size(); j++) {
+                    Particle p = parts.get(j);
+                    try {
+                        if (p != null) {
+                            p.tick();
+                        }
+                    } catch (Exception e) {
+                        if (p != null) {
+                            p.remove();
+                        }
+                    }
+                    if (p != null && p.isAlive()) parts.set(retained++, p);
                 }
+                parts.subList(retained, parts.size()).clear();
             }
+        } finally {
+            tickingParticles = false;
         }
     }
 
