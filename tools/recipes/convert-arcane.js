@@ -49,7 +49,8 @@ const VARIANTS = {
   'BlocksTC.tube': { 0: 'essentia_tube' },
   'ItemsTC.baubles': { 0: 'mundane_amulet', 1: 'mundane_ring', 2: 'mundane_belt', 3: 'apprentice_ring', 4: 'fancy_amulet', 5: 'fancy_ring', 6: 'fancy_belt' },
   'ItemsTC.amuletVis': { 0: 'vis_stone', 1: 'vis_amulet' },
-  'ItemsTC.turretPlacer': { 0: 'crossbow_turret', 1: 'advanced_crossbow_turret' },
+  'ItemsTC.turretPlacer': { 0: 'crossbow_turret', 1: 'advanced_crossbow_turret', 2: 'arcane_bore' },
+  'ItemsTC.seals': { 0: 'blank_seal' },
 };
 
 // Цвета 1.12 (EnumDyeColor, порядок = metadata шерсти) -> 1.21
@@ -121,11 +122,13 @@ function stackOf(e, ctx) {
       const idx = meta === 'a' ? ctx.dyeIndex : Number(meta);
       return { id: `minecraft:${DYES[idx]}_wool`, count };
     }
-    if (meta !== undefined && meta !== '32767') {
+    // без меты у предмета с вариантами — вариант 0 (new ItemStack(item) в 1.12 = мета 0)
+    const metaEff = meta === undefined && VARIANTS[ref] ? '0' : meta;
+    if (metaEff !== undefined && metaEff !== '32767') {
       const v = VARIANTS[ref];
-      if (!v || !(Number(meta) in v)) throw new Error(`нет варианта ${ref} meta ${meta}`);
-      const vid = v[Number(meta)];
-      if (!REGISTERED.has(vid)) throw new Missing(`${vid} (${ref} meta ${meta})`);
+      if (!v || !(Number(metaEff) in v)) throw new Error(`нет варианта ${ref} meta ${metaEff}`);
+      const vid = v[Number(metaEff)];
+      if (!REGISTERED.has(vid)) throw new Missing(`${vid} (${ref} meta ${metaEff})`);
       return { id: 'thaumcraft:' + vid, count };
     }
     const s = stackOf(ref, ctx);

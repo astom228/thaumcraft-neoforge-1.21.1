@@ -12,7 +12,7 @@ import thaumcraft.common.items.casters.CasterManager;
 
 /**
  * Клиент → сервер: клавиша предмета. key 1 — «разное» перчатки (mod: 0 — размер области «Плана», 1 — ось (Ctrl), 2 — Shift).
- * Лопата Землекопа в основной руке — следующая ориентация квадрата. TODO этап 18: key 0 — колокольчик голема.
+ * Лопата Землекопа в основной руке — следующая ориентация квадрата. key 0 (колокольчик голема) в оригинале не обрабатывался.
  */
 public record PacketItemKeyToServer(byte key, byte mod) implements CustomPacketPayload {
     public static final Type<PacketItemKeyToServer> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "item_key"));

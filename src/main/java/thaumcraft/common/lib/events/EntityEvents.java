@@ -128,9 +128,9 @@ public class EntityEvents {
         if (entity instanceof Player) {
             return;
         }
-        if (entity.getHealth() < 2.0F && !entity.isInvertedHealAndHarm() && entity.isAlive() && !(entity instanceof ITaintedMob)
+        if (entity.getHealth() < 2.0F && !entity.isInvertedHealAndHarm() && entity.isAlive()
+                && !(entity instanceof thaumcraft.common.entities.construct.EntityOwnedConstruct) && !(entity instanceof ITaintedMob)
                 && entity.hasEffect(ConfigPotions.FLUX_TAINT) && entity.getRandom().nextBoolean()) {
-            // TODO этап 18: кроме собственных конструктов (EntityOwnedConstruct)
             EntityUtils.makeTainted(entity);
             return;
         }

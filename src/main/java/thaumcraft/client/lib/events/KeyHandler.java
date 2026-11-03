@@ -19,7 +19,8 @@ import thaumcraft.common.lib.network.misc.PacketItemKeyToServer;
 
 /**
  * Клавиши перчатки (порт KeyHandler): F — удерживать для радиального меню фокусов (с Shift — снять фокус), G — «разное»
- * (с Ctrl / Shift — варианты). Только клиент. TODO этап 18: F с колокольчиком голема.
+ * (с Ctrl / Shift — варианты). Только клиент. F с колокольчиком голема в оригинале
+ * шлёт PacketItemKeyToServer(0), который сервер не обрабатывает, — не перенесено.
  */
 @EventBusSubscriber(modid = Thaumcraft.MODID, value = Dist.CLIENT)
 public class KeyHandler {

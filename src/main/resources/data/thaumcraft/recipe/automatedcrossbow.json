@@ -1,0 +1,36 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "BASICTURRET",
+  "vis": 100,
+  "crystals": {
+    "aer": 1
+  },
+  "key": {
+    "G": {
+      "item": "thaumcraft:simple_arcane_mechanism"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "M": {
+      "item": "thaumcraft:clockwork_mind"
+    },
+    "B": {
+      "item": "minecraft:bow"
+    },
+    "W": {
+      "item": "thaumcraft:greatwood_planks"
+    }
+  },
+  "pattern": [
+    "BGI",
+    "WMW",
+    "S S"
+  ],
+  "result": {
+    "id": "thaumcraft:crossbow_turret"
+  }
+}

@@ -97,7 +97,6 @@ public class ConfigRecipes {
                 new ThaumcraftApi.BluePrint("MINDCLOCKWORK", golempressBlueprint, new ItemStack(Blocks.IRON_BARS),
                         new ItemStack(net.minecraft.world.item.Items.CAULDRON), new ItemStack(Blocks.PISTON), new ItemStack(Blocks.ANVIL),
                         new ItemStack(BlocksTC.tableStone.get())));
-        // TODO этап 18: пресс големов
         infusionAltar("INFUSION", "infusionaltar", BlocksTC.stoneArcane.get(), BlocksTC.pillarArcane.get(), BlocksTC.pedestalArcane.get());
         infusionAltar("INFUSIONANCIENT", "infusionaltarancient", BlocksTC.stoneAncient.get(), BlocksTC.pillarAncient.get(), BlocksTC.pedestalAncient.get());
         infusionAltar("INFUSIONELDRITCH", "infusionaltareldritch", BlocksTC.stoneEldritchTile.get(), BlocksTC.pillarEldritch.get(),
@@ -141,7 +140,18 @@ public class ConfigRecipes {
      * остальные — с этапами своих предметов (TODO ниже).
      */
     public static void initializeInfusionRecipes() {
-        // TODO этап 18: печати големов (SealHarvest, SealButcher, SealBreak)
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("SealHarvest"), new InfusionRecipe("SEALHARVEST", new ItemStack(ItemsTC.sealHarvest.get()), 0,
+                new AspectList().add(Aspect.PLANT, 10).add(Aspect.SENSES, 10).add(Aspect.MAN, 10), new ItemStack(ItemsTC.sealBlank.get()),
+                new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Items.MELON_SEEDS), new ItemStack(Items.COCOA_BEANS),
+                new ItemStack(Items.SUGAR_CANE), new ItemStack(Items.CACTUS)));
+        // "leather" → c:leathers, шерсть любого цвета → #minecraft:wool
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("SealButcher"), new InfusionRecipe("SEALBUTCHER", new ItemStack(ItemsTC.sealButcher.get()), 0,
+                new AspectList().add(Aspect.BEAST, 10).add(Aspect.SENSES, 10).add(Aspect.MAN, 10), new ItemStack(ItemsTC.sealGuard.get()),
+                Tags.Items.LEATHERS, net.minecraft.tags.ItemTags.WOOL, new ItemStack(Items.RABBIT_HIDE), new ItemStack(Items.PORKCHOP),
+                new ItemStack(Items.MUTTON), new ItemStack(Items.BEEF)));
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("SealBreak"), new InfusionRecipe("SEALBREAK", new ItemStack(ItemsTC.sealBreaker.get()), 1,
+                new AspectList().add(Aspect.TOOL, 10).add(Aspect.ENTROPY, 10).add(Aspect.MAN, 10), new ItemStack(ItemsTC.sealBlank.get()),
+                new ItemStack(Items.GOLDEN_AXE), new ItemStack(Items.GOLDEN_PICKAXE), new ItemStack(Items.GOLDEN_SHOVEL)));
         cluster("CrystalClusterAir", BlocksTC.crystalAir.get(), Aspect.AIR, 0);
         cluster("CrystalClusterFire", BlocksTC.crystalFire.get(), Aspect.FIRE, 0);
         cluster("CrystalClusterWater", BlocksTC.crystalWater.get(), Aspect.WATER, 0);
@@ -272,7 +282,16 @@ public class ConfigRecipes {
                 new AspectList().add(Aspect.BEAST, 20).add(Aspect.LIGHT, 15).add(Aspect.LIFE, 15).add(Aspect.DESIRE, 15), new ItemStack(BlocksTC.lampArcane.get()),
                 new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.WHEAT), ThaumcraftApiHelper.makeCrystal(Aspect.FIRE), new ItemStack(Items.GOLD_INGOT),
                 new ItemStack(Items.CARROT), ThaumcraftApiHelper.makeCrystal(Aspect.FIRE)));
-        // TODO этап 13: MindBiothaumic; этап 14: ArcaneBore; этапы 13–16: CausalityCollapser (алюментум)
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("MindBiothaumic"), new InfusionRecipe("MINDBIOTHAUMIC", new ItemStack(ItemsTC.mindBiothaumic.get()), 4,
+                new AspectList().add(Aspect.MIND, 50).add(Aspect.MECHANISM, 25), new ItemStack(ItemsTC.mindClockwork.get()),
+                new ItemStack(ItemsTC.brain.get()), new ItemStack(ItemsTC.mechanismComplex.get())));
+        // "plateBrass" → c:plates/brass; ItemsTC.nuggets:10 — редкоземельные элементы
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("ArcaneBore"), new InfusionRecipe("ARCANEBORE", new ItemStack(ItemsTC.arcaneBore.get()), 4,
+                new AspectList().add(Aspect.ENERGY, 25).add(Aspect.EARTH, 25).add(Aspect.MECHANISM, 100).add(Aspect.VOID, 25).add(Aspect.MOTION, 25),
+                new ItemStack(ItemsTC.turretBasic.get()), new ItemStack(BlocksTC.plankGreatwood.get()), new ItemStack(BlocksTC.plankGreatwood.get()),
+                new ItemStack(ItemsTC.mechanismComplex.get()), TCTags.Items.PLATES_BRASS, new ItemStack(Items.DIAMOND_PICKAXE),
+                new ItemStack(Items.DIAMOND_SHOVEL), new ItemStack(ItemsTC.morphicResonator.get()), new ItemStack(ItemsTC.nuggetRareEarth.get())));
+        // TODO этапы 13–16: CausalityCollapser — вместе с предметом
     }
 
     private static void mask(String key, int mask, AspectList aspects, net.minecraft.world.item.Item dye, ItemStack c3, ItemStack c4) {
@@ -420,9 +439,29 @@ public class ConfigRecipes {
                 new ItemStack(BlocksTC.fleshBlock.get()), new AspectList().add(Aspect.MIND, 75).add(Aspect.ELDRITCH, 50).add(Aspect.ORDER, 75).add(Aspect.LIFE, 50)));
         ThaumcraftApi.addCrucibleRecipe(id("bathsalts"), new CrucibleRecipe("BATHSALTS", new ItemStack(ItemsTC.bathSalts.get()),
                 new ItemStack(ItemsTC.salisMundus.get()), new AspectList().add(Aspect.MIND, 40).add(Aspect.AIR, 40).add(Aspect.ORDER, 40).add(Aspect.LIFE, 40)));
-        // TODO этап 18: печати големов (SealCollect…SealUse) — 12 рецептов
+        seal("SealCollect", "SEALCOLLECT", ItemsTC.sealCollect, ItemsTC.sealBlank, new AspectList().add(Aspect.DESIRE, 10));
+        seal("SealCollectAdv", "SEALCOLLECT&&MINDBIOTHAUMIC", ItemsTC.sealCollectAdvanced, ItemsTC.sealCollect,
+                new AspectList().add(Aspect.SENSES, 10).add(Aspect.MIND, 10));
+        seal("SealStore", "SEALSTORE", ItemsTC.sealStore, ItemsTC.sealBlank, new AspectList().add(Aspect.AVERSION, 10));
+        seal("SealStoreAdv", "SEALSTORE&&MINDBIOTHAUMIC", ItemsTC.sealStoreAdvanced, ItemsTC.sealStore,
+                new AspectList().add(Aspect.SENSES, 10).add(Aspect.MIND, 10));
+        seal("SealEmpty", "SEALEMPTY", ItemsTC.sealEmpty, ItemsTC.sealBlank, new AspectList().add(Aspect.VOID, 10));
+        seal("SealEmptyAdv", "SEALEMPTY&&MINDBIOTHAUMIC", ItemsTC.sealEmptyAdvanced, ItemsTC.sealEmpty,
+                new AspectList().add(Aspect.SENSES, 10).add(Aspect.MIND, 10));
+        seal("SealProvide", "SEALPROVIDE", ItemsTC.sealProvide, ItemsTC.sealEmptyAdvanced, new AspectList().add(Aspect.EXCHANGE, 10).add(Aspect.DESIRE, 10));
+        seal("SealStock", "SEALSTOCK", ItemsTC.sealStock, ItemsTC.sealStore, new AspectList().add(Aspect.MIND, 10).add(Aspect.DESIRE, 10));
+        seal("SealGuard", "SEALGUARD", ItemsTC.sealGuard, ItemsTC.sealBlank, new AspectList().add(Aspect.AVERSION, 20).add(Aspect.PROTECT, 20));
+        seal("SealGuardAdv", "SEALGUARD&&MINDBIOTHAUMIC", ItemsTC.sealGuardAdvanced, ItemsTC.sealGuard,
+                new AspectList().add(Aspect.SENSES, 20).add(Aspect.MIND, 20));
+        seal("SealLumber", "SEALLUMBER", ItemsTC.sealLumber, ItemsTC.sealBreaker, new AspectList().add(Aspect.PLANT, 40).add(Aspect.SENSES, 20));
+        seal("SealUse", "SEALUSE", ItemsTC.sealUse, ItemsTC.sealBlank, new AspectList().add(Aspect.CRAFT, 20).add(Aspect.SENSES, 10).add(Aspect.MIND, 20));
         ThaumcraftApi.addCrucibleRecipe(id("everfullurn"), new CrucibleRecipe("EVERFULLURN", new ItemStack(BlocksTC.everfullUrn.get()),
                 new ItemStack(Items.FLOWER_POT), new AspectList().add(Aspect.WATER, 30).add(Aspect.CRAFT, 10).add(Aspect.EARTH, 10)));
+    }
+
+    private static void seal(String key, String research, ItemLike result, ItemLike catalyst, AspectList aspects) {
+        ThaumcraftApi.addCrucibleRecipe(id(key.toLowerCase(java.util.Locale.ROOT)),
+                new CrucibleRecipe(research, new ItemStack(result), new ItemStack(catalyst), aspects));
     }
 
     private static void purification(String metal, ItemLike cluster, TagKey<Item> ore) {

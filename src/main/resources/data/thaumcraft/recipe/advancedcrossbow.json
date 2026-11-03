@@ -1,0 +1,27 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "research": "ADVANCEDTURRET",
+  "vis": 150,
+  "crystals": {
+    "aer": 2
+  },
+  "key": {
+    "T": {
+      "item": "thaumcraft:crossbow_turret"
+    },
+    "P": {
+      "tag": "c:plates/iron"
+    },
+    "M": {
+      "item": "thaumcraft:biothaumic_mind"
+    }
+  },
+  "pattern": [
+    "PMP",
+    "PTP",
+    "   "
+  ],
+  "result": {
+    "id": "thaumcraft:advanced_crossbow_turret"
+  }
+}

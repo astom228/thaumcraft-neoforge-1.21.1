@@ -175,6 +175,10 @@ public class TCRecipeProvider extends RecipeProvider {
                 .pattern("NSN").pattern("S S").pattern("NSN").define('N', TCTags.Items.NUGGETS_BRASS).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has", has(TCTags.Items.NUGGETS_BRASS)).save(out, id("brassbrace"));
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, golemBell.get())
+                .pattern(" QQ").pattern(" QQ").pattern("S  ").define('Q', Tags.Items.GEMS_QUARTZ).define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has", has(Tags.Items.GEMS_QUARTZ)).save(out, id("golembell"));
+
         // фиалы: "blockGlass" — любое стекло
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, phial.get(), 8)
                 .pattern(" C ").pattern("G G").pattern(" G ").define('G', Tags.Items.GLASS_BLOCKS).define('C', Items.CLAY_BALL)

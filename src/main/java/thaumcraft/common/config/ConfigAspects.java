@@ -239,7 +239,7 @@ public class ConfigAspects {
         }
         String[] ids = ENTITY_NAMES.get(name);
         if (ids == null) {
-            // существа Thaumcraft: «Thaumcraft.X» → thaumcraft:x (ID этапа 16; конструкты-големы — этап 18)
+            // существа Thaumcraft: «Thaumcraft.X» → thaumcraft:x (в т.ч. Thaumcraft.Golem → thaumcraft:golem)
             if (name.startsWith("Thaumcraft.")) {
                 String n = name.substring("Thaumcraft.".length());
                 String id = switch (n) {

@@ -138,7 +138,7 @@ public class ConfigResearch {
         ScanningManager.addScannableThing(new ScanEntity("f_FLY", thaumcraft.common.entities.monster.EntityWisp.class, true));
         ScanningManager.addScannableThing(new ScanEntity("!ORMOB", thaumcraft.api.entities.IEldritchMob.class, true));
         ScanningManager.addScannableThing(new ScanEntity("!ORBOSS", thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss.class, true));
-        // TODO этап 18: f_golem — собственные конструкты (EntityOwnedConstruct)
+        ScanningManager.addScannableThing(new ScanEntity("f_golem", thaumcraft.common.entities.construct.EntityOwnedConstruct.class, true));
         ScanningManager.addScannableThing(new ScanEntity("f_SPIDER", Spider.class, true));
         ScanningManager.addScannableThing(new ScanEntity("f_BAT", Bat.class, true));
         ScanningManager.addScannableThing(new ScanEntity("f_FLY", Bat.class, true));
@@ -201,12 +201,14 @@ public class ConfigResearch {
     private static void initTheorycraft() {
         TheorycraftManager.registerAid(new AidBookshelf());
         TheorycraftManager.registerAid(new AidBrainInAJar());
-        // TODO: AidPortalCrimson (этап 16), AidBasicArtifice/Auromancy/Golemancy/Eldritch —
-        //  вместе с матрицей наполнения, фокусным манипулятором, сборщиком големов и алтарём
+        // TODO: AidPortalCrimson (этап 16), AidBasicEldritch — вместе с мистическим алтарём (BlocksTC.eldritch)
         TheorycraftManager.registerAid(new AidGlyphedStone());
         TheorycraftManager.registerAid(new AidPortal.AidPortalEnd());
         TheorycraftManager.registerAid(new AidPortal.AidPortalNether());
         TheorycraftManager.registerAid(new AidBasicAlchemy());
+        TheorycraftManager.registerAid(new AidBasicArtifice());
+        TheorycraftManager.registerAid(new AidBasicAuromancy());
+        TheorycraftManager.registerAid(new AidBasicGolemancy());
         TheorycraftManager.registerAid(new AidEnchantmentTable());
         TheorycraftManager.registerAid(new AidBeacon());
         TheorycraftManager.registerCard(CardStudy.class);

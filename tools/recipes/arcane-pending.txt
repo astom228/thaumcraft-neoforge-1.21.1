@@ -1,5 +1,2 @@
 # Магические рецепты, ожидающие предметов (tools/recipes/convert-arcane.js)
-activatorrail: нет BlocksTC.activatorRail
-sealblank: нет ItemsTC.seals
-automatedcrossbow: нет crossbow_turret (ItemsTC.turretPlacer meta 0)
-advancedcrossbow: нет advanced_crossbow_turret (ItemsTC.turretPlacer meta 1)
+
