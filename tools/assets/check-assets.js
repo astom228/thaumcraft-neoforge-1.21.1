@@ -34,5 +34,20 @@ for (const f of walk(path.join(res, ns, 'blockstates'))) {
   for (const part of bs.multipart || []) list.push(...(Array.isArray(part.apply) ? part.apply : [part.apply]));
   for (const v of list) if (!exists(v.model, 'models', '.json')) fail(f, `нет модели ${v.model}`);
 }
+const languages = ['en_us', 'ru_ru'].map(locale => [locale,
+  JSON.parse(fs.readFileSync(path.join(res, ns, 'lang', locale + '.json'), 'utf8'))]);
+for (const f of walk(path.join(res, ns, 'research'))) {
+  for (const entry of JSON.parse(fs.readFileSync(f, 'utf8')).entries || []) {
+    for (const [locale, translations] of languages) {
+      if (entry.name && !Object.hasOwn(translations, entry.name)) fail(f, `${entry.key}: нет названия ${entry.name} (${locale})`);
+    }
+    for (const icon of entry.icons || []) {
+      if (!icon.startsWith(ns + ':')) continue;
+      const id = icon.slice(ns.length + 1).split(';')[0];
+      const target = id.startsWith('textures/') ? path.join(res, ns, id) : path.join(res, ns, 'models/item', id + '.json');
+      if (!fs.existsSync(target)) fail(f, `${entry.key}: нет ресурса значка ${icon}`);
+    }
+  }
+}
 console.log(errors ? `Ошибок: ${errors}` : 'Ресурсы в порядке');
 process.exit(errors ? 1 : 0);

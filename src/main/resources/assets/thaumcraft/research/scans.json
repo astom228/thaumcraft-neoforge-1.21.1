@@ -2,7 +2,7 @@
   "entries": [
     {
       "key": "!Wisp",
-      "name": "entity.Wisp.name",
+      "name": "entity.thaumcraft.wisp",
       "icons": [
         "thaumcraft:textures/research/r_wisp.png"
       ],
@@ -44,7 +44,7 @@
     },
     {
       "key": "!ThaumSlime",
-      "name": "entity.ThaumSlime.name",
+      "name": "entity.thaumcraft.thaumslime",
       "icons": [
         "thaumcraft:textures/research/r_thaumslime.png"
       ],
@@ -65,7 +65,7 @@
     },
     {
       "key": "!Firebat",
-      "name": "entity.Firebat.name",
+      "name": "entity.thaumcraft.firebat",
       "icons": [
         "thaumcraft:textures/research/r_firebat.png"
       ],
@@ -86,7 +86,7 @@
     },
     {
       "key": "!TaintSeed",
-      "name": "entity.TaintSeed.name",
+      "name": "entity.thaumcraft.taint_seed",
       "icons": [
         "thaumcraft:textures/research/r_taintseed.png"
       ],
@@ -107,7 +107,7 @@
     },
     {
       "key": "!TaintCrawler",
-      "name": "entity.TaintCrawler.name",
+      "name": "entity.thaumcraft.taintcrawler",
       "icons": [
         "thaumcraft:textures/research/r_taintcrawler.png"
       ],
@@ -128,7 +128,7 @@
     },
     {
       "key": "!Taintacle",
-      "name": "entity.Taintacle.name",
+      "name": "entity.thaumcraft.taintacle",
       "icons": [
         "thaumcraft:textures/research/r_taintacle.png"
       ],
@@ -149,7 +149,7 @@
     },
     {
       "key": "!TaintSwarm",
-      "name": "entity.TaintSwarm.name",
+      "name": "entity.thaumcraft.taintswarm",
       "icons": [
         "thaumcraft:textures/research/r_taintswarm.png"
       ],
@@ -191,7 +191,7 @@
     },
     {
       "key": "!BrainyZombie",
-      "name": "entity.BrainyZombie.name",
+      "name": "entity.thaumcraft.brainyzombie",
       "icons": [
         "thaumcraft:textures/research/r_angryzombie.png"
       ],
@@ -212,7 +212,7 @@
     },
     {
       "key": "!EldritchGuardian",
-      "name": "entity.EldritchGuardian.name",
+      "name": "entity.thaumcraft.eldritchguardian",
       "icons": [
         "thaumcraft:textures/research/r_eldritchguardian.png"
       ],
@@ -233,7 +233,7 @@
     },
     {
       "key": "!EldritchCrab",
-      "name": "entity.EldritchCrab.name",
+      "name": "entity.thaumcraft.eldritchcrab",
       "icons": [
         "thaumcraft:textures/research/r_crab.png"
       ],

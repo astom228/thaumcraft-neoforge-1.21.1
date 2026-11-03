@@ -739,7 +739,7 @@
       "key": "THAUMATORIUM",
       "name": "research.THAUMATORIUM.title",
       "icons": [
-        "thaumcraft:thaumatorium"
+        "thaumcraft:alchemical_construct"
       ],
       "category": "ALCHEMY",
       "location": [

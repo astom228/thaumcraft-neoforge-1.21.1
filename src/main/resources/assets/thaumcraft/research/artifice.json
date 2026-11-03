@@ -101,7 +101,7 @@
       "key": "INFERNALFURNACE",
       "name": "research.INFERNALFURNACE.title",
       "icons": [
-        "thaumcraft:infernal_furnace"
+        "thaumcraft:textures/research/r_infernalfurnace.png"
       ],
       "category": "ARTIFICE",
       "location": [

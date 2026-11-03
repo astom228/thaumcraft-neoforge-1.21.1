@@ -150,7 +150,17 @@ fs.mkdirSync(OUT, { recursive: true });
 for (const f of fs.readdirSync(SRC).filter(f => f.endsWith('.json')).sort()) {
   const data = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
   for (const e of data.entries) {
+    // Имена сущностей получили ключи 1.21; старые entity.X.name исключены из lang.
+    const entityName = /^entity\.([A-Za-z]+)\.name$/.exec(e.name || '');
+    if (entityName) {
+      const id = entityName[1] === 'TaintSeed' ? 'taint_seed' : entityName[1].toLowerCase();
+      e.name = `entity.thaumcraft.${id}`;
+    }
     for (const field of ITEM_FIELDS_ENTRY) convertList(e, field, e.key);
+    // У собранной адской печи нет BlockItem: используем её исходный значок исследования.
+    if (e.key === 'INFERNALFURNACE') e.icons = ['thaumcraft:textures/research/r_infernalfurnace.png'];
+    // Тауматориум тоже собирается в мире и не имеет предмета; значок его конструкции существует в инвентаре.
+    if (e.key === 'THAUMATORIUM') e.icons = ['thaumcraft:alchemical_construct'];
     (e.stages || []).forEach((st, i) => {
       for (const field of ITEM_FIELDS_STAGE) convertList(st, field, `${e.key}.stage${i + 1}`);
       convertRecipes(st);
