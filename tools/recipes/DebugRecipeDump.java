@@ -30,12 +30,17 @@ public class DebugRecipeDump {
                 data.put("kind", "crucible");
                 data.put("aspects", aspects(crucible.getAspects()));
                 data.put("count", crucible.getRecipeOutput().getCount());
+                data.put("resultItem", net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(crucible.getRecipeOutput().getItem()).toString());
+                data.put("catalyst", ingredient(crucible.getCatalyst(), event.getServer().registryAccess()));
+                var resultAspects = crucible.getRecipeOutput().get(thaumcraft.common.lib.TCDataComponents.ASPECTS.get());
+                if (resultAspects != null) data.put("resultAspects", aspects(resultAspects));
             } else if (recipe instanceof thaumcraft.common.lib.crafting.InfusionEnchantmentRecipe enchantment) {
                 data.put("kind", "enchantment");
                 data.put("enchantment", enchantment.getEnchantment().name());
                 data.put("aspects", aspects(enchantment.getAspects()));
                 data.put("instability", enchantment.getInstability(null, ItemStack.EMPTY, java.util.List.of()));
                 data.put("components", enchantment.getComponents().size());
+                data.put("ingredients", enchantment.getComponents().stream().map(i -> ingredient(i, event.getServer().registryAccess())).toList());
             } else if (recipe instanceof thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe runic) {
                 data.put("kind", "runic");
                 var samples = new java.util.ArrayList<Map<String, Object>>();
@@ -47,6 +52,7 @@ public class DebugRecipeDump {
                     sample.put("instability", runic.getInstability(null, input, java.util.List.of()));
                     sample.put("aspects", aspects(runic.getAspects(null, input, java.util.List.of())));
                     sample.put("components", runic.getComponents(input).size());
+                    sample.put("ingredients", runic.getComponents(input).stream().map(i -> ingredient(i, event.getServer().registryAccess())).toList());
                     var output = (ItemStack) runic.getRecipeOutput(null, input, java.util.List.of());
                     sample.put("outputCharge", output.get(thaumcraft.common.lib.TCDataComponents.RUNIC_CHARGE.get()));
                     samples.add(sample);
@@ -58,7 +64,15 @@ public class DebugRecipeDump {
                 data.put("aspects", aspects(infusion.getAspects()));
                 data.put("instability", infusion.getInstability(null, ItemStack.EMPTY, java.util.List.of()));
                 data.put("components", infusion.getComponents().size());
-                if (infusion.getRecipeOutput() instanceof ItemStack stack) data.put("count", stack.getCount());
+                data.put("central", ingredient(infusion.getRecipeInput(), event.getServer().registryAccess()));
+                data.put("ingredients", infusion.getComponents().stream().map(i -> ingredient(i, event.getServer().registryAccess())).toList());
+                if (infusion.getRecipeOutput() instanceof ItemStack stack) {
+                    data.put("count", stack.getCount());
+                    data.put("resultItem", net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
+                } else if (infusion.getRecipeOutput() instanceof Object[] change
+                        && change[0] instanceof net.minecraft.core.component.DataComponentType<?> type) {
+                    data.put("resultMutation", Map.of(net.minecraft.core.registries.BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(type).toString(), change[1]));
+                }
             } else return;
             result.put(id.toString(), data);
         });
@@ -70,10 +84,29 @@ public class DebugRecipeDump {
                 data.put("aspects", aspects(arcane.getCrystals()));
                 data.put("vis", arcane.getVis());
                 data.put("count", arcane.getResultItem(event.getServer().registryAccess()).getCount());
+                data.put("resultItem", net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(arcane.getResultItem(event.getServer().registryAccess()).getItem()).toString());
+                data.put("ingredients", arcane.getIngredients().stream().map(i -> ingredient(i, event.getServer().registryAccess())).toList());
+                if (arcane instanceof thaumcraft.api.crafting.ShapedArcaneRecipe) {
+                    data.put("ingredientMode", "shaped");
+                    for (int width = 1; width <= 3; width++) if (arcane.canCraftInDimensions(width, 3)) { data.put("width", width); break; }
+                    for (int height = 1; height <= 3; height++) if (arcane.canCraftInDimensions(3, height)) { data.put("height", height); break; }
+                } else data.put("ingredientMode", "unordered");
                 result.put(holder.id().toString(), data);
             }
         }
         Files.writeString(Path.of("../build/recipe-audit-actual.json"), new GsonBuilder().setPrettyPrinting().create().toJson(result));
+        var sample = thaumcraft.api.ThaumcraftApiHelper.makeCrystal(thaumcraft.api.aspects.Aspect.AIR);
+        var componentIngredient = thaumcraft.api.ThaumcraftApiHelper.getIngredient(sample);
+        var named = sample.copy();
+        named.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Recipe audit"));
+        named.set(net.minecraft.core.component.DataComponents.LORE, new net.minecraft.world.item.component.ItemLore(java.util.List.of(net.minecraft.network.chat.Component.literal("Extra lore"))));
+        if (!componentIngredient.test(named) || componentIngredient.test(thaumcraft.api.ThaumcraftApiHelper.makeCrystal(thaumcraft.api.aspects.Aspect.FIRE))) {
+            throw new IllegalStateException("[TC-RECIPE-DUMP] component ingredient regression");
+        }
+        var wrongAmount = sample.copy();
+        wrongAmount.set(thaumcraft.common.lib.TCDataComponents.ASPECTS.get(), new AspectList().add(thaumcraft.api.aspects.Aspect.AIR, 2));
+        if (componentIngredient.test(wrongAmount)) throw new IllegalStateException("[TC-RECIPE-DUMP] aspect amount regression");
+        Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: named/lore crystal accepted, wrong aspect and amount rejected");
         Thaumcraft.log.info("[TC-RECIPE-DUMP] {} recipes exported", result.size());
     }
 
@@ -81,5 +114,9 @@ public class DebugRecipeDump {
         Map<String, Integer> result = new LinkedHashMap<>();
         if (list != null) for (var aspect : list.getAspects()) result.put(aspect.getTag(), list.getAmount(aspect));
         return result;
+    }
+
+    private static com.google.gson.JsonElement ingredient(net.minecraft.world.item.crafting.Ingredient value, net.minecraft.core.RegistryAccess registries) {
+        return net.minecraft.world.item.crafting.Ingredient.CODEC.encodeStart(registries.createSerializationContext(com.mojang.serialization.JsonOps.INSTANCE), value).getOrThrow();
     }
 }

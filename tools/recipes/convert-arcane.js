@@ -196,6 +196,7 @@ function convert(recipeExpr, ctx) {
 }
 
 // --- сбор рецептов ---
+function generate() {
 const body = P.methodBody(P.read(), 'initializeArcaneRecipes');
 const list = [];
 for (const r of P.calls(body, 'ThaumcraftApi.addArcaneCraftingRecipe')) {
@@ -233,3 +234,7 @@ for (const e of list) {
 fs.writeFileSync(MANIFEST, JSON.stringify(written, null, 2) + '\n');
 fs.writeFileSync(PENDING, '# Магические рецепты, ожидающие предметов (tools/recipes/convert-arcane.js)\n' + pending.join('\n') + '\n');
 console.log(`рецептов: ${list.length}, записано: ${written.length}, ожидают: ${pending.length}`);
+}
+
+module.exports = { stackOf, ingredient, aspects };
+if (require.main === module) generate();

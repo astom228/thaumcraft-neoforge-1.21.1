@@ -117,7 +117,15 @@ public class ThaumcraftApiHelper {
             return ing;
         }
         if (obj instanceof ItemStack stack) {
-            return stack.getComponentsPatch().isEmpty() ? Ingredient.of(stack) : DataComponentIngredient.of(false, stack);
+            if (stack.getComponentsPatch().isEmpty()) {
+                return Ingredient.of(stack);
+            }
+            // Аналог NBT образца 1.12: только явно заданные компоненты, без стандартных lore/enchantments/rarity предмета.
+            var components = net.minecraft.core.component.DataComponentMap.builder();
+            for (var entry : stack.getComponentsPatch().entrySet()) {
+                if (entry.getValue().isPresent()) copyIngredientComponent(components, entry.getKey(), stack);
+            }
+            return DataComponentIngredient.of(false, components.build(), stack.getItem());
         }
         if (obj instanceof ItemLike item) {
             return Ingredient.of(item);
@@ -126,6 +134,12 @@ public class ThaumcraftApiHelper {
             return Ingredient.of((TagKey<Item>) tag);
         }
         return null;
+    }
+
+    private static <T> void copyIngredientComponent(net.minecraft.core.component.DataComponentMap.Builder components,
+                                                   net.minecraft.core.component.DataComponentType<T> type, ItemStack stack) {
+        T value = stack.get(type);
+        if (value != null) components.set(type, value);
     }
 
     /** Соседний блок (по стороне face), передающий эссенцию и готовый соединиться с этой стороны; незагруженный чанк — null. */
