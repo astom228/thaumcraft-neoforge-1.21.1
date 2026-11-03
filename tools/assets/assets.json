@@ -840,6 +840,7 @@
     "alumentum": "model:alumentum",
     "bath_salts": "model:bath_salts",
     "sanity_soap": "model:sanity_soap",
-    "bottle_of_taint": "model:bottle_taint"
+    "bottle_of_taint": "model:bottle_taint",
+    "causality_collapser": "model:causality_collapser"
   }
 }

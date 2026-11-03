@@ -291,7 +291,11 @@ public class ConfigRecipes {
                 new ItemStack(ItemsTC.turretBasic.get()), new ItemStack(BlocksTC.plankGreatwood.get()), new ItemStack(BlocksTC.plankGreatwood.get()),
                 new ItemStack(ItemsTC.mechanismComplex.get()), TCTags.Items.PLATES_BRASS, new ItemStack(Items.DIAMOND_PICKAXE),
                 new ItemStack(Items.DIAMOND_SHOVEL), new ItemStack(ItemsTC.morphicResonator.get()), new ItemStack(ItemsTC.nuggetRareEarth.get())));
-        // TODO этапы 13–16: CausalityCollapser — вместе с предметом
+        ThaumcraftApi.addInfusionCraftingRecipe(tc("CausalityCollapser"), new InfusionRecipe("RIFTCLOSER",
+                new ItemStack(ItemsTC.causalityCollapser.get()), 8, new AspectList().add(Aspect.ELDRITCH, 50).add(Aspect.FLUX, 50),
+                new ItemStack(Blocks.TNT), new ItemStack(ItemsTC.morphicResonator.get()), new ItemStack(Blocks.REDSTONE_BLOCK),
+                new ItemStack(ItemsTC.alumentum.get()), TCTags.Items.NITOR, new ItemStack(ItemsTC.visResonator.get()),
+                new ItemStack(Blocks.REDSTONE_BLOCK), new ItemStack(ItemsTC.alumentum.get()), TCTags.Items.NITOR));
     }
 
     private static void mask(String key, int mask, AspectList aspects, net.minecraft.world.item.Item dye, ItemStack c3, ItemStack c4) {

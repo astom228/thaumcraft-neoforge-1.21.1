@@ -589,3 +589,10 @@
     AidPortalCrimson — вложенный класс AidPortal с EntityCultistPortalLesser.class и CardPortal, как в оригинале.
     В BlockEffect восстановлено исключение IEldritchMob для гнили. Новых механик и отступлений нет.
     Исторические TODO заменены актуальными задачами; AidBasicEldritch не добавляется согласно решению 135.
+
+147. **Коллапсер причинности (этап 19.2а)**: предмет causality_collapser и сущность causalitycollapser (строчное имя
+    регистрации оригинала). Рендер NoopRenderer + исходный красный след через IFXDispatcher, как RenderNoProjectile.
+    Скорость 0.8, неточность 2, взрыв 2 без огня с разрушением; область поиска разломов — AABB ±3, как EntityUtils оригинала.
+    Рецепт наполнения CausalityCollapser: RIFTCLOSER, нестабильность 8, Alienis 50 и Vitium 50; центральный TNT,
+    восемь компонентов с любым цветом нитора (тег NITOR). Аспекты результата вычисляются из рецепта по DEVIATIONS 36:
+    в ConfigAspects оригинала отдельного назначения коллапсеру нет. Иконка и текстура — из оригинала, имя переведено.

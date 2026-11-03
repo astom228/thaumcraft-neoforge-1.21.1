@@ -201,5 +201,7 @@
   "tc.bore.other": "Other properties:",
   "tc.bore.refining": "Refining %s",
   "tc.bore.fortune": "Fortune %s",
-  "tc.bore.silk": "Silk Touch"
+  "tc.bore.silk": "Silk Touch",
+  "item.thaumcraft.causality_collapser": "Causality Collapser",
+  "entity.thaumcraft.causalitycollapser": "Causality Collapser"
 }

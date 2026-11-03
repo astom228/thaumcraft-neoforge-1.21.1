@@ -136,6 +136,7 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.GRAPPLE.get(), thaumcraft.client.renderers.entity.projectile.RenderGrapple::new);
         // алюментум — без модели (RenderNoProjectile оригинала; след — частицы сущности)
         event.registerEntityRenderer(ConfigEntities.ALUMENTUM.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(ConfigEntities.CAUSALITY_COLLAPSER.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ConfigEntities.SPELL_BAT.get(), thaumcraft.client.renderers.entity.mob.RenderSpellBat::new);
         event.registerEntityRenderer(ConfigEntities.BOTTLE_TAINT.get(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
         event.registerEntityRenderer(ConfigEntities.FIRE_BAT.get(), thaumcraft.client.renderers.entity.mob.RenderFireBat::new);

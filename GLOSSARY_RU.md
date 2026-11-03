@@ -225,6 +225,12 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | Flux essentia | эссенция Выброса | |
 | Causality Collapser | Разрушитель причинности | |
 | Essentia Resonator | Резонатор эссенции | |
+
+### Добавлено на этапе 19
+
+| English | Русский | Примечание |
+|---|---|---|
+| Causality Collapser | Коллапсер причинности | термин из перевода исследования RIFTCLOSER |
 | Arcane / Preserved / Ancient / Eldritch / Illuminating / Twisted Curiosity | Магический / Сохранившийся / Древний / Потусторонний / Просвещающий / Искажённый реликт | |
 | Cheater's Thaumonomicon | Таумономикон-шпаргалка | |
 | Focus Medium / Effect / Modifier | Носитель / Эффект / Модификатор фокуса | |

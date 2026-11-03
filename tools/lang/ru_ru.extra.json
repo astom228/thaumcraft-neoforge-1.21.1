@@ -1177,5 +1177,7 @@
   "tc.bore.other": "Прочие свойства:",
   "tc.bore.refining": "Очистка %s",
   "tc.bore.fortune": "Удача %s",
-  "tc.bore.silk": "Шёлковое касание"
+  "tc.bore.silk": "Шёлковое касание",
+  "item.thaumcraft.causality_collapser": "Коллапсер причинности",
+  "entity.thaumcraft.causalitycollapser": "Коллапсер причинности"
 }

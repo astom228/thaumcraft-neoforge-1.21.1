@@ -148,6 +148,11 @@ public class ConfigEntities {
     public static final Supplier<EntityType<thaumcraft.common.entities.EntityFluxRift>> FLUX_RIFT = ENTITIES.register("flux_rift",
             () -> EntityType.Builder.<thaumcraft.common.entities.EntityFluxRift>of(thaumcraft.common.entities.EntityFluxRift::new, MobCategory.MISC)
                     .sized(2.0F, 2.0F).clientTrackingRange(4).updateInterval(20).fireImmune().build("flux_rift"));
+    // EntityRegistry.registerModEntity(…, "CausalityCollapser", …, 64, 20, true)
+    public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityCausalityCollapser>> CAUSALITY_COLLAPSER = ENTITIES.register("causalitycollapser",
+            () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityCausalityCollapser>of(
+                    thaumcraft.common.entities.projectile.EntityCausalityCollapser::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(20).build("causalitycollapser"));
     // EntityRegistry.registerModEntity(…, "BottleTaint", …, 64, 10, true)
     public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityBottleTaint>> BOTTLE_TAINT = ENTITIES.register("bottle_taint",
             () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityBottleTaint>of(thaumcraft.common.entities.projectile.EntityBottleTaint::new,
