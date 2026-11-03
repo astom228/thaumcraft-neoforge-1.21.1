@@ -251,6 +251,8 @@ public class ItemsTC {
             p -> new thaumcraft.common.entities.construct.ItemTurretPlacer(thaumcraft.common.entities.construct.ItemTurretPlacer.BASIC, p));
     public static final DeferredItem<Item> turretAdvanced = ConfigItems.ITEMS.registerItem("advanced_crossbow_turret",
             p -> new thaumcraft.common.entities.construct.ItemTurretPlacer(thaumcraft.common.entities.construct.ItemTurretPlacer.ADVANCED, p));
+    public static final DeferredItem<Item> arcaneBore = ConfigItems.ITEMS.registerItem("arcane_bore",
+            p -> new thaumcraft.common.entities.construct.ItemTurretPlacer(thaumcraft.common.entities.construct.ItemTurretPlacer.BORE, p));
     // реликты и прочее: изначальная жемчужина (прочность 8), жезл пехов, мешки с добычей (по 16), счётчик рассудка
     public static final DeferredItem<Item> primordialPearl = ConfigItems.ITEMS.registerItem("primordial_pearl", thaumcraft.common.items.curios.ItemPrimordialPearl::new,
             new Item.Properties().durability(8).rarity(Rarity.UNCOMMON));

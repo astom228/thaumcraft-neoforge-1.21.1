@@ -53,6 +53,8 @@ public final class ArmorModels {
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderEldritchGuardian.LAYER, thaumcraft.client.renderers.models.entity.ModelEldritchGuardianLayer::create);
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderEldritchGolem.LAYER, thaumcraft.client.renderers.models.entity.ModelEldritchGolemLayer::create);
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderCultist.LAYER, thaumcraft.client.renderers.entity.mob.RenderCultist::createLayer);
+        event.registerLayerDefinition(thaumcraft.client.renderers.entity.construct.RenderArcaneBore.LAYER,
+                thaumcraft.client.renderers.models.entity.ModelArcaneBoreLayer::create);
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.construct.RenderTurretCrossbow.LAYER,
                 thaumcraft.client.renderers.models.entity.ModelCrossbowLayer::create);
         event.registerLayerDefinition(thaumcraft.client.renderers.entity.mob.RenderPech.LAYER, thaumcraft.client.renderers.models.entity.ModelPechLayer::create);

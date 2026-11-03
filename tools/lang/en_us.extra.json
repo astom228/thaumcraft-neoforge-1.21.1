@@ -193,5 +193,13 @@
   "entity.thaumcraft.golem": "Golem",
   "entity.thaumcraft.golemdart": "Golem Dart",
   "entity.thaumcraft.turretbasic": "Automated Crossbow",
-  "entity.thaumcraft.turretadvanced": "Advanced Automated Crossbow"
+  "entity.thaumcraft.turretadvanced": "Advanced Automated Crossbow",
+  "entity.thaumcraft.arcanebore": "Arcane Bore",
+  "tc.bore.width": "Width: %s",
+  "tc.bore.depth": "Depth: %s",
+  "tc.bore.speed": "Speed: +%s",
+  "tc.bore.other": "Other properties:",
+  "tc.bore.refining": "Refining %s",
+  "tc.bore.fortune": "Fortune %s",
+  "tc.bore.silk": "Silk Touch"
 }

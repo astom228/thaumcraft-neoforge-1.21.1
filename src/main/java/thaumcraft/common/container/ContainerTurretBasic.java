@@ -79,10 +79,10 @@ public class ContainerTurretBasic extends AbstractContainerMenu {
     }
 
     /** «Рука» турели как контейнер из одной ячейки (SlotMobEquipment оригинала). */
-    static class HandContainer implements Container {
-        final EntityTurretCrossbow turret;
+    public static class HandContainer implements Container {
+        final net.minecraft.world.entity.Mob turret;
 
-        HandContainer(EntityTurretCrossbow turret) {
+        public HandContainer(net.minecraft.world.entity.Mob turret) {
             this.turret = turret;
         }
 

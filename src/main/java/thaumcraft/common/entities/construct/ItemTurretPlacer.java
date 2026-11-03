@@ -77,8 +77,12 @@ public class ItemTurretPlacer extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    /** Магический бур — этап 18.6б. */
+    /** Магический бур смотрит туда же, куда игрок (по горизонтали). */
     protected EntityOwnedConstruct createBore(Level world, Player player) {
-        return null;
+        EntityArcaneBore bore = ConfigEntities.ARCANE_BORE.get().create(world);
+        if (bore != null) {
+            bore.setFacing(player.getDirection());
+        }
+        return bore;
     }
 }

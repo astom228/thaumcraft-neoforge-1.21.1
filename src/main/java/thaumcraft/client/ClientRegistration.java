@@ -102,6 +102,7 @@ public class ClientRegistration {
         event.register(TCMenus.SEAL.get(), thaumcraft.common.entities.construct.golem.gui.SealBaseGUI::new);
         event.register(TCMenus.LOGISTICS.get(), thaumcraft.client.gui.GuiLogistics::new);
         event.register(TCMenus.TURRET_BASIC.get(), thaumcraft.client.gui.GuiTurretBasic::new);
+        event.register(TCMenus.ARCANE_BORE.get(), thaumcraft.client.gui.GuiArcaneBore::new);
         event.register(TCMenus.TURRET_ADVANCED.get(), thaumcraft.client.gui.GuiTurretAdvanced::new);
         event.register(TCMenus.FOCAL_MANIPULATOR.get(), thaumcraft.client.gui.GuiFocalManipulator::new);
         event.register(TCMenus.FOCUS_POUCH.get(), thaumcraft.client.gui.GuiFocusPouch::new);
@@ -153,6 +154,7 @@ public class ClientRegistration {
         event.registerEntityRenderer(ConfigEntities.ELDRITCH_GOLEM.get(), thaumcraft.client.renderers.entity.mob.RenderEldritchGolem::new);
         event.registerEntityRenderer(ConfigEntities.GOLEM_ORB.get(), thaumcraft.client.renderers.entity.projectile.RenderElectricOrb::new);
 
+        event.registerEntityRenderer(ConfigEntities.ARCANE_BORE.get(), thaumcraft.client.renderers.entity.construct.RenderArcaneBore::new);
         event.registerEntityRenderer(ConfigEntities.TURRET_BASIC.get(), thaumcraft.client.renderers.entity.construct.RenderTurretCrossbow::new);
         event.registerEntityRenderer(ConfigEntities.TURRET_ADVANCED.get(), thaumcraft.client.renderers.entity.construct.RenderTurretCrossbowAdvanced::new);
         event.registerEntityRenderer(ConfigEntities.GOLEM.get(), thaumcraft.client.renderers.entity.construct.RenderThaumcraftGolem::new);

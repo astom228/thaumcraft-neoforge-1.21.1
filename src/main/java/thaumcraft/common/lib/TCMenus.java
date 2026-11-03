@@ -44,6 +44,8 @@ public class TCMenus {
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerTurretBasic::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerTurretAdvanced>> TURRET_ADVANCED = MENUS.register("turret_advanced",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerTurretAdvanced::new));
+    public static final Supplier<MenuType<thaumcraft.common.container.ContainerArcaneBore>> ARCANE_BORE = MENUS.register("arcane_bore",
+            () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerArcaneBore::new));
     public static final Supplier<MenuType<thaumcraft.common.container.ContainerPech>> PECH = MENUS.register("pech",
             () -> IMenuTypeExtension.create(thaumcraft.common.container.ContainerPech::new));
 }

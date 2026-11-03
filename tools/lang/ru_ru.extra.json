@@ -1169,5 +1169,13 @@
   "item.thaumcraft.arcane_bore": "Магический бур",
   "button.up": "Прокрутить вверх",
   "button.down": "Прокрутить вниз",
-  "turretfocus.range": "Дальность: %t блоков"
+  "turretfocus.range": "Дальность: %t блоков",
+  "entity.thaumcraft.arcanebore": "Магический бур",
+  "tc.bore.width": "Ширина: %s",
+  "tc.bore.depth": "Глубина: %s",
+  "tc.bore.speed": "Скорость: +%s",
+  "tc.bore.other": "Прочие свойства:",
+  "tc.bore.refining": "Очистка %s",
+  "tc.bore.fortune": "Удача %s",
+  "tc.bore.silk": "Шёлковое касание"
 }

@@ -170,6 +170,10 @@ public class ConfigEntities {
             () -> EntityType.Builder.<thaumcraft.common.entities.construct.EntityTurretCrossbowAdvanced>of(
                     thaumcraft.common.entities.construct.EntityTurretCrossbowAdvanced::new, MobCategory.MISC).sized(0.95F, 1.5F).eyeHeight(1.0F)
                     .clientTrackingRange(4).updateInterval(3).build("turretadvanced"));
+    // EntityRegistry.registerModEntity(…, "ArcaneBore", …, 64, 3, true); глаза — 0.8125
+    public static final Supplier<EntityType<thaumcraft.common.entities.construct.EntityArcaneBore>> ARCANE_BORE = ENTITIES.register("arcanebore",
+            () -> EntityType.Builder.<thaumcraft.common.entities.construct.EntityArcaneBore>of(thaumcraft.common.entities.construct.EntityArcaneBore::new,
+                    MobCategory.MISC).sized(0.9F, 0.9F).eyeHeight(0.8125F).clientTrackingRange(4).updateInterval(3).build("arcanebore"));
     // EntityRegistry.registerModEntity(…, "GolemDart", …, 64, 20, false)
     public static final Supplier<EntityType<thaumcraft.common.entities.projectile.EntityGolemDart>> GOLEM_DART = ENTITIES.register("golemdart",
             () -> EntityType.Builder.<thaumcraft.common.entities.projectile.EntityGolemDart>of(thaumcraft.common.entities.projectile.EntityGolemDart::new,
@@ -250,6 +254,7 @@ public class ConfigEntities {
         event.put(TAINT_SEED.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeed.createAttributes().build());
         event.put(TURRET_BASIC.get(), thaumcraft.common.entities.construct.EntityTurretCrossbow.createAttributes().build());
         event.put(TURRET_ADVANCED.get(), thaumcraft.common.entities.construct.EntityTurretCrossbowAdvanced.createAttributes().build());
+        event.put(ARCANE_BORE.get(), thaumcraft.common.entities.construct.EntityArcaneBore.createAttributes().build());
         event.put(GOLEM.get(), thaumcraft.common.entities.construct.golem.EntityThaumcraftGolem.createAttributes().build());
         event.put(TAINT_SEED_PRIME.get(), thaumcraft.common.entities.monster.tainted.EntityTaintSeedPrime.createAttributes().build());
     }
