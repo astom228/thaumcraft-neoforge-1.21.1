@@ -265,6 +265,8 @@ public class ItemsTC {
     public static final DeferredItem<Item> bottleTaint = ConfigItems.ITEMS.registerItem("bottle_of_taint", thaumcraft.common.items.consumables.ItemBottleTaint::new);
     public static final DeferredItem<Item> causalityCollapser = ConfigItems.ITEMS.registerItem("causality_collapser",
             thaumcraft.common.items.consumables.ItemCausalityCollapser::new);
+    public static final DeferredItem<Item> creativeFluxSponge = ConfigItems.ITEMS.registerItem("creative_flux_sponge",
+            thaumcraft.common.items.misc.ItemCreativeFluxSponge::new);
     // ItemSanitySoap: мыться 5 с — снимает временное и часть обычного Искажения
     public static final DeferredItem<Item> sanitySoap = ConfigItems.ITEMS.registerItem("sanity_soap", thaumcraft.common.items.consumables.ItemSanitySoap::new);
     // ItemSanityChecker: шкала рассудка (Искажения) на экране — HudHandler

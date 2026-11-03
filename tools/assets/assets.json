@@ -841,6 +841,7 @@
     "bath_salts": "model:bath_salts",
     "sanity_soap": "model:sanity_soap",
     "bottle_of_taint": "model:bottle_taint",
-    "causality_collapser": "model:causality_collapser"
+    "causality_collapser": "model:causality_collapser",
+    "creative_flux_sponge": "model:creative_flux_sponge"
   }
 }

@@ -1179,5 +1179,13 @@
   "tc.bore.fortune": "Удача %s",
   "tc.bore.silk": "Шёлковое касание",
   "item.thaumcraft.causality_collapser": "Коллапсер причинности",
-  "entity.thaumcraft.causalitycollapser": "Коллапсер причинности"
+  "entity.thaumcraft.causalitycollapser": "Коллапсер причинности",
+  "item.thaumcraft.creative_flux_sponge": "Губка Выброса",
+  "tc.flux_sponge.tooltip.1": "ПКМ: поглотить Выброс",
+  "tc.flux_sponge.tooltip.2": "в области 9×9 чанков",
+  "tc.flux_sponge.tooltip.3": "Также удаляет разломы Выброса,",
+  "tc.flux_sponge.tooltip.4": "если использовать крадучись.",
+  "tc.flux_sponge.creative": "Только для творческого режима",
+  "tc.flux_sponge.drained": "Поглощено Выброса в области 9×9 чанков: %s.",
+  "tc.flux_sponge.removed": "Удалено разломов Выброса: %s."
 }

@@ -231,6 +231,7 @@ Trap — Ловушка, Exchange — Обмен, Magic — Магия (стру
 | English | Русский | Примечание |
 |---|---|---|
 | Causality Collapser | Коллапсер причинности | термин из перевода исследования RIFTCLOSER |
+| Flux Sponge | Губка Выброса | творческий предмет |
 | Arcane / Preserved / Ancient / Eldritch / Illuminating / Twisted Curiosity | Магический / Сохранившийся / Древний / Потусторонний / Просвещающий / Искажённый реликт | |
 | Cheater's Thaumonomicon | Таумономикон-шпаргалка | |
 | Focus Medium / Effect / Modifier | Носитель / Эффект / Модификатор фокуса | |
