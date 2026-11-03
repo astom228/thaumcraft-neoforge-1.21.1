@@ -179,6 +179,11 @@ public class TCRecipeProvider extends RecipeProvider {
                 .pattern(" QQ").pattern(" QQ").pattern("S  ").define('Q', Tags.Items.GEMS_QUARTZ).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has", has(Tags.Items.GEMS_QUARTZ)).save(out, id("golembell"));
 
+        // shapelessOreDictRecipe внутри initializeArcaneRecipes оригинала — это обычный рецепт, без Вис.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, BlocksTC.arcaneEarToggle.get())
+                .requires(BlocksTC.arcaneEar.get()).requires(Items.LEVER)
+                .unlockedBy("has", has(BlocksTC.arcaneEar.get())).save(out, id("arcaneeartoggle"));
+
         // фиалы: "blockGlass" — любое стекло
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, phial.get(), 8)
                 .pattern(" C ").pattern("G G").pattern(" G ").define('G', Tags.Items.GLASS_BLOCKS).define('C', Items.CLAY_BALL)
@@ -192,7 +197,7 @@ public class TCRecipeProvider extends RecipeProvider {
         for (thaumcraft.api.aspects.Aspect aspect : thaumcraft.api.aspects.Aspect.aspects.values()) {
             net.minecraft.world.item.ItemStack marked = new net.minecraft.world.item.ItemStack(labelFilled.get());
             marked.set(thaumcraft.common.lib.TCDataComponents.ASPECTS.get(), new thaumcraft.api.aspects.AspectList().add(aspect, 1));
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, marked).group(labels)
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, marked).group("thaumcraft:jarlabelessence")
                     .requires(label.get())
                     .requires(net.neoforged.neoforge.common.crafting.DataComponentIngredient.of(false, thaumcraft.common.lib.TCDataComponents.ASPECTS,
                             new thaumcraft.api.aspects.AspectList().add(aspect, 10), phialFilled.get()))

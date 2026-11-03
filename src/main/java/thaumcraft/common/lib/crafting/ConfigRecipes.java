@@ -136,8 +136,7 @@ public class ConfigRecipes {
     }
 
     /**
-     * initializeInfusionRecipes оригинала: рецепты наполнения (каталог, на обеих сторонах). Перенесены те, чьи предметы уже есть;
-     * остальные — с этапами своих предметов (TODO ниже).
+     * initializeInfusionRecipes оригинала: рецепты наполнения (каталог, на обеих сторонах).
      */
     public static void initializeInfusionRecipes() {
         ThaumcraftApi.addInfusionCraftingRecipe(tc("SealHarvest"), new InfusionRecipe("SEALHARVEST", new ItemStack(ItemsTC.sealHarvest.get()), 0,
@@ -395,11 +394,15 @@ public class ConfigRecipes {
         ThaumcraftApi.addFakeCraftingRecipe(ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, "salismundusfake"),
                 new ShapelessRecipe("", CraftingBookCategory.MISC, new ItemStack(ItemsTC.salisMundus.get()), NonNullList.of(Ingredient.EMPTY,
                         Ingredient.of(Items.FLINT), Ingredient.of(Items.BOWL), Ingredient.of(Items.REDSTONE), anyCrystal, anyCrystal, anyCrystal)));
+        Ingredient meat = Ingredient.of(TCTags.Items.NUGGETS_MEAT);
+        ThaumcraftApi.addFakeCraftingRecipe(tc("triplemeattreatfake"),
+                new ShapelessRecipe("", CraftingBookCategory.MISC, new ItemStack(ItemsTC.tripleMeatTreat.get()),
+                        NonNullList.of(Ingredient.EMPTY, meat, meat, meat, Ingredient.of(Items.SUGAR))));
     }
 
     /**
-     * initializeAlchemyRecipes оригинала: рецепты тигля (каталог, на обеих сторонах). Перенесены те, чьи предметы уже есть;
-     * остальные — с этапами своих предметов (TODO ниже). Окраска нитора — обычные рецепты (TCRecipeProvider).
+     * initializeAlchemyRecipes и postAspects оригинала: рецепты тигля (каталог, на обеих сторонах).
+     * Окраска нитора — обычные рецепты (TCRecipeProvider).
      * OreDictionary → теги (DECISIONS.md п. 27).
      */
     public static void initializeAlchemyRecipes() {
@@ -426,6 +429,16 @@ public class ConfigRecipes {
                 new ItemStack(Items.ROTTEN_FLESH), new AspectList().merge(Aspect.FIRE, 1)));
         ThaumcraftApi.addCrucibleRecipe(id("hedge_leather"), new CrucibleRecipe("HEDGEALCHEMY@1", new ItemStack(Items.LEATHER),
                 new ItemStack(Items.ROTTEN_FLESH), new AspectList().merge(Aspect.AIR, 3).merge(Aspect.BEAST, 3)));
+        // postAspects оригинала: стоимость выводится из таблицы аспектов после её загрузки на соответствующей стороне.
+        hedge("hedge_gunpowder", "HEDGEALCHEMY@2", new ItemStack(Items.GUNPOWDER, 2), Items.GUNPOWDER, null);
+        hedge("hedge_slime", "HEDGEALCHEMY@2", new ItemStack(Items.SLIME_BALL, 2), Items.SLIME_BALL, null);
+        hedge("hedge_glowstone", "HEDGEALCHEMY@2", new ItemStack(Items.GLOWSTONE_DUST, 2), Tags.Items.DUSTS_GLOWSTONE, null);
+        hedge("hedge_dye", "HEDGEALCHEMY@2", new ItemStack(Items.INK_SAC, 2), Items.INK_SAC, null);
+        hedge("hedge_clay", "HEDGEALCHEMY@3", new ItemStack(Items.CLAY_BALL), Items.DIRT, new ItemStack(Items.DIRT));
+        hedge("hedge_string", "HEDGEALCHEMY@3", new ItemStack(Items.STRING), Items.WHEAT, new ItemStack(Items.WHEAT));
+        hedge("hedge_web", "HEDGEALCHEMY@3", new ItemStack(Items.COBWEB), Items.STRING, new ItemStack(Items.STRING));
+        ThaumcraftApi.addCrucibleRecipe(tc("hedge_lava"), new CrucibleRecipe("HEDGEALCHEMY@3", new ItemStack(Items.LAVA_BUCKET),
+                Items.BUCKET, new AspectList().add(Aspect.FIRE, 15).add(Aspect.EARTH, 5)));
         ThaumcraftApi.addCrucibleRecipe(id("focus_1"), new CrucibleRecipe("UNLOCKAUROMANCY", new ItemStack(ItemsTC.focus1.get()),
                 ThaumcraftApiHelper.makeCrystal(Aspect.ORDER), new AspectList().merge(Aspect.CRYSTAL, 20).merge(Aspect.MAGIC, 10).merge(Aspect.AURA, 5)));
         purification("iron", ItemsTC.clusterIron.get(), Tags.Items.ORES_IRON);
@@ -466,6 +479,10 @@ public class ConfigRecipes {
     private static void seal(String key, String research, ItemLike result, ItemLike catalyst, AspectList aspects) {
         ThaumcraftApi.addCrucibleRecipe(id(key.toLowerCase(java.util.Locale.ROOT)),
                 new CrucibleRecipe(research, new ItemStack(result), new ItemStack(catalyst), aspects));
+    }
+
+    private static void hedge(String key, String research, ItemStack result, Object catalyst, ItemStack subtract) {
+        ThaumcraftApi.addCrucibleRecipe(tc(key), new DerivedCrucibleRecipe(key, research, result, catalyst, subtract));
     }
 
     private static void purification(String metal, ItemLike cluster, TagKey<Item> ore) {

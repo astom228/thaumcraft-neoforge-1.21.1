@@ -247,7 +247,7 @@
         {
           "text": "research.PAVINGSTONES.stage.1",
           "recipes": [
-            "thaumcraft:arcane_stone"
+            "thaumcraft:stonearcane"
           ],
           "required_knowledge": [
             "OBSERVATION;INFUSION;1"
@@ -261,8 +261,8 @@
           "recipes": [
             "thaumcraft:PaveBarrier",
             "thaumcraft:PaveTravel",
-            "thaumcraft:arcane_stone",
-            "thaumcraft:arcane_brick"
+            "thaumcraft:stonearcane",
+            "thaumcraft:brickarcane"
           ]
         }
       ]

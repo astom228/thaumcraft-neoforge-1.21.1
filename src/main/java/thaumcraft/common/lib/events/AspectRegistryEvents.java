@@ -48,8 +48,10 @@ public class AspectRegistryEvents {
             state.recipes = recipes;
             state.registries = registries;
             state.objectTags.clear();
+            state.derivedCrucibleCosts = java.util.Map.of();
             try {
                 ConfigAspects.initItems();
+                thaumcraft.common.lib.crafting.DerivedCrucibleRecipe.rebuildCosts();
             } catch (Exception e) {
                 Thaumcraft.log.error("Failed to build aspect table", e);
             }

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "group": "thaumcraft:jarlabels",
+  "group": "thaumcraft:jarlabelessence",
   "ingredients": [
     {
       "item": "thaumcraft:label"

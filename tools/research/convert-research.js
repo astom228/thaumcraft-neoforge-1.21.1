@@ -88,6 +88,17 @@ const TYPO = { 'minecraft:thaumcraft:enchanted_placeholder': 'thaumcraft:enchant
 // Числовые ID зачарований 1.12 (Enchantment.REGISTRY), встречающиеся в данных.
 const ENCH = { 0: 'minecraft:protection', 16: 'minecraft:sharpness', 33: 'minecraft:silk_touch', 35: 'minecraft:fortune' };
 
+// Ссылки книги, не совпадавшие с регистрациями рецептов даже в BETA17 (DEVIATIONS 78).
+const RECIPE_IDS = {
+  'thaumcraft:nitorcolor': 'thaumcraft:nitorgroup',
+  'thaumcraft:arcane_stone': 'thaumcraft:stonearcane',
+  'thaumcraft:arcane_brick': 'thaumcraft:brickarcane',
+};
+
+function convertRecipes(obj) {
+  if (Array.isArray(obj.recipes)) obj.recipes = obj.recipes.map(id => RECIPE_IDS[id.toLowerCase()] || id);
+}
+
 const ITEM_FIELDS_ENTRY = ['icons', 'reward_item'];
 const ITEM_FIELDS_STAGE = ['required_item', 'required_craft'];
 const warnings = [];
@@ -142,7 +153,9 @@ for (const f of fs.readdirSync(SRC).filter(f => f.endsWith('.json')).sort()) {
     for (const field of ITEM_FIELDS_ENTRY) convertList(e, field, e.key);
     (e.stages || []).forEach((st, i) => {
       for (const field of ITEM_FIELDS_STAGE) convertList(st, field, `${e.key}.stage${i + 1}`);
+      convertRecipes(st);
     });
+    (e.addenda || []).forEach(convertRecipes);
   }
   fs.writeFileSync(path.join(OUT, f), JSON.stringify(data, null, 2) + '\n');
   console.log(`${f}: ${data.entries.length} записей`);

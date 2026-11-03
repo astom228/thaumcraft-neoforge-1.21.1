@@ -61,6 +61,8 @@ public class CommonInternals {
     /** Состояние одной логической стороны: таблица аспектов и данные для генерации из рецептов. */
     public static final class SideState {
         public final Map<ItemKey, AspectList> objectTags = new ConcurrentHashMap<>();
+        /** Вычисляемые цены postAspects; отдельный снимок для сервера и клиента, пересобирается вместе с аспектами. */
+        public volatile Map<String, AspectList> derivedCrucibleCosts = Map.of();
         public volatile RecipeManager recipes;
         public volatile RegistryAccess registries;
     }

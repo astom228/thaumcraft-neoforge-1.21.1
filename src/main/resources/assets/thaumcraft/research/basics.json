@@ -380,7 +380,7 @@
           "text": "research.UNLOCKALCHEMY.stage.3",
           "recipes": [
             "thaumcraft:nitor",
-            "thaumcraft:nitorcolor"
+            "thaumcraft:nitorgroup"
           ]
         }
       ]
