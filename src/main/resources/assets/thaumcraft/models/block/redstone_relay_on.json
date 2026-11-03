@@ -1,7 +1,7 @@
 {
   "textures": {
     "particle": "thaumcraft:blocks/redstone_relay_on",
-    "torch": "minecraft:block/redstone_torch_on",
+    "torch": "minecraft:block/redstone_torch",
     "slab": "minecraft:block/smooth_stone",
     "top": "thaumcraft:blocks/redstone_relay_on",
     "side": "thaumcraft:blocks/levitator_side_on"

@@ -1,8 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "thaumcraft:block/arcane_ear_off"
-    },
     "enabled=false,facing=down": {
       "model": "thaumcraft:block/arcane_ear_off",
       "x": 180

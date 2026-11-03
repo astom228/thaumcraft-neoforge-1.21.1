@@ -18,7 +18,7 @@ const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json'), 'utf
 
 const readSrc = (rel) => JSON.parse(fs.readFileSync(path.join(SRC, rel), 'utf8'));
 // Ванильные текстуры 1.12 без пространства имён ("blocks/x") -> minecraft:block/<имя 1.21>
-const VANILLA_TEX = { lava_still: 'lava_still', fire_layer_0: 'fire_0', fire_layer_1: 'fire_1', nether_brick: 'nether_bricks', obsidian: 'obsidian', stone_slab_top: 'smooth_stone' };
+const VANILLA_TEX = { lava_still: 'lava_still', fire_layer_0: 'fire_0', fire_layer_1: 'fire_1', nether_brick: 'nether_bricks', obsidian: 'obsidian', stone_slab_top: 'smooth_stone', redstone_torch_on: 'redstone_torch' };
 function fixVanillaTextures(obj) {
   if (!obj || !obj.textures) return;
   for (const [k, v] of Object.entries(obj.textures)) {
@@ -186,6 +186,9 @@ function convertBlock(id, spec) {
       variants[c.key.join(',')] = variantOut(entries.map((e) => toVariant(id, e, models, spec.renderType)));
     }
   }
+
+  // «normal» рядом с явными вариантами по свойствам в 1.21 перекрывает их (Overlapping definition) — убирается
+  if (variants[''] && Object.keys(variants).length > 1) delete variants[''];
 
   // Плиты: half=bottom/top из оригинала + type=double из blockstate двойной плиты
   if (spec.type === 'slab') {

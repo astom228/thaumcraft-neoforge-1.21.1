@@ -1,8 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "thaumcraft:block/stabilizer"
-    },
     "enabled=false,facing=down": {
       "model": "thaumcraft:block/stabilizer",
       "x": 180

@@ -1,8 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "thaumcraft:block/potion_sprayer"
-    },
     "enabled=false,facing=down": {
       "model": "thaumcraft:block/potion_sprayer",
       "x": 180

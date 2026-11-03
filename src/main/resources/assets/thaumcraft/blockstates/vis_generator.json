@@ -1,8 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "thaumcraft:block/vis_generator"
-    },
     "enabled=false,facing=down": {
       "model": "thaumcraft:block/vis_generator",
       "x": 180

@@ -1,8 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "thaumcraft:block/levitator_off"
-    },
     "enabled=false,facing=down": {
       "model": "thaumcraft:block/levitator_off",
       "x": 180
