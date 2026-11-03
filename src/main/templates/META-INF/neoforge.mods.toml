@@ -14,6 +14,14 @@ loaderVersion="${loader_version_range}" #mandatory
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="${mod_license}"
 
+# Интеграция загружается только JEI на клиенте; отсутствие JEI разрешено.
+[[dependencies.thaumcraft]]
+modId="jei"
+type="optional"
+versionRange="[19.64.0.455,20)"
+ordering="AFTER"
+side="CLIENT"
+
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 

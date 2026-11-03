@@ -372,6 +372,10 @@ public class DebugRecipeDump {
                     input.set(thaumcraft.common.lib.TCDataComponents.RUNIC_CHARGE.get(), charge);
                     var preview = thaumcraft.common.lib.crafting.InfusionPreview.of(infusion, input).orElseThrow();
                     int vis = 20 + (int) (20 * Math.pow(2, charge));
+                    var previous = thaumcraft.common.lib.crafting.InfusionPreview.previousInput(infusion, preview.output());
+                    var restored = thaumcraft.common.lib.crafting.InfusionPreview.of(infusion, previous).orElseThrow();
+                    if (!thaumcraft.common.lib.crafting.InfusionPreview.sameState(restored.output(), preview.output())
+                            || !restored.aspects().aspects.equals(preview.aspects().aspects)) throw new IllegalStateException("Runic reverse lookup");
                     if (preview.output().getOrDefault(thaumcraft.common.lib.TCDataComponents.RUNIC_CHARGE.get(), 0) != charge + 1
                             || input.getOrDefault(thaumcraft.common.lib.TCDataComponents.RUNIC_CHARGE.get(), -1) != charge
                             || preview.aspects().getAmount(thaumcraft.api.aspects.Aspect.PROTECT) != vis
@@ -394,6 +398,22 @@ public class DebugRecipeDump {
                         throw new IllegalStateException("Enchantment preview has side effects");
                     }
                 }
+                for (int level = 0; level < enchantment.getEnchantment().maxLevel; level++) {
+                    var enhanced = original.copy();
+                    if (level > 0) thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.addInfusionEnchantment(enhanced, enchantment.getEnchantment(), level);
+                    var other = java.util.Arrays.stream(thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.values()).filter(e -> e != enchantment.getEnchantment()).findFirst().orElseThrow();
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.addInfusionEnchantment(enhanced, other, 1);
+                    enhanced.set(thaumcraft.common.lib.TCDataComponents.WARPING.get(), 3);
+                    var enhancedCopy = enhanced.copy();
+                    var preview = thaumcraft.common.lib.crafting.InfusionPreview.of(infusion, enhanced).orElseThrow();
+                    var previous = thaumcraft.common.lib.crafting.InfusionPreview.previousInput(infusion, preview.output());
+                    var restored = thaumcraft.common.lib.crafting.InfusionPreview.of(infusion, previous).orElseThrow();
+                    if (!thaumcraft.common.lib.crafting.InfusionPreview.sameState(restored.output(), preview.output())
+                            || !restored.aspects().aspects.equals(preview.aspects().aspects)
+                            || !ItemStack.isSameItemSameComponents(enhanced, enhancedCopy)
+                            || preview.output().getOrDefault(thaumcraft.common.lib.TCDataComponents.WARPING.get(), 0) != 3
+                            || preview.warpChance() != (level > 0 ? 20 : 10)) throw new IllegalStateException("Enchantment reverse lookup/cost/warp");
+                }
                 thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.addInfusionEnchantment(input, enchantment.getEnchantment(), enchantment.getEnchantment().maxLevel);
                 if (thaumcraft.common.lib.crafting.InfusionPreview.of(infusion, input).isPresent()) throw new IllegalStateException("Preview above max enchantment level");
                 enchantments++;
@@ -406,11 +426,13 @@ public class DebugRecipeDump {
                 if (!ItemStack.isSameItemSameComponents(input, original) || preview.components().size() != infusion.getComponents().size()
                         || !preview.aspects().aspects.equals(infusion.getAspects().aspects)) throw new IllegalStateException("Ordinary infusion preview");
                 if (infusion.getRecipeOutput() instanceof ItemStack output && !ItemStack.matches(output, preview.output())) throw new IllegalStateException("Preview output");
+                if (infusion.getRecipeOutput() instanceof Object[] change
+                        && !java.util.Objects.equals(preview.output().get((net.minecraft.core.component.DataComponentType<?>) change[0]), change[1])) throw new IllegalStateException("Preview component output");
                 ordinary++;
             }
         }
         if (ordinary != 41 || enchantments != 7 || runic != 7) throw new IllegalStateException("Missing infusion previews: " + ordinary + "/" + enchantments + "/" + runic);
-        Thaumcraft.log.info("[TC-JEI-AUDIT] PASS: 41 ordinary, 7 enchantment, 7 runic-charge previews; no random warp or input changes");
+        Thaumcraft.log.info("[TC-JEI-AUDIT] PASS: 41 ordinary, 7 enchantment, 7 runic-charge previews; reverse lookup and all enchantment levels; no random warp or input changes");
     }
 
     private static void requireAspect(AspectList list, thaumcraft.api.aspects.Aspect aspect, int amount, String label) {

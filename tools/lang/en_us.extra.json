@@ -214,5 +214,19 @@
   "tc.flux_sponge.removed": "%s flux rifts removed.",
   "research.BASEELDRITCH.title": "Eldritch",
   "research.BASEELDRITCH.stage.1": "This research entry is unfinished.",
-  "research.BASEELDRITCH.stage.2": "This part of the research is unfinished in Thaumcraft 6.1.BETA17."
+  "research.BASEELDRITCH.stage.2": "This part of the research is unfinished in Thaumcraft 6.1.BETA17.",
+  "jei.thaumcraft.arcane": "Arcane Workbench",
+  "jei.thaumcraft.crucible": "Crucible Alchemy",
+  "jei.thaumcraft.infusion": "Infusion",
+  "jei.thaumcraft.aspects": "Item Aspects",
+  "jei.thaumcraft.amount": "Amount: %s",
+  "jei.thaumcraft.vis": "Vis: %s",
+  "jei.thaumcraft.instability": "Instability: %s",
+  "jei.thaumcraft.warp": "Warp chance: %s%%",
+  "jei.thaumcraft.per_item": "Aspects per item",
+  "jei.thaumcraft.essentia": "Essentia",
+  "jei.thaumcraft.research": "Research: %s",
+  "jei.thaumcraft.view_only": "Viewing a recipe does not unlock its research.",
+  "jei.thaumcraft.base_vis": "Base cost before equipment discounts.",
+  "jei.thaumcraft.shapeless": "Shapeless recipe"
 }
