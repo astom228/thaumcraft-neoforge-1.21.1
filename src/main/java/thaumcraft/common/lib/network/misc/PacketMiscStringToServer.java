@@ -23,8 +23,7 @@ public record PacketMiscStringToServer(int id, String text) implements CustomPac
 
     public static void handle(PacketMiscStringToServer msg, ServerPlayer player) {
         if (msg.id == 0 && player.containerMenu instanceof ContainerLogistics container) {
-            container.searchText = msg.text;
-            container.refreshItemList(true);
+            container.setSearchText(msg.text);
         }
     }
 }

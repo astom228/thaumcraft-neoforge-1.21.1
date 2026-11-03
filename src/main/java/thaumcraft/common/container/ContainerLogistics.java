@@ -42,6 +42,8 @@ public class ContainerLogistics extends AbstractContainerMenu {
     public String searchText = "";
     int lastStart = -1;
     public boolean updated = false;
+    private boolean refreshPending;
+    private long nextFullRefresh = Long.MIN_VALUE;
     /** Куда везти: блок и сторона (null — игроку). Только на сервере. */
     public final BlockPos target;
     public final Direction side;
@@ -113,6 +115,24 @@ public class ContainerLogistics extends AbstractContainerMenu {
                 + stack.getComponentsPatch();
     }
 
+    /** Частые пакеты объединяются: сканируем инвентари не чаще раза в 5 серверных тиков. */
+    public void setSearchText(String text) {
+        if (!this.worldObj.isClientSide && !this.searchText.equals(text)) {
+            this.searchText = text;
+            this.refreshPending = true;
+        }
+    }
+
+    @Override
+    public void broadcastChanges() {
+        if (!this.worldObj.isClientSide && this.refreshPending && this.worldObj.getGameTime() >= this.nextFullRefresh) {
+            this.refreshPending = false;
+            this.nextFullRefresh = this.worldObj.getGameTime() + 5;
+            this.refreshItemList(true);
+        }
+        super.broadcastChanges();
+    }
+
     public void refreshItemList(boolean full) {
         if (this.worldObj.isClientSide) {
             return;
@@ -142,7 +162,7 @@ public class ContainerLogistics extends AbstractContainerMenu {
                 }
             }
         }
-        if (this.lastTotal != newTotal || this.start != this.lastStart || full && !ti.keySet().equals(this.items.keySet())) {
+        if (full || this.lastTotal != newTotal || this.start != this.lastStart) {
             this.lastTotal = newTotal;
             this.lastStart = this.start;
             if (full) {
@@ -172,7 +192,7 @@ public class ContainerLogistics extends AbstractContainerMenu {
     @Override
     public boolean clickMenuButton(Player p, int id) {
         if (id == 22) {
-            this.refreshItemList(true);
+            this.refreshPending = true;
             return true;
         }
         if (id == 0) {

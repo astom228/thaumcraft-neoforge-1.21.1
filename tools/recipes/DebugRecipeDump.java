@@ -144,6 +144,7 @@ public class DebugRecipeDump {
         }
         Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: phials accept original glass and reject tinted glass");
         auditAspects(event.getServer());
+        auditServerGuards(event.getServer());
         Files.writeString(Path.of("../build/recipe-audit-actual.json"), new GsonBuilder().setPrettyPrinting().create().toJson(result));
         Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: all functional audits");
         Thaumcraft.log.info("[TC-RECIPE-DUMP] {} recipes exported", result.size());
@@ -204,6 +205,42 @@ public class DebugRecipeDump {
         if (thaumcraft.api.internal.CommonInternals.state(net.neoforged.fml.LogicalSide.SERVER).objectTags
                 == thaumcraft.api.internal.CommonInternals.state(net.neoforged.fml.LogicalSide.CLIENT).objectTags) throw new IllegalStateException("Aspect side isolation");
         Thaumcraft.log.info("[TC-ASPECT-AUDIT] PASS: entity NBT, 37 wisp types, 4 water potion forms, 16 shield colors, rebuild and side isolation");
+    }
+
+    private static void auditServerGuards(net.minecraft.server.MinecraftServer server) {
+        var world = server.overworld();
+        var player = net.neoforged.neoforge.common.util.FakePlayerFactory.getMinecraft(world);
+        class CountingLogistics extends thaumcraft.common.container.ContainerLogistics {
+            int scans;
+            CountingLogistics() { super(0, player.getInventory(), null, null); }
+            @Override public void refreshItemList(boolean full) { if (full) scans++; }
+        }
+        var menu = new CountingLogistics();
+        menu.scans = 0;
+        menu.setSearchText("a");
+        menu.setSearchText("latest");
+        if (menu.scans != 0) throw new IllegalStateException("Search scans before menu tick");
+        menu.broadcastChanges();
+        if (menu.scans != 1 || !menu.searchText.equals("latest")) throw new IllegalStateException("Search coalescing");
+        menu.setSearchText("latest");
+        menu.setSearchText("pending");
+        for (int i = 0; i < 100; i++) {
+            menu.clickMenuButton(player, 22);
+            menu.broadcastChanges();
+        }
+        if (menu.scans != 1) throw new IllegalStateException("Repeated refresh packets bypass throttle");
+        var remote = new net.minecraft.core.BlockPos(29_000_000, 64, 29_000_000);
+        if (world.isLoaded(remote)) throw new IllegalStateException("Mirror audit requires unloaded target");
+        var mirror = new thaumcraft.common.tiles.devices.TileMirrorEssentia(net.minecraft.core.BlockPos.ZERO,
+                thaumcraft.api.blocks.BlocksTC.mirrorEssentia.get().defaultBlockState());
+        mirror.setLevel(world);
+        mirror.linked = true;
+        mirror.linkPos = remote;
+        mirror.linkDim = world.dimension();
+        if (mirror.doesContainerContainAmount(thaumcraft.api.aspects.Aspect.AIR, 1)) throw new IllegalStateException("Unloaded mirror reports available essentia");
+        mirror.doesContainerAccept(thaumcraft.api.aspects.Aspect.AIR);
+        if (world.isLoaded(remote) || !mirror.linked) throw new IllegalStateException("Mirror probe loads chunk or breaks pending link");
+        Thaumcraft.log.info("[TC-SERVER-AUDIT] PASS: logistics search/refresh coalescing, mirror probes leave remote chunk unloaded and link intact");
     }
 
     private static void requireAspect(AspectList list, thaumcraft.api.aspects.Aspect aspect, int amount, String label) {

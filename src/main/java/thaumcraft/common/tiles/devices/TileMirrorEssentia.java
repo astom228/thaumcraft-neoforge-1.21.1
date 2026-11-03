@@ -48,11 +48,11 @@ public class TileMirrorEssentia extends TileMirrorLinked implements IAspectSourc
     }
 
     /** Парное зеркало (если загружено), заодно уточняет его сторону. */
-    private BlockEntity partner() {
+    private BlockEntity partner(boolean load) {
         if (!this.linked) {
             return null;
         }
-        BlockEntity te = this.targetTile(true);
+        BlockEntity te = this.targetTile(load);
         if (te != null && this.linkedFacing == Direction.DOWN) {
             this.linkedFacing = facingOf(te.getBlockState());
         }
@@ -70,14 +70,14 @@ public class TileMirrorEssentia extends TileMirrorLinked implements IAspectSourc
 
     @Override
     public boolean doesContainerAccept(Aspect tag) {
-        BlockEntity te = this.partner();
+        BlockEntity te = this.partner(false);
         return te == null || EssentiaHandler.canAcceptEssentia(te, tag, this.linkedFacing, 8, true);
     }
 
     @Override
     public int addToContainer(Aspect tag, int amount) {
         if (this.isLinkValid(true) && amount <= 1) {
-            BlockEntity te = this.partner();
+            BlockEntity te = this.partner(true);
             if (te != null) {
                 boolean b = EssentiaHandler.addEssentia(te, tag, this.linkedFacing, 8, true, 5);
                 if (b) {
@@ -92,7 +92,7 @@ public class TileMirrorEssentia extends TileMirrorLinked implements IAspectSourc
     @Override
     public boolean takeFromContainer(Aspect tag, int amount) {
         if (this.isLinkValid(true) && amount <= 1) {
-            BlockEntity te = this.partner();
+            BlockEntity te = this.partner(true);
             if (te != null) {
                 boolean b = EssentiaHandler.drainEssentia(te, tag, this.linkedFacing, 8, true, 5);
                 if (b) {
@@ -111,8 +111,8 @@ public class TileMirrorEssentia extends TileMirrorLinked implements IAspectSourc
 
     @Override
     public boolean doesContainerContainAmount(Aspect tag, int amount) {
-        if (this.isLinkValid(true) && amount <= 1) {
-            BlockEntity te = this.partner();
+        if (this.isLinkValid(false) && amount <= 1) {
+            BlockEntity te = this.partner(false);
             return te != null && EssentiaHandler.findEssentia(te, tag, this.linkedFacing, 8, true);
         }
         return false;
