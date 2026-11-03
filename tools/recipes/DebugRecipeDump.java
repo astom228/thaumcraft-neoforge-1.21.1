@@ -146,6 +146,7 @@ public class DebugRecipeDump {
         auditAspects(event.getServer());
         auditServerGuards(event.getServer());
         auditResearchPayments(event.getServer());
+        auditLifecycle(event.getServer());
         Files.writeString(Path.of("../build/recipe-audit-actual.json"), new GsonBuilder().setPrettyPrinting().create().toJson(result));
         Thaumcraft.log.info("[TC-RECIPE-DUMP] PASS: all functional audits");
         Thaumcraft.log.info("[TC-RECIPE-DUMP] {} recipes exported", result.size());
@@ -299,6 +300,65 @@ public class DebugRecipeDump {
                 || thaumcraft.api.capabilities.ThaumcraftCapabilities.getKnowledge(player).getResearchStage(key) != 1) {
             throw new IllegalStateException("Rejected research request changed inventory or stage");
         }
+    }
+
+    private static void auditLifecycle(net.minecraft.server.MinecraftServer server) {
+        try {
+            var ticker = thaumcraft.common.world.aura.AuraTicker.class;
+            var stateClass = Class.forName(ticker.getName() + "$State");
+            var constructor = stateClass.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            var state = constructor.newInstance();
+            var phaseMax = stateClass.getDeclaredField("phaseMax");
+            var phaseVis = stateClass.getDeclaredField("phaseVis");
+            phaseMax.setAccessible(true);
+            phaseVis.setAccessible(true);
+            phaseMax.setFloat(state, 1.0F);
+            phaseVis.setFloat(state, 0.25F);
+            var snapshot = new thaumcraft.common.world.aura.AuraChunk(new net.minecraft.world.level.ChunkPos(100000, 100000), (short) 500, 0, 0);
+            var world = new thaumcraft.common.world.aura.AuraWorld();
+            var process = ticker.getDeclaredMethod("processAuraChunk", net.minecraft.server.level.ServerLevel.class,
+                    thaumcraft.common.world.aura.AuraWorld.class, thaumcraft.common.world.aura.AuraChunk.class, stateClass);
+            process.setAccessible(true);
+            process.invoke(null, server.overworld(), world, snapshot, state);
+            if (snapshot.getVis() != 0 || snapshot.getFlux() != 0) throw new IllegalStateException("Unloaded aura snapshot was processed");
+            var replacement = new thaumcraft.common.world.aura.AuraChunk(snapshot.getLoc(), (short) 500, 0, 0);
+            world.getAuraChunks().put(snapshot.getLoc().toLong(), replacement);
+            process.invoke(null, server.overworld(), world, snapshot, state);
+            if (snapshot.getVis() != 0 || replacement.getVis() != 0) throw new IllegalStateException("Replaced aura snapshot was processed");
+            var dimension = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION,
+                    net.minecraft.resources.ResourceLocation.parse("thaumcraft:audit_lifecycle"));
+            var statesField = ticker.getDeclaredField("STATES");
+            statesField.setAccessible(true);
+            @SuppressWarnings("unchecked") var states = (Map<Object, Object>) statesField.get(null);
+            states.put(dimension, state);
+            var remove = ticker.getDeclaredMethod("removeWorld", net.minecraft.resources.ResourceKey.class);
+            remove.setAccessible(true);
+            try {
+                remove.invoke(null, dimension);
+                if (states.containsKey(dimension)) throw new IllegalStateException("Aura cycle survived world unload");
+            } finally { states.remove(dimension); }
+            var client = thaumcraft.api.internal.CommonInternals.state(net.neoforged.fml.LogicalSide.CLIENT);
+            var clientTags = new LinkedHashMap<>(client.objectTags);
+            var clientCosts = client.derivedCrucibleCosts;
+            var clientRecipes = client.recipes;
+            var clientRegistries = client.registries;
+            int serverTags = thaumcraft.api.internal.CommonInternals.state(net.neoforged.fml.LogicalSide.SERVER).objectTags.size();
+            try {
+                client.objectTags.put(thaumcraft.api.internal.CommonInternals.generateUniqueItemstackId(new ItemStack(net.minecraft.world.item.Items.DIAMOND)), new AspectList());
+                client.recipes = server.getRecipeManager();
+                client.registries = server.registryAccess();
+                thaumcraft.api.internal.CommonInternals.clearSide(net.neoforged.fml.LogicalSide.CLIENT);
+                if (!client.objectTags.isEmpty() || !client.derivedCrucibleCosts.isEmpty() || client.recipes != null || client.registries != null
+                        || thaumcraft.api.internal.CommonInternals.state(net.neoforged.fml.LogicalSide.SERVER).objectTags.size() != serverTags) throw new IllegalStateException("Side cleanup isolation");
+            } finally {
+                client.objectTags.putAll(clientTags);
+                client.derivedCrucibleCosts = clientCosts;
+                client.recipes = clientRecipes;
+                client.registries = clientRegistries;
+            }
+        } catch (ReflectiveOperationException e) { throw new IllegalStateException("Lifecycle audit", e); }
+        Thaumcraft.log.info("[TC-SERVER-AUDIT] PASS: unloaded/replaced aura snapshots skipped, dimension cycle removed, side cleanup isolated");
     }
 
     private static void requireAspect(AspectList list, thaumcraft.api.aspects.Aspect aspect, int amount, String label) {

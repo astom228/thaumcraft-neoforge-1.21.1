@@ -104,6 +104,15 @@ public class CommonInternals {
         return state().objectTags;
     }
 
+    /** Завершение сеанса: освободить рецепты/реестры мира, не затрагивая другую логическую сторону. */
+    public static void clearSide(LogicalSide side) {
+        SideState state = state(side);
+        state.objectTags.clear();
+        state.derivedCrucibleCosts = Map.of();
+        state.recipes = null;
+        state.registries = null;
+    }
+
     /** generateUniqueItemstackId: предмет + компоненты стека (без повреждения). */
     public static ItemKey generateUniqueItemstackId(ItemStack stack) {
         DataComponentPatch patch = stack.getComponentsPatch();

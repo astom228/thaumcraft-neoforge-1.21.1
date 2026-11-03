@@ -24,6 +24,11 @@ public class EssentiaSourceFXClient {
     public record EssentiaSourceFX(BlockPos start, BlockPos end, int color, int ext) {
     }
 
+    public static void clear() {
+        sourceFX.clear();
+        tickCount = 0;
+    }
+
     public static void handle(PacketFXEssentiaSource msg) {
         int tx = msg.x() - msg.dx();
         int ty = msg.y() - msg.dy();
@@ -42,7 +47,9 @@ public class EssentiaSourceFXClient {
         if (sourceFX.isEmpty()) {
             return;
         }
-        if (Minecraft.getInstance().level != null) {
+        if (Minecraft.getInstance().level == null) {
+            clear();
+        } else {
             for (EssentiaSourceFX fx : sourceFX.values()) {
                 // к рунической матрице поток идёт на блок ниже
                 int mod = Minecraft.getInstance().level.getBlockEntity(fx.start()) instanceof thaumcraft.common.tiles.crafting.TileInfusionMatrix ? -1 : 0;

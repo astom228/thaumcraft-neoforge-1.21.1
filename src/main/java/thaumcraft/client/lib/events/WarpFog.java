@@ -23,6 +23,12 @@ public final class WarpFog {
     private static float fogTarget = 0.0F;
     private static int fogDuration = 0;
 
+    public static void clear() {
+        fogFiddled = false;
+        fogTarget = 0.0F;
+        fogDuration = 0;
+    }
+
     private WarpFog() {
     }
 

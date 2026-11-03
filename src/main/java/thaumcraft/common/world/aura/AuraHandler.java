@@ -44,6 +44,7 @@ public class AuraHandler {
     }
 
     public static void removeAuraWorld(Level level) {
+        AuraTicker.removeWorld(level.dimension());
         auras.remove(level.dimension());
         riftTrigger.remove(level.dimension());
     }

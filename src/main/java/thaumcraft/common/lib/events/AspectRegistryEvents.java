@@ -23,6 +23,13 @@ public class AspectRegistryEvents {
     private static RegistryAccess pendingRegistries;
 
     @SubscribeEvent
+    public static void serverStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
+        pendingRecipes = null;
+        pendingRegistries = null;
+        CommonInternals.clearSide(LogicalSide.SERVER);
+    }
+
+    @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
         pendingRecipes = event.getServerResources().getRecipeManager();
         pendingRegistries = event.getRegistryAccess();

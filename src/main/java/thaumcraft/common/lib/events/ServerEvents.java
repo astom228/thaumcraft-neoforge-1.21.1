@@ -81,6 +81,8 @@ public class ServerEvents {
         serverRunList.clear();
         swapList.clear();
         breakList.clear();
+        thaumcraft.common.lib.research.ResearchManager.syncList.clear();
+        thaumcraft.common.lib.research.ResearchManager.noFlags = false;
         thaumcraft.api.casters.FocusEngine.clearServerState();
         thaumcraft.common.items.casters.CasterManager.clearServer();
         thaumcraft.common.entities.projectile.EntityFocusCloud.clearServer();

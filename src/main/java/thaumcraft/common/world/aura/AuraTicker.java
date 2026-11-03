@@ -45,6 +45,10 @@ public class AuraTicker {
 
     private static final Map<ResourceKey<Level>, State> STATES = new ConcurrentHashMap<>();
 
+    static void removeWorld(ResourceKey<Level> dimension) {
+        STATES.remove(dimension);
+    }
+
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level)) {
@@ -93,6 +97,10 @@ public class AuraTicker {
         Collections.shuffle(directions, st.rand);
         int x = auraChunk.loc.x;
         int y = auraChunk.loc.z;
+        // Чанк мог выгрузиться или получить новый attachment после создания снимка цикла.
+        if (auraWorld.getAuraChunkAt(x, y) != auraChunk) {
+            return;
+        }
         float base = auraChunk.getBase() * st.phaseMax;
         boolean dirty = false;
         float currentVis = auraChunk.getVis();

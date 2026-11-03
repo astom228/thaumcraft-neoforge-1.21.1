@@ -41,6 +41,19 @@ public class EssentiaHandler {
         sourcesDelay.clear();
         lat = las = null;
         lasp = null;
+        lext = 0;
+    }
+
+    @SubscribeEvent
+    public static void worldUnload(net.neoforged.neoforge.event.level.LevelEvent.Unload event) {
+        if (!(event.getLevel() instanceof ServerLevel world)) return;
+        sources.keySet().removeIf(key -> key.dimension().equals(world.dimension()));
+        sourcesDelay.keySet().removeIf(key -> key.dimension().equals(world.dimension()));
+        if (lat != null && lat.getLevel() == world || las != null && las.getLevel() == world) {
+            lat = las = null;
+            lasp = null;
+            lext = 0;
+        }
     }
 
     private static GlobalPos loc(BlockEntity tile) {

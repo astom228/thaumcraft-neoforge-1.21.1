@@ -95,6 +95,9 @@ public class ParticleEngine {
     /** Раздел 7.2: при выходе из мира — очистить частицы и отложенные эффекты (в оригинале не очищались). */
     @SubscribeEvent
     public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        thaumcraft.api.internal.CommonInternals.clearSide(net.neoforged.fml.LogicalSide.CLIENT);
+        thaumcraft.client.lib.events.EssentiaSourceFXClient.clear();
+        thaumcraft.client.lib.events.WarpFog.clear();
         thaumcraft.client.lib.ClientSeals.clear();
         for (Map<ResourceKey<Level>, List<Particle>> layer : particles) {
             layer.clear();

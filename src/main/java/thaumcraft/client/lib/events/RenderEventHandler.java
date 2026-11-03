@@ -201,6 +201,8 @@ public class RenderEventHandler {
     @SubscribeEvent
     public static void clearSealsOnClone(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.Clone event) {
         thaumcraft.client.lib.ClientSeals.clear();
+        EssentiaSourceFXClient.clear();
+        WarpFog.clear();
     }
 
     /** С печатью или предметом ISealDisplayer в руке видны печати в 16 блоках и их зоны; крадучись — сквозь блоки. */
