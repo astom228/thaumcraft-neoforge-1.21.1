@@ -41,7 +41,7 @@ public class InfusionEnchantmentRecipe extends InfusionRecipe {
     }
 
     /** Подходит ли предмет под виды зачарования (toolClasses): оружие, инструменты, броня, безделушки (Curios), заряжаемые. */
-    static boolean fits(EnumInfusionEnchantment ench, ItemStack central) {
+    public static boolean fits(EnumInfusionEnchantment ench, ItemStack central) {
         if (ench.toolClasses.contains("all")) {
             return true;
         }
