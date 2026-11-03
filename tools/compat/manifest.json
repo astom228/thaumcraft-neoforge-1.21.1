@@ -1,0 +1,57 @@
+{
+  "minecraft": "1.21.1",
+  "neoforge": "21.1.252",
+  "checked": "2026-11-03",
+  "artifacts": [
+    {
+      "project": "create",
+      "version": "6.0.10+mc1.21.1",
+      "channel": "release",
+      "filename": "create-1.21.1-6.0.10.jar",
+      "url": "https://cdn.modrinth.com/data/LNytGWDc/versions/UjX6dr61/create-1.21.1-6.0.10.jar",
+      "sha512": "11cc8fc049d2f67f6548c7abfada6b82a3adb5c7ca410a742de04bbca76e03862c518721b88d806f6e6d768a4d68531fdb903a85859b25d1484d550cc7bafd4b",
+      "source": "https://modrinth.com/mod/create/version/UjX6dr61",
+      "profile": "base"
+    },
+    {
+      "project": "jei",
+      "version": "19.64.0.455",
+      "channel": "release",
+      "filename": "jei-1.21.1-neoforge-19.64.0.455.jar",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/iv3KiVkE/jei-1.21.1-neoforge-19.64.0.455.jar",
+      "sha512": "fdd02e57ce4dcf20b69860a5ace1b97d9a771486241179cf9edfe71e30c69bb4003b046d0cce8d8c4913b9689f1d8b04cf0542b0b04a6cf0b3b0465f3bb11702",
+      "source": "https://modrinth.com/mod/jei/version/iv3KiVkE",
+      "profile": "base"
+    },
+    {
+      "project": "mezzconfig",
+      "version": "0.6.10",
+      "channel": "beta",
+      "filename": "mezz_config-1.21.1-neoforge-0.6.10-standalone.jar",
+      "url": "https://cdn.modrinth.com/data/7tEfOcA7/versions/sL7Ghaz1/mezz_config-1.21.1-neoforge-0.6.10-standalone.jar",
+      "sha512": "f9848590311ae1f2c9a20efcfd7485846a011deccf85c2eee17cbed141b8d88f3e62e3733bbf0cd6b0714f59deca5470f50780750358d3ae2b1fd6597b209ccb",
+      "source": "https://modrinth.com/mod/mezzconfig/version/sL7Ghaz1",
+      "profile": "base"
+    },
+    {
+      "project": "botania",
+      "version": "456-20260912.043547-15",
+      "channel": "snapshot",
+      "filename": "botania-neoforge-1.21.1-456-20260912.043547-15.jar",
+      "url": "https://maven.blamejared.com/vazkii/botania/botania-neoforge-1.21.1/456-SNAPSHOT/botania-neoforge-1.21.1-456-20260912.043547-15.jar",
+      "sha512": "cd1cb5c03f47b5403276955b79268975a2a256363e0d2583ccbf94ec19fe510a9920fd78e44382611ecee5801ae3f06a9e7ec5b4e679a5e4a8c840832b3aee5a",
+      "source": "https://maven.blamejared.com/vazkii/botania/botania-neoforge-1.21.1/456-SNAPSHOT/botania-neoforge-1.21.1-456-20260912.043547-15.jar",
+      "profile": "botania"
+    },
+    {
+      "project": "patchouli",
+      "version": "1.21.1-92-NEOFORGE",
+      "channel": "release",
+      "filename": "Patchouli-1.21.1-92-NEOFORGE.jar",
+      "url": "https://maven.blamejared.com/vazkii/patchouli/Patchouli/1.21.1-92-NEOFORGE/Patchouli-1.21.1-92-NEOFORGE.jar",
+      "sha512": "ebdb4e00910215b96564d3d328e4d20fc285e1ac27219a24eed60326284ff4a139cb601ad677dd76f4bd843b8a14173c97e999cf747ab0394a7617d5067e05c8",
+      "source": "https://maven.blamejared.com/vazkii/patchouli/Patchouli/1.21.1-92-NEOFORGE/Patchouli-1.21.1-92-NEOFORGE.jar",
+      "profile": "botania"
+    }
+  ]
+}
