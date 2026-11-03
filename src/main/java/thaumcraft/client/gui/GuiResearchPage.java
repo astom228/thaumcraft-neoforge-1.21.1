@@ -645,7 +645,7 @@ public class GuiResearchPage extends Screen {
         }
         List<Object> list = recipeLists2.computeIfAbsent(rkey, k -> new ArrayList<>());
         List<Object> outputs = recipeOutputs2.computeIfAbsent(rkey, k -> new ArrayList<>());
-        // TODO этап 13: RecipeMisc
+        // RecipeMisc в BETA17 нигде не создаётся; встроенные рецепты плавки приходят как Recipe.
         if (recipe instanceof InfusionRecipe re) {
             ItemStack is = infusionDisplay(re);
             if (!is.isEmpty() && ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, re.getResearch())) {
@@ -1655,7 +1655,6 @@ public class GuiResearchPage extends Screen {
                 gi++;
             }
         }
-        // TODO этап 13: RecipeMisc
         if (recipe instanceof InfusionRecipe ir && ir.getRecipeOutput() instanceof ItemStack out && ItemStack.isSameItem(out, stack)) {
             return !ThaumcraftCapabilities.knowsResearchStrict(this.minecraft.player, ir.getResearch()) ? -99 : start;
         }

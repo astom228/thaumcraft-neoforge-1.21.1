@@ -18,6 +18,8 @@ import thaumcraft.api.items.IWarpingGear;
  * Искажение 1. Модели: латы — ModelKnightArmor, роба — ModelRobe, претор — ModelLeaderArmor, ботинки — обычная.
  */
 public class ItemCultistArmor extends ArmorItem implements IVisDiscountGear, IWarpingGear {
+    private static final ResourceLocation ZOMBIE_PLATE_TEXTURE = ResourceLocation.fromNamespaceAndPath("thaumcraft",
+            "textures/entity/armor/zombie_plate_armor.png");
     public enum Kind {
         PLATE("cultist_plate_armor", false),
         ROBE("cultist_robe_armor", true),
@@ -42,8 +44,8 @@ public class ItemCultistArmor extends ArmorItem implements IVisDiscountGear, IWa
 
     @Override
     public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-        // TODO этап 16: на EntityInhabitedZombie у лат — textures/entity/armor/zombie_plate_armor.png
-        return this.kind.texture;
+        return this.kind == Kind.PLATE && entity instanceof thaumcraft.common.entities.monster.EntityInhabitedZombie
+                ? ZOMBIE_PLATE_TEXTURE : this.kind.texture;
     }
 
     @Override
