@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.essentia;
 
 import com.mojang.serialization.MapCodec;
+import java.util.ArrayList;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -145,9 +146,28 @@ public class BlockTube extends BaseEntityBlock {
         super.setPlacedBy(world, pos, state, placer, stack);
     }
 
-    /** getBoundingBox оригинала: сердцевина 5/16..11/16, к каждому подключаемому соседу — до края блока. */
+    /** collisionRayTrace оригинала: точные кубоиды, включая закрытые, но доступные перчатке патрубки. */
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext context) {
+        if (source.getBlockEntity(pos) instanceof TileTube tube) {
+            var cuboids = new ArrayList<TileTube.IndexedAABB>();
+            tube.addTraceableCuboids(cuboids);
+            VoxelShape selection = Shapes.empty();
+            for (var cuboid : cuboids) {
+                selection = Shapes.or(selection, Shapes.create(cuboid.box().move(-pos.getX(), -pos.getY(), -pos.getZ())));
+            }
+            return selection;
+        }
+        return this.collisionShape(source, pos);
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext context) {
+        return this.collisionShape(source, pos);
+    }
+
+    /** getBoundingBox оригинала: сердцевина 5/16..11/16 и подключаемые соседи. */
+    private VoxelShape collisionShape(BlockGetter source, BlockPos pos) {
         double minx = 0.3125;
         double maxx = 0.6875;
         double miny = 0.3125;

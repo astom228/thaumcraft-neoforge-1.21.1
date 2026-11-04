@@ -255,6 +255,34 @@ final class KtEngineChecks {
             urn.tank.setFluid(FluidStack.EMPTY);
             world.setBlockAndUpdate(urnPos, Blocks.AIR.defaultBlockState());
         }
+        var tubePos = origin.offset(8, 1, 0);
+        world.setBlockAndUpdate(tubePos, BlocksTC.tube.get().defaultBlockState());
+        world.setBlockAndUpdate(tubePos.west(), BlocksTC.tube.get().defaultBlockState());
+        try {
+            check("caster closes and reopens the same pipe through real outline ray", () -> {
+                player.moveTo(tubePos.getX() + 0.2, tubePos.getY() - 1, tubePos.getZ() - 2.5, 0, 2);
+                var caster = new ItemStack(ItemsTC.casterBasic.get());
+                player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, caster);
+                var tube = (thaumcraft.common.tiles.essentia.TileTube) world.getBlockEntity(tubePos);
+                var neighbor = (thaumcraft.common.tiles.essentia.TileTube) world.getBlockEntity(tubePos.west());
+                for (boolean open : new boolean[]{false, true}) {
+                    var start = player.getEyePosition();
+                    var end = start.add(player.getViewVector(1).scale(player.blockInteractionRange()));
+                    var hit = world.clip(new net.minecraft.world.level.ClipContext(start, end,
+                            net.minecraft.world.level.ClipContext.Block.OUTLINE,
+                            net.minecraft.world.level.ClipContext.Fluid.NONE, player));
+                    require(hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK && hit.getBlockPos().equals(tubePos), "closed pipe cannot be targeted");
+                    require(tube.onCasterRightClick(world, caster, player, tubePos, hit.getDirection(),
+                            net.minecraft.world.InteractionHand.MAIN_HAND), "caster interaction refused");
+                    require(tube.isConnectable(net.minecraft.core.Direction.WEST) == open, "wrong local side");
+                    require(neighbor.isConnectable(net.minecraft.core.Direction.EAST) == open, "wrong neighbor side");
+                }
+            });
+        } finally {
+            player.getInventory().clearContent();
+            world.setBlockAndUpdate(tubePos, Blocks.AIR.defaultBlockState());
+            world.setBlockAndUpdate(tubePos.west(), Blocks.AIR.defaultBlockState());
+        }
         var report = new LinkedHashMap<String, Object>();
         report.put("kind", "server-engine integration; FakePlayer; no client UI input");
         report.put("tick", server.getTickCount()); report.put("checks", checks);
