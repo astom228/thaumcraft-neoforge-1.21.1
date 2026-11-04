@@ -67,7 +67,21 @@ public class BlockWaterJug extends BaseEntityBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
                                               BlockHitResult hit) {
         if (!world.isClientSide && world.getBlockEntity(pos) instanceof TileWaterJug tile) {
-            if (FluidUtil.interactWithFluidHandler(player, hand, tile.tank)) {
+            boolean transferred;
+            if (stack.is(net.minecraft.world.item.Items.GLASS_BOTTLE)) {
+                var water = new net.neoforged.neoforge.fluids.FluidStack(net.minecraft.world.level.material.Fluids.WATER, 250);
+                transferred = tile.tank.drain(water, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.SIMULATE).getAmount() == 250;
+                if (transferred) {
+                    tile.tank.drain(water, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+                    var bottle = new ItemStack(net.minecraft.world.item.Items.POTION);
+                    bottle.set(net.minecraft.core.component.DataComponents.POTION_CONTENTS,
+                            new net.minecraft.world.item.alchemy.PotionContents(net.minecraft.world.item.alchemy.Potions.WATER));
+                    player.setItemInHand(hand, net.minecraft.world.item.ItemUtils.createFilledResult(stack, player, bottle));
+                }
+            } else {
+                transferred = FluidUtil.interactWithFluidHandler(player, hand, tile.tank);
+            }
+            if (transferred) {
                 player.inventoryMenu.broadcastChanges();
                 tile.setChanged();
                 tile.syncTile(false);

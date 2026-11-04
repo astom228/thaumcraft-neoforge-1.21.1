@@ -229,6 +229,32 @@ final class KtEngineChecks {
                 require(!voidJar.takeFromContainer(Aspect.AIR, -10) && voidJar.amount == 250, "negative extraction increased void jar");
             });
         } finally { voidJar.amount = 0; world.setBlockAndUpdate(jarPos, Blocks.AIR.defaultBlockState()); }
+        var urnPos = origin.offset(6, 0, 0);
+        world.setBlockAndUpdate(urnPos, BlocksTC.everfullUrn.get().defaultBlockState());
+        var urn = (thaumcraft.common.tiles.devices.TileWaterJug) world.getBlockEntity(urnPos);
+        try {
+            for (int water : new int[]{249, 250, 1000}) {
+                check("urn bottle water conservation at " + water, () -> {
+                    player.getInventory().clearContent();
+                    player.getInventory().selected = 0;
+                    player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.GLASS_BOTTLE));
+                    urn.tank.setFluid(new FluidStack(Fluids.WATER, water));
+                    world.getBlockState(urnPos).useItemOn(player.getMainHandItem(), world, player,
+                            net.minecraft.world.InteractionHand.MAIN_HAND,
+                            new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(urnPos),
+                                    net.minecraft.core.Direction.SOUTH, urnPos, false));
+                    require(urn.tank.getFluidAmount() == (water < 250 ? water : water - 250), "wrong bottle water cost");
+                    var held = player.getMainHandItem();
+                    if (water < 250) require(held.is(Items.GLASS_BOTTLE) && held.getCount() == 1, "insufficient water consumed bottle");
+                    else require(held.is(Items.POTION) && held.get(net.minecraft.core.component.DataComponents.POTION_CONTENTS)
+                            .is(net.minecraft.world.item.alchemy.Potions.WATER), "not a water bottle");
+                });
+            }
+        } finally {
+            player.getInventory().clearContent();
+            urn.tank.setFluid(FluidStack.EMPTY);
+            world.setBlockAndUpdate(urnPos, Blocks.AIR.defaultBlockState());
+        }
         var report = new LinkedHashMap<String, Object>();
         report.put("kind", "server-engine integration; FakePlayer; no client UI input");
         report.put("tick", server.getTickCount()); report.put("checks", checks);
