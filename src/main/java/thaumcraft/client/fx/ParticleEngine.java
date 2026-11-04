@@ -200,7 +200,8 @@ public class ParticleEngine {
 
         Matrix4fStack modelView = RenderSystem.getModelViewStack();
         modelView.pushMatrix();
-        modelView.mul(event.getModelViewMatrix());
+        // LevelRenderer уже применил матрицу камеры до AFTER_PARTICLES.
+        // Вершины частиц относительно камеры: повторное умножение вращало всю сцену второй раз.
         RenderSystem.applyModelViewMatrix();
         mc.gameRenderer.lightTexture().turnOnLightLayer();
         RenderSystem.enableBlend();

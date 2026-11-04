@@ -13,5 +13,6 @@ $classPath = $match.Groups[1].Value.Replace('\', '\\')
 $javaw = Join-Path (Split-Path $first[0].ExecutablePath -Parent) 'javaw.exe'
 $modsArg = "-Dfml.modFolders=thaumcraft%%$root\build\classes\java\main;thaumcraft%%$root\build\resources\main"
 $arguments = @($modsArg, "@$root\build\moddev\client2RunVmArgs.txt", "@$argsPath", "@$root\build\moddev\client2RunProgramArgs.txt")
-$process = Start-Process -FilePath $javaw -ArgumentList $arguments -WorkingDirectory "$root/build/kt-client2" -WindowStyle Hidden -PassThru -RedirectStandardOutput "$root/build/kt-client2-javaw.log" -RedirectStandardError "$root/build/kt-client2-javaw-error.log"
+# Пользователь запросил интерактивный Minecraft: его окно должно быть видимым для игровых проверок.
+$process = Start-Process -FilePath $javaw -ArgumentList $arguments -WorkingDirectory "$root/build/kt-client2" -WindowStyle Normal -PassThru -RedirectStandardOutput "$root/build/kt-client2-javaw.log" -RedirectStandardError "$root/build/kt-client2-javaw-error.log"
 Write-Output "KT client2 PID: $($process.Id)"

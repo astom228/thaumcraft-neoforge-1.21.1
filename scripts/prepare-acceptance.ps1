@@ -16,7 +16,7 @@ foreach ($name in 'kt-server','kt-client1','kt-client2') {
         Copy-Item -LiteralPath "$root/build/compat-cache/$($artifact.filename)" -Destination "$dir/mods/$($artifact.filename)"
     }
     if ($name -ne 'kt-server' -and !(Test-Path "$dir/options.txt")) {
-        @('lang:ru_ru','renderDistance:8','simulationDistance:5','maxFps:90','enableVsync:false','fullscreen:false','guiScale:2','particles:0','gamma:1.0','pauseOnLostFocus:false') | Set-Content "$dir/options.txt"
+        @('lang:ru_ru','renderDistance:8','simulationDistance:5','maxFps:90','enableVsync:false','fullscreen:false','guiScale:2','particles:0','gamma:1.0','pauseOnLostFocus:false','key_key.use:key.keyboard.v','key_key.attack:key.keyboard.j') | Set-Content "$dir/options.txt"
     }
 }
 Set-Content "$root/build/kt-server/eula.txt" 'eula=true'

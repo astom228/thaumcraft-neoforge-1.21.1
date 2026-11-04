@@ -228,7 +228,7 @@ public class RenderEventHandler {
         net.minecraft.world.phys.Vec3 cam = event.getCamera().getPosition();
         org.joml.Matrix4fStack modelView = com.mojang.blaze3d.systems.RenderSystem.getModelViewStack();
         modelView.pushMatrix();
-        modelView.mul(event.getModelViewMatrix());
+        // AFTER_PARTICLES вызывается с уже применённой LevelRenderer матрицей камеры.
         com.mojang.blaze3d.systems.RenderSystem.applyModelViewMatrix();
         boolean sneak = player.isShiftKeyDown();
         if (sneak) {
