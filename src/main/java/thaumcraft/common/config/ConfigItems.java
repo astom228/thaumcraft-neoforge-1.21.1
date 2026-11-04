@@ -17,10 +17,11 @@ public class ConfigItems {
 
     /**
      * Книга «Странные сны» (startBook оригинала, «потрёпанная» копия). В 1.12 страницы переводились на сервере;
-     * в порте страницы — переводимые компоненты (видны на языке клиента), название — на языке сервера, как в оригинале.
+     * в порте страницы и отображаемое имя переводятся клиентом; строка заголовка внутри книги остаётся на языке сервера.
      */
     public static ItemStack startBook(String author) {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        book.set(DataComponents.ITEM_NAME, Component.translatable("book.start.title"));
         List<Filterable<Component>> pages = List.of(
                 Filterable.passThrough(Component.translatable("book.start.1")),
                 Filterable.passThrough(Component.translatable("book.start.2")),
