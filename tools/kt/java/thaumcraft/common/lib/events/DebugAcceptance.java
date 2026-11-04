@@ -54,6 +54,7 @@ public final class DebugAcceptance {
             }
             if (command.equals("kt:aura-clear")) { lockedAura.clear(); continue; }
             if (command.equals("kt:engine basic")) { KtEngineChecks.run(server); continue; }
+            if (command.equals("kt:engine structures")) { KtEngineChecks.runStructures(server); continue; }
             if (command.startsWith("kt:watch ")) {
                 String[] parts = command.split(" +");
                 watched.add(new net.minecraft.core.BlockPos(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3])));

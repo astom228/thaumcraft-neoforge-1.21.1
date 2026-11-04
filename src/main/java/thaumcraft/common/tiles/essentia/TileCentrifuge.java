@@ -70,7 +70,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
 
     @Override
     public int addToContainer(Aspect tt, int am) {
-        if (am > 0 && this.aspectOut == null) {
+        if (tt != null && am > 0 && this.aspectOut == null) {
             this.aspectOut = tt;
             this.notifyChange();
             am--;
@@ -80,7 +80,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
 
     @Override
     public boolean takeFromContainer(Aspect tt, int am) {
-        if (this.aspectOut != null && tt == this.aspectOut) {
+        if (am == 1 && this.aspectOut != null && tt == this.aspectOut) {
             this.aspectOut = null;
             this.notifyChange();
             return true;
@@ -169,7 +169,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
 
     @Override
     public int addEssentia(Aspect aspect, int amount, Direction face) {
-        if (this.aspectIn == null && !aspect.isPrimal()) {
+        if (aspect != null && amount > 0 && this.canInputFrom(face) && this.aspectIn == null && !aspect.isPrimal()) {
             this.aspectIn = aspect;
             this.process = 39;
             this.notifyChange();

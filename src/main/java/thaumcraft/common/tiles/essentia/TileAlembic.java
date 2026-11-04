@@ -61,6 +61,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IEs
 
     @Override
     public int addToContainer(Aspect tt, int am) {
+        if (tt == null || am <= 0) return am;
         if (this.aspectFilter != null && tt != this.aspectFilter) {
             return am;
         }
@@ -77,6 +78,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IEs
 
     @Override
     public boolean takeFromContainer(Aspect tt, int am) {
+        if (tt == null || am <= 0) return false;
         if (this.amount == 0 || this.aspect == null) {
             this.aspect = null;
             this.amount = 0;

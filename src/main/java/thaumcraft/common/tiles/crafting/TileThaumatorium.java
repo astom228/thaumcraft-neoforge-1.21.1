@@ -236,7 +236,7 @@ public class TileThaumatorium extends TileThaumcraftInventory implements IAspect
     /** В оригинале currentRecipe разыменовывался до проверки на null (эссенция из трубы без рецепта — сбой) — DEVIATIONS 33. */
     @Override
     public int addToContainer(Aspect tt, int am) {
-        if (this.currentRecipe == null) {
+        if (tt == null || am <= 0 || this.currentRecipe == null) {
             return am;
         }
         int ce = this.currentRecipe.getAspects().getAmount(tt) - this.essentia.getAmount(tt);
@@ -252,7 +252,7 @@ public class TileThaumatorium extends TileThaumcraftInventory implements IAspect
 
     @Override
     public boolean takeFromContainer(Aspect tt, int am) {
-        if (this.essentia.getAmount(tt) >= am) {
+        if (tt != null && am > 0 && this.essentia.getAmount(tt) >= am) {
             this.essentia.remove(tt, am);
             this.syncTile(false);
             this.setChanged();

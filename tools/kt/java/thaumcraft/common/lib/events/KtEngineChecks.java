@@ -44,6 +44,57 @@ final class KtEngineChecks {
         return stack;
     }
 
+    static void runStructures(MinecraftServer server) {
+        checks.clear();
+        var world = server.overworld();
+        var base = new BlockPos(-4, 121, -10);
+        var lower = base.above();
+        var upper = base.above(2);
+        var player = FakePlayerFactory.get(world, new GameProfile(UUID.fromString("924ac16d-7361-46cf-bbad-928bce2f9c98"), "KtEngine"));
+        var knowledge = thaumcraft.api.capabilities.ThaumcraftCapabilities.getKnowledge(player);
+        knowledge.clear(); player.getInventory().clearContent();
+        world.setBlockAndUpdate(base, BlocksTC.crucible.get().defaultBlockState());
+        world.setBlockAndUpdate(lower, BlocksTC.metalAlchemical.get().defaultBlockState());
+        world.setBlockAndUpdate(upper, BlocksTC.metalAlchemical.get().defaultBlockState());
+        var dust = new ItemStack(ItemsTC.salisMundus.get());
+        player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, dust);
+        var context = new net.minecraft.world.item.context.UseOnContext(player, net.minecraft.world.InteractionHand.MAIN_HAND,
+                new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(lower), net.minecraft.core.Direction.SOUTH, lower, false));
+        check("thaumatorium dust rejected without research", () -> {
+            dust.getItem().onItemUseFirst(dust, context);
+            require(dust.getCount() == 1, "dust consumed without research");
+            require(world.getBlockState(lower).is(BlocksTC.metalAlchemical.get()), "structure changed without research");
+        });
+        knowledge.addResearch("THAUMATORIUM");
+        dust.getItem().onItemUseFirst(dust, context);
+        check("thaumatorium consumes one dust and protects both pending blocks", () -> {
+            require(dust.isEmpty(), "dust not consumed");
+            for (var pos : new BlockPos[]{lower, upper}) {
+                var event = new net.neoforged.neoforge.event.level.BlockEvent.BreakEvent(world, pos, world.getBlockState(pos), player);
+                net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
+                require(event.isCanceled(), "pending structure can be broken: " + pos);
+            }
+        });
+        ServerEvents.addRunnableServer(world, () -> {
+            check("thaumatorium delayed conversion and lock release", () -> {
+                require(world.getBlockState(lower).is(BlocksTC.thaumatorium.get()), "lower block did not convert");
+                require(world.getBlockState(upper).is(BlocksTC.thaumatoriumTop.get()), "upper block did not convert");
+                require(world.getBlockState(lower).getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING)
+                        == net.minecraft.core.Direction.SOUTH, "wrong front face");
+                var event = new net.neoforged.neoforge.event.level.BlockEvent.BreakEvent(world, lower, world.getBlockState(lower), player);
+                net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
+                require(!event.isCanceled(), "conversion left a permanent block lock");
+            });
+            world.setBlockAndUpdate(upper, Blocks.AIR.defaultBlockState());
+            world.setBlockAndUpdate(lower, Blocks.AIR.defaultBlockState());
+            world.setBlockAndUpdate(base, Blocks.AIR.defaultBlockState());
+            player.getInventory().clearContent(); knowledge.clear();
+            try {
+                Files.writeString(Path.of("engine-structures.json"), new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(checks));
+            } catch (java.io.IOException error) { throw new RuntimeException(error); }
+        }, 65);
+    }
+
     static void run(MinecraftServer server) throws java.io.IOException {
         checks.clear();
         var world = server.overworld();
@@ -271,7 +322,9 @@ final class KtEngineChecks {
                     var hit = world.clip(new net.minecraft.world.level.ClipContext(start, end,
                             net.minecraft.world.level.ClipContext.Block.OUTLINE,
                             net.minecraft.world.level.ClipContext.Fluid.NONE, player));
-                    require(hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK && hit.getBlockPos().equals(tubePos), "closed pipe cannot be targeted");
+                    require(hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK && hit.getBlockPos().equals(tubePos),
+                            "closed pipe cannot be targeted: " + hit.getType() + " " + hit.getBlockPos() + " expected " + tubePos
+                                    + " eye=" + start + " end=" + end + " pose=" + player.getPose());
                     require(tube.onCasterRightClick(world, caster, player, tubePos, hit.getDirection(),
                             net.minecraft.world.InteractionHand.MAIN_HAND), "caster interaction refused");
                     require(tube.isConnectable(net.minecraft.core.Direction.WEST) == open, "wrong local side");
@@ -321,6 +374,28 @@ final class KtEngineChecks {
         } finally {
             for (var at : new BlockPos[]{mirrorA, mirrorB, mirrorJar}) world.setBlockAndUpdate(at, Blocks.AIR.defaultBlockState());
             for (var at : new BlockPos[]{mirrorA, mirrorB}) world.setBlockAndUpdate(at.north(), Blocks.AIR.defaultBlockState());
+        }
+        var storagePos = origin.offset(10, 0, 0);
+        for (var storageBlock : new net.minecraft.world.level.block.Block[]{BlocksTC.alembic.get(), BlocksTC.tubeBuffer.get(),
+                BlocksTC.thaumatorium.get(), BlocksTC.centrifuge.get()}) {
+            world.setBlockAndUpdate(storagePos, storageBlock.defaultBlockState());
+            var storage = (thaumcraft.api.aspects.IAspectContainer) world.getBlockEntity(storagePos);
+            try {
+                check("storage refuses negative extraction: " + storageBlock, () -> {
+                    if (storage instanceof thaumcraft.common.tiles.crafting.TileThaumatorium th) th.essentia.add(Aspect.AIR, 1);
+                    else require(storage.addToContainer(Aspect.AIR, 1) == 0, "fixture insertion failed");
+                    require(!storage.takeFromContainer(Aspect.AIR, -1), "negative extraction accepted");
+                    require(storage.getAspects().getAmount(Aspect.AIR) == 1, "negative extraction changed stored quantity");
+                    require(!storage.takeFromContainer(Aspect.AIR, 0), "zero extraction accepted");
+                    require(storage.getAspects().getAmount(Aspect.AIR) == 1, "zero extraction changed stored quantity");
+                    require(!storage.takeFromContainer(Aspect.AIR, 2), "extraction exceeded contents");
+                    require(storage.takeFromContainer(Aspect.AIR, 1), "ordinary extraction failed");
+                    require(storage.getAspects().getAmount(Aspect.AIR) == 0, "ordinary extraction not conserved");
+                    require(storage.addToContainer(Aspect.AIR, -1) == -1, "negative insertion consumed");
+                    require(storage.addToContainer(null, 1) == 1, "null insertion consumed");
+                    require(storage.getAspects().getAmount(Aspect.AIR) == 0, "invalid insertion created essentia");
+                });
+            } finally { world.setBlockAndUpdate(storagePos, Blocks.AIR.defaultBlockState()); }
         }
         var report = new LinkedHashMap<String, Object>();
         report.put("kind", "server-engine integration; FakePlayer; no client UI input");

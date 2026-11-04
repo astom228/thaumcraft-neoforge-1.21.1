@@ -77,7 +77,7 @@ public class TileTubeBuffer extends TileTube implements IAspectContainer {
 
     @Override
     public int addToContainer(Aspect tt, int am) {
-        if (am != 1) {
+        if (tt == null || am != 1) {
             return am;
         }
         if (this.aspects.visSize() < 10) {
@@ -91,7 +91,7 @@ public class TileTubeBuffer extends TileTube implements IAspectContainer {
 
     @Override
     public boolean takeFromContainer(Aspect tt, int am) {
-        if (this.aspects.getAmount(tt) >= am) {
+        if (tt != null && am > 0 && this.aspects.getAmount(tt) >= am) {
             this.aspects.remove(tt, am);
             this.setChanged();
             this.syncTile(false);
