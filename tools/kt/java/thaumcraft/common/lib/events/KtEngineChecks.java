@@ -55,6 +55,8 @@ final class KtEngineChecks {
         var tile = (TileArcaneWorkbench) world.getBlockEntity(origin);
         var inventory = (net.neoforged.neoforge.items.IItemHandlerModifiable) tile.getItemHandler();
         var menu = new ContainerArcaneWorkbench(99, player.getInventory(), tile);
+        var aura = thaumcraft.common.world.aura.AuraHandler.getAuraChunk(world, origin.getX() >> 4, origin.getZ() >> 4);
+        float previousVis = aura.getVis();
         try {
             Aspect[] primals = {Aspect.AIR, Aspect.FIRE, Aspect.WATER, Aspect.EARTH, Aspect.ORDER, Aspect.ENTROPY};
             for (int i = 0; i < primals.length; i++) {
@@ -99,11 +101,68 @@ final class KtEngineChecks {
                 require(tile.getItemHandler().getStackInSlot(1).is(Items.FLINT), "flint consumed");
                 for (int j = 2; j < 9; j++) require(tile.getItemHandler().getStackInSlot(j).isEmpty(), "ingredient retained " + j);
             });
+            Runnable prepareArcane = () -> {
+                player.getInventory().clearContent();
+                var knowledge = thaumcraft.api.capabilities.ThaumcraftCapabilities.getKnowledge(player);
+                knowledge.clear(); knowledge.addResearch("FIRSTSTEPS"); knowledge.setResearchStage("FIRSTSTEPS", 4);
+                for (int j = 0; j < 15; j++) inventory.setStackInSlot(j, ItemStack.EMPTY);
+                aura.setVis(200);
+                for (int slot : new int[]{1, 3, 5, 7}) inventory.setStackInSlot(slot, new ItemStack(Items.GOLD_INGOT));
+                inventory.setStackInSlot(4, new ItemStack(Items.GLASS_PANE));
+                Aspect[] order = {Aspect.AIR, Aspect.FIRE, Aspect.WATER, Aspect.EARTH, Aspect.ORDER, Aspect.ENTROPY};
+                for (int j = 0; j < order.length; j++) inventory.setStackInSlot(9 + j, crystal(order[j], 4));
+                menu.onCraftMatrixChanged();
+                require(menu.getSlot(0).getItem().is(ItemsTC.thaumometer.get()), "arcane fixture has no result");
+            };
+            check("arcane quick-move pays 20 vis and all six crystals", () -> {
+                prepareArcane.run();
+                menu.quickMoveStack(player, 0);
+                require(player.getInventory().countItem(ItemsTC.thaumometer.get()) == 1, "wrong arcane result count");
+                require(Math.abs(aura.getVis() - 180) < 0.001F, "wrong vis payment: " + aura.getVis());
+                for (int j = 0; j < 9; j++) require(inventory.getStackInSlot(j).isEmpty(), "grid ingredient retained");
+                for (int j = 9; j < 15; j++) require(inventory.getStackInSlot(j).getCount() == 3, "wrong crystal payment");
+            });
+            check("full QUICK_MOVE crafts until vis is exhausted without free output", () -> {
+                prepareArcane.run();
+                for (int j : new int[]{1, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14}) {
+                    inventory.setStackInSlot(j, inventory.getStackInSlot(j).copyWithCount(16));
+                }
+                menu.clicked(0, 0, net.minecraft.world.inventory.ClickType.QUICK_MOVE, player);
+                require(player.getInventory().countItem(ItemsTC.thaumometer.get()) == 10, "bulk craft must stop at ten results");
+                require(Math.abs(aura.getVis()) < 0.001F, "bulk craft has wrong vis balance");
+                for (int j : new int[]{1, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14}) {
+                    require(inventory.getStackInSlot(j).getCount() == 6, "bulk craft consumed wrong quantity in slot " + j);
+                }
+                require(menu.getSlot(0).getItem().isEmpty(), "bulk craft leaves an available result without vis");
+                menu.clicked(0, 0, net.minecraft.world.inventory.ClickType.QUICK_MOVE, player);
+                require(player.getInventory().countItem(ItemsTC.thaumometer.get()) == 10, "repeat bulk click created free output");
+            });
+            for (boolean quickMove : new boolean[]{false, true}) {
+                for (boolean revokeKnowledge : new boolean[]{false, true}) {
+                    check("stale arcane output rejected: " + (revokeKnowledge ? "research revoked" : "aura exhausted")
+                            + (quickMove ? "; quick-move" : "; pickup"), () -> {
+                        prepareArcane.run();
+                        if (revokeKnowledge) thaumcraft.api.capabilities.ThaumcraftCapabilities.getKnowledge(player).clear();
+                        else aura.setVis(0);
+                        require(menu.getSlot(0).hasItem(), "fixture must retain a stale output before validation");
+                        if (quickMove) require(menu.quickMoveStack(player, 0).isEmpty(), "stale quick-move succeeded");
+                        else require(!menu.getSlot(0).mayPickup(player), "stale pickup accepted");
+                        require(menu.getSlot(0).getItem().isEmpty(), "stale result not cleared");
+                        require(player.getInventory().isEmpty(), "stale result appeared in inventory");
+                        for (int j : new int[]{1, 3, 5, 7}) require(inventory.getStackInSlot(j).getCount() == 1, "gold changed on refusal");
+                        require(inventory.getStackInSlot(4).is(Items.GLASS_PANE), "glass changed on refusal");
+                        for (int j = 9; j < 15; j++) require(inventory.getStackInSlot(j).getCount() == 4, "crystals changed on refusal");
+                        require(aura.getVis() == (revokeKnowledge ? 200 : 0), "vis changed on refusal");
+                    });
+                }
+            }
         } finally {
             menu.removed(player);
             player.getInventory().clearContent();
             for (int j = 0; j < 15; j++) inventory.setStackInSlot(j, ItemStack.EMPTY);
             world.setBlockAndUpdate(origin, Blocks.AIR.defaultBlockState());
+            aura.setVis(previousVis);
+            thaumcraft.api.capabilities.ThaumcraftCapabilities.getKnowledge(player).clear();
         }
         var cruciblePos = origin.offset(2, 0, 0);
         world.setBlockAndUpdate(cruciblePos, BlocksTC.crucible.get().defaultBlockState());

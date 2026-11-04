@@ -99,8 +99,8 @@ public class ContainerArcaneWorkbench extends AbstractContainerMenu {
         if (t > this.lastCheck) {
             this.lastCheck = t + 500L;
             this.tileEntity.getAura();
-        }
-        if (this.lastVis != this.tileEntity.auraVisServer) {
+            this.onCraftMatrixChanged();
+        } else if (this.lastVis != this.tileEntity.auraVisServer) {
             this.onCraftMatrixChanged();
         }
         this.lastVis = this.tileEntity.auraVisServer;
@@ -154,6 +154,7 @@ public class ContainerArcaneWorkbench extends AbstractContainerMenu {
                 }
             }
         }
+        if (ItemStack.matches(this.craftResult.getItem(0), itemstack)) return;
         this.craftResult.setItem(0, itemstack);
         if (this.ip.player instanceof ServerPlayer sp) {
             this.setRemoteSlot(0, itemstack);
@@ -178,6 +179,7 @@ public class ContainerArcaneWorkbench extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player player, int par1) {
         ItemStack var2x = ItemStack.EMPTY;
         Slot var3 = this.slots.get(par1);
+        if (par1 == 0 && !var3.mayPickup(player)) return ItemStack.EMPTY;
         if (var3 != null && var3.hasItem()) {
             ItemStack var4 = var3.getItem();
             var2x = var4.copy();

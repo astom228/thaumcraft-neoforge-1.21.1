@@ -41,6 +41,40 @@ public class SlotCraftingArcaneWorkbench extends Slot {
         return false;
     }
 
+    /** Результат мог устареть между пересчётом меню и кликом (знания, экипировка, Вис ауры). */
+    @Override
+    public boolean mayPickup(Player player) {
+        if (player.level().isClientSide) return true;
+        if (!this.hasItem()) return false;
+        ArcaneCraftingInput input = this.tile.getCraftingInput();
+        IArcaneRecipe recipe = ThaumcraftCraftingManager.findMatchingArcaneRecipe(input, player);
+        ItemStack expected = ItemStack.EMPTY;
+        if (recipe != null) {
+            this.tile.getAura();
+            int cost = (int) (recipe.getVis() * (1.0F - CasterManager.getTotalVisDiscount(player)));
+            boolean ready = this.tile.auraVisServer >= cost;
+            AspectList crystals = recipe.getCrystals();
+            if (crystals != null) {
+                for (Aspect aspect : crystals.getAspects()) {
+                    int have = 0;
+                    for (int i = 0; i < ArcaneCraftingInput.CRYSTAL_SLOTS; i++) {
+                        ItemStack stack = input.getCrystal(i);
+                        if (SlotCrystal.isValidCrystal(stack, aspect)) have += stack.getCount();
+                    }
+                    if (have < crystals.getAmount(aspect)) ready = false;
+                }
+            }
+            if (ready) expected = recipe.assemble(input, player.level().registryAccess());
+        } else {
+            var vanilla = player.level().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input.grid(), player.level());
+            if (vanilla.isPresent()) expected = vanilla.get().value().assemble(input.grid(), player.level().registryAccess());
+        }
+        if (!expected.isEmpty() && ItemStack.matches(expected, this.getItem())) return true;
+        this.container.setItem(this.getSlotIndex(), ItemStack.EMPTY);
+        this.setChanged();
+        return false;
+    }
+
     @Override
     public ItemStack remove(int amount) {
         if (this.hasItem()) {
