@@ -20,6 +20,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -70,6 +71,31 @@ public class GuiResearchTable extends AbstractContainerScreen<ContainerResearchT
     GuiImageButton buttonComplete;
     GuiImageButton buttonScrap;
     public ArrayList<ResearchTableData.CardChoice> cardChoices = new ArrayList<>();
+    private final Map<String, CardBodyLayout> cardBodyLayouts = new HashMap<>();
+
+    private record CardBodyLayout(float scale, int width, List<FormattedCharSequence> lines) {}
+
+    /** Длинные переводы помещаются над предметами; перенос не пересчитывается на каждом кадре. */
+    private CardBodyLayout cardBodyLayout(ResearchTableData.CardChoice choice) {
+        String text = choice.card.getLocalizedText();
+        ItemStack[] items = choice.card.getRequiredItems();
+        int height = items != null && items.length > 0 ? 110 : 160;
+        String key = height + ":" + text;
+        CardBodyLayout cached = this.cardBodyLayouts.get(key);
+        if (cached != null) return cached;
+        float scale = 1.0F;
+        int width = 140;
+        List<FormattedCharSequence> lines = this.font.split(FormattedText.of(text), width);
+        for (int attempt = 0; attempt < 24 && lines.size() * this.font.lineHeight * scale > height; attempt++) {
+            scale *= 0.95F;
+            width = Mth.floor(140.0F / scale);
+            lines = this.font.split(FormattedText.of(text), width);
+        }
+        CardBodyLayout layout = new CardBodyLayout(scale, width, lines);
+        if (this.cardBodyLayouts.size() >= 64) this.cardBodyLayouts.clear();
+        this.cardBodyLayouts.put(key, layout);
+        return layout;
+    }
 
     private static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath(Thaumcraft.MODID, path);
@@ -463,7 +489,14 @@ public class GuiResearchTable extends AbstractContainerScreen<ContainerResearchT
             String name = ChatFormatting.BOLD + cardChoice.card.getLocalizedName() + ChatFormatting.RESET;
             int sz = this.font.width(name);
             g.drawString(this.font, name, -sz / 2, -65, 0, false);
-            g.drawWordWrap(this.font, FormattedText.of(cardChoice.card.getLocalizedText()), -70, -48, 140, 0);
+            CardBodyLayout body = this.cardBodyLayout(cardChoice);
+            g.pose().pushPose();
+            g.pose().translate(0.0F, -48.0F, 0.0F);
+            g.pose().scale(body.scale(), body.scale(), 1.0F);
+            for (int line = 0; line < body.lines().size(); line++) {
+                g.drawString(this.font, body.lines().get(line), -body.width() / 2, line * this.font.lineHeight, 0, false);
+            }
+            g.pose().popPose();
             g.pose().popPose();
             g.pose().pushPose();
             g.pose().scale(0.0625F, 0.0625F, 1.0F);
