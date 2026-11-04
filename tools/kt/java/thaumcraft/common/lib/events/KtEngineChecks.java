@@ -283,6 +283,45 @@ final class KtEngineChecks {
             world.setBlockAndUpdate(tubePos, Blocks.AIR.defaultBlockState());
             world.setBlockAndUpdate(tubePos.west(), Blocks.AIR.defaultBlockState());
         }
+        var mirrorA = origin.offset(0, 0, 10);
+        var mirrorB = origin.offset(2, 0, 10);
+        var mirrorJar = mirrorB.south(2);
+        for (var at : new BlockPos[]{mirrorA, mirrorB}) {
+            world.setBlockAndUpdate(at.north(), Blocks.STONE.defaultBlockState());
+            world.setBlockAndUpdate(at, BlocksTC.mirrorEssentia.get().defaultBlockState()
+                    .setValue(thaumcraft.common.blocks.devices.BlockMirror.FACING, net.minecraft.core.Direction.SOUTH));
+        }
+        world.setBlockAndUpdate(mirrorJar, BlocksTC.jarNormal.get().defaultBlockState());
+        try {
+            var a = (thaumcraft.common.tiles.devices.TileMirrorEssentia) world.getBlockEntity(mirrorA);
+            var b = (thaumcraft.common.tiles.devices.TileMirrorEssentia) world.getBlockEntity(mirrorB);
+            var source = (TileJarFillable) world.getBlockEntity(mirrorJar);
+            a.linked = b.linked = true; a.linkPos = mirrorB; b.linkPos = mirrorA;
+            a.linkDim = b.linkDim = world.dimension();
+            for (int quantity : new int[]{-1, 0, 2}) {
+                check("essentia mirror rejects invalid quantity " + quantity, () -> {
+                    source.amount = 10; source.aspect = source.aspectFilter = Aspect.SENSES;
+                    int instability = a.instability;
+                    require(!a.takeFromContainer(Aspect.SENSES, quantity), "invalid extraction succeeded");
+                    require(a.addToContainer(Aspect.SENSES, quantity) == quantity, "invalid insertion consumed");
+                    require(!a.doesContainerContainAmount(Aspect.SENSES, quantity), "invalid availability accepted");
+                    require(source.amount == 10 && a.instability == instability, "invalid call changed source or instability");
+                });
+            }
+            check("essentia mirror null aspect is harmless", () -> {
+                require(!a.takeFromContainer(null, 1), "null extraction accepted");
+                require(a.addToContainer(null, 1) == 1, "null insertion accepted");
+                require(!a.doesContainerAccept(null), "null filter accepted");
+            });
+            check("essentia mirror valid transfer conserves one unit", () -> {
+                source.amount = 10; source.aspect = source.aspectFilter = Aspect.SENSES;
+                require(a.takeFromContainer(Aspect.SENSES, 1) && source.amount == 9, "valid extraction failed");
+                require(a.addToContainer(Aspect.SENSES, 1) == 0 && source.amount == 10, "valid insertion failed");
+            });
+        } finally {
+            for (var at : new BlockPos[]{mirrorA, mirrorB, mirrorJar}) world.setBlockAndUpdate(at, Blocks.AIR.defaultBlockState());
+            for (var at : new BlockPos[]{mirrorA, mirrorB}) world.setBlockAndUpdate(at.north(), Blocks.AIR.defaultBlockState());
+        }
         var report = new LinkedHashMap<String, Object>();
         report.put("kind", "server-engine integration; FakePlayer; no client UI input");
         report.put("tick", server.getTickCount()); report.put("checks", checks);

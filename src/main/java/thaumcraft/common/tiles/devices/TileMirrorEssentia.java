@@ -70,13 +70,14 @@ public class TileMirrorEssentia extends TileMirrorLinked implements IAspectSourc
 
     @Override
     public boolean doesContainerAccept(Aspect tag) {
+        if (tag == null) return false;
         BlockEntity te = this.partner(false);
         return te == null || EssentiaHandler.canAcceptEssentia(te, tag, this.linkedFacing, 8, true);
     }
 
     @Override
     public int addToContainer(Aspect tag, int amount) {
-        if (this.isLinkValid(true) && amount <= 1) {
+        if (tag != null && amount == 1 && this.isLinkValid(true)) {
             BlockEntity te = this.partner(true);
             if (te != null) {
                 boolean b = EssentiaHandler.addEssentia(te, tag, this.linkedFacing, 8, true, 5);
@@ -91,7 +92,7 @@ public class TileMirrorEssentia extends TileMirrorLinked implements IAspectSourc
 
     @Override
     public boolean takeFromContainer(Aspect tag, int amount) {
-        if (this.isLinkValid(true) && amount <= 1) {
+        if (tag != null && amount == 1 && this.isLinkValid(true)) {
             BlockEntity te = this.partner(true);
             if (te != null) {
                 boolean b = EssentiaHandler.drainEssentia(te, tag, this.linkedFacing, 8, true, 5);
@@ -111,7 +112,7 @@ public class TileMirrorEssentia extends TileMirrorLinked implements IAspectSourc
 
     @Override
     public boolean doesContainerContainAmount(Aspect tag, int amount) {
-        if (this.isLinkValid(false) && amount <= 1) {
+        if (tag != null && amount == 1 && this.isLinkValid(false)) {
             BlockEntity te = this.partner(false);
             return te != null && EssentiaHandler.findEssentia(te, tag, this.linkedFacing, 8, true);
         }
