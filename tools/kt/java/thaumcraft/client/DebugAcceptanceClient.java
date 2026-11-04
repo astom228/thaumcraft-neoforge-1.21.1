@@ -39,6 +39,19 @@ public final class DebugAcceptanceClient {
         state.put("dimension", mc.level.dimension().location().toString());
         state.put("hit", mc.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit ? hit.getBlockPos() + ":" + hit.getDirection() : String.valueOf(mc.hitResult));
         state.put("fps", mc.getFps());
+        state.put("guiScaleOption", mc.options.guiScale().get());
+        state.put("guiScaleActual", mc.getWindow().getGuiScale());
+        if (mc.screen instanceof thaumcraft.client.gui.GuiResearchBrowser browser) {
+            var view = new LinkedHashMap<String, Object>();
+            view.put("width", browser.width); view.put("height", browser.height);
+            for (String name : java.util.List.of("screenZoom", "guiMapX", "guiMapY", "guiCenterX", "guiCenterY",
+                    "mapFitsX", "mapFitsY", "guiBoundsLeft", "guiBoundsRight", "guiBoundsTop", "guiBoundsBottom")) {
+                var field = browser.getClass().getDeclaredField(name);
+                field.setAccessible(true);
+                view.put(name, field.get(browser));
+            }
+            state.put("researchView", view);
+        }
         state.put("rotation", java.util.List.of(mc.player.getYRot(), mc.player.getXRot()));
         state.put("playedSounds", new java.util.ArrayList<>(sounds));
         if (mc.player.containerMenu instanceof thaumcraft.common.container.ContainerArcaneWorkbench bench) {

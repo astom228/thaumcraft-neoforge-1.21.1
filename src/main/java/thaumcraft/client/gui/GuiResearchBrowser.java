@@ -67,8 +67,8 @@ public class GuiResearchBrowser extends Screen {
     /** Раздел целиком помещается в поле по ширине / высоте (при текущем зуме). */
     private static boolean mapFitsX;
     private static boolean mapFitsY;
-    protected int mouseX = 0;
-    protected int mouseY = 0;
+    private double dragX;
+    private double dragY;
     protected float screenZoom = 1.0F;
     protected double curMouseX;
     protected double curMouseY;
@@ -76,9 +76,15 @@ public class GuiResearchBrowser extends Screen {
     protected double guiMapY;
     protected double tempMapX;
     protected double tempMapY;
-    private int isMouseButtonDown = 0;
+    private boolean draggingMap;
     public static double lastX = -9999.0;
     public static double lastY = -9999.0;
+    private static int lastViewWidth = -1;
+    private static int lastViewHeight = -1;
+    private static float lastViewZoom = 1.0F;
+    private int positionWidth = lastViewWidth;
+    private int positionHeight = lastViewHeight;
+    private float positionZoom = lastViewZoom;
     private int screenX;
     private int screenY;
     private final int startX = 16;
@@ -121,8 +127,13 @@ public class GuiResearchBrowser extends Screen {
      */
     @Override
     protected void init() {
+        boolean changedView = this.positionWidth != this.width || this.positionHeight != this.height
+                || this.positionZoom != this.screenZoom;
         this.updateResearch();
-        this.placeMap(lastX == -9999.0, lastY == -9999.0);
+        this.placeMap(changedView || lastX == -9999.0, changedView || lastY == -9999.0);
+        this.positionWidth = this.width;
+        this.positionHeight = this.height;
+        this.positionZoom = this.screenZoom;
     }
 
     public void updateResearch() {
@@ -286,6 +297,9 @@ public class GuiResearchBrowser extends Screen {
     public void removed() {
         lastX = this.guiMapX;
         lastY = this.guiMapY;
+        lastViewWidth = this.width;
+        lastViewHeight = this.height;
+        lastViewZoom = this.screenZoom;
         super.removed();
     }
 
@@ -370,38 +384,35 @@ public class GuiResearchBrowser extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float par3) {
-        if (!searching) {
-            if (!this.minecraft.mouseHandler.isLeftPressed()) {
-                this.isMouseButtonDown = 0;
-            } else {
-                if ((this.isMouseButtonDown == 0 || this.isMouseButtonDown == 1) && mx >= this.startX && mx < this.startX + this.screenX
-                        && my >= this.startY && my < this.startY + this.screenY) {
-                    if (this.isMouseButtonDown == 0) {
-                        this.isMouseButtonDown = 1;
-                    } else {
-                        this.guiMapX = this.guiMapX - (double) (mx - this.mouseX) * this.screenZoom;
-                        this.guiMapY = this.guiMapY - (double) (my - this.mouseY) * this.screenZoom;
-                        this.tempMapX = this.curMouseX = this.guiMapX;
-                        this.tempMapY = this.curMouseY = this.guiMapY;
-                    }
-                    this.mouseX = mx;
-                    this.mouseY = my;
-                }
-                if (this.tempMapX < (double) guiBoundsLeft) {
-                    this.tempMapX = (double) guiBoundsLeft;
-                }
-                if (this.tempMapY < (double) guiBoundsTop) {
-                    this.tempMapY = (double) guiBoundsTop;
-                }
-                if (this.tempMapX >= (double) guiBoundsRight) {
-                    this.tempMapX = guiBoundsRight - 1.0;
-                }
-                if (this.tempMapY >= (double) guiBoundsBottom) {
-                    this.tempMapY = guiBoundsBottom - 1.0;
-                }
-            }
+    public boolean mouseDragged(double mx, double my, int button, double dx, double dy) {
+        if (this.draggingMap && button == 0) {
+            this.moveMapDrag(mx, my);
+            return true;
         }
+        return super.mouseDragged(mx, my, button, dx, dy);
+    }
+
+    @Override
+    public boolean mouseReleased(double mx, double my, int button) {
+        if (this.draggingMap && button == 0) {
+            this.moveMapDrag(mx, my);
+            this.draggingMap = false;
+            return true;
+        }
+        return super.mouseReleased(mx, my, button);
+    }
+
+    private void moveMapDrag(double mx, double my) {
+        this.guiMapX = mapFitsX ? guiCenterX : Mth.clamp(this.guiMapX - (mx - this.dragX) * this.screenZoom, guiBoundsLeft, guiBoundsRight - 1);
+        this.guiMapY = mapFitsY ? guiCenterY : Mth.clamp(this.guiMapY - (my - this.dragY) * this.screenZoom, guiBoundsTop, guiBoundsBottom - 1);
+        this.dragX = mx;
+        this.dragY = my;
+        this.tempMapX = this.curMouseX = this.guiMapX;
+        this.tempMapY = this.curMouseY = this.guiMapY;
+    }
+
+    @Override
+    public void render(GuiGraphics g, int mx, int my, float par3) {
         this.renderTransparentBackground(g);
         this.t = System.nanoTime() / 50000000L;
         // доля тика, как partialTicks в 1.12 (экраны 1.21 получают в render прошедшие тики за кадр)
@@ -756,12 +767,14 @@ public class GuiResearchBrowser extends Screen {
             this.openPage(this.currentHighlight, null);
             this.popuptime = System.currentTimeMillis() + 3000L;
             this.popupmessage = I18n.get("tc.research.popup", I18n.get(this.currentHighlight.getName()));
+            return true;
         } else if (this.currentHighlight != null && ThaumcraftCapabilities.knowsResearch(this.player, this.currentHighlight.getKey())) {
             IPlayerKnowledge knowledge = ThaumcraftCapabilities.getKnowledge(this.player);
             knowledge.clearResearchFlag(this.currentHighlight.getKey(), IPlayerKnowledge.EnumResearchFlag.RESEARCH);
             knowledge.clearResearchFlag(this.currentHighlight.getKey(), IPlayerKnowledge.EnumResearchFlag.PAGE);
             PacketDistributor.sendToServer(PacketSyncResearchFlagsToServer.of(this.player, this.currentHighlight.getKey()));
             this.openPage(this.currentHighlight, null);
+            return true;
         } else if (searching) {
             int q = 0;
             for (SearchEntry p : this.searchResults) {
@@ -781,7 +794,15 @@ public class GuiResearchBrowser extends Screen {
                 }
             }
         }
-        return super.mouseClicked(mxd, myd, button);
+        if (super.mouseClicked(mxd, myd, button)) return true;
+        if (!searching && button == 0 && mx >= this.startX && mx < this.startX + this.screenX
+                && my >= this.startY && my < this.startY + this.screenY) {
+            this.draggingMap = true;
+            this.dragX = mxd;
+            this.dragY = myd;
+            return true;
+        }
+        return false;
     }
 
     private void openPage(ResearchEntry entry, ResourceLocation recipe) {
