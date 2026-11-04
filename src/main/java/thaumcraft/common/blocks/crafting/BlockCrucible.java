@@ -164,7 +164,7 @@ public class BlockCrucible extends BaseEntityBlock {
     protected int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
         if (world.getBlockEntity(pos) instanceof TileCrucible te) {
             float r = te.aspects.visSize() / 500.0F;
-            return Mth.floor(r * 14.0F) + (te.aspects.visSize() > 0 ? 1 : 0);
+            return Mth.clamp(Mth.floor(r * 14.0F) + (te.aspects.visSize() > 0 ? 1 : 0), 0, 15);
         }
         return 0;
     }

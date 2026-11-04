@@ -16,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -47,6 +49,11 @@ public class TileCrucible extends TileThaumcraft implements IAspectContainer {
     int prevy = 0;
     /** В оригинале возможность жидкости отдавала сам бак — изменения через трубы не сохранялись и не уходили клиентам (DEVIATIONS.md). */
     public final FluidTank tank = new FluidTank(1000) {
+        @Override
+        public boolean isFluidValid(FluidStack stack) {
+            return stack.is(Fluids.WATER);
+        }
+
         @Override
         protected void onContentsChanged() {
             TileCrucible.this.setChanged();

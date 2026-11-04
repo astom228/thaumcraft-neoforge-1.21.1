@@ -18,7 +18,7 @@ public class TileJarFillableVoid extends TileJarFillable {
     @Override
     public int addToContainer(Aspect tt, int am) {
         boolean up = this.amount < CAPACITY;
-        if (am == 0) {
+        if (am <= 0 || !this.doesContainerAccept(tt)) {
             return am;
         }
         if (tt == this.aspect || this.amount == 0) {

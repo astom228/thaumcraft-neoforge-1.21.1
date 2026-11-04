@@ -102,7 +102,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
 
     @Override
     public int addToContainer(Aspect tt, int am) {
-        if (am == 0) {
+        if (am <= 0 || !this.doesContainerAccept(tt)) {
             return am;
         }
         if (this.amount < CAPACITY && tt == this.aspect || this.amount == 0) {
@@ -118,7 +118,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
 
     @Override
     public boolean takeFromContainer(Aspect tt, int am) {
-        if (this.amount >= am && tt == this.aspect) {
+        if (am > 0 && tt != null && this.amount >= am && tt == this.aspect) {
             this.amount -= am;
             if (this.amount <= 0) {
                 this.aspect = null;
@@ -158,7 +158,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
 
     @Override
     public boolean doesContainerAccept(Aspect tag) {
-        return this.aspectFilter == null || tag.equals(this.aspectFilter);
+        return tag != null && (this.aspectFilter == null || tag == this.aspectFilter);
     }
 
     @Override

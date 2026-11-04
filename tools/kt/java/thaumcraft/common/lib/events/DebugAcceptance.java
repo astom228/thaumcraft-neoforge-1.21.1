@@ -36,7 +36,10 @@ public final class DebugAcceptance {
             var aura = thaumcraft.common.world.aura.AuraHandler.getAuraChunk(server.overworld(), entry.getKey().x, entry.getKey().z);
             if (aura != null) aura.setVis(entry.getValue());
         }
-        if (server.getTickCount() % 20 == 0) snapshot(server);
+        if (server.getTickCount() % 20 == 0) {
+            try { snapshot(server); }
+            catch (java.io.IOException error) { org.slf4j.LoggerFactory.getLogger(DebugAcceptance.class).warn("KT snapshot unavailable", error); }
+        }
         if (server.getTickCount() % 10 != 0) return;
         Path request = Path.of("commands.txt");
         if (!Files.exists(request)) return;
@@ -50,6 +53,7 @@ public final class DebugAcceptance {
                 continue;
             }
             if (command.equals("kt:aura-clear")) { lockedAura.clear(); continue; }
+            if (command.equals("kt:engine basic")) { KtEngineChecks.run(server); continue; }
             if (command.startsWith("kt:watch ")) {
                 String[] parts = command.split(" +");
                 watched.add(new net.minecraft.core.BlockPos(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3])));
@@ -83,6 +87,21 @@ public final class DebugAcceptance {
             blocks.put(pos.toShortString(), tile == null ? server.overworld().getBlockState(pos).toString() : tile.saveWithFullMetadata(server.registryAccess()).toString());
         }
         state.put("blocks", blocks);
-        Files.writeString(Path.of("server-state.json"), new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(state));
+        var aura = new java.util.LinkedHashMap<String, Object>();
+        for (var pos : watched) {
+            if (!server.overworld().hasChunkAt(pos)) continue;
+            var chunk = new net.minecraft.world.level.ChunkPos(pos);
+            aura.put(chunk.toString(), java.util.Map.of(
+                    "vis", thaumcraft.common.world.aura.AuraHandler.getVis(server.overworld(), pos),
+                    "flux", thaumcraft.common.world.aura.AuraHandler.getFlux(server.overworld(), pos)));
+        }
+        state.put("aura", aura);
+        Path pending = Path.of("server-state.pending.json");
+        Files.writeString(pending, new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(state));
+        try {
+            Files.move(pending, Path.of("server-state.json"), java.nio.file.StandardCopyOption.REPLACE_EXISTING, java.nio.file.StandardCopyOption.ATOMIC_MOVE);
+        } catch (java.nio.file.AtomicMoveNotSupportedException error) {
+            Files.move(pending, Path.of("server-state.json"), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        }
     }
 }
