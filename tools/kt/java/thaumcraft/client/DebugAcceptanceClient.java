@@ -57,6 +57,14 @@ public final class DebugAcceptanceClient {
         if (mc.player.containerMenu instanceof thaumcraft.common.container.ContainerArcaneWorkbench bench) {
             state.put("workbenchVis", bench.getTile().auraVisClient);
         }
+        if (mc.player.containerMenu instanceof thaumcraft.common.container.ContainerFocalManipulator focal) {
+            state.put("focalVis", focal.getTile().vis);
+            state.put("focalName", focal.getTile().focusName);
+            state.put("focalNodes", focal.getTile().data.values().stream().map(n -> n.serialize().toString()).toList());
+        }
+        state.put("auraVis", thaumcraft.client.lib.events.HudHandler.currentAura.getVis());
+        state.put("auraFlux", thaumcraft.client.lib.events.HudHandler.currentAura.getFlux());
+        state.put("absorption", mc.player.getAbsorptionAmount());
         state.put("carried", mc.player.containerMenu.getCarried() + ":" + mc.player.containerMenu.getCarried().getComponentsPatch());
         var slots = new ArrayList<String>();
         for (var slot : mc.player.containerMenu.slots) slots.add(slot.index + ":" + slot.getItem() + ":" + slot.getItem().getComponentsPatch());

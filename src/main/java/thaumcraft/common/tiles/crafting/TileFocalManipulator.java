@@ -44,6 +44,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
     /** Только клиент: экран должен начать дерево заново (фокус сменился). */
     public boolean doGuiReset = false;
     private ItemStack lastFocus = ItemStack.EMPTY;
+    private boolean readingSync;
 
     public TileFocalManipulator(BlockPos pos, BlockState state) {
         super(ConfigBlocks.FOCAL_MANIPULATOR_TILE.get(), pos, state, 1);
@@ -52,7 +53,13 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
 
     @Override
     public void readSyncNBT(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.readSyncNBT(nbt, registries);
+        ItemStack previousFocus = this.getStackInSlot(0).copy();
+        this.readingSync = true;
+        try {
+            super.readSyncNBT(nbt, registries);
+        } finally {
+            this.readingSync = false;
+        }
         this.vis = nbt.getFloat("vis");
         this.focusName = nbt.getString("focusName");
         this.crystalsSync = new AspectList();
@@ -63,6 +70,13 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
             FocusElementNode node = new FocusElementNode();
             node.deserialize(nodelist.getCompound(x));
             this.data.put(node.id, node);
+        }
+        if (this.level != null && this.level.isClientSide) {
+            // ItemsSynced temporarily clears the slot before restoring it. That is not
+            // a player changing the focus: keep the authoritative in-progress tree.
+            this.lastFocus = this.getStackInSlot(0).copy();
+            this.doGuiReset = this.data.isEmpty() && !ItemStack.matches(previousFocus, this.lastFocus);
+            this.doGather = true;
         }
     }
 
@@ -83,6 +97,9 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
     /** setInventorySlotContents оригинала: другой фокус — клиент сбрасывает экран, сервер прерывает работу. */
     @Override
     protected void onSlotContentsChanged(int slot) {
+        if (this.readingSync && this.level != null && this.level.isClientSide) {
+            return;
+        }
         ItemStack stack = this.getStackInSlot(slot);
         boolean changed = stack.isEmpty() || !ItemStack.matches(stack, this.lastFocus);
         this.lastFocus = stack.copy();

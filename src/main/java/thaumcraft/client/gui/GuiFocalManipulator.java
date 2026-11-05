@@ -168,7 +168,11 @@ public class GuiFocalManipulator extends AbstractContainerScreen<ContainerFocalM
         }
         this.buttonConfirm.active = this.table.vis <= 0.0F && this.valid;
         if (this.table.data != null && !this.table.data.isEmpty()) {
+            // The frame in renderBg is at z=1; draw editable text above it.
+            g.pose().pushPose();
+            g.pose().translate(0.0, 0.0, 2.0);
             this.nameField.render(g, mx, my, pt);
+            g.pose().popPose();
         }
         // подсказки кнопок-значков (drawButtonForegroundLayer)
         for (HoverIcon h : this.hoverIcons) {
@@ -312,8 +316,8 @@ public class GuiFocalManipulator extends AbstractContainerScreen<ContainerFocalM
         for (FocusElementNode fn : this.table.data.values()) {
             int xx = x + fn.x * 24;
             int yy = y + fn.y * 32;
-            boolean mouseover = this.isPointInRegion(this.leftPos + 63, this.topPos + 31, 136, 160, mx + this.leftPos, my + this.topPos)
-                    && this.isPointInRegion(xx - 10, yy - 10, 20, 20, mx + this.leftPos, my + this.topPos);
+            boolean mouseover = this.isPointInRegion(63, 31, 136, 160, mx + this.leftPos, my + this.topPos)
+                    && this.isPointInRegion(xx - this.leftPos - 10, yy - this.topPos - 10, 20, 20, mx + this.leftPos, my + this.topPos);
             if (mouseover && fn.parent >= 0) {
                 hover = fn.id;
             }
@@ -466,6 +470,18 @@ public class GuiFocalManipulator extends AbstractContainerScreen<ContainerFocalM
     public boolean mouseClicked(double dmx, double dmy, int button) {
         int mx = (int) dmx;
         int my = (int) dmy;
+        // Input may arrive before render has updated lastNodeHover for the new cursor position.
+        this.lastNodeHover = -1;
+        if (this.isPointInRegion(63, 31, 136, 160, mx, my)) {
+            for (FocusElementNode node : this.table.data.values()) {
+                int x = 132 - this.scrollX + node.x * 24;
+                int y = 48 - this.scrollY + node.y * 32;
+                if (node.parent >= 0 && this.isPointInRegion(x - 10, y - 10, 20, 20, mx, my)) {
+                    this.lastNodeHover = node.id;
+                    break;
+                }
+            }
+        }
         for (Slider s : new Slider[] {this.scrollbarParts, this.scrollbarMainSide, this.scrollbarMainBottom}) {
             if (s != null && s.mousePressed(mx, my)) {
                 return true;
