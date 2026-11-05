@@ -67,6 +67,7 @@ public final class DebugAcceptance {
             if (command.equals("kt:engine mirrors")) { KtMirrorChecks.run(server); continue; }
             if (command.equals("kt:engine secondary")) { KtSecondaryChecks.run(server, false); continue; }
             if (command.equals("kt:engine secondary-resume")) { KtSecondaryChecks.run(server, true); continue; }
+            if (command.equals("kt:engine everyday")) { KtEverydayChecks.run(server); continue; }
             if (command.startsWith("kt:watch ")) {
                 String[] parts = command.split(" +");
                 watched.add(new net.minecraft.core.BlockPos(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3])));
