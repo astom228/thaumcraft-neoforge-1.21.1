@@ -49,6 +49,9 @@ Botania в этом наборе — snapshot. Дополнительные мо
 [Сеть](NETWORK_ACCEPTANCE.md) · [Боссы и GUI](BOSS_HUD_ACCEPTANCE.md) ·
 [Проверка распространяемого JAR](RELEASE_VALIDATION.md)
 
+Окончательный JAR проверен в обычной установке NeoForge без JEI: подключение к
+выделенному серверу, GUI-крафт и загрузка сохранённого мира в одиночной игре.
+
 ## Сборка из исходников
 
 Нужен JDK **21** в `JAVA_HOME` или `PATH`; путь к локальному JDK в репозитории не задан.
@@ -70,6 +73,14 @@ Linux/macOS:
 `verifyReleaseJar` проверяет версию, обязательные файлы и отсутствие служебных классов;
 задача автоматически входит в `build`. GitHub Actions настроен на Java21, Linux и Windows
 и сохраняет JAR как artifact. Реальный удалённый CI подтверждается только после push.
+
+Для локальной подготовки файлов релиза после коммита:
+
+```powershell
+.\scripts\package-release.ps1 -IncludeSource
+```
+
+Скрипт создаёт JAR/ZIP/source ZIP и SHA256SUMS в `build/publication/<версия>`, ничего не публикуя.
 
 ## Сообщения об ошибках
 

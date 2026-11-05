@@ -1,0 +1,27 @@
+name: Ошибка мода
+description: Воспроизводимая проблема в неофициальном порте
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Версии порта, Minecraft и NeoForge
+      placeholder: 6.1.BETA17-port.1-beta.1 / 1.21.1 / 21.1.252
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Шаги воспроизведения, ожидаемый и фактический результат
+    validations:
+      required: true
+  - type: textarea
+    id: mods
+    attributes:
+      label: Список модов и результат в новом тестовом мире
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: latest.log и crash-report
+      description: Прикрепите файлы. Перед отправкой удалите токены, учётные данные и приватные адреса.

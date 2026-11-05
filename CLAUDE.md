@@ -1,6 +1,8 @@
 # Thaumcraft 6 → NeoForge 1.21.1
 
-Личный порт Thaumcraft 6 (Minecraft 1.12.2) на NeoForge 1.21.1. Только для себя, без публикации.
+Порт Thaumcraft6 (Minecraft1.12.2) на NeoForge1.21.1. По запросу пользователя от5 ноября2026
+подготовлена публичная бета-версия; разрешение на распространение оформляет владелец.
+Статус/границы — RELEASE_VALIDATION.md, LICENSE.md и PUBLICATION_CHECKLIST.md.
 
 **В начале каждой сессии прочитать:** `MASTER_PROMPT.md` (главная инструкция), `PORTING_PLAN.md`, `PROGRESS.md`.
 По фразе «продолжай» — продолжить с места, указанного в `PROGRESS.md`.
