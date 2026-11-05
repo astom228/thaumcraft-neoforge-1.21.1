@@ -79,6 +79,7 @@ public class ItemHandMirror extends Item {
         if (targetWorld == null) {
             return null;
         }
+        thaumcraft.common.tiles.devices.TileMirrorLinked.retainTransferChunk(targetWorld, link.pos());
         if (targetWorld.getBlockEntity(link.pos()) instanceof TileMirror tm) {
             return tm;
         }

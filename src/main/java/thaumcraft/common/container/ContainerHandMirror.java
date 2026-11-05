@@ -66,6 +66,7 @@ public class ContainerHandMirror extends AbstractContainerMenu {
 
     @Override
     public void clicked(int slotId, int button, ClickType clickType, Player player) {
+        if (clickType == ClickType.SWAP && !((button >= 0 && button <= 8) || button == 40)) return;
         if (slotId >= 0 && slotId < this.slots.size() && this.getSlot(slotId).getItem().getItem() instanceof ItemHandMirror) {
             return;
         }
@@ -78,6 +79,7 @@ public class ContainerHandMirror extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int slot) {
+        if (slot < 0 || slot >= this.slots.size()) return ItemStack.EMPTY;
         ItemStack stack = ItemStack.EMPTY;
         Slot slotObject = this.slots.get(slot);
         if (slotObject != null && slotObject.hasItem() && !(slotObject.getItem().getItem() instanceof ItemHandMirror)) {

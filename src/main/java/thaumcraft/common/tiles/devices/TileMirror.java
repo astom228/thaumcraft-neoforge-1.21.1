@@ -51,7 +51,7 @@ public class TileMirror extends TileMirrorLinked {
     public boolean transport(ItemEntity ie) {
         ItemStack items = ie.getItem();
         if (this.linked && this.isLinkValid(true) && this.targetTile(true) instanceof TileMirror target) {
-            target.addStack(items.copy());
+            if (!target.addStack(items)) return false;
             this.addInstability(items.getCount());
             ie.discard();
             this.setChanged();
@@ -66,9 +66,7 @@ public class TileMirror extends TileMirrorLinked {
     /** Ручное зеркало: предметы сразу в очередь выдачи. */
     public boolean transportDirect(ItemStack items) {
         if (items != null && !items.isEmpty()) {
-            this.addStack(items.copy());
-            this.setChanged();
-            return true;
+            return this.addStack(items);
         }
         return false;
     }
@@ -103,9 +101,36 @@ public class TileMirror extends TileMirrorLinked {
         return this.level.addFreshEntity(ie2);
     }
 
-    public void addStack(ItemStack stack) {
-        this.outputStacks.add(stack);
+    private boolean canQueue(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return false;
+        long total = stack.getCount();
+        for (var pending : this.outputStacks) total += pending.getCount();
+        return total <= 4096;
+    }
+
+    public boolean addStack(ItemStack stack) {
+        if (!this.canQueue(stack)) return false;
+        var remaining = stack.copy();
+        for (var pending : this.outputStacks) {
+            if (ItemStack.isSameItemSameComponents(pending, remaining)) {
+                int count = Math.min(remaining.getCount(), Math.max(0, pending.getMaxStackSize() - pending.getCount()));
+                pending.grow(count); remaining.shrink(count);
+                if (remaining.isEmpty()) break;
+            }
+        }
+        while (!remaining.isEmpty()) this.outputStacks.add(remaining.split(Math.max(1, remaining.getMaxStackSize())));
         this.setChanged();
+        return true;
+    }
+
+    /** Очередь — уже принятые вещи: при разрушении вернуть их как содержимое сундука. */
+    public void dropPendingItems() {
+        if (this.level == null || this.level.isClientSide) return;
+        var pending = this.outputStacks;
+        this.outputStacks = new ArrayList<>();
+        this.setChanged();
+        for (var stack : pending) net.minecraft.world.Containers.dropItemStack(this.level,
+                this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5, stack.copy());
     }
 
     @Override
@@ -179,8 +204,9 @@ public class TileMirror extends TileMirrorLinked {
             if (stack.isEmpty() || !TileMirror.this.linked || !TileMirror.this.isLinkValid(true) || !(TileMirror.this.targetTile(true) instanceof TileMirror target)) {
                 return stack;
             }
+            if (!target.canQueue(stack)) return stack;
             if (!simulate) {
-                target.addStack(stack.copy());
+                if (!target.addStack(stack)) return stack;
                 TileMirror.this.addInstability(stack.getCount());
                 TileMirror.this.level.blockEvent(TileMirror.this.worldPosition, TileMirror.this.getBlockState().getBlock(), 1, 0);
             }

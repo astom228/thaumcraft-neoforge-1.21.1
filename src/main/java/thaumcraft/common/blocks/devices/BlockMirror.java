@@ -144,6 +144,9 @@ public class BlockMirror extends BaseEntityBlock {
     /** dropMirror: снятое связанное зеркало разрывает связь у парного. */
     @Override
     protected void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock()) && !world.isClientSide && world.getBlockEntity(pos) instanceof TileMirror mirror) {
+            mirror.dropPendingItems();
+        }
         if (!state.is(newState.getBlock()) && !world.isClientSide && world.getBlockEntity(pos) instanceof TileMirrorLinked tm && tm.linked) {
             tm.invalidateLink();
         }

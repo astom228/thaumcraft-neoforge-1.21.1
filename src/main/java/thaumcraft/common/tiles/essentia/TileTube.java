@@ -273,7 +273,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IInt
 
     @Override
     public int takeEssentia(Aspect aspect, int amount, Direction face) {
-        if (this.canOutputTo(face) && this.essentiaType == aspect && this.essentiaAmount > 0 && amount > 0) {
+        if (aspect != null && this.canOutputTo(face) && this.essentiaType == aspect && this.essentiaAmount > 0 && amount > 0) {
             this.essentiaAmount--;
             if (this.essentiaAmount <= 0) {
                 this.essentiaType = null;
@@ -286,7 +286,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IInt
 
     @Override
     public int addEssentia(Aspect aspect, int amount, Direction face) {
-        if (this.canInputFrom(face) && this.essentiaAmount == 0 && amount > 0) {
+        if (aspect != null && this.canInputFrom(face) && this.essentiaAmount == 0 && amount > 0) {
             this.essentiaType = aspect;
             this.essentiaAmount++;
             this.setChanged();

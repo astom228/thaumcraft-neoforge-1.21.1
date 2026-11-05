@@ -51,7 +51,10 @@ public class FocusEffectRift extends FocusEffect {
             return false;
         }
         Level world = this.getPackage().world;
-        // TODO этап 16: во Внешних землях (ModConfig dimensionOuterId) — отказ со звуком wandfail
+        if (world.dimension().location().toString().equals(thaumcraft.common.config.ModConfig.CONFIG_WORLD.dimensionOuterId.get())) {
+            world.playSound(null, bh.getBlockPos(), thaumcraft.common.lib.SoundsTC.wandfail.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+            return false;
+        }
         float maxdis = this.getSettingValue("depth") * finalPower;
         int dur = 20 * this.getSettingValue("duration");
         int distance;

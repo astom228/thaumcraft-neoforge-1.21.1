@@ -44,6 +44,103 @@ final class KtEngineChecks {
         return stack;
     }
 
+    static void runInfusions(MinecraftServer server) throws java.io.IOException {
+        checks.clear();
+        var world = server.overworld();
+        var center = new BlockPos(128, 121, 128);
+        require(world.hasChunkAt(center), "Infusion fixture chunk must be loaded explicitly");
+        var player = FakePlayerFactory.get(world, new GameProfile(UUID.fromString("924ac16d-7361-46cf-bbad-928bce2f9c98"), "KtEngine"));
+        var knowledge = thaumcraft.api.capabilities.ThaumcraftCapabilities.getKnowledge(player);
+        var pedestals = new BlockPos[]{center.offset(-3,0,0), center.offset(3,0,0), center.offset(0,0,-3), center.offset(0,0,3),
+                center.offset(-3,0,-3), center.offset(3,0,3), center.offset(-3,0,3), center.offset(3,0,-3)};
+        var jars = new BlockPos[]{center.offset(-2,0,7), center.offset(0,0,7), center.offset(2,0,7)};
+        world.setBlockAndUpdate(center, BlocksTC.pedestalArcane.get().defaultBlockState());
+        for (int x : new int[]{-1,1}) for (int z : new int[]{-1,1}) world.setBlockAndUpdate(center.offset(x,0,z), BlocksTC.pillarArcane.get().defaultBlockState());
+        for (var pos : pedestals) world.setBlockAndUpdate(pos, BlocksTC.pedestalArcane.get().defaultBlockState());
+        for (var pos : jars) world.setBlockAndUpdate(pos, BlocksTC.jarNormal.get().defaultBlockState());
+        var outputs = java.util.Set.of(BlocksTC.jarBrain.get().asItem(), BlocksTC.mirror.get().asItem(),
+                BlocksTC.mirrorEssentia.get().asItem(), ItemsTC.handMirror.get());
+        int tested = 0;
+        for (var entry : thaumcraft.api.ThaumcraftApi.getCraftingRecipes().entrySet()) {
+            if (!(entry.getValue() instanceof thaumcraft.api.crafting.InfusionRecipe recipe)) continue;
+            var enchantment = recipe instanceof thaumcraft.common.lib.crafting.InfusionEnchantmentRecipe er ? er.getEnchantment() : null;
+            boolean selectedEnchantment = enchantment != null && java.util.Set.of(
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.COLLECTOR,
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.DESTRUCTIVE,
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.BURROWING,
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.SOUNDING,
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.REFINING,
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.ARCING,
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.ESSENCE).contains(enchantment);
+            boolean runic = recipe instanceof thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
+            if (!(recipe.getRecipeOutput() instanceof ItemStack output && outputs.contains(output.getItem())) && !selectedEnchantment && !runic) continue;
+            tested++;
+            check("infusion complete recipe, payment and remainders: " + entry.getKey(), () -> {
+                knowledge.clear();
+                world.setBlockAndUpdate(center.above(2), Blocks.AIR.defaultBlockState());
+                world.setBlockAndUpdate(center.above(2), BlocksTC.infusionMatrix.get().defaultBlockState());
+                var matrix = (thaumcraft.common.tiles.crafting.TileInfusionMatrix) world.getBlockEntity(center.above(2));
+                var main = (thaumcraft.common.tiles.crafting.TilePedestal) world.getBlockEntity(center);
+                var input = selectedEnchantment ? new ItemStack(enchantment == thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.ARCING
+                        || enchantment == thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.ESSENCE ? Items.DIAMOND_SWORD : Items.DIAMOND_PICKAXE)
+                        : runic ? new ItemStack(Items.DIAMOND_CHESTPLATE) : recipe.getRecipeInput().getItems()[0].copyWithCount(1);
+                main.setInventorySlotContents(0, input);
+                require(recipe.getComponents().size() <= pedestals.length, "fixture too few pedestals");
+                var remainders = new ArrayList<ItemStack>();
+                var components = new ArrayList<ItemStack>();
+                for (int i = 0; i < pedestals.length; i++) {
+                    var ingredient = i < recipe.getComponents().size() ? recipe.getComponents().get(i).getItems()[0].copyWithCount(1) : ItemStack.EMPTY;
+                    remainders.add(ingredient.getCraftingRemainingItem());
+                    if (!ingredient.isEmpty()) components.add(ingredient.copy());
+                    ((thaumcraft.common.tiles.crafting.TilePedestal) world.getBlockEntity(pedestals[i])).setInventorySlotContents(0, ingredient);
+                }
+                var expected = (ItemStack) recipe.getRecipeOutput(player, input, components);
+                var recipeCost = recipe.getAspects(player, input, components);
+                var cost = recipeCost.getAspects();
+                require(cost.length <= jars.length, "fixture too few jars");
+                for (int i = 0; i < jars.length; i++) {
+                    var jar = (TileJarFillable) world.getBlockEntity(jars[i]);
+                    jar.amount = i < cost.length ? recipeCost.getAmount(cost[i]) : 0;
+                    jar.aspect = jar.aspectFilter = i < cost.length ? cost[i] : null;
+                }
+                matrix.active = true;
+                matrix.craftingStart(player);
+                require(!matrix.crafting && ItemStack.matches(main.getStackInSlot(0), input), "recipe started without research");
+                knowledge.addResearch(recipe.getResearch());
+                if (selectedEnchantment) {
+                    require(!recipe.matches(components, new ItemStack(Items.DIAMOND), world, player), "enchantment accepts wrong item type");
+                    var maxed = input.copy();
+                    thaumcraft.common.lib.enchantment.EnumInfusionEnchantment.addInfusionEnchantment(maxed, enchantment, enchantment.maxLevel);
+                    require(!recipe.matches(components, maxed, world, player), "enchantment exceeds maximum level");
+                }
+                var first = (thaumcraft.common.tiles.crafting.TilePedestal) world.getBlockEntity(pedestals[0]);
+                var firstIngredient = first.getStackInSlot(0).copy();
+                first.setInventorySlotContents(0, ItemStack.EMPTY);
+                matrix.craftingStart(player);
+                require(!matrix.crafting && ItemStack.matches(main.getStackInSlot(0), input), "recipe started without ingredient");
+                first.setInventorySlotContents(0, firstIngredient);
+                matrix.craftingStart(player);
+                require(matrix.crafting, "recipe did not start");
+                // Ускоренный прогон реальных craftCycle; стабильность контролируется для изоляции рецепта.
+                for (int cycle = 0; matrix.crafting && cycle < 2000; cycle++) { matrix.stability = 25; matrix.craftCycle(); }
+                require(!matrix.crafting, "recipe stalled");
+                require(ItemStack.matches(main.getStackInSlot(0), expected), "wrong central result");
+                for (var pos : jars) require(((TileJarFillable) world.getBlockEntity(pos)).amount == 0, "wrong essentia payment");
+                for (int i = 0; i < pedestals.length; i++) require(ItemStack.matches(
+                        ((thaumcraft.common.tiles.crafting.TilePedestal) world.getBlockEntity(pedestals[i])).getStackInSlot(0), remainders.get(i)), "ingredient/remainder mismatch " + i);
+                matrix.onCasterRightClick(world, new ItemStack(ItemsTC.casterBasic.get()), player, center.above(2),
+                        net.minecraft.core.Direction.SOUTH, net.minecraft.world.InteractionHand.MAIN_HAND);
+                require(!matrix.crafting, "repeated click restarted completed recipe");
+                require(ItemStack.matches(main.getStackInSlot(0), expected), "extra cycle duplicated result");
+            });
+        }
+        require(tested == 12, "expected twelve selected recipes, got " + tested);
+        var finalMatrix = (thaumcraft.common.tiles.crafting.TileInfusionMatrix) world.getBlockEntity(center.above(2));
+        finalMatrix.crafting = false; finalMatrix.active = false;
+        knowledge.clear(); player.getInventory().clearContent();
+        Files.writeString(Path.of("engine-infusion.json"), new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(checks));
+    }
+
     static void runStructures(MinecraftServer server) {
         checks.clear();
         var world = server.overworld();
@@ -85,13 +182,58 @@ final class KtEngineChecks {
                 net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
                 require(!event.isCanceled(), "conversion left a permanent block lock");
             });
-            world.setBlockAndUpdate(upper, Blocks.AIR.defaultBlockState());
-            world.setBlockAndUpdate(lower, Blocks.AIR.defaultBlockState());
-            world.setBlockAndUpdate(base, Blocks.AIR.defaultBlockState());
-            player.getInventory().clearContent(); knowledge.clear();
-            try {
-                Files.writeString(Path.of("engine-structures.json"), new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(checks));
-            } catch (java.io.IOException error) { throw new RuntimeException(error); }
+            var machine = (thaumcraft.common.tiles.crafting.TileThaumatorium) world.getBlockEntity(lower);
+            world.setBlockAndUpdate(base.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
+            world.setBlockAndUpdate(lower.south(), Blocks.CHEST.defaultBlockState());
+            world.setBlockAndUpdate(lower.west(), Blocks.REDSTONE_BLOCK.defaultBlockState());
+            machine.setInventorySlotContents(0, new ItemStack(ItemsTC.nuggetQuartz.get(), 2));
+            player.moveTo(lower.getX() + 0.5, lower.getY() - 1, lower.getZ() + 3.5, 180, 0);
+            var menu = new thaumcraft.common.container.ContainerThaumatorium(101, player.getInventory(), machine);
+            check("thaumatorium hides unknown catalyst recipes", () -> require(menu.recipes.isEmpty(), "unknown recipe exposed"));
+            knowledge.addResearch("BASEALCHEMY"); menu.updateRecipes();
+            check("thaumatorium hides unfinished research recipes", () -> require(menu.recipes.isEmpty(), "unfinished research exposed recipe"));
+            var research = thaumcraft.api.research.ResearchCategories.getResearch("BASEALCHEMY");
+            knowledge.setResearchStage("BASEALCHEMY", research.getStages().length + 1);
+            menu.updateRecipes();
+            check("thaumatorium rejects invalid buttons and enforces recipe limit", () -> {
+                require(!menu.clickMenuButton(player, -1) && !menu.clickMenuButton(player, 9999), "invalid button accepted");
+                int chosen = -1;
+                for (int i = 0; i < menu.recipes.size(); i++) if (menu.recipes.get(i).getAspects().getAmount(Aspect.AIR) == 2) { chosen = i; break; }
+                require(chosen >= 0 && menu.clickMenuButton(player, chosen), "Aer recipe not selected");
+                int alternative = chosen == 0 ? 1 : 0;
+                require(!menu.clickMenuButton(player, alternative) && machine.recipeHash.size() == 1, "one-slot limit bypassed");
+            });
+            machine.essentia = new AspectList().add(Aspect.AIR, 2);
+            ServerEvents.addRunnableServer(world, () -> {
+                check("thaumatorium redstone preserves catalyst and essentia", () -> {
+                    require(machine.getStackInSlot(0).getCount() == 2, "powered machine consumed catalyst");
+                    require(machine.essentia.getAmount(Aspect.AIR) == 2, "powered machine consumed essentia");
+                });
+                world.setBlockAndUpdate(lower.west(), Blocks.AIR.defaultBlockState());
+                ServerEvents.addRunnableServer(world, () -> {
+                    check("thaumatorium pays once and inserts one result into chest", () -> {
+                        require(machine.getStackInSlot(0).getCount() == 1, "wrong catalyst payment");
+                        require(machine.essentia.visSize() == 0, "essentia cost not consumed");
+                        var chest = (net.minecraft.world.level.block.entity.ChestBlockEntity) world.getBlockEntity(lower.south());
+                        int total = 0;
+                        for (int i = 0; i < chest.getContainerSize(); i++) {
+                            var result = chest.getItem(i);
+                            if (result.isEmpty()) continue;
+                            require(result.is(ItemsTC.crystalEssence.get()) && result.get(TCDataComponents.ASPECTS.get()).getAmount(Aspect.AIR) == 1, "wrong output");
+                            total += result.getCount();
+                        }
+                        require(total == 1, "output duplicated or missing");
+                    });
+                    machine.setInventorySlotContents(0, ItemStack.EMPTY);
+                    var chest = (net.minecraft.world.level.block.entity.ChestBlockEntity) world.getBlockEntity(lower.south());
+                    chest.clearContent();
+                    for (var pos : new BlockPos[]{upper, lower, base, lower.south()}) world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                    world.setBlockAndUpdate(base.below(), Blocks.STONE.defaultBlockState());
+                    player.getInventory().clearContent(); knowledge.clear();
+                    try { Files.writeString(Path.of("engine-structures.json"), new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(checks)); }
+                    catch (java.io.IOException error) { throw new RuntimeException(error); }
+                }, 25);
+            }, 45);
         }, 65);
     }
 
@@ -128,6 +270,44 @@ final class KtEngineChecks {
             }
             check("non-crystal rejected by every crystal slot", () -> {
                 for (int j = 10; j < 16; j++) require(!menu.getSlot(j).mayPlace(new ItemStack(Items.DIAMOND)), "diamond accepted");
+            });
+            var filledPhial = new ItemStack(ItemsTC.phialFilled.get());
+            filledPhial.set(TCDataComponents.ASPECTS.get(), new AspectList().add(Aspect.AIR, 10));
+            var markedLabel = new ItemStack(ItemsTC.labelFilled.get());
+            markedLabel.set(TCDataComponents.ASPECTS.get(), new AspectList().add(Aspect.AIR, 1));
+            record Craft(String name, ItemStack[] grid, ItemStack result) {}
+            for (var craft : new Craft[]{
+                    new Craft("eight phials", new ItemStack[]{ItemStack.EMPTY,new ItemStack(Items.CLAY_BALL),ItemStack.EMPTY,
+                            new ItemStack(Items.GLASS),ItemStack.EMPTY,new ItemStack(Items.GLASS),ItemStack.EMPTY,new ItemStack(Items.GLASS)}, new ItemStack(ItemsTC.phial.get(),8)),
+                    new Craft("four labels", new ItemStack[]{new ItemStack(Items.PAPER),new ItemStack(Items.PAPER),new ItemStack(Items.PAPER),
+                            new ItemStack(Items.PAPER),new ItemStack(Items.BLACK_DYE),new ItemStack(Items.SLIME_BALL)}, new ItemStack(ItemsTC.label.get(),4)),
+                    new Craft("aspect label", new ItemStack[]{new ItemStack(ItemsTC.label.get()),filledPhial},markedLabel),
+                    new Craft("clear label", new ItemStack[]{markedLabel},new ItemStack(ItemsTC.label.get())),
+                    new Craft("scribing tools", new ItemStack[]{new ItemStack(ItemsTC.phial.get()),new ItemStack(Items.FEATHER),new ItemStack(Items.BLACK_DYE)},new ItemStack(ItemsTC.scribingTools.get()))}) {
+                check("real crafting menu: " + craft.name(), () -> {
+                    player.getInventory().clearContent();
+                    for(int j=0;j<15;j++) inventory.setStackInSlot(j,ItemStack.EMPTY);
+                    for(int j=0;j<craft.grid().length;j++) inventory.setStackInSlot(j,craft.grid()[j].copy());
+                    require(ItemStack.matches(menu.getSlot(0).getItem(),craft.result()),"wrong crafting result");
+                    menu.clicked(0,0,net.minecraft.world.inventory.ClickType.QUICK_MOVE,player);
+                    int count=0;
+                    for(var stack:player.getInventory().items) if(!stack.isEmpty()) {
+                        require(ItemStack.isSameItemSameComponents(stack,craft.result()),"unexpected output or remainder");count+=stack.getCount();
+                    }
+                    require(count==craft.result().getCount(),"wrong result count");
+                    for(int j=0;j<9;j++) require(inventory.getStackInSlot(j).isEmpty(),"ingredient not consumed");
+                });
+            }
+            check("aspect label rejects malformed phial without consuming ingredients", () -> {
+                for(var aspects:new AspectList[]{new AspectList().add(Aspect.AIR,1),new AspectList().add(Aspect.AIR,5),
+                        new AspectList().add(Aspect.AIR,10).add(Aspect.FIRE,10)}) {
+                    player.getInventory().clearContent();
+                    for(int j=0;j<15;j++) inventory.setStackInSlot(j,ItemStack.EMPTY);
+                    var invalid=new ItemStack(ItemsTC.phialFilled.get()); invalid.set(TCDataComponents.ASPECTS.get(),aspects);
+                    inventory.setStackInSlot(0,new ItemStack(ItemsTC.label.get())); inventory.setStackInSlot(1,invalid);
+                    require(menu.getSlot(0).getItem().isEmpty()&&menu.quickMoveStack(player,0).isEmpty(),"invalid phial produced label");
+                    require(inventory.getStackInSlot(0).getCount()==1&&ItemStack.matches(inventory.getStackInSlot(1),invalid),"refusal consumed ingredients");
+                }
             });
             check("vanilla result quick-move consumes exactly one log", () -> {
                 player.getInventory().clearContent();
@@ -312,6 +492,8 @@ final class KtEngineChecks {
         try {
             check("caster closes and reopens the same pipe through real outline ray", () -> {
                 player.moveTo(tubePos.getX() + 0.2, tubePos.getY() - 1, tubePos.getZ() - 2.5, 0, 2);
+                player.setYHeadRot(0);
+                player.yHeadRotO = 0;
                 var caster = new ItemStack(ItemsTC.casterBasic.get());
                 player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, caster);
                 var tube = (thaumcraft.common.tiles.essentia.TileTube) world.getBlockEntity(tubePos);
@@ -397,6 +579,49 @@ final class KtEngineChecks {
                 });
             } finally { world.setBlockAndUpdate(storagePos, Blocks.AIR.defaultBlockState()); }
         }
+        var pedestalPos = origin.offset(12, 0, 0);
+        world.setBlockAndUpdate(pedestalPos, BlocksTC.pedestalArcane.get().defaultBlockState());
+        var pedestal = (thaumcraft.common.tiles.crafting.TilePedestal) world.getBlockEntity(pedestalPos);
+        player.moveTo(pedestalPos.getX() + 0.5, pedestalPos.getY(), pedestalPos.getZ() + 2, 180, 20);
+        var oldEntities = world.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, player.getBoundingBox().inflate(3))
+                .stream().map(net.minecraft.world.entity.Entity::getId).collect(java.util.stream.Collectors.toSet());
+        try {
+            check("pedestal real use places one and empty-hand use returns one", () -> {
+                player.getInventory().clearContent();
+                player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND, 8));
+                var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pedestalPos), net.minecraft.core.Direction.SOUTH, pedestalPos, false);
+                world.getBlockState(pedestalPos).useItemOn(player.getMainHandItem(), world, player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+                require(pedestal.getStackInSlot(0).is(Items.DIAMOND) && pedestal.getStackInSlot(0).getCount() == 1, "pedestal did not take one");
+                require(player.getMainHandItem().getCount() == 7, "wrong held remainder");
+                player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, player.getMainHandItem());
+                player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                world.getBlockState(pedestalPos).useWithoutItem(world, player, hit);
+                require(pedestal.getStackInSlot(0).isEmpty(), "pedestal retained item");
+                int returned = world.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, player.getBoundingBox().inflate(3)).stream()
+                        .filter(e -> !oldEntities.contains(e.getId()) && e.getItem().is(Items.DIAMOND)).mapToInt(e -> e.getItem().getCount()).sum();
+                require(returned == 1 && player.getOffhandItem().getCount() == 7, "diamond round-trip not conserved");
+            });
+        } finally {
+            pedestal.setInventorySlotContents(0, ItemStack.EMPTY);
+            world.setBlockAndUpdate(pedestalPos, Blocks.AIR.defaultBlockState());
+            for (var entity : world.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, player.getBoundingBox().inflate(3)))
+                if (!oldEntities.contains(entity.getId()) && entity.getItem().is(Items.DIAMOND)) entity.discard();
+            player.getInventory().clearContent();
+        }
+        check("rift focus rejects configured Outer Lands without changing blocks", () -> {
+            var configured = thaumcraft.common.config.ModConfig.CONFIG_WORLD.dimensionOuterId;
+            String original = configured.get();
+            var state = world.getBlockState(origin);
+            try {
+                configured.set(world.dimension().location().toString());
+                configured.clearCache();
+                var pack = new thaumcraft.api.casters.FocusPackage(); pack.world = world;
+                var effect = new thaumcraft.common.items.casters.foci.FocusEffectRift(); effect.setPackage(pack);
+                require(!effect.execute(new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(origin),
+                        net.minecraft.core.Direction.UP, origin, false), null, 1, 0), "rift allowed in protected dimension");
+                require(world.getBlockState(origin) == state, "protected block changed");
+            } finally { configured.set(original); configured.clearCache(); }
+        });
         var report = new LinkedHashMap<String, Object>();
         report.put("kind", "server-engine integration; FakePlayer; no client UI input");
         report.put("tick", server.getTickCount()); report.put("checks", checks);

@@ -24,6 +24,15 @@ import thaumcraft.common.tiles.TileThaumcraft;
  * сам перенос предметов и эссенции, как в оригинале, загружает его (load = true) — DECISIONS 90.
  */
 public abstract class TileMirrorLinked extends TileThaumcraft {
+    /** FULL (distance 0), без тиков блоков/сущностей; срок обновляется только при запросе переноса. */
+    private static final net.minecraft.server.level.TicketType<net.minecraft.world.level.ChunkPos> TRANSFER_TICKET =
+            net.minecraft.server.level.TicketType.create("thaumcraft_mirror_transfer",
+                    java.util.Comparator.comparingLong(net.minecraft.world.level.ChunkPos::toLong), 80);
+    /** Кратко сохраняет только данные чанка между связанными запросами, не включая симуляцию. */
+    public static void retainTransferChunk(ServerLevel world, BlockPos pos) {
+        var chunk = new net.minecraft.world.level.ChunkPos(pos);
+        world.getChunkSource().addRegionTicket(TRANSFER_TICKET, chunk, 0, chunk);
+    }
     public boolean linked = false;
     public BlockPos linkPos = BlockPos.ZERO;
     public ResourceKey<Level> linkDim = Level.OVERWORLD;
@@ -95,7 +104,11 @@ public abstract class TileMirrorLinked extends TileThaumcraft {
     /** Мир цели есть и её чанк загружен (или его можно загрузить — load). */
     protected boolean targetLoaded(boolean load) {
         ServerLevel tw = this.targetWorld();
-        return tw != null && (load || tw.isLoaded(this.linkPos));
+        if (tw == null) return false;
+        if (load) {
+            retainTransferChunk(tw, this.linkPos);
+        }
+        return load || tw.isLoaded(this.linkPos);
     }
 
     /** Парное зеркало (null, если его нет или чанк не загружен и load = false). */

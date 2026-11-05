@@ -12,6 +12,12 @@ import thaumcraft.Thaumcraft;
 /** Команды оператора только для отдельного стенда build/kt-server. */
 @EventBusSubscriber(modid = Thaumcraft.MODID)
 public final class DebugAcceptance {
+    private static final java.util.Map<String, Integer> chunkLoads = new java.util.concurrent.ConcurrentHashMap<>();
+    @SubscribeEvent public static void chunkLoaded(net.neoforged.neoforge.event.level.ChunkEvent.Load event) {
+        if (!enabled || !(event.getLevel() instanceof net.minecraft.world.level.Level world) || chunkLoads.size() >= 2048) return;
+        var pos = event.getChunk().getPos();
+        chunkLoads.merge(world.dimension().location() + "/" + pos.x + "," + pos.z, 1, Integer::sum);
+    }
     private static boolean enabled;
     private static final java.util.Map<net.minecraft.world.level.ChunkPos, Float> lockedAura = new java.util.LinkedHashMap<>();
     private static final java.util.Set<net.minecraft.core.BlockPos> watched = new java.util.LinkedHashSet<>();
@@ -53,8 +59,12 @@ public final class DebugAcceptance {
                 continue;
             }
             if (command.equals("kt:aura-clear")) { lockedAura.clear(); continue; }
+            if (command.equals("kt:chunk-loads-clear")) { chunkLoads.clear(); continue; }
             if (command.equals("kt:engine basic")) { KtEngineChecks.run(server); continue; }
             if (command.equals("kt:engine structures")) { KtEngineChecks.runStructures(server); continue; }
+            if (command.equals("kt:engine infusion")) { KtEngineChecks.runInfusions(server); continue; }
+            if (command.equals("kt:engine effects")) { KtServerEffectsChecks.run(server); continue; }
+            if (command.equals("kt:engine mirrors")) { KtMirrorChecks.run(server); continue; }
             if (command.startsWith("kt:watch ")) {
                 String[] parts = command.split(" +");
                 watched.add(new net.minecraft.core.BlockPos(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3])));
@@ -81,13 +91,24 @@ public final class DebugAcceptance {
             players.put(player.getGameProfile().getName(), data);
         }
         state.put("players", players);
+        var mirrorChunks = new java.util.LinkedHashMap<String, Object>();
         var blocks = new java.util.LinkedHashMap<String, String>();
         for (var pos : watched) {
             if (!server.overworld().hasChunkAt(pos)) continue;
             var tile = server.overworld().getBlockEntity(pos);
+            if (tile instanceof thaumcraft.common.tiles.devices.TileMirrorLinked mirror) {
+                var target = server.getLevel(mirror.linkDim);
+                if (target != null) {
+                    var chunk = target.getChunkSource().getChunkNow(mirror.linkPos.getX() >> 4, mirror.linkPos.getZ() >> 4);
+                    mirrorChunks.put(pos.toShortString(), java.util.Map.of("dimension", mirror.linkDim.location().toString(),
+                            "present", chunk != null, "status", chunk == null ? "absent" : chunk.getFullStatus().toString()));
+                }
+            }
             blocks.put(pos.toShortString(), tile == null ? server.overworld().getBlockState(pos).toString() : tile.saveWithFullMetadata(server.registryAccess()).toString());
         }
         state.put("blocks", blocks);
+        state.put("mirrorChunks", mirrorChunks);
+        state.put("chunkLoads", new java.util.LinkedHashMap<>(chunkLoads));
         var aura = new java.util.LinkedHashMap<String, Object>();
         for (var pos : watched) {
             if (!server.overworld().hasChunkAt(pos)) continue;
