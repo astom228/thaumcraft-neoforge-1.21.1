@@ -50,7 +50,7 @@ if ($IncludeSource) {
     & git -C $repoRoot archive --format=zip "--output=$sourcePath" HEAD
     if ($LASTEXITCODE -ne 0) { throw 'Source archive creation failed' }
 }
-$lines = Get-ChildItem -LiteralPath $output -File | Where-Object Name -ne 'SHA256SUMS.txt' |
+$lines = Get-ChildItem -LiteralPath $output -File | Where-Object Extension -in @('.jar','.zip') |
     Sort-Object Name | ForEach-Object {
         (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant() + '  ' + $_.Name
     }
