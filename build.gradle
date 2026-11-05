@@ -23,6 +23,7 @@ sourceSets.main.resources {
 
     // Exclude common development only resources from finalized outputs
     exclude("**/*.bbmodel") // BlockBench project files
+    exclude('.cache/**', '**/.cache/**')
     exclude("src/generated/**/.cache") // datagen cache files
 }
 
@@ -231,9 +232,20 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.named('jar', Jar).configure {
-    from('LICENSE.md', 'NOTICE.md', 'TEMPLATE_LICENSE.txt')
+    from(['LICENSE.md', 'NOTICE.md', 'TEMPLATE_LICENSE.txt']) {
+        filter(org.apache.tools.ant.filters.FixCrLfFilter,
+                eol: org.apache.tools.ant.filters.FixCrLfFilter.CrLf.newInstance('lf'))
+    }
     preserveFileTimestamps = false
     reproducibleFileOrder = true
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    filesMatching(['**/*.json', '**/*.toml', '**/*.cfg', '**/*.txt', '**/*.md',
+                   '**/*.mcmeta', '**/*.obj', '**/*.mtl', '**/*.vsh', '**/*.fsh', '**/*.glsl']) {
+        filter(org.apache.tools.ant.filters.FixCrLfFilter,
+                eol: org.apache.tools.ant.filters.FixCrLfFilter.CrLf.newInstance('lf'))
+    }
 }
 
 def releaseJarFile = tasks.named('jar', Jar).flatMap { it.archiveFile }
@@ -248,6 +260,7 @@ def verifyReleaseJar = tasks.register('verifyReleaseJar') {
                 entry.name.contains('/DebugAcceptance') ||
                     entry.name.startsWith('thaumcraft/common/lib/events/Kt') ||
                     entry.name.endsWith('/DebugStabilityAudit.class') ||
+                    entry.name.startsWith('.cache/') || entry.name.contains('/.cache/') ||
                     entry.name.startsWith('reference/') || entry.name.startsWith('tools/')
             }
             if (bad != null) throw new GradleException("Development-only file in release JAR: ${bad.name}")
