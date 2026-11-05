@@ -54,7 +54,9 @@ authors="Azanor (оригинал), порт на NeoForge 1.21.1"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Adding a touch of magic to Minecraft. Личный порт Thaumcraft 6.1.BETA17 (1.12.2) на NeoForge 1.21.1.
+Неофициальный бета-порт Thaumcraft 6.1.BETA17 на Minecraft 1.21.1 / NeoForge.
+Оригинальный Thaumcraft создан Azanor. Это отдельный порт, а не официальный релиз.
+Требуются Curios и TerraBlender. Установка и ограничения описаны в README проекта.
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.

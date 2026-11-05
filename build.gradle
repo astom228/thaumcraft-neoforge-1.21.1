@@ -230,6 +230,39 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
+tasks.named('jar', Jar).configure {
+    from('LICENSE.md', 'NOTICE.md', 'TEMPLATE_LICENSE.txt')
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+def releaseJarFile = tasks.named('jar', Jar).flatMap { it.archiveFile }
+def releaseVersion = project.version.toString()
+def verifyReleaseJar = tasks.register('verifyReleaseJar') {
+    dependsOn tasks.named('jar')
+    inputs.file(releaseJarFile)
+    inputs.property('releaseVersion', releaseVersion)
+    doLast {
+        new java.util.zip.ZipFile(releaseJarFile.get().asFile).withCloseable { zip ->
+            def bad = zip.entries().find { entry ->
+                entry.name.contains('/DebugAcceptance') ||
+                    entry.name.startsWith('thaumcraft/common/lib/events/Kt') ||
+                    entry.name.endsWith('/DebugStabilityAudit.class') ||
+                    entry.name.startsWith('reference/') || entry.name.startsWith('tools/')
+            }
+            if (bad != null) throw new GradleException("Development-only file in release JAR: ${bad.name}")
+            ['META-INF/neoforge.mods.toml', 'LICENSE.md', 'NOTICE.md', 'thaumcraft_logo.png'].each { path ->
+                if (zip.getEntry(path) == null) throw new GradleException("Missing release file: ${path}")
+            }
+            def metadata = zip.getInputStream(zip.getEntry('META-INF/neoforge.mods.toml')).getText('UTF-8')
+            if (!metadata.contains('version="' + releaseVersion + '"') || metadata.contains('${mod_')) {
+                throw new GradleException('Wrong or unresolved release version')
+            }
+        }
+    }
+}
+tasks.named('check').configure { dependsOn verifyReleaseJar }
+
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
     module {

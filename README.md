@@ -1,25 +1,84 @@
+# Thaumcraft 6 — неофициальный порт на NeoForge
 
-Installation information
-=======
+Бета-порт **Thaumcraft 6.1.BETA17** с Minecraft 1.12.2 на **Minecraft 1.21.1**.
+Оригинальный Thaumcraft создан **Azanor**. Это не официальный релиз Azanor.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+Версия порта: **6.1.BETA17-port.1-beta.1**. Номер оригинала и выпуск порта разделены.
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+## Установка
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+1. Установите Minecraft **1.21.1**, **Java 21** и **NeoForge 21.1.252**.
+2. Создайте отдельный игровой профиль и папку для него, запустите профиль один раз.
+3. Поместите в `mods` три файла:
+   - `thaumcraft-6.1.BETA17-port.1-beta.1.jar`;
+   - **Curios API 9.5.1+1.21.1** для NeoForge;
+   - **TerraBlender 1.21.1-4.1.0.8** для NeoForge.
+4. Запустите профиль. Для первоначальной проверки создайте новый мир.
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+Серверу нужны те же три мода. Клиент/сервер должны использовать совместимые версии
+Minecraft, NeoForge и модов. Обычной игре не нужен `-PtcAcceptance`.
+Миры Minecraft1.12.2 не поддерживаются; перед обновлением существующего мира сделайте копию.
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+Официальные инструкции: [клиент](https://docs.neoforged.net/user/docs/client/),
+[сервер](https://docs.neoforged.net/user/docs/server/).
+Зависимости: [Curios](https://www.curseforge.com/minecraft/mc-mods/curios),
+[TerraBlender](https://www.curseforge.com/minecraft/mc-mods/terrablender).
+
+## Дополнительные моды
+
+JEI необязателен: проверялся **19.64.0.455** с **MezzConfig0.6.10**.
+Совместный dev-прогон с двумя игроками также выполнен с **Create6.0.10+mc1.21.1**,
+**Botania456-20260912.043547-15** и **Patchouli1.21.1-92-NEOFORGE**.
+Botania в этом наборе — snapshot. Дополнительные моды не включены в JAR.
+Результат относится к этим версиям, а не к любому сочетанию модов.
+Версии и SHA-512 внешнего набора: `tools/compat/manifest.json`.
+
+## Состояние и ограничения
+
+- Основные крафты, исследования, эссенция, Наполнение, фокусы, сохранения и сеть
+  проверены на выделенном сервере.
+- В настоящем клиенте проверены изготовление фокуса через редактор, важные HUD
+  и основные эффекты; найденные ошибки редактора исправлены.
+- **Измерения Внешних земель в этом порте нет.** Его отсутствие не является
+  пройденным прохождением или обещанием добавить его в этом выпуске.
+- Не все редкие сценарии големов, устройств и боссов прошли ручную приёмку.
+  Многочасовой тест крупного сервера и совместимость со всеми модами не заявляются.
+- Это **бета-версия**, а не гарантия отсутствия любых ошибок.
+
+[Изменения](CHANGELOG.md) · [Ограничения](KNOWN_ISSUES.md) ·
+[Сеть](NETWORK_ACCEPTANCE.md) · [Боссы и GUI](BOSS_HUD_ACCEPTANCE.md) ·
+[Проверка распространяемого JAR](RELEASE_VALIDATION.md)
+
+## Сборка из исходников
+
+Нужен JDK **21** в `JAVA_HOME` или `PATH`; путь к локальному JDK в репозитории не задан.
+Зависимости и Gradle скачиваются при первой сборке. Папка `reference` не нужна.
+
+Windows:
+
+```powershell
+.\gradlew.bat --no-daemon build
+```
+
+Linux/macOS:
+
+```sh
+./gradlew --no-daemon build
+```
+
+Результат: `build/libs/thaumcraft-6.1.BETA17-port.1-beta.1.jar`.
+`verifyReleaseJar` проверяет версию, обязательные файлы и отсутствие служебных классов;
+задача автоматически входит в `build`. GitHub Actions настроен на Java21, Linux и Windows
+и сохраняет JAR как artifact. Реальный удалённый CI подтверждается только после push.
+
+## Сообщения об ошибках
+
+Прикладывайте версии порта/Minecraft/NeoForge, список модов, шаги воспроизведения,
+`logs/latest.log` и crash-report, если он создан. Укажите, повторяется ли ошибка
+в новом мире. Не публикуйте токены, учётные данные и приватные адреса из логов.
+
+## Авторство и распространение
+
+[NOTICE](NOTICE.md) · [LICENSE](LICENSE.md) · [Чек-лист публикации](PUBLICATION_CHECKLIST.md).
+Лицензия шаблона NeoForge MDK не является лицензией оригинального Thaumcraft.
+Подготовленная сборка не подтверждает получение разрешения правообладателя.
