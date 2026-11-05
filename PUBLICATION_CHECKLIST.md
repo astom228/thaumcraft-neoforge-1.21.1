@@ -11,8 +11,10 @@
 - [x] Подготовлен `scripts/package-release.ps1`: JAR, документы, ZIP, source ZIP и SHA256SUMS.
 - [x] Владелец подтвердил 5 ноября2026 получение разрешения на публичное
       распространение исходников и материалов порта.
-- [ ] Репозиторий создан на GitHub, выполнен push и проверен реальный удалённый CI.
-- [ ] Создан GitHub Release с beta/pre-release, JAR, SHA256SUMS и текстом RELEASE_NOTES.
+- [x] Создан публичный [репозиторий](https://github.com/astom228/thaumcraft-neoforge-1.21.1), загружены main и тег.
+- [x] Успешно пройден реальный удалённый [CI Linux/Windows](https://github.com/astom228/thaumcraft-neoforge-1.21.1/actions/runs/42097519324).
+- [x] Опубликован [beta-release](https://github.com/astom228/thaumcraft-neoforge-1.21.1/releases/tag/v6.1.BETA17-port.1-beta.1): JAR, release/source ZIP, SHA256SUMS и RELEASE_NOTES.
+- [x] Скачанный с GitHub JAR проверен по SHA-256; совпадает с локальным выпуском.
 
 Подготовка файлов не выполняет публикацию автоматически. Внешнее разрешение и
 фактический удалённый CI не подменяются локальными проверками.
